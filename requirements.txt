@@ -1,0 +1,27 @@
+# aa Core aa
+Django>=4.2,<5.0
+djangorestframework>=3.14
+django-cors-headers>=4.0
+psycopg2-binary>=2.9
+
+# aa Celery aa
+celery>=5.3
+django-celery-results>=2.5
+
+# aa MinIO / S3 aa
+boto3>=1.28
+botocore>=1.31
+
+# aa OCR aa
+pytesseract>=0.3.10
+pdf2image>=1.16
+Pillow>=10.0
+
+# aa OpenSearch aa
+opensearch-py>=2.3
+
+# aa Utilidades aa
+python-dotenv>=1.0
+
+# Generacion de PDF
+# weasyprint>=61.0 (Comentado temporalmente)
