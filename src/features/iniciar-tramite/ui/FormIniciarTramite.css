@@ -1,0 +1,87 @@
+.form-iniciar-tramite {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 640px;
+}
+
+.form-iniciar-tramite__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-iniciar-tramite__section-title {
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.form-iniciar-tramite__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.form-iniciar-tramite__tipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-2);
+}
+
+.form-iniciar-tramite__tipo-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.form-iniciar-tramite__tipo-option:hover {
+  border-color: var(--border-default);
+  background: var(--bg-surface-hover);
+}
+
+.form-iniciar-tramite__tipo-option--selected {
+  border-color: var(--color-primary-500);
+  background: rgba(59, 105, 162, 0.08);
+  color: var(--color-primary-400);
+}
+
+.form-iniciar-tramite__tipo-radio {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary-500);
+}
+
+.form-iniciar-tramite__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.form-iniciar-tramite__error {
+  padding: var(--space-3) var(--space-4);
+  background: rgba(250, 82, 82, 0.08);
+  border: 1px solid rgba(250, 82, 82, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--color-error-500);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 640px) {
+  .form-iniciar-tramite__row {
+    grid-template-columns: 1fr;
+  }
+}

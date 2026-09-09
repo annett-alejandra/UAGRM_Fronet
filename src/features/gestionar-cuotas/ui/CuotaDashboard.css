@@ -1,0 +1,60 @@
+.cuota-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.cuota-dashboard__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.cuota-dashboard__stat {
+  padding: var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.cuota-dashboard__stat-label {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-1);
+}
+
+.cuota-dashboard__stat-value {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.cuota-dashboard__stat-change {
+  font-size: 0.75rem;
+  margin-top: var(--space-1);
+}
+
+.cuota-dashboard__stat-change--up {
+  color: var(--color-success-500);
+}
+
+.cuota-dashboard__stat-change--down {
+  color: var(--color-error-500);
+}
+
+.cuota-dashboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cuota-dashboard__list-title {
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}

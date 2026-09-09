@@ -1,1 +1,0 @@
-# apps package – Monolito Modular

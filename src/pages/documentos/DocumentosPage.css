@@ -1,0 +1,18 @@
+.documentos-page {
+  animation: fadeInUp var(--transition-base) both;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.documentos-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.documentos-page__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

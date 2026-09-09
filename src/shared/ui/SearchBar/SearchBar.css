@@ -1,0 +1,93 @@
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.search-bar__icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.search-bar__input {
+  width: 100%;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-10);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  min-height: 40px;
+}
+
+.search-bar__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-bar__input:hover {
+  border-color: var(--border-default);
+}
+
+.search-bar__input:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(59, 105, 162, 0.12);
+}
+
+.search-bar__input:focus + .search-bar__icon,
+.search-bar:focus-within .search-bar__icon {
+  color: var(--color-primary-500);
+}
+
+.search-bar__kbd {
+  position: absolute;
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px var(--space-1);
+  font-size: 0.6875rem;
+  font-family: var(--font-family);
+  color: var(--text-tertiary);
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.search-bar__clear {
+  position: absolute;
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  transition: all var(--transition-fast);
+}
+
+.search-bar__clear:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.search-bar--lg .search-bar__input {
+  min-height: 48px;
+  font-size: 1rem;
+  padding-left: var(--space-12);
+  border-radius: var(--radius-xl);
+}
+
+.search-bar--lg .search-bar__icon {
+  left: var(--space-4);
+}

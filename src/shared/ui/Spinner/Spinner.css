@@ -1,0 +1,59 @@
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner__svg {
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner__track {
+  stroke: var(--border-subtle);
+}
+
+.spinner__indicator {
+  stroke: var(--color-primary-500);
+  stroke-linecap: round;
+}
+
+/* ---- Sizes ---- */
+.spinner--sm .spinner__svg {
+  width: 16px;
+  height: 16px;
+}
+
+.spinner--md .spinner__svg {
+  width: 24px;
+  height: 24px;
+}
+
+.spinner--lg .spinner__svg {
+  width: 40px;
+  height: 40px;
+}
+
+.spinner--xl .spinner__svg {
+  width: 56px;
+  height: 56px;
+}
+
+/* ---- Full Page Loader ---- */
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--bg-app);
+  z-index: var(--z-overlay);
+  animation: fadeIn var(--transition-base) both;
+}
+
+.spinner-overlay__text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

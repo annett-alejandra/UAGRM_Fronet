@@ -1,0 +1,79 @@
+.tramite-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 140px 140px 100px 120px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--transition-fast);
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.tramite-row:hover {
+  background: var(--bg-surface-hover);
+}
+
+.tramite-row:last-child {
+  border-bottom: none;
+}
+
+.tramite-row__codigo {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-400);
+  font-family: 'Inter', monospace;
+  font-size: 0.8125rem;
+}
+
+.tramite-row__solicitante {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tramite-row__nombre {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tramite-row__carrera {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tramite-row__tipo {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.tramite-row__unidad {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tramite-row__fecha {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+
+@media (max-width: 1024px) {
+  .tramite-row {
+    grid-template-columns: 100px 1fr 100px;
+  }
+
+  .tramite-row__tipo,
+  .tramite-row__unidad,
+  .tramite-row__fecha {
+    display: none;
+  }
+}

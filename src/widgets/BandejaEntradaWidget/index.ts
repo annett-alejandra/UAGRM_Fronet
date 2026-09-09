@@ -1,0 +1,1 @@
+export { BandejaEntradaWidget } from './BandejaEntradaWidget';

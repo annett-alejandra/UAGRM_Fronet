@@ -1,0 +1,103 @@
+.upload-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-6);
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-align: center;
+  min-height: 200px;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--color-primary-500);
+  background: rgba(59, 105, 162, 0.04);
+}
+
+.upload-dropzone--active {
+  border-color: var(--color-primary-500);
+  background: rgba(59, 105, 162, 0.08);
+  box-shadow: 0 0 0 4px rgba(59, 105, 162, 0.1);
+}
+
+.upload-dropzone--error {
+  border-color: var(--color-error-500);
+  background: rgba(250, 82, 82, 0.04);
+}
+
+.upload-dropzone--uploading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.upload-dropzone__icon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-tertiary);
+  transition: color var(--transition-fast);
+}
+
+.upload-dropzone:hover .upload-dropzone__icon,
+.upload-dropzone--active .upload-dropzone__icon {
+  color: var(--color-primary-500);
+}
+
+.upload-dropzone__text {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+.upload-dropzone__text strong {
+  color: var(--color-primary-400);
+  font-weight: var(--font-weight-semibold);
+}
+
+.upload-dropzone__hint {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.upload-dropzone__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-dropzone__progress {
+  width: 100%;
+  max-width: 300px;
+  margin-top: var(--space-2);
+}
+
+.upload-dropzone__error {
+  font-size: 0.8125rem;
+  color: var(--color-error-500);
+  margin-top: var(--space-2);
+}
+
+.upload-dropzone__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.upload-dropzone__success-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-success-500);
+  animation: fadeInScale var(--transition-spring) both;
+}
+
+.upload-dropzone__success-text {
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-success-500);
+}

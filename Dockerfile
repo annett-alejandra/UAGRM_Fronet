@@ -1,21 +1,23 @@
-FROM python:3.12-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# 1. Instalar dependencias de sistema minimas para Linux
-RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0     && apt-get clean     && rm -rf /var/lib/apt/lists/*
-
+# Stage 1: Build (Base Node)
+FROM node:20-alpine AS build
 WORKDIR /app
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
 
-# 2. Instalar PaddlePaddle forzando el binario de Linux CPU puro
-RUN python -m pip install paddlepaddle==2.6.1 -f https://www.paddlepaddle.org.cn/whl/linux/cpu/mkl/avx/stable.html --no-cache-dir
-
-# 3. Instalar PaddleOCR
-RUN pip install "paddleocr>=2.0.1" --no-cache-dir
-
-COPY . /app/
-
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Stage 2: Producción con Nginx
+FROM nginx:alpine
+# Copiar el build compilado
+COPY --from=build /app/dist /usr/share/nginx/html
+# Configuración personalizada para SPA (Redireccionar 404 a index.html)
+RUN echo "server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files \$uri \$uri/ /index.html; \
+    } \
+}" > /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

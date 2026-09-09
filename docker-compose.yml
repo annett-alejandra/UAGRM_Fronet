@@ -1,160 +1,41 @@
 version: '3.8'
 
 services:
-  # ─────────────────────────────────────────────────────────
-  # Base de Datos (PostgreSQL)
-  # ─────────────────────────────────────────────────────────
-  postgres:
-    image: postgres:15-alpine
-    container_name: titulo_supletorio_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: titulo_supletorio
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  # ─────────────────────────────────────────────────────────
-  # Message Broker (RabbitMQ para Celery)
-  # ─────────────────────────────────────────────────────────
-  rabbitmq:
-    image: rabbitmq:3.12-management-alpine
-    container_name: titulo_supletorio_mq
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - "5672:5672"   # Puerto de AMQP
-      - "15672:15672" # Puerto de la UI de administración
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ─────────────────────────────────────────────────────────
-  # Almacenamiento de Objetos (MinIO S3 Compatible)
-  # ─────────────────────────────────────────────────────────
-  minio:
-    image: minio/minio:latest
-    container_name: titulo_supletorio_minio
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000" # API
-      - "9001:9001" # Consola UI
-    volumes:
-      - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ─────────────────────────────────────────────────────────
-  # Inicializador de MinIO (Crea el bucket y habilita Object Lock)
-  # ─────────────────────────────────────────────────────────
-  minio-init:
-    image: minio/mc:latest
-    container_name: titulo_supletorio_minio_init
-    depends_on:
-      minio:
-        condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb -l myminio/uagrm-expedientes;
-      /usr/bin/mc mb -l myminio/uagrm-libros-matrices;
-      /usr/bin/mc version enable myminio/uagrm-expedientes;
-      /usr/bin/mc version enable myminio/uagrm-libros-matrices;
-      exit 0;
-      "
-
-  # ─────────────────────────────────────────────────────────
-  # Motor de Búsqueda (OpenSearch)
-  # ─────────────────────────────────────────────────────────
-  opensearch:
-    image: opensearchproject/opensearch:2.9.0
-    container_name: titulo_supletorio_search
-    environment:
-      - cluster.name=opensearch-cluster
-      - node.name=opensearch-node1
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
-      - DISABLE_SECURITY_PLUGIN=true # Solo para dev, deshabilita HTTPS y auth
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - "9200:9200"
-      - "9600:9600"
-    volumes:
-      - opensearch_data:/usr/share/opensearch/data
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s -f http://localhost:9200/_cluster/health || exit 1"]
-      interval: 20s
-      timeout: 5s
-      retries: 5
-
-  # ==============================================================================
-  # API Backend (Django / GraphQL)
-  # ==============================================================================
-  backend:
-    build: .
-    container_name: titulo_supletorio_backend
-    ports:
-      - "8000:8000"
+  # Entorno de Desarrollo (Vite HMR)
+  frontend-dev:
+    container_name: titulo_supletorio_frontend-dev
+    image: node:20-alpine
+    working_dir: /app
     volumes:
       - .:/app
-      - paddle_models:/root/.paddleocr
+      - /app/node_modules
+    ports:
+      - "10001:3000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/titulo_supletorio
-      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
-      - MINIO_ENDPOINT=http://minio:9000
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-    command: >
-      sh -c "python manage.py migrate && 
-             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload"
+      - VITE_APP_ENV=development
+    command: sh -c "npm install && npm run dev -- --host"
+    restart: unless-stopped
+    networks:
+      - titulo_supletorio_frontend-net
+      - backend-network
 
-  # ==============================================================================
-  # Celery Worker (OCR y Tareas en Segundo Plano)
-  # ==============================================================================
-  celery_worker:
-    build: .
-    container_name: titulo_supletorio_celery
-    volumes:
-      - .:/app
-      - paddle_models:/root/.paddleocr
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/titulo_supletorio
-      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
-      - MINIO_ENDPOINT=http://minio:9000
-    depends_on:
-      - rabbitmq
-      - backend
-    command: celery -A config worker --loglevel=info
+  # Entorno de Produccin (Nginx)
+  frontend-prod:
+    container_name: titulo_supletorio_frontend-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "10002:80"
+    restart: unless-stopped
+    networks:
+      - titulo_supletorio_frontend-net
+      - backend-network
 
-volumes:
-  postgres_data:
-  paddle_models:
-  minio_data:
-  opensearch_data:
-
+networks:
+  titulo_supletorio_frontend-net:
+    name: titulo_supletorio_frontend-net
+    driver: bridge
+  backend-network:
+    external: true
+    name: titulo_supletorio_default

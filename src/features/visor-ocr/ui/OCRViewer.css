@@ -1,0 +1,118 @@
+.ocr-viewer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  height: 100%;
+  min-height: 600px;
+}
+
+.ocr-viewer__panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-surface);
+}
+
+.ocr-viewer__panel--interactive {
+  background: var(--bg-surface-hover);
+}
+
+.ocr-viewer__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.ocr-viewer__panel-badge {
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.ocr-viewer__document-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: var(--bg-app);
+}
+
+.ocr-viewer__form-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.ocr-viewer__fields {
+  flex: 1;
+  padding: var(--space-5);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ocr-viewer__instruction {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+}
+
+.ocr-viewer__field-wrapper {
+  background: var(--bg-surface);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.ocr-viewer__actions {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ocr-viewer__success-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  background: var(--color-success-500);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.ocr-viewer__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12);
+  flex: 1;
+}
+
+.ocr-viewer__error {
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--color-error-500);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .ocr-viewer {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,1 @@
+export { VisorDocumentoWidget } from './VisorDocumentoWidget';
