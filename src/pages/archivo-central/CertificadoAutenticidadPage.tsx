@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { titulosApi, type ExpedienteTitulos } from '../../features/titulos/api/titulos-api';
 
 interface TablaFila {
@@ -25,156 +25,78 @@ export function CertificadoAutenticidadPage() {
   // Estado del Expediente
   const [, setExpediente] = useState<ExpedienteTitulos | null>(null);
 
-  // Lógica de Negocio: Tipo 1 vs Tipo 2
-  const [tipoPlantilla, setTipoPlantilla] = useState<'PlantillaTipo1' | 'PlantillaTipo2'>('PlantillaTipo2');
-  const [incluirAclaratoriaHistorica, setIncluirAclaratoriaHistorica] = useState(true);
-  const [gestionHistorica, setGestionHistorica] = useState('1999');
-
-  // Variables Editables del Documento
-  const [correlativoInforme, setCorrelativoInforme] = useState('749/2026');
-  const [fechaDoc, setFechaDoc] = useState('22 de abril del 2026');
-  const [destinatarioNombre, setDestinatarioNombre] = useState('Lic. Edy Acosta Claros');
+  // Variables de Negocio (Tipo 3 - Informe de Archivo Central Físico)
+  const [correlativoInforme, setCorrelativoInforme] = useState('0472');
+  const [fechaDoc, setFechaDoc] = useState('20 de abril de 2026');
+  const [destinatarioNombre, setDestinatarioNombre] = useState('MSc. Edy Acosta Claros');
   const [destinatarioCargo, setDestinatarioCargo] = useState('SECRETARIO GENERAL - U.A.G.R.M.');
-  const [referencia, setReferencia] = useState('CERTIFICADO DE AUTENTICIDAD DE ARCHIVO CENTRAL');
+  const [referencia, setReferencia] = useState('INFORME DEL DIPLOMA DE BACHILLER.');
   
-  const [fechaSolicitud, setFechaSolicitud] = useState('20 de abril de 2026');
-  const [nroTestimonio, setNroTestimonio] = useState('SECCION ARCHIVO/ INF N°472');
-  const [titularNombre, setTitularNombre] = useState('LYNNE DENISSE PEREZ REVILLA');
-  const [titularCi, setTitularCi] = useState('4716343-SCZ.');
-  const [gradoMencion, setGradoMencion] = useState('Diploma de Bachiller en Humanidades');
-  const [nroTitulo, setNroTitulo] = useState('019741');
-  const [fechaEmisionOriginal, setFechaEmisionOriginal] = useState('5 de marzo del año 1999');
+  const [fechaSolicitud, setFechaSolicitud] = useState('16 de abril de 2026');
+  const [nroTestimonio, setNroTestimonio] = useState('1246/2025');
+  const [apoderadoNombre, setApoderadoNombre] = useState('Yuli Alison Romero Flores');
+  const [titularNombre, setTitularNombre] = useState('Jenny Flores Peña');
+  const [titularCi, setTitularCi] = useState('3250858-SCZ');
+  const [gradoMencion, setGradoMencion] = useState('Diploma de Bachiller');
+  const [nroTitulo, setNroTitulo] = useState('014863');
 
-  // Autoridades Editables para Firmas Estilo Word
-  const [autoridadSecretario, setAutoridadSecretario] = useState('Lic. Edy Acosta Claros');
-  const [autoridadRector, setAutoridadRector] = useState('Dr. Reinerio Vargas Banegas');
+  const [incluirAclaratoriaHistorica, setIncluirAclaratoriaHistorica] = useState(true);
+  const [gestionHistorica, setGestionHistorica] = useState('1998');
+  const [incluirSupletorio, setIncluirSupletorio] = useState(true);
+  const [jefeArchivoNombre, setJefeArchivoNombre] = useState('Moisés Cossio López');
 
-  // Filas de la Tabla Registro Matriz
+  // Filas de la Tabla Tabular (8-9 Columnas del Documento Físico)
   const [tableRows, setTableRows] = useState<TablaFila[]>([
     {
       id: '1',
-      nroDiploma: '019741',
-      nombreTitular: 'LYNNE DENISSE PEREZ REVILLA',
-      ci: '4716343-SCZ.',
-      diplomaDe: 'Diploma de Bachiller en Humanidades',
-      fojas: '181',
-      libro: '026/99',
-      fechaExtension: '5 de marzo del año 1999',
-      nombreRector: 'Dr. Reinerio Vargas Banegas',
-      pieFirmaRector: 'Firma Manual'
+      nroDiploma: '014863',
+      nombreTitular: 'JENNY FLORES PEÑA',
+      ci: '3250858-SCZ',
+      diplomaDe: 'BACHILLER EN HUMANIDADES',
+      fojas: '115/98',
+      libro: '19/98',
+      fechaExtension: '24 de julio de 1998',
+      nombreRector: 'JORGE ORELLANA MORENO',
+      pieFirmaRector: 'No tiene'
     }
   ]);
 
-  // Evalúa el año de emisión original y aplica Tipo 1 (≥2000) o Tipo 2 (≤1999)
-  const evaluarAnoEmision = (fecha: string) => {
-    const match = fecha.match(/\b(19\d\d|20\d\d)\b/);
-    const ano = match ? parseInt(match[0], 10) : 1999;
-    setGestionHistorica(String(ano));
-
-    if (ano <= 1999) {
-      setTipoPlantilla('PlantillaTipo2');
-      setIncluirAclaratoriaHistorica(true);
-    } else {
-      setTipoPlantilla('PlantillaTipo1');
-      setIncluirAclaratoriaHistorica(false);
-    }
-  };
-
-  // Presets de Prueba
-  const cargarEjemploTipo2 = () => {
-    setTipoPlantilla('PlantillaTipo2');
-    setIncluirAclaratoriaHistorica(true);
-    setGestionHistorica('1999');
-    setCorrelativoInforme('749/2026');
-    setFechaDoc('22 de abril del 2026');
-    setNroTestimonio('SECCION ARCHIVO/ INF N°472');
-    setTitularNombre('LYNNE DENISSE PEREZ REVILLA');
-    setTitularCi('4716343-SCZ.');
-    setGradoMencion('Diploma de Bachiller en Humanidades');
-    setNroTitulo('019741');
-    setFechaEmisionOriginal('5 de marzo del año 1999');
-    setAutoridadSecretario('Lic. Edy Acosta Claros');
-    setAutoridadRector('Dr. Reinerio Vargas Banegas');
-    setTableRows([{
-      id: '1',
-      nroDiploma: '019741',
-      nombreTitular: 'LYNNE DENISSE PEREZ REVILLA',
-      ci: '4716343-SCZ.',
-      diplomaDe: 'Diploma de Bachiller en Humanidades',
-      fojas: '181',
-      libro: '026/99',
-      fechaExtension: '5 de marzo del año 1999',
-      nombreRector: 'Dr. Reinerio Vargas Banegas',
-      pieFirmaRector: 'Firma Manual'
-    }]);
-  };
-
-  const cargarEjemploTipo1 = () => {
-    setTipoPlantilla('PlantillaTipo1');
-    setIncluirAclaratoriaHistorica(false);
-    setGestionHistorica('2022');
-    setCorrelativoInforme('117/2026');
-    setFechaDoc('19 de enero del 2026');
-    setNroTestimonio('SECCION ARCHIVO/ INF N°094');
-    setTitularNombre('GUALBERTO MEDINA VARGAS');
-    setTitularCi('8072900-SCZ.');
-    setGradoMencion('Título en Provisión Nacional de MÉDICO CIRUJANO');
-    setNroTitulo('96071');
-    setFechaEmisionOriginal('11 de julio del año 2022');
-    setAutoridadSecretario('Lic. Edy Acosta Claros');
-    setAutoridadRector('Dr. Reinerio Vargas Banegas');
-    setTableRows([{
-      id: '1',
-      nroDiploma: '96071',
-      nombreTitular: 'GUALBERTO MEDINA VARGAS',
-      ci: '8072900-SCZ.',
-      diplomaDe: 'MÉDICO CIRUJANO',
-      fojas: '0027',
-      libro: '0017',
-      fechaExtension: '11 de julio del año 2022',
-      nombreRector: 'Dr. Reinerio Vargas Banegas',
-      pieFirmaRector: 'Firma Manual'
-    }]);
-  };
-
-  // Consulta Automática al Backend
+  // Handler para consultar Backend
   const handleConsultarExpediente = async (term: string) => {
     if (!term) return;
     setIsSearching(true);
     try {
       const data = await titulosApi.getInformeAutenticidadContext(term);
       if (data) {
-        setCorrelativoInforme(data.informe_nro ? `${data.informe_nro}/2026` : '749/2026');
-        setFechaDoc(data.fecha || '22 de abril del 2026');
-        setFechaSolicitud(data.fecha_solicitud || '20 de abril de 2026');
-        setNroTestimonio(`SECCION ARCHIVO/ INF N°${data.informe_nro || '472'}`);
-        setTitularNombre(data.titular.nombre_completo || 'LYNNE DENISSE PEREZ REVILLA');
-        setTitularCi(data.titular.ci_expedido || '4716343-SCZ.');
+        setCorrelativoInforme(data.informe_nro || '0472');
+        setFechaDoc(data.fecha || '20 de abril de 2026');
+        setFechaSolicitud(data.fecha_solicitud || '16 de abril de 2026');
+        setNroTestimonio(data.nro_testimonio || '1246/2025');
+        setApoderadoNombre(data.apoderado || 'Yuli Alison Romero Flores');
+        setTitularNombre(data.titular.nombre_completo || 'Jenny Flores Peña');
+        setTitularCi(data.titular.ci_expedido || '3250858-SCZ');
         if (data.carrera_colegio?.mencion) {
           setGradoMencion(data.carrera_colegio.mencion);
         }
-        if (data.expediente?.nro_diploma) {
-          setNroTitulo(data.expediente.nro_diploma);
-        }
-        const fechaEm = data.expediente?.fecha_emision || '5 de marzo del año 1999';
-        setFechaEmisionOriginal(fechaEm);
-        evaluarAnoEmision(fechaEm);
 
-        if (data.autoridad?.secretario_general) setAutoridadSecretario(data.autoridad.secretario_general);
-        if (data.autoridad?.rector_actual) setAutoridadRector(data.autoridad.rector_actual);
+        const fechaEm = data.expediente?.fecha_emision || '24 de julio de 1998';
+        const match = fechaEm.match(/\b(19\d\d|20\d\d)\b/);
+        const ano = match ? match[0] : '1998';
+        setGestionHistorica(ano);
+        setIncluirAclaratoriaHistorica(parseInt(ano, 10) <= 1999);
 
         setTableRows([
           {
             id: Date.now().toString(),
-            nroDiploma: data.expediente.nro_diploma || term || '019741',
-            nombreTitular: (data.titular.nombre_completo || 'LYNNE DENISSE PEREZ REVILLA').toUpperCase(),
-            ci: data.titular.ci_expedido || '4716343-SCZ.',
-            diplomaDe: data.carrera_colegio.mencion || 'Diploma de Bachiller en Humanidades',
-            fojas: data.archivo_fisico.fojas || '181',
-            libro: data.archivo_fisico.libro_matriz || '026/99',
+            nroDiploma: data.expediente.nro_diploma || term || '014863',
+            nombreTitular: (data.titular.nombre_completo || 'JENNY FLORES PEÑA').toUpperCase(),
+            ci: data.titular.ci_expedido || '3250858-SCZ',
+            diplomaDe: (data.carrera_colegio.mencion || 'BACHILLER EN HUMANIDADES').replace('.', '').toUpperCase(),
+            fojas: data.archivo_fisico.fojas || '115/98',
+            libro: data.archivo_fisico.libro_matriz || '19/98',
             fechaExtension: fechaEm,
-            nombreRector: (data.autoridad.rector_nombre || 'Dr. Reinerio Vargas Banegas').toUpperCase(),
-            pieFirmaRector: 'Firma Manual'
+            nombreRector: (data.autoridad.rector_nombre || 'JORGE ORELLANA MORENO').toUpperCase(),
+            pieFirmaRector: data.archivo_fisico.observacion_firma || 'No tiene'
           }
         ]);
       }
@@ -185,18 +107,51 @@ export function CertificadoAutenticidadPage() {
     }
   };
 
+  // Presets Rápidos
+  const cargarEjemploOriginalFisico = () => {
+    setCorrelativoInforme('0472');
+    setFechaDoc('20 de abril de 2026');
+    setDestinatarioNombre('MSc. Edy Acosta Claros');
+    setDestinatarioCargo('SECRETARIO GENERAL - U.A.G.R.M.');
+    setReferencia('INFORME DEL DIPLOMA DE BACHILLER.');
+    setFechaSolicitud('16 de abril de 2026');
+    setNroTestimonio('1246/2025');
+    setApoderadoNombre('Yuli Alison Romero Flores');
+    setTitularNombre('Jenny Flores Peña');
+    setTitularCi('3250858-SCZ');
+    setGradoMencion('Diploma de Bachiller');
+    setNroTitulo('014863');
+    setIncluirAclaratoriaHistorica(true);
+    setGestionHistorica('1998');
+    setIncluirSupletorio(true);
+    setJefeArchivoNombre('Moisés Cossio López');
+
+    setTableRows([{
+      id: '1',
+      nroDiploma: '014863',
+      nombreTitular: 'JENNY FLORES PEÑA',
+      ci: '3250858-SCZ',
+      diplomaDe: 'BACHILLER EN HUMANIDADES',
+      fojas: '115/98',
+      libro: '19/98',
+      fechaExtension: '24 de julio de 1998',
+      nombreRector: 'JORGE ORELLANA MORENO',
+      pieFirmaRector: 'No tiene'
+    }]);
+  };
+
   const handleAddRow = () => {
     const newRow: TablaFila = {
       id: Date.now().toString(),
       nroDiploma: nroTitulo,
       nombreTitular: titularNombre.toUpperCase(),
       ci: titularCi,
-      diplomaDe: gradoMencion,
-      fojas: tableRows[0]?.fojas || '181',
-      libro: tableRows[0]?.libro || '026/99',
-      fechaExtension: fechaEmisionOriginal,
-      nombreRector: autoridadRector,
-      pieFirmaRector: 'Firma Manual'
+      diplomaDe: gradoMencion.toUpperCase(),
+      fojas: '115/98',
+      libro: '19/98',
+      fechaExtension: '24 de julio de 1998',
+      nombreRector: 'JORGE ORELLANA MORENO',
+      pieFirmaRector: 'No tiene'
     };
     setTableRows((prev) => [...prev, newRow]);
   };
@@ -220,12 +175,12 @@ export function CertificadoAutenticidadPage() {
         titular: titularNombre,
         ci: titularCi,
         diploma: tableRows[0]?.nroDiploma || searchDiploma,
-        tipoPlantilla,
+        tipoPlantilla: 'Tipo3_InformeArchivo',
         filas: tableRows
       });
-      alert(`Certificado (${tipoPlantilla}) guardado correctamente.`);
+      alert('Informe de Archivo Central (Tipo 3) guardado exitosamente.');
     } catch {
-      alert('Error al guardar el certificado.');
+      alert('Error al guardar el documento.');
     } finally {
       setIsSaving(false);
     }
@@ -245,39 +200,29 @@ export function CertificadoAutenticidadPage() {
 
   return (
     <div className="flex flex-col h-full bg-[#F8FAFC]">
-      {/* Barra Superior con Control de Negocio */}
+      {/* Barra Superior con Acciones y Búsqueda */}
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-xl border ${tipoPlantilla === 'PlantillaTipo2' ? 'bg-amber-50 text-amber-900 border-amber-200' : 'bg-emerald-50 text-emerald-900 border-emerald-200'}`}>
-            <span className="font-bold text-xs">
-              {tipoPlantilla === 'PlantillaTipo2' ? '📜 Plantilla Tipo 2 (≤1999)' : '✨ Plantilla Tipo 1 (≥2000)'}
-            </span>
+          <div className="p-2 bg-[#003366] text-white rounded-xl shadow-sm">
+            <span className="font-bold text-xs">📄 Tipo 3</span>
           </div>
           <div>
             <h1 className="text-base font-bold text-slate-900 tracking-tight">
-              Certificado de Autenticidad — Archivo Central & Títulos
+              Informe de Archivo Central (Formato Carta Formal con Cuadro Tabulado)
             </h1>
             <p className="text-xs text-slate-500 font-mono">
-              Evaluación Automática por Año de Emisión ({gestionHistorica})
+              Réplica Exacta del Documento Físico Original — Archivo Central UAGRM
             </p>
           </div>
         </div>
 
-        {/* Presets de Prueba y Búsqueda */}
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={cargarEjemploTipo2}
-            className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs rounded-xl border border-amber-200 transition-colors"
+            onClick={cargarEjemploOriginalFisico}
+            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-xs rounded-xl border border-blue-200 transition-colors"
           >
-            Ejemplo 1999 (Tipo 2)
-          </button>
-          <button
-            type="button"
-            onClick={cargarEjemploTipo1}
-            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-200 transition-colors"
-          >
-            Ejemplo 2022 (Tipo 1)
+            📋 Cargar Ejemplo Físico Original (0472)
           </button>
 
           <input
@@ -286,19 +231,18 @@ export function CertificadoAutenticidadPage() {
             value={searchDiploma}
             onChange={(e) => setSearchDiploma(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
-            className="px-3 py-1.5 rounded-xl border border-slate-300 bg-slate-50 text-xs font-mono w-44 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-mono w-44 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="button"
-            onClick={() => handleConsultarExpediente(searchDiploma || '019741')}
+            onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
             disabled={isSearching}
-            className="px-3 py-1.5 bg-[#003366] text-white font-bold text-xs rounded-xl hover:bg-blue-900 transition-colors"
+            className="px-3.5 py-2 bg-[#003366] text-white font-bold text-xs rounded-xl hover:bg-blue-900 transition-colors"
           >
             {isSearching ? 'Buscando...' : '🔍 Buscar'}
           </button>
         </div>
 
-        {/* Selector de Papel & Toggle Lateral */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-medium">
             <button
@@ -323,116 +267,188 @@ export function CertificadoAutenticidadPage() {
 
           <button
             onClick={() => setShowWordEditor(!showWordEditor)}
-            className="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors"
+            className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors"
           >
             {showWordEditor ? 'Ocultar Panel' : 'Panel Word'}
           </button>
         </div>
       </div>
 
-      {/* Contenedor Principal */}
+      {/* Contenedor Hoja Impresa Clean + Panel Word */}
       <div className="flex-1 overflow-auto p-6 flex justify-center gap-6">
         
-        {/* Vista Previa del Documento Clean (Cero Sellos Digitales) */}
+        {/* Documento A4 / Carta (100% Cero Sellos Digitales de Tinta) */}
         <div className="bg-slate-200/80 p-8 rounded-2xl border border-slate-300 overflow-auto flex justify-center items-start shadow-inner flex-1">
           <div
             className={`${getPaperClass()} bg-white shadow-2xl text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full`}
           >
             <div>
-              {/* Franja Superior Institucional */}
-              <div className="absolute top-0 left-0 w-full h-3 bg-[#C51D24]"></div>
-              <div className="absolute top-3 left-0 w-full h-1 bg-[#003366]"></div>
+              {/* 1. Encabezado Físico Exacto (Escudo UAGRM + Barra Vertical ARCHIVO CENTRAL) */}
+              <header className="flex justify-between items-start border-b-2 border-slate-300 pb-4 mb-6">
+                <div className="flex items-center gap-3">
+                  {/* Escudo UAGRM o Placeholder Institucional */}
+                  <div className="w-16 h-16 bg-[#003366] text-white flex items-center justify-center font-bold text-xs rounded-sm shadow-sm text-center p-1 font-serif">
+                    UAGRM
+                  </div>
+                  {/* Barra Vertical de Texto ARCHIVO CENTRAL */}
+                  <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.25em] uppercase text-slate-700 leading-tight">
+                    A R C H I V O<br />C E N T R A L
+                  </div>
+                </div>
 
-              {/* Header Institucional UAGRM */}
-              <header className="text-center mt-6 mb-8 font-serif">
-                <h1 className="text-lg font-bold uppercase tracking-wide text-[#003366]">
-                  UNIVERSIDAD AUTÓNOMA "GABRIEL RENÉ MORENO"
-                </h1>
-                <p className="text-[10px] uppercase text-slate-500 font-sans tracking-widest mt-0.5">
-                  "2025 BICENTENARIO DE BOLIVIA"
-                </p>
-                <div className="w-24 h-0.5 bg-[#C51D24] mx-auto my-3"></div>
-                <h2 className="text-base font-bold tracking-widest text-[#003366] uppercase mt-2">
-                  CERTIFICADO N°{correlativoInforme}
-                </h2>
+                {/* Encabezado Centrado Formal */}
+                <div className="text-center font-serif flex-1 px-4">
+                  <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
+                    UNIVERSIDAD AUTÓNOMA “GABRIEL RENÉ MORENO”
+                  </h2>
+                  <h3 className="font-extrabold text-xs text-slate-800 tracking-wider uppercase mt-0.5">
+                    SECRETARÍA GENERAL
+                  </h3>
+                  <p className="text-[11px] font-bold text-[#C51D24] uppercase tracking-wide mt-0.5 font-sans">
+                    Archivo Central
+                  </p>
+                </div>
+
+                {/* Ubicación y Correlativo Alineados a la Derecha */}
+                <div className="text-right font-sans text-xs space-y-1 shrink-0">
+                  <p className="text-slate-800 font-medium">
+                    Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
+                  </p>
+                  <p className="font-extrabold text-[#003366]">
+                    SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+                  </p>
+                </div>
               </header>
 
-              {/* Estructura Condicional: Tipo 2 (Reconstructiva ≤1999) vs Tipo 1 (Nativa ≥2000) */}
-              {tipoPlantilla === 'PlantillaTipo2' ? (
-                /* PLANTILLA TIPO 2 */
-                <div className="space-y-4 text-xs font-serif text-slate-900 leading-relaxed">
-                  <p className="indent-8 uppercase font-bold text-slate-900">
-                    LA UNIVERSIDAD AUTÓNOMA GABRIEL RENÉ MORENO POR MEDIO DE SUS AUTORIDADES EL RECTOR {autoridadRector.toUpperCase()} Y EL SECRETARIO GENERAL {autoridadSecretario.toUpperCase()}.
-                  </p>
+              {/* 2. Bloque de Destinatario y Referencia (Estructura de Carta Formal) */}
+              <section className="mb-4 font-sans text-xs space-y-0.5 text-left">
+                <p className="font-bold text-slate-800">Señor:</p>
+                <p className="font-extrabold text-sm text-[#003366]">{destinatarioNombre}</p>
+                <p className="font-bold uppercase text-slate-700">{destinatarioCargo}</p>
+                <p className="font-bold text-slate-800 pt-0.5">Presente.-</p>
+              </section>
 
-                  <p className="font-bold text-center text-xs tracking-widest my-3 uppercase text-slate-900">
-                    CERTIFICAN:
-                  </p>
+              {/* Línea de Referencia Centrada */}
+              <div className="my-5 text-center">
+                <p className="font-extrabold text-xs text-[#003366] underline uppercase tracking-wide">
+                  Ref.: {referencia}
+                </p>
+              </div>
 
-                  <p className="indent-8 text-justify">
-                    Que, en atención al informe <strong className="font-mono">{nroTestimonio}</strong> de fecha <strong>{fechaSolicitud}</strong>, tenemos a bien Certificar que el <strong>{gradoMencion}</strong> consignado con el N° <strong className="font-mono">{nroTitulo}</strong> le fue otorgado a la ciudadana <strong className="font-bold uppercase text-slate-900">{titularNombre}</strong>, con Cédula de Identidad N° <strong className="font-mono">{titularCi}</strong>, mismo que se encuentra registrado en el Libro N° <strong className="font-mono">{tableRows[0]?.libro || '026/99'}</strong> a Fojas N° <strong className="font-mono">{tableRows[0]?.fojas || '181'}</strong>, emitido en fecha <strong>{fechaEmisionOriginal}</strong>, documentación original que se encuentra en Archivo Central de esta Casa Superior de Estudios.
-                  </p>
+              <p className="font-bold text-xs text-slate-800 mb-3 font-sans">
+                De mi consideración:
+              </p>
 
-                  {incluirAclaratoriaHistorica && (
-                    <p className="indent-8 text-justify font-serif leading-relaxed text-slate-900 p-3 bg-amber-50/60 rounded-lg border-l-4 border-amber-600 my-3">
-                      Aclarando que, en la gestión del <strong>{gestionHistorica}</strong> no se estilaba colocar pie de firma de las autoridades, toda vez que en la parte superior del Diploma esta rotulado el nombre completo del Rector.
-                    </p>
-                  )}
+              {/* 3. Párrafo Legal Introductorio Con Redacción Exacta del Físico */}
+              <section className="mb-5 text-justify text-xs leading-relaxed space-y-3 font-serif text-slate-900">
+                <p className="indent-6">
+                  En respuesta a solicitud de la interesada presentada el <span className="font-bold">{fechaSolicitud}</span>, con Testimonio Nº <span className="font-bold font-mono">{nroTestimonio}</span>, Poder Especial Bastante y Suficiente que confiere la señora <span className="font-bold">{apoderadoNombre}</span>, a favor de la señora <span className="font-extrabold underline text-[#003366]">{titularNombre}</span>, con Cédula de Identidad Nº <span className="font-bold font-mono">{titularCi}</span>, solicita la autenticidad del {gradoMencion} que fué emitido por la Universidad Autónoma Gabriel René Moreno, informo qué, los datos impresos en el cuadro siguiente, es parte de la documentación en custodia del Archivo Central - UAGRM:
+                </p>
+              </section>
 
-                  <p className="indent-8 text-justify">
-                    Es cuanto certificamos sobre la autenticidad y validez del mencionado documento.
-                  </p>
-
-                  <p className="text-right pt-4 font-sans font-medium text-slate-700">
-                    Santa Cruz de la Sierra, {fechaDoc}
-                  </p>
+              {/* 4. Cuadro Tabular Formal (8-9 Columnas con Bordes Negros Delgados) */}
+              <section className="mb-5">
+                <div className="overflow-x-auto border border-slate-900 rounded-none">
+                  <table className="w-full text-center text-[10px] font-sans border-collapse table-fixed">
+                    <thead>
+                      <tr className="bg-[#003366] text-white font-bold uppercase tracking-wider">
+                        <th className="border-r border-slate-400 p-1.5 w-16 whitespace-normal break-words">Número del Diploma</th>
+                        <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">Nombre y Apellidos</th>
+                        <th className="border-r border-slate-400 p-1.5 w-24 whitespace-normal break-words">Cédula de Identidad</th>
+                        <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">Diploma de:</th>
+                        <th className="border-r border-slate-400 p-1.5 w-14 whitespace-normal break-words">Fojas:</th>
+                        <th className="border-r border-slate-400 p-1.5 w-14 whitespace-normal break-words">Libro:</th>
+                        <th className="border-r border-slate-400 p-1.5 w-20 whitespace-normal break-words">Fecha de Extensión</th>
+                        <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">Nombre del Rector</th>
+                        <th className="p-1.5 w-16 whitespace-normal break-words">Pie de firma del Rector</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableRows.map((row, index) => (
+                        <tr key={row.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                          <td className="border-r border-slate-300 p-1.5 font-mono font-bold text-[#C51D24] break-words">
+                            {row.nroDiploma}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 font-extrabold break-words uppercase">
+                            {row.nombreTitular}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 font-mono break-words">
+                            {row.ci}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 font-medium break-words">
+                            {row.diplomaDe}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 font-mono break-words">
+                            {row.fojas}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 font-mono break-words">
+                            {row.libro}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 break-words">
+                            {row.fechaExtension}
+                          </td>
+                          <td className="border-r border-slate-300 p-1.5 break-words">
+                            {row.nombreRector}
+                          </td>
+                          <td className="p-1.5 break-words">
+                            {row.pieFirmaRector}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              ) : (
-                /* PLANTILLA TIPO 1 */
-                <div className="space-y-4 text-xs font-serif text-slate-900 leading-relaxed">
-                  <p className="indent-8 text-justify">
-                    El que suscribe, Secretario General y el Rector de la Universidad Autónoma "Gabriel René Moreno", certifican que revisada la documentación existente en los libros matrices del Departamento de Títulos y Grados, se evidencia la emisión del <strong className="font-bold underline text-slate-900">{gradoMencion}</strong>, con Número de Título N° <strong className="font-mono font-bold text-slate-900">{nroTitulo}</strong>, conferido legítimamente a favor del profesional Sr.(a) <strong className="font-bold uppercase text-slate-900">{titularNombre}</strong>, con Cédula de Identidad N° <strong className="font-mono font-bold text-slate-900">{titularCi}</strong>.
-                  </p>
+              </section>
 
-                  <p className="indent-8 text-justify">
-                    Asimismo, se verifica que la correspondiente matriz se encuentra debidamente asentada en el Libro de Registro N° <strong className="font-mono font-bold text-slate-900">{tableRows[0]?.libro || '0017'}</strong>, Fojas N° <strong className="font-mono font-bold text-slate-900">{tableRows[0]?.fojas || '0027'}</strong>, habiéndose expedido el documento original en fecha <strong className="font-bold text-slate-900">{fechaEmisionOriginal}</strong>.
-                  </p>
-
-                  <p className="indent-8 text-justify">
-                    Se extiende el presente Certificado de Autenticidad a solicitud del interesado para los fines legales y administrativos que convengan.
-                  </p>
-
-                  <p className="text-right pt-4 font-sans font-medium text-slate-700">
-                    Santa Cruz de la Sierra, {fechaDoc}
-                  </p>
-                </div>
+              {/* 5. Párrafos Inferiores (Aclaratoria Histórica + Supletorio) */}
+              {incluirAclaratoriaHistorica && (
+                <p className="text-justify text-xs font-serif text-slate-900 mb-3 bg-amber-50/50 p-2.5 rounded border-l-2 border-amber-500">
+                  Aclarando que, en la gestión del <strong>{gestionHistorica}</strong> no se estilaba colocar pie de firma de las autoridades, toda vez que en la parte superior del Diploma esta rotulado el nombre completo del Rector.
+                </p>
               )}
+
+              {incluirSupletorio && (
+                <p className="text-justify text-xs font-sans text-slate-800 mb-4">
+                  Así mismo y a solicitud de la interesada, se le extendió el{' '}
+                  <span className="font-bold underline">
+                    Supletorio del {tableRows[0]?.diplomaDe || 'Diploma de Bachiller en Humanidades'} N° {tableRows[0]?.nroDiploma || nroTitulo}
+                  </span>
+                  , es dado en la ciudad de Santa Cruz de la Sierra, a los <span className="font-bold">{fechaDoc}</span>, firmado por las autoridades correspondientes.
+                </p>
+              )}
+
+              {/* Cierre Formal */}
+              <p className="text-justify text-xs font-sans text-slate-800 mb-10">
+                Es cuanto informo, para los fines que usted considere conveniente, me despido de usted con las atenciones más distinguidas.
+              </p>
+
+              {/* Firma de Jefe de Archivo Alineada (Sin Sellos ni Estampados de Tinta) */}
+              <div className="pt-6 flex justify-start items-end pl-8">
+                <div className="text-center font-sans text-xs space-y-1">
+                  <div className="w-56 border-b border-slate-800 mx-auto mb-2"></div>
+                  <p className="font-extrabold text-[#003366]">{jefeArchivoNombre}</p>
+                  <p className="font-bold text-[10px] uppercase text-slate-700">
+                    JEFE DE ARCHIVO U.A.G.R.M.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Bloque de Firmas Institucionales (Estilo Word - 2 Columnas) */}
-            <div className="firmas-container mt-[80px] flex justify-around items-end w-full page-break-inside-avoid">
-              {/* Firma 1: Secretario General */}
-              <div className="firma-box text-center min-w-[240px]">
-                <div className="linea-guia border-t border-[#1e293b] mb-2 w-full"></div>
-                <p className="autoridad-nombre text-[13px] font-semibold text-[#1e293b] m-0">
-                  {autoridadSecretario}
-                </p>
-                <p className="autoridad-cargo text-[11px] text-[#475569] leading-snug mt-0.5 uppercase font-semibold">
-                  SECRETARIO GENERAL<br />U.A.G.R.M.
-                </p>
+            {/* Pie de Página Institucional con Lema y Cintillo de Dirección */}
+            <footer className="pt-4 border-t border-slate-300 font-sans text-[9px] text-slate-600 flex justify-between items-end mt-8">
+              <div>
+                <p className="font-bold">MCL/Sandra</p>
+                <p>Adj: fotocopias de la documentación respectiva.</p>
+                <p>Cc: /archivo</p>
               </div>
 
-              {/* Firma 2: Rector */}
-              <div className="firma-box text-center min-w-[240px]">
-                <div className="linea-guia border-t border-[#1e293b] mb-2 w-full"></div>
-                <p className="autoridad-nombre text-[13px] font-semibold text-[#1e293b] m-0">
-                  {autoridadRector}
+              <div className="text-right space-y-0.5">
+                <p className="font-extrabold italic text-[#003366] text-[10px]">
+                  "Autonomía y Cambio con Excelencia Académica"
                 </p>
-                <p className="autoridad-cargo text-[11px] text-[#475569] leading-snug mt-0.5 uppercase font-semibold">
-                  RECTOR<br />U.A.G.R.M.
-                </p>
+                <p>📍 Av. Busch entre 2do. y 3er. anillo "Ciudad Universitaria" | Santa Cruz de la Sierra - Bolivia</p>
               </div>
-            </div>
+            </footer>
 
           </div>
         </div>
@@ -443,76 +459,22 @@ export function CertificadoAutenticidadPage() {
             
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">
-                Panel Lateral Word (Tipo 1 / Tipo 2)
+                Panel Word (Tipo 3 - Archivo)
               </h3>
               <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
-                100% Reactivo
+                Físico 100% Identico
               </span>
             </div>
 
-            {/* Selector de Lógica de Negocio */}
-            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
-              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider">
-                Lógica Condicional de Negocio
-              </h4>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setTipoPlantilla('PlantillaTipo1');
-                    setIncluirAclaratoriaHistorica(false);
-                  }}
-                  className={`py-1.5 px-2 text-xs font-bold rounded-lg border transition-all ${tipoPlantilla === 'PlantillaTipo1' ? 'bg-[#003366] text-white border-[#003366]' : 'bg-white text-slate-700 border-slate-300'}`}
-                >
-                  Tipo 1 (≥2000)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setTipoPlantilla('PlantillaTipo2');
-                    setIncluirAclaratoriaHistorica(true);
-                  }}
-                  className={`py-1.5 px-2 text-xs font-bold rounded-lg border transition-all ${tipoPlantilla === 'PlantillaTipo2' ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-700 border-slate-300'}`}
-                >
-                  Tipo 2 (≤1999)
-                </button>
-              </div>
-
-              <div className="pt-2 border-t border-slate-200 space-y-2">
-                <label className="flex items-center justify-between cursor-pointer text-xs font-semibold text-slate-800">
-                  <span>Párrafo Aclaratorio:</span>
-                  <input
-                    type="checkbox"
-                    checked={incluirAclaratoriaHistorica}
-                    onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 rounded"
-                  />
-                </label>
-
-                {incluirAclaratoriaHistorica && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-slate-600 font-medium">Año Gestión:</span>
-                    <input
-                      type="text"
-                      value={gestionHistorica}
-                      onChange={(e) => setGestionHistorica(e.target.value)}
-                      className="w-20 px-2 py-1 border border-slate-300 font-mono text-xs text-center rounded"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Sección 1: Certificado & Referencia */}
+            {/* Sección 1: Encabezado & Destinatario */}
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
-                1. Encabezado & Informe
+                1. Encabezado & Carta
               </h4>
               
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  N° de Certificado:
+                  Correlativo (INF N°):
                 </label>
                 <input
                   type="text"
@@ -524,38 +486,50 @@ export function CertificadoAutenticidadPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Informe de Referencia:
+                  Fecha del Documento:
                 </label>
                 <input
                   type="text"
-                  value={nroTestimonio}
-                  onChange={(e) => setNroTestimonio(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                  value={fechaDoc}
+                  onChange={(e) => setFechaDoc(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
                 />
               </div>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Fecha del Informe:
+                  Destinatario (Nombre):
                 </label>
                 <input
                   type="text"
-                  value={fechaSolicitud}
-                  onChange={(e) => setFechaSolicitud(e.target.value)}
+                  value={destinatarioNombre}
+                  onChange={(e) => setDestinatarioNombre(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-[#003366]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Línea de Referencia:
+                </label>
+                <input
+                  type="text"
+                  value={referencia}
+                  onChange={(e) => setReferencia(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
                 />
               </div>
             </div>
 
-            {/* Sección 2: Datos del Titular y Grado */}
+            {/* Sección 2: Solicitud Legal & Titular */}
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
-                2. Titular & Grado Académico
+                2. Solicitud Legal & Interesada
               </h4>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Nombre Completo del Titular:
+                  Nombre Titular / Interesada:
                 </label>
                 <input
                   type="text"
@@ -567,7 +541,7 @@ export function CertificadoAutenticidadPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Cédula de Identidad con Extensión:
+                  Cédula de Identidad (C.I.):
                 </label>
                 <input
                   type="text"
@@ -579,73 +553,150 @@ export function CertificadoAutenticidadPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Número de Título:
+                  Apoderado / Poder Especial:
                 </label>
                 <input
                   type="text"
-                  value={nroTitulo}
-                  onChange={(e) => setNroTitulo(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-blue-700"
+                  value={apoderadoNombre}
+                  onChange={(e) => setApoderadoNombre(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
                 />
               </div>
 
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Grado / Mención Académica:
-                </label>
-                <input
-                  type="text"
-                  value={gradoMencion}
-                  onChange={(e) => setGradoMencion(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Fecha Solicitud:
+                  </label>
+                  <input
+                    type="text"
+                    value={fechaSolicitud}
+                    onChange={(e) => setFechaSolicitud(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    N° Testimonio:
+                  </label>
+                  <input
+                    type="text"
+                    value={nroTestimonio}
+                    onChange={(e) => setNroTestimonio(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Sección 3: Matriz & Autoridades */}
+            {/* Sección 3: Tabla & Cláusulas Condicionales */}
             <div className="space-y-3 border-t border-slate-200 pt-4">
-              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
-                3. Matriz & Autoridades de Firma
-              </h4>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Fecha Emisión Original:
-                </label>
-                <input
-                  type="text"
-                  value={fechaEmisionOriginal}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setFechaEmisionOriginal(val);
-                    evaluarAnoEmision(val);
-                  }}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
-                />
+              <div className="flex justify-between items-center">
+                <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
+                  3. Tabla Matriz & Opciones
+                </h4>
+                <button
+                  type="button"
+                  onClick={handleAddRow}
+                  className="px-2 py-1 bg-blue-50 text-[#003366] text-[10px] font-bold rounded border border-blue-200"
+                >
+                  + Fila
+                </button>
               </div>
 
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Secretario General:
-                </label>
-                <input
-                  type="text"
-                  value={autoridadSecretario}
-                  onChange={(e) => setAutoridadSecretario(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold"
-                />
-              </div>
+              {tableRows.map((row, idx) => (
+                <div key={row.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-1">
+                    <span className="font-bold text-[#C51D24] text-[10px]">
+                      Fila #{idx + 1} - Diploma N° {row.nroDiploma}
+                    </span>
+                    {tableRows.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveRow(row.id)}
+                        className="text-red-600 text-[10px] font-bold"
+                      >
+                        Eliminar
+                      </button>
+                    )}
+                  </div>
 
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Rector de la UAGRM:
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] text-slate-500">N° Diploma:</label>
+                      <input
+                        type="text"
+                        value={row.nroDiploma}
+                        onChange={(e) => handleUpdateRow(row.id, 'nroDiploma', e.target.value)}
+                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500">Diploma De:</label>
+                      <input
+                        type="text"
+                        value={row.diplomaDe}
+                        onChange={(e) => handleUpdateRow(row.id, 'diplomaDe', e.target.value)}
+                        className="w-full px-2 py-1 rounded border border-slate-300 text-[11px]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] text-slate-500">Fojas:</label>
+                      <input
+                        type="text"
+                        value={row.fojas}
+                        onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
+                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500">Libro:</label>
+                      <input
+                        type="text"
+                        value={row.libro}
+                        onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
+                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <div className="space-y-2 pt-2">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                  <span>Párrafo Aclaratorio Histórico:</span>
+                  <input
+                    type="checkbox"
+                    checked={incluirAclaratoriaHistorica}
+                    onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 rounded"
+                  />
                 </label>
-                <input
-                  type="text"
-                  value={autoridadRector}
-                  onChange={(e) => setAutoridadRector(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold"
-                />
+
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                  <span>Párrafo Supletorio:</span>
+                  <input
+                    type="checkbox"
+                    checked={incluirSupletorio}
+                    onChange={(e) => setIncluirSupletorio(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 rounded"
+                  />
+                </label>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Jefe de Archivo (Firma):
+                  </label>
+                  <input
+                    type="text"
+                    value={jefeArchivoNombre}
+                    onChange={(e) => setJefeArchivoNombre(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-[#003366]"
+                  />
+                </div>
               </div>
             </div>
 
@@ -657,7 +708,7 @@ export function CertificadoAutenticidadPage() {
                 disabled={isSaving}
                 className="w-full py-2.5 bg-[#003366] hover:bg-blue-900 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
               >
-                {isSaving ? 'Guardando Cambios...' : 'Guardar Certificado'}
+                {isSaving ? 'Guardando Cambios...' : 'Guardar Documento'}
               </button>
 
               <button
@@ -665,7 +716,7 @@ export function CertificadoAutenticidadPage() {
                 onClick={() => window.print()}
                 className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
               >
-                🖨️ IMPRIMIR CERTIFICADO ({paperSize.toUpperCase()})
+                🖨️ IMPRIMIR INFORME FÍSICO ({paperSize.toUpperCase()})
               </button>
             </div>
 
