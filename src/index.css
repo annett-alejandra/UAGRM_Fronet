@@ -89,13 +89,20 @@ body {
 }
 
 
+
 /* ─────────────────────────────────────────────────────────────
-   ESTILOS DE IMPRESIÓN INSTITUCIONAL (PRINT CSS)
-   Al presionar Imprimir (window.print()) SOLO se imprime el informe/hoja
-   y se oculta absolutamente toda la interfaz web (sidebar, header, paneles).
+   ESTILOS DE IMPRESIÓN INSTITUCIONAL EXACTOS (PRINT CSS)
+   - Elimina la fecha, URL localhost y números de página del navegador.
+   - Preserva intacto el encabezado con el Escudo UAGRM sin recortes superiores.
+   - Oculta toda la interfaz web (sidebars, botones, paneles).
    ───────────────────────────────────────────────────────────── */
+@page {
+  size: letter portrait;
+  margin: 12mm 15mm 12mm 15mm;
+}
+
 @media print {
-  /* Ocultar barra lateral, cabeceras, botones, paneles y footers */
+  /* Ocultar barra lateral, navegación, buscadores, botones y paneles */
   aside,
   header,
   footer,
@@ -111,7 +118,7 @@ body {
     display: none !important;
   }
 
-  /* Reset del fondo y márgenes del cuerpo */
+  /* Reset del cuerpo */
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
@@ -122,12 +129,13 @@ body {
     overflow: visible !important;
   }
 
-  /* Reset de contenedores reactivos */
+  /* Reset de contenedores de la aplicación */
   #root, 
   main, 
   .flex-1,
   .p-6,
-  .p-8 {
+  .p-8,
+  .md\:p-10 {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -136,24 +144,22 @@ body {
     overflow: visible !important;
   }
 
-  /* La hoja del informe ocupa la página limpia */
-  .printable-document,
-  .printable-paper {
+  /* Documento imprimible en flujo estático sin posición absoluta recortada */
+  .printable-document {
     display: block !important;
     visibility: visible !important;
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
+    position: static !important;
     width: 100% !important;
-    max-width: 210mm !important;
+    max-width: 100% !important;
     margin: 0 auto !important;
     padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
     background: #ffffff !important;
+    page-break-inside: avoid !important;
   }
 
-  /* Retener colores e imágenes institucionales (Escudo UAGRM) */
+  /* Forzar retención de imágenes (Escudo UAGRM) y colores de fondo */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
