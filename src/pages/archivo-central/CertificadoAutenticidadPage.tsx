@@ -189,7 +189,7 @@ export function CertificadoAutenticidadPage() {
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans pb-24">
       
       {/* Barra Superior Institucional (Sticky Header) */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xs sticky top-0 z-30 print:hidden no-print">
+      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xs sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-[#003366] text-white rounded-xl shadow-xs">
             <span className="material-symbols-outlined text-[22px]">description</span>
@@ -253,7 +253,7 @@ export function CertificadoAutenticidadPage() {
         
         {/* Lienzo del Documento (Flujo Estilo Word / Google Docs) */}
         <div className="flex-1 w-full flex justify-center items-start">
-          <div className="bg-slate-200/90 p-6 md:p-10 rounded-2xl border border-slate-300 shadow-inner flex justify-center items-start w-full min-h-[1056px] print:bg-white print:p-0 print:border-none print:shadow-none print:min-h-0">
+          <div className="bg-slate-200/90 p-6 md:p-10 rounded-2xl border border-slate-300 shadow-inner flex justify-center items-start w-full min-h-[1056px]">
             <InformeArchivoCentralTipo3
               correlativoInforme={correlativoInforme}
               fechaDoc={fechaDoc}
