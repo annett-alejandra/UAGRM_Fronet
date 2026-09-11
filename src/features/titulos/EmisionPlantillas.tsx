@@ -61,7 +61,7 @@ export function EmisionPlantillas() {
       }
     } catch {
       /* fallback */
-    } fontally {
+    } finally {
       setIsSearching(false);
     }
   };
