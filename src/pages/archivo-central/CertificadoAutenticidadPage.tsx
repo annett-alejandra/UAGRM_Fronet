@@ -274,7 +274,7 @@ export function CertificadoAutenticidadPage() {
 
         {/* Panel Lateral de Edición Estilo Word (Derecha) */}
         {showWordEditor && (
-          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-sm border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[82vh]">
+          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-md border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[calc(100vh-140px)] sticky top-4 pb-20">
             
             <div className="border-b border-slate-200 pb-3 space-y-2">
               <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">

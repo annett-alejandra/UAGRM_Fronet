@@ -58,15 +58,13 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
         {/* 1. Encabezado Físico Exacto */}
         <header className="flex justify-between items-start border-b-2 border-slate-300 pb-4 mb-6">
           <div className="flex items-center gap-3">
-            {/* Escudo UAGRM oficial */}
+            {/* Escudo UAGRM circular oficial desde public/images/img1.jpeg */}
             <div className="w-[70px] shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="w-[70px] h-auto object-contain">
-                <circle cx="100" cy="100" r="96" fill="#003366" stroke="#C51D24" strokeWidth="6"/>
-                <circle cx="100" cy="100" r="80" fill="none" stroke="#E5A823" strokeWidth="3" strokeDasharray="6,3"/>
-                <path d="M100 25 L120 70 L170 70 L130 100 L145 150 L100 120 L55 150 L70 100 L30 70 L80 70 Z" fill="#E5A823"/>
-                <text x="100" y="105" textAnchor="middle" fill="#003366" fontFamily="serif" fontWeight="bold" fontSize="22">UAGRM</text>
-                <text x="100" y="170" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="bold" fontSize="11" letterSpacing="1">SANTA CRUZ - BOLIVIA</text>
-              </svg>
+              <img
+                src="/images/img1.jpeg"
+                alt="Escudo UAGRM"
+                className="w-[70px] h-auto object-contain rounded-full border border-slate-200 shadow-xs"
+              />
             </div>
             {/* Barra Vertical: A R C H I V O   C E N T R A L */}
             <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.25em] uppercase text-slate-700 leading-tight">
