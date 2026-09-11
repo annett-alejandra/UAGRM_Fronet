@@ -87,3 +87,75 @@ body {
     --border: 214 32% 91%;          /* #E2E8F0 - Separadores tenues */
   }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   ESTILOS DE IMPRESIÓN INSTITUCIONAL (PRINT CSS)
+   Al presionar Imprimir (window.print()) SOLO se imprime el informe/hoja
+   y se oculta absolutamente toda la interfaz web (sidebar, header, paneles).
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  /* Ocultar barra lateral, cabeceras, botones, paneles y footers */
+  aside,
+  header,
+  footer,
+  nav,
+  .print\:hidden,
+  .no-print,
+  button,
+  input,
+  select,
+  form,
+  .sticky,
+  .fixed {
+    display: none !important;
+  }
+
+  /* Reset del fondo y márgenes del cuerpo */
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Reset de contenedores reactivos */
+  #root, 
+  main, 
+  .flex-1,
+  .p-6,
+  .p-8 {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* La hoja del informe ocupa la página limpia */
+  .printable-document,
+  .printable-paper {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 210mm !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+  }
+
+  /* Retener colores e imágenes institucionales (Escudo UAGRM) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

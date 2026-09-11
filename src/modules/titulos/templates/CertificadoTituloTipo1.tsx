@@ -34,7 +34,7 @@ export function CertificadoTituloTipo1(props: CertificadoTituloTipo1Props) {
   } = props;
 
   return (
-    <div className="w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
+    <div className="printable-document w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
       <div>
         {/* Encabezado Superior con Escudo UAGRM a la izquierda y Cintillo SECRETARÍA GENERAL */}
         <header className="flex justify-between items-start border-b-2 border-[#003366] pb-4 mb-6">

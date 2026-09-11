@@ -53,7 +53,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
   } = props;
 
   return (
-    <div className="w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
+    <div className="printable-document w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
       <div>
         {/* 1. Encabezado Físico Exacto */}
         <header className="flex justify-between items-start border-b-2 border-slate-300 pb-4 mb-6">
