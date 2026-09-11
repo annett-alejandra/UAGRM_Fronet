@@ -87,3 +87,82 @@ body {
     --border: 214 32% 91%;          /* #E2E8F0 - Separadores tenues */
   }
 }
+
+/* ============================================================
+   @media print — Solo imprimir el documento, nada mas
+   ============================================================ */
+@media print {
+  /* Ocultar TODA la UI excepto el documento */
+  @page {
+    size: letter portrait;
+    margin: 12mm 10mm;
+  }
+
+  /* Quitar header/footer del navegador (fecha, URL, titulo) */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ocultar sidebar, header layout, barra inferior, panel word */
+  aside,
+  header,
+  nav,
+  .print\:hidden,
+  [class*="fixed bottom-0"],
+  [class*="sticky top-0"],
+  button,
+  footer {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* El contenedor principal pierde su margin-left del sidebar */
+  body > div,
+  #root,
+  #root > div,
+  #root > div > div,
+  #root > div > div > div {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* La hoja carta: quitar sombra, expandir al ancho completo de la pagina impresa */
+  div[style*="width: 816px"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Asegurar que el flex wrapper no recorte nada */
+  .flex-1.flex.justify-center {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Forzar colores en tablas e imagenes */
+  img {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  table, th, td {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* No cortar contenido entre paginas dentro de la tabla */
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid; page-break-after: auto; }
+}
