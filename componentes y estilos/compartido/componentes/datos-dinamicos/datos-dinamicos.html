@@ -1,0 +1,346 @@
+<div [id]="'tour-' + tourPrefix + '-campos'" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden ">
+  <div class="bg-[#1c3766] px-4 py-3 sm:px-6 sm:py-4 flex flex-wrap justify-between items-center gap-2">
+    <h2 class="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
+      <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        />
+      </svg>
+      Campos Personalizados ({{ camposFormArray.length }})
+    </h2>
+    <div [id]="'tour-' + tourPrefix + '-catalogo'" class="flex items-center gap-2">
+      <!-- Catálogo -->
+      <button
+        type="button"
+        (click)="toggleCatalogo()"
+        class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium border"
+        [class.bg-amber-500]="mostrarCatalogo"
+        [class.text-white]="mostrarCatalogo"
+        [class.border-amber-500]="mostrarCatalogo"
+        [class.bg-white]="!mostrarCatalogo"
+        [class.text-[#1c3766]]="!mostrarCatalogo"
+        [class.border-white]="!mostrarCatalogo"
+        [class.hover:bg-gray-100]="!mostrarCatalogo"
+      >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          />
+        </svg>
+        Del catálogo
+      </button>
+      <!-- Campo libre -->
+      <button
+        type="button"
+        (click)="agregarCampo()"
+        class="px-3 py-1.5 bg-white text-[#1c3766] rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm font-medium"
+      >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Campo libre
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel catálogo -->
+  @if (mostrarCatalogo) {
+    <div class="border-b border-amber-200 bg-amber-50 p-4">
+      <p class="text-xs font-medium text-amber-800 mb-3 flex items-center gap-1.5">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        Claves del sistema — funciones automáticas (verificar si aplica para formulario o portal público).
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        @for (clave of clavesDelSistema; track clave.key) {
+          <button
+            type="button"
+            (click)="agregarDesdeCatalogo(clave)"
+            [disabled]="claveYaAgregada(clave.key)"
+            class="flex items-start gap-2 p-2.5 rounded-lg border text-left transition-all"
+            [class.border-amber-300]="!claveYaAgregada(clave.key)"
+            [class.bg-white]="!claveYaAgregada(clave.key)"
+            [class.hover:border-amber-500]="!claveYaAgregada(clave.key)"
+            [class.hover:bg-amber-100]="!claveYaAgregada(clave.key)"
+            [class.border-green-300]="claveYaAgregada(clave.key)"
+            [class.bg-green-50]="claveYaAgregada(clave.key)"
+            [class.cursor-not-allowed]="claveYaAgregada(clave.key)"
+            [class.opacity-60]="claveYaAgregada(clave.key)"
+          >
+            <svg class="h-4 w-4 flex-shrink-0 mt-0.5"
+              [class.text-green-500]="claveYaAgregada(clave.key)"
+              [class.text-amber-600]="!claveYaAgregada(clave.key)"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              @if (claveYaAgregada(clave.key)) {
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              } @else {
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              }
+            </svg>
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-gray-800 font-mono">{{ clave.key }}</p>
+              <p class="text-xs text-gray-600 truncate">{{ clave.nombre }}</p>
+              <p class="text-xs text-gray-400 mt-0.5">{{ clave.tipo }}</p>
+            </div>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="p-4 sm:p-6">
+    @if (camposFormArray.length === 0) {
+      <div class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Sin campos personalizados</h3>
+        <p class="mt-1 text-sm text-gray-500">Agrega campos desde el catálogo o crea uno libre.</p>
+        <div class="mt-4 flex justify-center gap-2">
+          <button type="button" (click)="toggleCatalogo()"
+            class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors text-sm font-medium">
+            Del catálogo
+          </button>
+          <button type="button" (click)="agregarCampo()"
+            class="px-4 py-2 bg-[#1c3766] text-white rounded-lg hover:bg-[#0f144d] transition-colors text-sm font-medium">
+            Campo libre
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="space-y-4">
+        @for (campoCtrl of camposFormArray.controls; track $index; let i = $index) {
+          @let bloqueado = campoBloqueado(i);
+          @let campo = campoCtrl.value;
+          <div
+            class="border rounded-lg p-4"
+            [formGroup]="$any(campoCtrl)"
+            [class.border-slate-300]="bloqueado"
+            [class.bg-slate-50]="bloqueado"
+            [class.border-amber-300]="!bloqueado && campo.esSistema"
+            [class.bg-amber-50]="!bloqueado && campo.esSistema"
+            [class.border-gray-200]="!bloqueado && !campo.esSistema"
+            [class.bg-gray-50]="!bloqueado && !campo.esSistema"
+          >
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-medium"
+                  [class.bg-slate-500]="bloqueado"
+                  [class.bg-[#1c3766]]="!bloqueado">
+                  {{ i + 1 }}
+                </span>
+                @if (bloqueado) {
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-200 text-slate-700">
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                    Bloqueado — hay registros previos
+                  </span>
+                } @else if (campo.esSistema) {
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                    Del sistema
+                  </span>
+                } @else {
+                  <span class="text-sm font-medium text-gray-700">Campo {{ i + 1 }}</span>
+                }
+              </div>
+              <button
+                type="button"
+                (click)="eliminarCampo(i)"
+                [disabled]="bloqueado"
+                class="transition-colors"
+                [class.text-red-600]="!bloqueado"
+                [class.hover:text-red-800]="!bloqueado"
+                [class.text-gray-300]="bloqueado"
+                [class.cursor-not-allowed]="bloqueado"
+                [title]="bloqueado ? 'No se puede eliminar' : 'Eliminar campo'"
+              >
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Nombre -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre del Campo <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="nombre"
+                  (blur)="generarKey(i)"
+                  placeholder="Ej: Fecha de Inicio"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#1c3766] focus:border-[#1c3766]"
+                />
+                @if (bloqueado) {
+                  <p class="mt-1 text-xs text-slate-500">Solo el nombre es editable.</p>
+                }
+              </div>
+
+              <!-- Clave -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                  Clave (Identificador) <span class="text-red-500">*</span>
+                  @if (bloqueado || campo.esSistema) {
+                    <svg class="h-3.5 w-3.5"
+                      [class.text-slate-500]="bloqueado"
+                      [class.text-amber-600]="!bloqueado && campo.esSistema"
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  }
+                </label>
+                <input
+                  type="text"
+                  formControlName="key"
+                  placeholder="Ej: fecha_inicio"
+                  class="w-full px-3 py-2 border rounded-lg text-sm font-mono"
+                  [class.border-gray-300]="!bloqueado && !campo.esSistema"
+                  [class.focus:ring-2]="!bloqueado && !campo.esSistema"
+                  [class.bg-slate-100]="bloqueado"
+                  [class.border-slate-300]="bloqueado"
+                  [class.text-slate-600]="bloqueado"
+                  [class.cursor-not-allowed]="bloqueado || campo.esSistema"
+                  [class.bg-amber-50]="!bloqueado && campo.esSistema"
+                  [class.border-amber-300]="!bloqueado && campo.esSistema"
+                  [class.text-amber-800]="!bloqueado && campo.esSistema"
+                />
+                @if (bloqueado) {
+                  <p class="mt-1 text-xs text-slate-500">La clave no se puede cambiar.</p>
+                } @else if (campo.esSistema) {
+                  <p class="mt-1 text-xs text-amber-700">Clave del sistema — no se puede modificar.</p>
+                } @else {
+                  <p class="mt-1 text-xs text-gray-500">Solo letras, números y guiones bajos.</p>
+                }
+              </div>
+
+              <!-- Tipo de Dato -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Tipo de Dato <span class="text-red-500">*</span>
+                </label>
+                @if (bloqueado || campo.esSistema) {
+                  <div class="w-full px-3 py-2 border border-amber-300 rounded-lg text-sm bg-amber-50 text-amber-900 cursor-not-allowed font-medium">
+                    {{ obtenerEtiquetaTipo(campo.tipo) }}
+                  </div>
+                  <p class="mt-1 text-xs text-amber-700">Tipo de dato del sistema — no se puede modificar.</p>
+                } @else {
+                  <select
+                    formControlName="tipo"
+                    (change)="alCambiarTipoDato(i)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#1c3766] focus:border-[#1c3766]"
+                  >
+                    @for (tipo of tiposCampo; track tipo.valor) {
+                      <option [value]="tipo.valor">{{ tipo.etiqueta }}</option>
+                    }
+                  </select>
+                  <p class="mt-1 text-xs text-gray-500">{{ obtenerDescripcionTipo(campo.tipo) }}</p>
+                }
+              </div>
+
+              <!-- Requerido -->
+              <div class="flex items-center pt-6">
+                <input
+                  type="checkbox"
+                  formControlName="requerido"
+                  [id]="'requerido_' + i"
+                  class="h-4 w-4 text-[#1c3766] focus:ring-[#1c3766] border-gray-300 rounded"
+                />
+                <label [for]="'requerido_' + i" class="ml-2 text-sm text-gray-700">
+                  Campo obligatorio
+                </label>
+              </div>
+
+              <!-- Texto Opcion (solo si es boolean) -->
+              @if (campo.tipo === 'boolean') {
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Texto de la Opción (opcional)
+                  </label>
+                  <input
+                    type="text"
+                    formControlName="textoOpcion"
+                    placeholder="Ej: Sí, confirmo mi asistencia"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#1c3766] focus:border-[#1c3766]"
+                  />
+                  <p class="mt-1 text-xs text-gray-500">Texto que aparecerá junto a la casilla de verificación.</p>
+                </div>
+              }
+
+              <!-- Opciones de la lista o Gestor de Sesiones si es el campo de sesiones -->
+              @if (campo.key === 'sesiones') {
+                <div class="md:col-span-2 mt-2">
+                  <app-gestor-sesiones [sesionesFormArray]="getOpcionesFormArray(i)"></app-gestor-sesiones>
+                </div>
+              } @else if (['array', 'radio', 'checkbox-group', 'select'].includes(campo.tipo)) {
+                <div class="md:col-span-2 mt-2 p-4 bg-gray-100 rounded-lg border border-gray-200">
+                  <div class="flex items-center justify-between mb-3">
+                    <label class="block text-sm font-semibold text-gray-700">
+                      Opciones de la lista
+                    </label>
+                    <button
+                      type="button"
+                      (click)="agregarOpcion(i)"
+                      class="px-2.5 py-1 text-xs bg-white border border-[#1c3766] text-[#1c3766] rounded hover:bg-blue-50 transition-colors flex items-center gap-1"
+                    >
+                      <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                      Agregar opción
+                    </button>
+                  </div>
+                  
+                  @if (!campo.opciones || campo.opciones.length === 0) {
+                    <p class="text-xs text-gray-500 italic mb-2">No hay opciones definidas. Agrega al menos una.</p>
+                  } @else {
+                    <div class="space-y-2">
+                      @for (opcionCtrl of getOpcionesFormArray(i).controls; track $index; let j = $index) {
+                        <div class="flex items-center gap-2" [formGroup]="$any(opcionCtrl)">
+                          <span class="text-sm font-medium text-gray-500 w-6">{{ opcionCtrl.value.id }}.</span>
+                          <input
+                            type="text"
+                            formControlName="nombre"
+                            placeholder="Nombre de la opción (ej: Ordinaria)"
+                            class="flex-1 px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#1c3766] focus:border-[#1c3766]"
+                          />
+                          <button
+                            type="button"
+                            (click)="eliminarOpcion(i, j)"
+                            class="text-red-500 hover:text-red-700 transition-colors p-1"
+                            title="Eliminar opción"
+                          >
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

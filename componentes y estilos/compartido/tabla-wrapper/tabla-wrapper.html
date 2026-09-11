@@ -1,0 +1,37 @@
+<div class="mx-auto space-y-4">
+  <ng-content select="[tabla-modal]" />
+
+  <!-- Slot 1: Barra superior de navegación / Tabs / Botón Crear (fuera de tarjetas) -->
+  <ng-content select="[tabla-header-bar]" />
+
+  <!-- Slot 2: Tarjeta independiente de Filtros -->
+  <ng-content select="[tabla-filtros-card]" />
+
+  <!-- Slot 3: Tarjeta independiente de Tabla -->
+  <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <!-- Slot de Compatibilidad para acciones generales dentro de la tabla si no se usa tabla-filtros-card -->
+    <ng-content select="[tabla-acciones]" />
+    <ng-content select="[tabla-chips]" />
+    <ng-content select="[tabla-acciones-masivas]" />
+
+    @if (cargando) {
+      <div class="py-16 text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primario mx-auto mb-2"></div>
+        <p class="text-slate-500 text-sm font-medium">Cargando...</p>
+      </div>
+    } @else {
+      <div class="div-tabla border-0 rounded-none shadow-none">
+        <table class="tabla-cms">
+          <ng-content select="thead" />
+          <ng-content select="tbody" />
+        </table>
+      </div>
+    }
+  </div>
+
+  @if (mostrarPaginacion) {
+    <div class="py-2 flex justify-center">
+      <ng-content select="[tabla-paginacion]" />
+    </div>
+  }
+</div>

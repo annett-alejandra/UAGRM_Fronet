@@ -1,0 +1,81 @@
+@if (latLng()) {
+  <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
+
+    <!-- Mapa Leaflet -->
+    <div [id]="mapaId" class="w-full h-56 sm:h-64 z-0"></div>
+
+    <!-- Pie del mapa -->
+    <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3
+                border-t border-gray-100 dark:border-gray-700
+                bg-white dark:bg-gray-900">
+
+      <!-- Dirección -->
+      <div class="flex-1 min-w-0">
+        @if (direccion()) {
+          <div class="flex items-start gap-2">
+            <!-- Pin icon con color primario -->
+            <svg class="w-4 h-4 mt-0.5 shrink-0 text-primario"
+                 fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <p class="text-sm text-gray-700 dark:text-gray-300 leading-snug">
+              {{ direccion() }}
+            </p>
+          </div>
+        } @else {
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            {{ latLng()![0].toFixed(5) }}, {{ latLng()![1].toFixed(5) }}
+          </p>
+        }
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Copiar coordenadas -->
+       <!--  <button
+          type="button"
+          (click)="copiarCoordenadas()"
+          [title]="copiado() ? '¡Copiado!' : 'Copiar coordenadas'"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium
+                 rounded-lg border border-gray-200 dark:border-gray-600
+                 text-gray-600 dark:text-gray-400
+                 hover:border-primario hover:text-primario
+                 transition-colors"
+        >
+          @if (copiado()) {
+            <svg class="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="text-green-600">Copiado</span>
+          } @else {
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Coordenadas
+          }
+        </button> -->
+
+        <!-- Ver en Google Maps -->
+        <a
+          [href]="urlGoogleMaps()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold
+                 rounded-lg bg-primario text-white
+                 hover:opacity-90 transition-opacity"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+          Google Maps
+        </a>
+      </div>
+
+    </div>
+  </div>
+}

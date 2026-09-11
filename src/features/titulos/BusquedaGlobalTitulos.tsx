@@ -39,29 +39,48 @@ export function BusquedaGlobalTitulos() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Panel de Búsqueda Global de Títulos</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-            API Endpoint: <code className="text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded font-mono text-blue-600 dark:text-blue-400">GET /api/v1/expedientes/buscar/</code>
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-16 font-sans">
+      
+      {/* Banner Superior Institucional Azul #2A3964 */}
+      <div className="bg-[#2A3964] text-white p-8 rounded-2xl shadow-md border-l-8 border-[#880000] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-mono text-slate-200">
+            <span>DEPARTAMENTO DE TÍTULOS Y GRADOS - UAGRM</span>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight font-heading text-white">
+            Búsqueda Global de Expedientes
+          </h1>
+          <p className="text-slate-200 text-xs max-w-xl">
+            Consulta centralizada de títulos académicos, diplomas de bachiller y legajos documentales.
           </p>
         </div>
-        <span className="px-3.5 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-bold text-xs rounded-full border border-blue-200 dark:border-blue-800">
-          REST API v1 Activa
-        </span>
+
+        <button 
+          onClick={() => navigate('/titulos/carga-libros')}
+          className="btn-secundario-curvo py-3 px-5 whitespace-nowrap shadow-md"
+        >
+          <span>📚</span> Cargar Libros Matrices
+        </button>
       </div>
 
-      {/* Formulario de Busqueda Multiparametrica */}
-      <form onSubmit={handleSearch} className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-        <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700 pb-2">
-          Filtros de Búsqueda Multiparamétrica
-        </h3>
+      {/* Tarjeta de Filtros de Búsqueda (Estilo Light Card de componentes y estilos) */}
+      <form onSubmit={handleSearch} className="card p-6 space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#2A3964] text-white flex items-center justify-center font-bold text-lg shadow-xs">
+              🔍
+            </div>
+            <div>
+              <h2 className="text-sm font-extrabold text-[#2A3964] uppercase tracking-wider">Filtros de Búsqueda Avanzada</h2>
+              <p className="text-xs text-slate-500">Ingrese C.I., Número de Título o Nombre del Estudiante</p>
+            </div>
+          </div>
+          <span className="text-xs text-slate-400 font-mono">CATÁLOGO UAGRM</span>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
               Carnet de Identidad (C.I.)
             </label>
             <input
@@ -69,12 +88,12 @@ export function BusquedaGlobalTitulos() {
               placeholder="Ej. 1234567"
               value={ci}
               onChange={e => setCi(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="select-estilo"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
               Número de Título
             </label>
             <input
@@ -82,20 +101,20 @@ export function BusquedaGlobalTitulos() {
               placeholder="Ej. TS-2026-0042"
               value={nroTitulo}
               onChange={e => setNroTitulo(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="select-estilo font-mono"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">
-              Nombre Completo
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Nombre Completo del Estudiante
             </label>
             <input
               type="text"
               placeholder="Ej. Juan Carlos Pérez"
               value={nombre}
               onChange={e => setNombre(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="select-estilo"
             />
           </div>
         </div>
@@ -104,80 +123,83 @@ export function BusquedaGlobalTitulos() {
           <button
             type="button"
             onClick={handleReset}
-            className="px-5 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="px-5 py-2.5 border border-slate-300 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all"
           >
-            Limpiar
+            Limpiar Filtros
           </button>
+          
           <button
             type="submit"
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"
+            className="boton-crear"
           >
-            {buscando ? 'Buscando...' : '🔍 Buscar Títulos'}
+            {buscando ? 'Buscando...' : '🔍 Buscar Registros'}
           </button>
         </div>
       </form>
 
-      {/* Tabla de Resultados (Data Grid) */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-          <h3 className="font-bold text-slate-900 dark:text-white text-base">
-            Resultados Encontrados ({resultados.length})
+      {/* Tabla de Resultados (Estilo tabla-cms de componentes y estilos) */}
+      <div className="div-tabla">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+          <h3 className="font-extrabold text-[#2A3964] text-xs uppercase tracking-wider">
+            Expedientes Coincidentes ({resultados.length})
           </h3>
+          <span className="text-xs text-slate-500 font-mono">Registros Institucionales</span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-semibold border-b border-slate-200 dark:border-slate-700 uppercase text-xs">
-              <tr>
-                <th className="p-4">C.I.</th>
-                <th className="p-4">Estudiante</th>
-                <th className="p-4">Nro. Título</th>
-                <th className="p-4">Tipo Título</th>
-                <th className="p-4">Estado</th>
-                <th className="p-4">Fecha Creación</th>
-                <th className="p-4 text-right">Acciones</th>
+        <table className="tabla-cms">
+          <thead>
+            <tr>
+              <th>Estudiante / C.I.</th>
+              <th>Número de Título</th>
+              <th>Tipo Título</th>
+              <th>Estado</th>
+              <th>Fecha Registro</th>
+              <th className="text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {resultados.length > 0 ? resultados.map(item => (
+              <tr key={item.id}>
+                <td className="font-bold text-slate-800">
+                  <div>{item.nombre_estudiante}</div>
+                  <div className="text-[10px] text-slate-500 font-mono">C.I. {item.ci}</div>
+                </td>
+                <td className="font-mono font-bold text-[#880000]">
+                  {item.numero_titulo}
+                </td>
+                <td className="font-medium text-slate-600">{item.tipo_titulo}</td>
+                <td>
+                  <span className="badge-status-publicado">
+                    ● {item.estado}
+                  </span>
+                </td>
+                <td className="font-mono text-slate-500">{new Date(item.fecha_creacion).toLocaleDateString()}</td>
+                <td className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => navigate(`/titulos/expediente/${item.id}`)}
+                      className="boton-editar text-xs py-1.5 px-3"
+                    >
+                      📂 Expediente
+                    </button>
+                    <button
+                      onClick={() => navigate(`/titulos/emision?nombre=${encodeURIComponent(item.nombre_estudiante)}&ci=${encodeURIComponent(item.ci)}&expedienteId=${item.id}`)}
+                      className="btn-secundario-curvo py-1.5 px-3"
+                    >
+                      🖨️ Emitir
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700 text-slate-800 dark:text-slate-200">
-              {resultados.length > 0 ? resultados.map(item => (
-                <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                  <td className="p-4 font-mono font-bold text-blue-600 dark:text-blue-400">{item.ci}</td>
-                  <td className="p-4 font-bold">{item.nombre_estudiante}</td>
-                  <td className="p-4 font-mono font-bold text-amber-600 dark:text-amber-400">{item.numero_titulo}</td>
-                  <td className="p-4 text-xs font-semibold">{item.tipo_titulo}</td>
-                  <td className="p-4">
-                    <span className="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-bold">
-                      {item.estado}
-                    </span>
-                  </td>
-                  <td className="p-4 font-mono text-xs">{new Date(item.fecha_creacion).toLocaleDateString()}</td>
-                  <td className="p-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => navigate(`/titulos/expediente/${item.id}`)}
-                        className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow transition-all flex items-center gap-1"
-                      >
-                        📂 Ver Expediente
-                      </button>
-                      <button
-                        onClick={() => navigate(`/titulos/emision?nombre=${encodeURIComponent(item.nombre_estudiante)}&ci=${encodeURIComponent(item.ci)}&expedienteId=${item.id}`)}
-                        className="px-3 py-1.5 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-xs font-semibold transition-colors"
-                      >
-                        🖨️ Emitir
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500 dark:text-slate-400">
-                    No se encontraron expedientes con los criterios seleccionados.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )) : (
+              <tr>
+                <td colSpan={6} className="tabla-vacia">
+                  No se encontraron expedientes con los criterios seleccionados.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

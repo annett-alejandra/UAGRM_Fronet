@@ -1,134 +1,76 @@
+@import '../design/theme.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Layout */
-  --sidebar-width: 260px;
-  --sidebar-collapsed-width: 64px;
-  --header-height: 64px;
-  --content-max-width: 1400px;
-
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.25s ease;
-
-  /* Z-Index */
-  --z-sticky: 100;
-
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  /* Font Weights */
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  /* LIGHT THEME */
-  --bg-base: #f1f5f9;
-  --bg-surface: #ffffff;
-  --bg-surface-hover: #f1f5f9;
-  --bg-sidebar: #ffffff;
-
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
-
-  --border-color: #e2e8f0;
-  --border-subtle: #e2e8f0;
-
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --primary-text: #ffffff;
-
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-800: #1e40af;
-  --color-neutral-0: #ffffff;
-
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-[data-theme='dark'] {
-  --bg-base: #0f172a;
-  --bg-surface: #1e293b;
-  --bg-surface-hover: #334155;
-  --bg-sidebar: #0f172a;
-
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #64748b;
-
-  --border-color: #1e293b;
-  --border-subtle: #1e293b;
-
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-800: #1e40af;
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
+  color-scheme: light;
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  background-color: #F8FAFC;
+  color: #1E293B;
+  min-height: 100vh;
+  margin: 0;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ── BOTONES GLOBALES INSTITUCIONALES ── */
+.boton-crear {
+  @apply bg-[#003366] text-sm text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+.boton-editar {
+  @apply bg-[#003366] text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
-::-webkit-scrollbar-thumb {
-  background: var(--text-tertiary);
-  border-radius: 3px;
+
+.boton-eliminar {
+  @apply bg-[#C51D24] text-white px-4 py-2.5 rounded-lg hover:bg-[#a3151b] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+
+.btn-secundario-curvo {
+  @apply text-white bg-[#C51D24] rounded-xl border border-[#C51D24] hover:bg-[#a3151b] leading-5 text-[11px] sm:text-[13px] font-bold px-4 py-2.5 transition-all cursor-pointer uppercase shadow-sm;
+}
+
+/* ── TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) ── */
+.card-uagrm, .card {
+  @apply bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-5 md:p-6 text-[#1E293B];
+}
+
+.div-tabla {
+  @apply overflow-x-auto rounded-xl border border-[#E2E8F0] shadow-sm bg-white;
+}
+
+.tabla-cms {
+  @apply w-full text-sm text-left table-auto border-collapse;
+}
+
+.tabla-cms thead {
+  @apply bg-slate-50 text-[#1E293B] border-b border-[#E2E8F0];
+}
+
+.tabla-cms thead tr th {
+  @apply px-4 py-3.5 font-bold text-[10px] text-[#1E293B] uppercase tracking-wider text-left select-none;
+}
+
+.tabla-cms tbody {
+  @apply bg-white divide-y divide-slate-100;
+}
+
+.tabla-cms tbody tr {
+  @apply hover:bg-slate-50 transition-colors duration-150;
+}
+
+.tabla-cms tbody tr td {
+  @apply px-4 py-3.5 text-[11px] text-[#1E293B] align-middle;
+}
+
+.badge-status-publicado {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#1B7A43]/10 text-[#1B7A43] border border-[#1B7A43]/30 whitespace-nowrap transition-colors select-none;
+}
+
+.select-estilo {
+  @apply w-full rounded-xl border-[#E2E8F0] bg-white shadow-sm focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 text-[11px] md:text-[12px] py-2 px-3 cursor-pointer transition-all font-medium text-[#1E293B] h-[42px];
 }

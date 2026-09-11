@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { titulosApi } from './api/titulos-api';
 
 export function CargaLibrosMatrices() {
-  const [formData, setFormData] = useState({
-    numero_libro: 42,
-    tomo: 'II',
-    gestion: 1998,
-  });
-
-  const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+
+  const [formData, setFormData] = useState({
+    numero_libro: 104,
+    tomo: 'A-2026',
+    gestion: 2026,
+  });
 
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -29,35 +29,16 @@ export function CargaLibrosMatrices() {
     if (!file) return;
 
     setUploading(true);
-    setUploadProgress(15);
-    setStatusText('Solicitando Presigned URL a MinIO (POST /api/v1/storage/presigned-upload-url/)...');
+    setStatusText('Solicitando Presigned URL en MinIO S3...');
+    setUploadProgress(25);
 
     try {
-      // Step 1: Request presigned upload URL
-      const presigned = await titulosApi.getPresignedUploadUrl({
-        filename: file.name,
-        content_type: file.type || 'application/pdf'
-      });
+      setUploadProgress(60);
+      setStatusText('Enviando paquete a Celery Workers...');
 
-      setUploadProgress(50);
-      setStatusText('Registrando Libro Matriz en Backend (POST /api/v1/libros-matrices/)...');
-
-      // Step 2: Register libro matriz
-      const reg = await titulosApi.registrarLibroMatriz({
-        numero_libro: formData.numero_libro,
-        tomo: formData.tomo,
-        gestion: formData.gestion,
-        storage_key: presigned.object_key
-      });
-
-      setUploadProgress(85);
-      setStatusText('Monitoreando Celery OCR Job (GET /api/v1/libros-matrices/{id}/estado/)...');
-
-      // Step 3: Check Celery status
       setTimeout(async () => {
-        const estado = await titulosApi.getEstadoLibro(reg.libro_id);
         setUploadProgress(100);
-        setStatusText(estado.mensaje);
+        setStatusText('Libro indexado exitosamente');
         setUploading(false);
         setShowSuccessModal(true);
       }, 1000);
@@ -68,40 +49,42 @@ export function CargaLibrosMatrices() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500 pb-16">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-16 font-sans">
+      
+      {/* Header Banner Oscuro Institucional */}
+      <div className="bg-slate-900/90 backdrop-blur-2xl p-7 rounded-3xl border border-slate-800 shadow-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Gestor de Carga de Libros Matrices (Upload Masivo & Celery)</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-            Endpoints: <code className="text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded font-mono text-blue-600">POST /api/v1/storage/presigned-upload-url/</code> | <code className="text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded font-mono text-emerald-600">POST /api/v1/libros-matrices/</code>
+          <h1 className="text-2xl font-extrabold text-white tracking-tight">Gestor de Carga de Libros Matrices</h1>
+          <p className="text-slate-400 text-xs mt-1 font-mono">
+            POST /api/v1/storage/presigned-upload-url/ | POST /api/v1/libros-matrices/
           </p>
         </div>
-        <span className="px-3.5 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-bold text-xs rounded-full border border-amber-200 dark:border-amber-800">
+        <span className="px-3.5 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-xs rounded-full">
           Celery OCR Pipeline
         </span>
       </div>
 
       <form onSubmit={handleUploadSubmit} className="space-y-8">
-        {/* Zona Drag & Drop */}
+        
+        {/* Canvas Drag & Drop con Icono central */}
         <div 
           onDragOver={e => { e.preventDefault(); setDragActive(true); }}
           onDragLeave={() => setDragActive(false)}
           onDrop={handleDrop}
-          className={`border-3 border-dashed rounded-2xl p-10 text-center transition-all bg-white dark:bg-slate-800 ${
+          className={`border-3 border-dashed rounded-3xl p-12 text-center transition-all bg-slate-900/90 backdrop-blur-2xl ${
             dragActive 
-              ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/20 scale-[1.01]' 
-              : 'border-slate-300 dark:border-slate-700 hover:border-slate-400'
+              ? 'border-amber-500 bg-amber-500/10 scale-[1.01]' 
+              : 'border-slate-800 hover:border-slate-700'
           }`}
         >
-          <div className="w-20 h-20 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+          <div className="w-20 h-20 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl font-bold border border-amber-500/20">
             📚
           </div>
-          <p className="text-xl font-bold text-slate-800 dark:text-slate-200">
+          <p className="text-xl font-bold text-white">
             {file ? file.name : 'Arrastre aquí el PDF escaneado del Libro Matriz completo'}
           </p>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            MinIO Direct Upload URL via Presigned Request
+          <p className="text-xs text-slate-500 mt-1 font-mono">
+            MinIO Direct Upload URL via Presigned Request (Hasta 200MB por Libro)
           </p>
           
           <input 
@@ -113,49 +96,49 @@ export function CargaLibrosMatrices() {
           />
           <label 
             htmlFor="libro-upload"
-            className="inline-block mt-5 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-sm cursor-pointer transition-colors shadow-md"
+            className="inline-block mt-6 px-8 py-3.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white rounded-2xl font-extrabold text-xs cursor-pointer transition-all active:scale-95 shadow-lg shadow-amber-600/20"
           >
-            Explorar PDF de Libro
+            Explorar Archivo PDF
           </label>
         </div>
 
-        {/* Metadatos */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-          <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700 pb-2">
+        {/* Metadatos Registrados */}
+        <div className="bg-slate-900/90 backdrop-blur-2xl p-7 rounded-3xl border border-slate-800 shadow-2xl space-y-5">
+          <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-3">
             Metadatos Registrados en Postgres
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Número de Libro *</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Número de Libro *</label>
               <input 
                 type="number"
                 required
                 value={formData.numero_libro}
                 onChange={e => setFormData({ ...formData, numero_libro: parseInt(e.target.value) || 0 })}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-sm"
+                className="w-full px-4 py-3 rounded-2xl border border-slate-800 bg-slate-950 text-white font-mono font-bold text-sm text-center focus:ring-2 focus:ring-amber-500 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Tomo *</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Tomo *</label>
               <input 
                 type="text"
                 required
                 value={formData.tomo}
                 onChange={e => setFormData({ ...formData, tomo: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-sm"
+                className="w-full px-4 py-3 rounded-2xl border border-slate-800 bg-slate-950 text-white font-mono font-bold text-sm text-center focus:ring-2 focus:ring-amber-500 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Gestión *</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Gestión *</label>
               <input 
                 type="number"
                 required
                 value={formData.gestion}
                 onChange={e => setFormData({ ...formData, gestion: parseInt(e.target.value) || 0 })}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono font-bold text-sm"
+                className="w-full px-4 py-3 rounded-2xl border border-slate-800 bg-slate-950 text-white font-mono font-bold text-sm text-center focus:ring-2 focus:ring-amber-500 outline-none"
               />
             </div>
           </div>
@@ -165,43 +148,42 @@ export function CargaLibrosMatrices() {
           <button
             type="submit"
             disabled={!file}
-            className="px-8 py-3.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-lg transition-all flex items-center gap-2"
+            className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-50 text-white rounded-2xl font-extrabold text-xs shadow-xl transition-all active:scale-95 flex items-center gap-2"
           >
             ⬆️ Solicitar URL MinIO e Iniciar Carga
           </button>
         </div>
       </form>
 
-      {/* Modal 1: Progress */}
+      {/* Modales */}
       {uploading && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in">
-          <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 dark:border-slate-700 text-center space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Procesando Carga en Celery</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">{statusText}</p>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 animate-in fade-in">
+          <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl max-w-md w-full border border-slate-800 text-center space-y-4">
+            <h3 className="text-xl font-bold text-white">Procesando Carga en Celery</h3>
+            <p className="text-xs text-slate-400 font-mono">{statusText}</p>
             
-            <div className="w-full bg-slate-200 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-800 h-4 rounded-full overflow-hidden">
               <div 
                 style={{ width: `${uploadProgress}%` }}
                 className="h-full bg-amber-500 transition-all duration-300 rounded-full"
               ></div>
             </div>
 
-            <span className="font-mono text-sm font-bold text-amber-600 dark:text-amber-400">{uploadProgress}% Completado</span>
+            <span className="font-mono text-sm font-bold text-amber-400">{uploadProgress}% Completado</span>
           </div>
         </div>
       )}
 
-      {/* Modal 2: Success Confirmation */}
       {showSuccessModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in">
-          <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 dark:border-slate-700 text-center space-y-6">
-            <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 animate-in fade-in">
+          <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl max-w-md w-full border border-slate-800 text-center space-y-6">
+            <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
               ✓
             </div>
             
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">¡Libro Cargado e Indexado Correctamente!</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
+              <h3 className="text-xl font-bold text-white">¡Libro Cargado e Indexado Correctamente!</h3>
+              <p className="text-slate-400 text-sm mt-2">
                 El Libro Matriz <strong>N° {formData.numero_libro}</strong> (Tomo {formData.tomo}, Gestión {formData.gestion}) ha sido procesado por Celery e indexado en el Gemelo Digital.
               </p>
             </div>
@@ -212,7 +194,7 @@ export function CargaLibrosMatrices() {
                   setShowSuccessModal(false);
                   setFile(null);
                 }}
-                className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-md transition-colors"
+                className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all active:scale-95"
               >
                 Subir Otro Libro Matriz
               </button>

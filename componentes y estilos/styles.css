@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@source "./app";
+@import 'leaflet/dist/leaflet.css';
+@import 'driver.js/dist/driver.css';
+
+@import 'flowbite/src/themes/default';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+/* Clases generadas dinámicamente para el bloque Caja Libre */
+@source inline("{sm:,md:,lg:,}grid-cols-{1,2,3,4,6,12}");
+@source inline("{sm:,md:,lg:,}grid-rows-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}grid-flow-{row,col}");
+@source inline("{sm:,md:,lg:,}flex-{row,col}");
+@source inline("{sm:,md:,lg:,}columns-{2,3,4,3xs}");
+@source inline("{sm:,md:,lg:,}gap-{0,2,4,6,8,12}");
+@source inline("{sm:,md:,lg:,}justify-{start,center,end,between}");
+@source inline("{sm:,md:,lg:,}items-{start,center,end,stretch}");
+@source inline("{sm:,md:,lg:,}col-span-{1,2,3,4,6,full}");
+@source inline("{sm:,md:,lg:,}row-span-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}col-start-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}col-end-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}row-start-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}row-end-{1,2,3,4}");
+@source inline("{sm:,md:,lg:,}aspect-{square,video,3/2,4/3}");
+@source inline("{sm:,md:,lg:,}p-{0,2,4,6,8}");
+@source inline("{sm:,md:,lg:,}bg-{fixed,scroll,local}");
+@source inline("{sm:,md:,lg:,}overflow-{hidden,visible,auto}");
+
+/* Deshabilitar dark mode automático (prefers-color-scheme) 
+   Hacemos que dependa de una clase .dark (que nunca agregaremos) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+
+  /* Definimos la variable de fuente personalizada. 
+     Esto crea automáticamente la clase 'font-editorial' 
+  */
+  --font-editorial: 'Charter', 'Bitstream Charter', 'Georgia', serif;
+  
+  /* Fuentes creativas para la UI (Navbar, Botones, etc.) */
+  --font-jost: 'Jost', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+
+/* Paleta Primaria (institucional #2A3964) */
+  --color-primario: #2A3964;
+  --color-primario-50: #F4F6FA;
+  --color-primario-100: #E9EDF6;
+  --color-primario-200: #D4DAED;
+  --color-primario-300: #B7C2E1;
+  --color-primario-400: #93A3D2;
+  --color-primario-500: #6F85C3;
+  --color-primario-600: #4B66B4;
+  --color-primario-700: #3C5290;
+  --color-primario-800: #304273;
+  --color-primario-900: #2A3964; /* Base */
+  --color-primario-950: #222845;
+
+  /* Paleta Secundaria (institucional #880000) */
+  --color-secundario: #880000;
+  --color-secundario-50: #FFF0F0;
+  --color-secundario-100: #FFDBDB;
+  --color-secundario-200: #FFBDBD;
+  --color-secundario-300: #FF9494;
+  --color-secundario-400: #FF5C5C;
+  --color-secundario-500: #FF1A1A;
+  --color-secundario-600: #D60000;
+  --color-secundario-700: #880000; /* Base */
+  --color-secundario-800: #700000;
+  --color-secundario-900: #520000;
+  --color-secundario-950: #424242;
+
+
+  /* ── Modo claro ── */
+  --color-fondo: #FFFFFF;
+  /* ── Modo oscuro — derivado del primario, no gris genérico ── */
+  --color-fondo-oscuro: #0F1524;
+
+
+  /* ── Configuración Centralizada de Mapas ── 
+  --map-filter: contrast(0.98) saturate(2.1) brightness(0.98);*/
+}
+
+
+
+.cdk-drag-preview {
+  @apply opacity-90 shadow-2xl border-2 border-blue-500 rounded-lg bg-white;
+  box-sizing: border-box;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.5;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Botón Crear */
+.boton-crear {
+  @apply bg-primario text-sm text-white px-4 py-2.5 rounded-lg hover:bg-secundario transition-colors flex items-center gap-2 shadow-sm font-medium;
+}
+/* Botón Editar */
+.boton-editar {
+  @apply bg-primario text-white px-4 py-2.5 rounded-lg hover:bg-primario-700 transition-colors flex items-center gap-2 shadow-sm font-medium;
+}
+
+/* Botón Eliminar */
+.boton-eliminar {
+  @apply bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2 shadow-sm font-medium;
+}
+
+/* Wrapper de acciones en las tablas */
+[tabla-acciones] {
+  @apply w-full flex flex-col gap-4;
+}
+
+/* Estilo para Select */
+.select-estilo {
+  @apply w-full rounded-xl border-slate-200 bg-white shadow-2xs focus:border-primario focus:ring-2 focus:ring-primario/20 text-[11px] md:text-[12px] py-2 px-3 cursor-pointer transition-all font-medium text-slate-700 h-[42px];
+}
+.titulo-tabla {
+  @apply bg-slate-50 text-slate-700 text-left font-bold text-[10px];
+}
+.card {
+  @apply bg-white rounded-2xl shadow-xs border border-slate-200/80 p-5 md:p-6;
+}
+.div-tabla {
+  @apply overflow-x-auto rounded-xl border border-slate-200/80 shadow-xs bg-white;
+}
+
+/* ─── Tabla CMS — fuente única de estilos visuales ─── */
+.tabla-cms {
+  @apply w-full text-sm text-left table-auto border-collapse;
+}
+.tabla-cms thead {
+  @apply bg-slate-50/90 text-slate-600 border-b border-slate-200/80;
+}
+.tabla-cms thead tr th {
+  @apply px-4 py-3.5 font-bold text-[10px] text-slate-700 uppercase tracking-wider text-left select-none;
+}
+.tabla-cms tbody {
+  @apply bg-white divide-y divide-slate-100;
+}
+.tabla-cms tbody tr {
+  @apply hover:bg-slate-50/70 transition-colors duration-150;
+}
+.tabla-cms tbody tr.fila-seleccionada {
+  @apply bg-slate-50/90;
+}
+.tabla-cms tbody tr td {
+  @apply px-4 py-3.5 text-[10px] text-slate-700 align-middle;
+}
+.tabla-vacia {
+  @apply px-6 py-12 text-center text-slate-400 font-medium;
+}
+
+/* Badges e insignias de tabla para publicaciones */
+.tabla-avatar-iniciales {
+  @apply w-9 h-9 min-w-[2.25rem] min-h-[2.25rem] rounded-xl bg-slate-100 border border-slate-200/80 text-slate-700 font-bold text-xs flex items-center justify-center tracking-wider select-none uppercase shadow-2xs;
+}
+
+.badge-pill-tipo {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200/70 whitespace-nowrap;
+}
+
+.badge-status-publicado {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 whitespace-nowrap transition-colors hover:bg-emerald-100/80 cursor-pointer select-none;
+}
+
+.badge-status-revision {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-50 text-sky-700 border border-sky-200/80 whitespace-nowrap transition-colors hover:bg-sky-100/80 cursor-pointer select-none;
+}
+
+.badge-status-borrador {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/80 whitespace-nowrap transition-colors hover:bg-amber-100/80 cursor-pointer select-none;
+}
+
+/* Barra de acciones masivas (Bulk Selection) */
+.tabla-barra-seleccion {
+  @apply bg-slate-100/90 border border-slate-200 rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-800 font-medium shadow-2xs transition-all;
+}
+
+/* Chip de filtro activo */
+.filter-chip {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-medium text-xs border border-slate-200/90 transition-colors hover:bg-slate-200/70;
+}
+
+/* Custom Scrollbar para la malla curricular */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ─── Ugy Mascot Animations ─── */
+@keyframes ugyIdle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes ugyTalk {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  30% {
+    transform: scale(1.1) translateY(-15px) rotate(5deg);
+  }
+  50% {
+    transform: scale(1.05) translateY(-5px) rotate(-5deg);
+  }
+  80% {
+    transform: scale(1.1) translateY(-10px) rotate(3deg);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+#ugy-mascot-img {
+  transition: all 0.3s ease;
+}
+
+#ugy-mascot-img:not(.ugy-talking-active) {
+  animation: ugyIdle 3s ease-in-out infinite;
+}
+
+.ugy-talking-active #ugy-mascot-img,
+#ugy-mascot-img.ugy-talking-active {
+  animation: ugyTalk 0.5s ease-in-out infinite;
+}
+
+/* Custom Driver.js Styles */
+.driver-popover {
+  @apply !rounded-2xl !border-none !shadow-2xl !p-6 !bg-white;
+}
+
+.driver-popover-title {
+  @apply !font-bold !text-xl !text-primario !mb-2;
+}
+
+.driver-popover-description {
+  @apply !text-gray-600 !text-sm !leading-relaxed;
+}
+
+.driver-popover-footer {
+  @apply !mt-6 !flex !justify-end !gap-3;
+}
+
+.driver-popover-btn {
+  @apply !px-4 !py-2 !rounded-lg !text-sm !font-medium !transition-all;
+}
+
+.driver-popover-next-btn {
+  @apply !bg-primario !text-white hover:!bg-secundario;
+}
+
+.driver-popover-prev-btn {
+  @apply !bg-gray-100 !text-gray-600 hover:!bg-gray-200;
+}
+
+.driver-popover-close-btn {
+  @apply !text-gray-400 hover:!text-gray-600;
+}
+
+/* Leaflet zoom control con colores institucionales dfe7f6 eff3fb*/
+.leaflet-control-zoom a {
+  color: var(--color-primario) !important;
+  border-color: #e5e7eb !important;
+}
+.leaflet-control-zoom a:hover {
+  background-color: var(--color-primario) !important;
+  color: white !important;
+}
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ─── Sin filtro para mantener colores de Google Maps ─── */
+.leaflet-tile-pane img {
+  filter: none;
+}
+
+
+
+/* ── COMPONENTE SWAP (Estilo DaisyUI) ── */
+.swap {
+  @apply relative inline-grid select-none place-content-center;
+}
+.swap > * {
+  @apply col-start-1 row-start-1 transition-all duration-500 ease-in-out;
+}
+.swap input {
+  @apply appearance-none opacity-0 absolute inset-0 cursor-pointer z-10;
+}
+.swap .swap-on,
+.swap .swap-indeterminate,
+.swap input:indeterminate ~ .swap-indeterminate {
+  @apply opacity-0;
+}
+.swap input:checked ~ .swap-on {
+  @apply opacity-100;
+}
+.swap input:checked ~ .swap-off {
+  @apply opacity-0;
+}
+.swap-rotate .swap-on {
+  @apply rotate-45;
+}
+.swap-rotate input:checked ~ .swap-on {
+  @apply rotate-0;
+}
+.swap-rotate input:checked ~ .swap-off {
+  @apply -rotate-45;
+}
+
+/* ── BOTONES GLOBALES ── */
+.btn-secundario-curvo {
+ @apply text-white bg-secundario-700 rounded-xl border border-secundario hover:bg-secundario-800 hover:text-white focus:ring-4 focus:ring-secundario/30 leading-5 text-[10px] sm:text-[15px]  lg:text-[8px] xl:text-[10px] font-jost font-bold px-4 py-2.5 focus:outline-none transition-all cursor-pointer uppercase;
+}
+
+
+.btn-secundario2 {
+  @apply text-secundario-950 border border-secundario hover:bg-secundario hover:border-secundario hover:text-white focus:ring-4 focus:ring-secundario/30 leading-5 text-[10px] sm:text-[15px]  lg:text-[8px] xl:text-[10px] font-jost font-bold px-4 py-2.5 focus:outline-none transition-all cursor-pointer uppercase;
+}
+.btn-secundario3 {
+  @apply text-secundario-950 border border-gray-300 hover:bg-secundario hover:border-secundario hover:text-white focus:ring-4 focus:ring-secundario/30 leading-5 text-[10px] sm:text-[15px]  lg:text-[8px] xl:text-[10px] font-jost font-bold px-1 py-2 rounded-md focus:outline-none transition-all cursor-pointer uppercase;
+}

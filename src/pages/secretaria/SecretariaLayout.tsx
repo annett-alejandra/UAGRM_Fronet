@@ -1,26 +1,21 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { SidebarNavWidget } from '../../widgets/SidebarNavWidget/SidebarNavWidget';
+import { ReconstruccionOcrSplitView } from '../../features/reconstruccion-ocr/ReconstruccionOcrSplitView';
+import { PlantillaAutenticidad } from '../../features/plantilla-autenticidad/PlantillaAutenticidad';
 
 export function SecretariaLayout() {
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      {/* Sidebar Placeholder */}
-      <div style={{ width: '250px', borderRight: '1px solid #ccc', padding: '1rem' }}>
-        <h2>Secretaría General</h2>
-        <nav>
-          <ul>
-            <li>Bandeja de Entrada</li>
-            <li>Emisión de Títulos</li>
-          </ul>
-        </nav>
+    <SidebarNavWidget pageTitle="Secretaría General - UAGRM">
+      <div className="flex flex-col h-full bg-[#0F1524]">
+        <main className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/" element={<Navigate to="reconstruccion-ocr" replace />} />
+            <Route path="reconstruccion-ocr" element={<ReconstruccionOcrSplitView />} />
+            <Route path="autenticidad" element={<PlantillaAutenticidad />} />
+            <Route path="*" element={<Navigate to="reconstruccion-ocr" replace />} />
+          </Routes>
+        </main>
       </div>
-
-      {/* Main Content */}
-      <main style={{ flex: 1, padding: '2rem' }}>
-        <Routes>
-          <Route path="/" element={<h1>Bienvenido a Secretaría General</h1>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-    </div>
+    </SidebarNavWidget>
   );
 }

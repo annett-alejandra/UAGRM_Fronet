@@ -13,7 +13,7 @@ services:
       - "10001:3000"
     environment:
       - VITE_APP_ENV=development
-    command: sh -c "npm install && npm run dev -- --host"
+    command: sh -c "if [ ! -d node_modules/vite ]; then npm install; fi && npm run dev -- --host"
     restart: unless-stopped
     networks:
       - titulo_supletorio_frontend-net
