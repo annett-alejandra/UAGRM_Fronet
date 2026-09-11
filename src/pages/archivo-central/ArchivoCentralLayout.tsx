@@ -4,7 +4,6 @@ import { CertificadoAutenticidadPage } from './CertificadoAutenticidadPage';
 import { BandejaPendientesPage } from './BandejaPendientesPage';
 import { ReconstruccionExpedientePage } from './ReconstruccionExpedientePage';
 import { SubidaDocumentos } from '../../features/subida-documentos/SubidaDocumentos';
-import ModuloInstitucional from '../../components/ModuloInstitucional';
 
 export function ArchivoCentralLayout() {
   return (
@@ -20,7 +19,6 @@ export function ArchivoCentralLayout() {
             <Route path="reconstruccion/:id" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos/:id" element={<ReconstruccionExpedientePage />} />
-            <Route path="modulo-institucional" element={<ModuloInstitucional />} />
             <Route path="*" element={<Navigate to="autenticidad" replace />} />
           </Routes>
         </main>

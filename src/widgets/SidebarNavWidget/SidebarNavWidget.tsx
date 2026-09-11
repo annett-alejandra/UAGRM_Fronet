@@ -55,15 +55,6 @@ const ARCHIVO_NAV: readonly NavItem[] = [
       </svg>
     ),
   },
-  {
-    path: '/archivo/modulo-institucional',
-    label: '5. Módulo Google Material 3',
-    icon: (
-      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-        admin_panel_settings
-      </span>
-    ),
-  },
 ];
 
 const TITULOS_NAV: readonly NavItem[] = [
