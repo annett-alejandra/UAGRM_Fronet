@@ -1,44 +1,43 @@
-import { useState, type ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface SidebarNavWidgetProps {
-  readonly children: ReactNode;
-  readonly pageTitle: string;
+  children: ReactNode;
+  pageTitle: string;
 }
 
 interface NavItem {
-  readonly path: string;
-  readonly label: string;
-  readonly icon: ReactNode;
+  path: string;
+  label: string;
+  icon: ReactNode;
 }
 
-// Navegación Local por Módulo (Menú Izquierdo Exclusivo)
 const ARCHIVO_NAV: readonly NavItem[] = [
   {
     path: '/archivo/autenticidad',
-    label: '1. Certificado de Autenticidad',
+    label: '1. Certificado Autenticidad',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
-        <path d="M16 13H8" />
-        <path d="M16 17H8" />
-        <path d="M10 9H8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+        <polyline points="10 9 9 9 8 9" />
       </svg>
     ),
   },
   {
     path: '/archivo/triaje',
-    label: '2. Triaje Documental & Recepción',
+    label: '2. Triaje Documental',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
       </svg>
     ),
   },
   {
     path: '/archivo/subida',
-    label: '3. Digitalización & Escaneo OCR',
+    label: '3. Digitalización OCR',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -49,11 +48,20 @@ const ARCHIVO_NAV: readonly NavItem[] = [
   },
   {
     path: '/archivo/reconstruccion',
-    label: '4. Reconstrucción de Legajos',
+    label: '4. Reconstrucción Libros',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
       </svg>
+    ),
+  },
+  {
+    path: '/archivo/modulo-institucional',
+    label: '5. Módulo Google Material 3',
+    icon: (
+      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+        admin_panel_settings
+      </span>
     ),
   },
 ];
@@ -127,7 +135,6 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determinar Módulo Activo
   let currentNav = ARCHIVO_NAV;
   let moduleTitle = 'ARCHIVO CENTRAL';
   let moduleSubtitle = 'DEPARTAMENTO DE ARCHIVO UAGRM';
@@ -152,18 +159,16 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
   return (
     <div className="flex min-h-screen bg-[#F8FAFC] text-[#1E293B] font-sans relative overflow-hidden">
       
-      {/* Sidebar Izquierdo: Azul UAGRM Primario (#003366) */}
       <aside className={`fixed top-0 left-0 bottom-0 z-50 bg-[#003366] text-white shadow-xl transition-all duration-300 flex flex-col justify-between ${isCollapsed ? 'w-20' : 'w-64'}`}>
         
         <div className="flex flex-col gap-6 p-4">
-          {/* Header del Módulo Activo */}
           <div className="flex items-center gap-3 px-2 py-2 border-b border-white/15 pb-4">
             <div 
               onClick={() => navigate('/login')} 
               className="w-10 h-10 rounded-xl bg-[#C51D24] text-white flex items-center justify-center font-extrabold text-lg shadow-md cursor-pointer hover:scale-105 transition-transform"
               title="Ir a selección de módulo"
             >
-              🎓
+              🏛️
             </div>
             {!isCollapsed && (
               <div className="overflow-hidden">
@@ -173,7 +178,6 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
             )}
           </div>
 
-          {/* Navegación Local del Módulo (Ítem Activo con Rojo #C51D24 y Borde Dorado #E5A823) */}
           <nav className="space-y-1.5">
             {!isCollapsed && (
               <span className="text-[10px] font-mono font-bold text-slate-300 uppercase tracking-widest px-3 block mb-2 opacity-90">
@@ -202,7 +206,6 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
           </nav>
         </div>
 
-        {/* Footer del Menú Izquierdo: Botón Rojo Cardenal (#C51D24) "CAMBIAR MÓDULO" */}
         <div className="p-4 border-t border-white/15 space-y-3">
           <button
             onClick={() => navigate('/login')}
@@ -216,15 +219,13 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
             onClick={() => setIsCollapsed((prev) => !prev)}
             className="w-full py-2 bg-white/10 hover:bg-white/20 text-slate-200 text-xs rounded-xl transition-all text-center"
           >
-            {isCollapsed ? '→' : '← Colapsar'}
+            {isCollapsed ? '➡️' : '⬅️ Colapsar'}
           </button>
         </div>
       </aside>
 
-      {/* Main Container */}
       <div className={`flex flex-col flex-1 transition-all duration-300 ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
         
-        {/* Top Header Bar en Blanco Institucional con Borde #E2E8F0 */}
         <header className="sticky top-0 z-40 flex items-center justify-between px-8 h-16 bg-white border-b border-[#E2E8F0] shadow-xs">
           <div className="flex items-center gap-4">
             <h1 className="text-base font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
@@ -235,12 +236,11 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
 
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex px-3 py-1 bg-slate-100 border border-[#E2E8F0] text-[#1E293B] text-xs font-mono rounded-full items-center gap-2">
-              <span className="text-[#1B7A43] font-bold">●</span> Operador Sistema UAGRM
+              <span className="text-[#1B7A43] font-bold">⚡</span> Operador Sistema UAGRM
             </span>
           </div>
         </header>
 
-        {/* Content Area en Gris Hielo (#F8FAFC) */}
         <main className="flex-1 p-6 overflow-auto bg-[#F8FAFC]">
           {children}
         </main>
