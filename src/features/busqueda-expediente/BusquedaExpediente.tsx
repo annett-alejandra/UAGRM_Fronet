@@ -59,98 +59,98 @@ export function BusquedaExpediente() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
-      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex justify-between items-center">
+    <div className="max-w-6xl mx-auto space-y-6 pb-12 font-sans">
+      <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-xs flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Búsqueda Universal de Expedientes y Libros</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <h2 className="text-xl font-extrabold text-[#003366]">Búsqueda Universal de Expedientes y Libros</h2>
+          <p className="text-slate-500 text-xs mt-1">
             Consulte expedientes académicos utilizando datos del estudiante o datos de Libro, Tomo y Folio.
           </p>
         </div>
-        <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-semibold text-xs rounded-full">
+        <span className="px-3 py-1 bg-[#003366]/10 text-[#003366] font-bold text-xs rounded-full">
           Consulta Catalográfica
         </span>
       </div>
 
-      {/* Formulario de Busqueda por Campos */}
-      <form onSubmit={handleSearch} className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+      {/* Formulario de Búsqueda por Campos */}
+      <form onSubmit={handleSearch} className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-xs space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Carnet de Identidad (CI)</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Carnet de Identidad (CI)</label>
             <input 
               type="text"
               placeholder="Buscar por CI..."
               value={filtros.ci}
               onChange={e => setFiltros({ ...filtros, ci: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Registro Universitario (RU)</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Registro Universitario (RU)</label>
             <input 
               type="text"
               placeholder="Buscar por RU..."
               value={filtros.ru}
               onChange={e => setFiltros({ ...filtros, ru: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Nombre Completo</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Nombre Completo</label>
             <input 
               type="text"
               placeholder="Buscar por Apellido o Nombre..."
               value={filtros.nombre}
               onChange={e => setFiltros({ ...filtros, nombre: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium"
             />
           </div>
         </div>
 
-        <div className="border-t border-slate-200 dark:border-slate-700 pt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="border-t border-[#E2E8F0] pt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Nro. Libro</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Nro. Libro</label>
             <input 
               type="text"
               placeholder="Ej. L-45"
               value={filtros.libro}
               onChange={e => setFiltros({ ...filtros, libro: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium font-mono"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Nro. Tomo</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Nro. Tomo</label>
             <input 
               type="text"
               placeholder="Ej. T-02"
               value={filtros.tomo}
               onChange={e => setFiltros({ ...filtros, tomo: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium font-mono"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Nro. Folio</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Nro. Folio</label>
             <input 
               type="text"
               placeholder="Ej. F-128"
               value={filtros.folio}
               onChange={e => setFiltros({ ...filtros, folio: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium font-mono"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Gestión</label>
+            <label className="block text-[11px] font-bold uppercase text-slate-700 mb-1">Gestión</label>
             <input 
               type="text"
               placeholder="Ej. 1999"
               value={filtros.gestion}
               onChange={e => setFiltros({ ...filtros, gestion: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E2E8F0] bg-slate-50/50 text-slate-800 focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 outline-none text-xs font-medium font-mono"
             />
           </div>
         </div>
@@ -159,29 +159,29 @@ export function BusquedaExpediente() {
           <button
             type="button"
             onClick={handleReset}
-            className="px-5 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-50 transition-all cursor-pointer"
           >
             Limpiar Filtros
           </button>
           <button
             type="submit"
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-md transition-colors"
+            className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white rounded-xl text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
             {buscando ? 'Buscando...' : 'Buscar Expedientes'}
           </button>
         </div>
       </form>
 
-      {/* Resultados de la Busqueda */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-          <h3 className="font-bold text-slate-900 dark:text-white">Resultados Encontrados ({resultados.length})</h3>
+      {/* Resultados de la Búsqueda */}
+      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-[#E2E8F0] flex justify-between items-center bg-slate-50/70">
+          <h3 className="font-extrabold text-[#003366] text-xs uppercase tracking-wider">Resultados Encontrados ({resultados.length})</h3>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-semibold border-b border-slate-200 dark:border-slate-700 uppercase text-xs">
-              <tr>
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="bg-slate-50/50 text-slate-700 font-bold border-b border-[#E2E8F0] uppercase text-[10px] tracking-wider select-none">
                 <th className="p-4">CI / RU</th>
                 <th className="p-4">Estudiante</th>
                 <th className="p-4">Carrera</th>
@@ -192,36 +192,36 @@ export function BusquedaExpediente() {
                 <th className="p-4 text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700 text-slate-800 dark:text-slate-200">
+            <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
               {resultados.length > 0 ? resultados.map(item => (
-                <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                <tr key={item.id} className="hover:bg-[#F1F5F9] transition-colors">
                   <td className="p-4 font-mono">
                     <div className="font-bold">{item.ci}</div>
-                    <div className="text-xs text-slate-500">RU: {item.ru}</div>
+                    <div className="text-[10px] text-slate-400">RU: {item.ru}</div>
                   </td>
-                  <td className="p-4 font-semibold">{item.nombre}</td>
-                  <td className="p-4 text-xs text-slate-600 dark:text-slate-400">{item.carrera}</td>
+                  <td className="p-4 font-bold">{item.nombre}</td>
+                  <td className="p-4 text-slate-600">{item.carrera}</td>
                   <td className="p-4 font-mono text-xs">
-                    <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 rounded font-bold">
+                    <span className="px-2 py-0.5 bg-[#003366]/10 text-[#003366] rounded font-bold">
                       {item.libro} | {item.tomo} | {item.folio}
                     </span>
                   </td>
-                  <td className="p-4 font-mono">{item.gestion}</td>
-                  <td className="p-4 text-xs">{item.tipoDocumento}</td>
+                  <td className="p-4 font-mono text-slate-600">{item.gestion}</td>
+                  <td className="p-4 font-medium">{item.tipoDocumento}</td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-bold">
-                      {item.estado}
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#1B7A43]/10 text-[#1B7A43] border border-[#1B7A43]/20 whitespace-nowrap select-none">
+                      ● {item.estado}
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <button className="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg text-xs font-bold transition-colors">
+                    <button className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer shadow-2xs">
                       Ver Expediente
                     </button>
                   </td>
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={8} className="p-8 text-center text-slate-400">
                     No se encontraron expedientes con los criterios seleccionados.
                   </td>
                 </tr>

@@ -8,7 +8,7 @@ import { CargaLibrosMatrices } from '../../features/titulos/CargaLibrosMatrices'
 export function TitulosLayout() {
   return (
     <SidebarNavWidget pageTitle="Departamento de Títulos y Grados - UAGRM">
-      <div className="flex flex-col h-full bg-[#0F1524]">
+      <div className="flex flex-col h-full bg-[#F8FAFC]">
         <main className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<Navigate to="busqueda" replace />} />

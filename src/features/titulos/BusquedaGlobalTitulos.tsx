@@ -39,48 +39,48 @@ export function BusquedaGlobalTitulos() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-16 font-sans">
+    <div className="max-w-7xl mx-auto space-y-6 pb-16 font-sans">
       
-      {/* Banner Superior Institucional Azul #2A3964 */}
-      <div className="bg-[#2A3964] text-white p-8 rounded-2xl shadow-md border-l-8 border-[#880000] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-mono text-slate-200">
+      {/* ── Cabecera Superior Homogénea sobre Fondo Claro ── */}
+      <div className="bg-white p-6 md:p-8 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#003366]/10 rounded-full text-[11px] font-mono text-[#003366] font-bold">
             <span>DEPARTAMENTO DE TÍTULOS Y GRADOS - UAGRM</span>
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight font-heading text-white">
+          <h1 className="text-2xl font-extrabold tracking-tight text-[#003366]">
             Búsqueda Global de Expedientes
           </h1>
-          <p className="text-slate-200 text-xs max-w-xl">
+          <p className="text-slate-500 text-xs max-w-xl">
             Consulta centralizada de títulos académicos, diplomas de bachiller y legajos documentales.
           </p>
         </div>
 
         <button 
           onClick={() => navigate('/titulos/carga-libros')}
-          className="btn-secundario-curvo py-3 px-5 whitespace-nowrap shadow-md"
+          className="px-4 py-2.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 shadow-xs cursor-pointer"
         >
           <span>📚</span> Cargar Libros Matrices
         </button>
       </div>
 
-      {/* Tarjeta de Filtros de Búsqueda (Estilo Light Card de componentes y estilos) */}
-      <form onSubmit={handleSearch} className="card p-6 space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+      {/* ── Tarjeta de Filtros de Búsqueda ── */}
+      <form onSubmit={handleSearch} className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs p-6 space-y-6">
+        <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#2A3964] text-white flex items-center justify-center font-bold text-lg shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-[#003366]/10 text-[#003366] flex items-center justify-center font-bold text-lg">
               🔍
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-[#2A3964] uppercase tracking-wider">Filtros de Búsqueda Avanzada</h2>
-              <p className="text-xs text-slate-500">Ingrese C.I., Número de Título o Nombre del Estudiante</p>
+              <h2 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">Filtros de Búsqueda Avanzada</h2>
+              <p className="text-[11px] text-slate-500">Ingrese C.I., Número de Título o Nombre del Estudiante</p>
             </div>
           </div>
-          <span className="text-xs text-slate-400 font-mono">CATÁLOGO UAGRM</span>
+          <span className="text-[11px] text-slate-400 font-mono">CATÁLOGO UAGRM</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
               Carnet de Identidad (C.I.)
             </label>
             <input
@@ -88,12 +88,12 @@ export function BusquedaGlobalTitulos() {
               placeholder="Ej. 1234567"
               value={ci}
               onChange={e => setCi(e.target.value)}
-              className="select-estilo"
+              className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50/50 shadow-xs focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 text-xs py-2.5 px-3 font-medium text-slate-800 h-[42px] outline-none transition-all"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
               Número de Título
             </label>
             <input
@@ -101,12 +101,12 @@ export function BusquedaGlobalTitulos() {
               placeholder="Ej. TS-2026-0042"
               value={nroTitulo}
               onChange={e => setNroTitulo(e.target.value)}
-              className="select-estilo font-mono"
+              className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50/50 shadow-xs focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 text-xs py-2.5 px-3 font-mono font-medium text-slate-800 h-[42px] outline-none transition-all"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
               Nombre Completo del Estudiante
             </label>
             <input
@@ -114,7 +114,7 @@ export function BusquedaGlobalTitulos() {
               placeholder="Ej. Juan Carlos Pérez"
               value={nombre}
               onChange={e => setNombre(e.target.value)}
-              className="select-estilo"
+              className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50/50 shadow-xs focus:bg-white focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 text-xs py-2.5 px-3 font-medium text-slate-800 h-[42px] outline-none transition-all"
             />
           </div>
         </div>
@@ -123,83 +123,87 @@ export function BusquedaGlobalTitulos() {
           <button
             type="button"
             onClick={handleReset}
-            className="px-5 py-2.5 border border-slate-300 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all"
+            className="px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-50 transition-all cursor-pointer"
           >
             Limpiar Filtros
           </button>
           
           <button
             type="submit"
-            className="boton-crear"
+            className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold rounded-xl transition-all shadow-xs flex items-center gap-2 cursor-pointer"
           >
             {buscando ? 'Buscando...' : '🔍 Buscar Registros'}
           </button>
         </div>
       </form>
 
-      {/* Tabla de Resultados (Estilo tabla-cms de componentes y estilos) */}
-      <div className="div-tabla">
-        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-          <h3 className="font-extrabold text-[#2A3964] text-xs uppercase tracking-wider">
+      {/* ── Tabla de Expedientes Coincidentes (Limpia sin fondos negros/oscuros) ── */}
+      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-[#E2E8F0] bg-slate-50/70 flex justify-between items-center">
+          <h3 className="font-extrabold text-[#003366] text-xs uppercase tracking-wider">
             Expedientes Coincidentes ({resultados.length})
           </h3>
-          <span className="text-xs text-slate-500 font-mono">Registros Institucionales</span>
+          <span className="text-[11px] text-slate-400 font-mono">Registros Institucionales</span>
         </div>
 
-        <table className="tabla-cms">
-          <thead>
-            <tr>
-              <th>Estudiante / C.I.</th>
-              <th>Número de Título</th>
-              <th>Tipo Título</th>
-              <th>Estado</th>
-              <th>Fecha Registro</th>
-              <th className="text-right">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {resultados.length > 0 ? resultados.map(item => (
-              <tr key={item.id}>
-                <td className="font-bold text-slate-800">
-                  <div>{item.nombre_estudiante}</div>
-                  <div className="text-[10px] text-slate-500 font-mono">C.I. {item.ci}</div>
-                </td>
-                <td className="font-mono font-bold text-[#880000]">
-                  {item.numero_titulo}
-                </td>
-                <td className="font-medium text-slate-600">{item.tipo_titulo}</td>
-                <td>
-                  <span className="badge-status-publicado">
-                    ● {item.estado}
-                  </span>
-                </td>
-                <td className="font-mono text-slate-500">{new Date(item.fecha_creacion).toLocaleDateString()}</td>
-                <td className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => navigate(`/titulos/expediente/${item.id}`)}
-                      className="boton-editar text-xs py-1.5 px-3"
-                    >
-                      📂 Expediente
-                    </button>
-                    <button
-                      onClick={() => navigate(`/titulos/emision?nombre=${encodeURIComponent(item.nombre_estudiante)}&ci=${encodeURIComponent(item.ci)}&expedienteId=${item.id}`)}
-                      className="btn-secundario-curvo py-1.5 px-3"
-                    >
-                      🖨️ Emitir
-                    </button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-[#E2E8F0] bg-slate-50/50 text-slate-700 font-bold uppercase text-[10px] tracking-wider select-none">
+                <th className="px-5 py-3.5">Estudiante / C.I.</th>
+                <th className="px-5 py-3.5">Número de Título</th>
+                <th className="px-5 py-3.5">Tipo Título</th>
+                <th className="px-5 py-3.5">Estado</th>
+                <th className="px-5 py-3.5">Fecha Registro</th>
+                <th className="px-5 py-3.5 text-right">Acciones</th>
               </tr>
-            )) : (
-              <tr>
-                <td colSpan={6} className="tabla-vacia">
-                  No se encontraron expedientes con los criterios seleccionados.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100 bg-white text-slate-800">
+              {resultados.length > 0 ? resultados.map(item => (
+                <tr key={item.id} className="hover:bg-[#F1F5F9] transition-colors">
+                  <td className="px-5 py-4 font-bold text-slate-800">
+                    <div>{item.nombre_estudiante}</div>
+                    <div className="text-[10px] text-slate-400 font-mono font-normal">C.I. {item.ci}</div>
+                  </td>
+                  <td className="px-5 py-4 font-mono font-bold text-[#C51D24]">
+                    {item.numero_titulo}
+                  </td>
+                  <td className="px-5 py-4 font-medium text-slate-600">{item.tipo_titulo}</td>
+                  <td className="px-5 py-4">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#1B7A43]/10 text-[#1B7A43] border border-[#1B7A43]/20 whitespace-nowrap select-none">
+                      ● {item.estado}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4 font-mono text-slate-500">{new Date(item.fecha_creacion).toLocaleDateString()}</td>
+                  <td className="px-5 py-4 text-right">
+                    <div className="flex justify-end items-center gap-2">
+                      <button
+                        onClick={() => navigate(`/titulos/expediente/${item.id}`)}
+                        className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                        title="Ver Expediente Digital"
+                      >
+                        <span>📂</span> Expediente
+                      </button>
+                      <button
+                        onClick={() => navigate(`/titulos/emision?nombre=${encodeURIComponent(item.nombre_estudiante)}&ci=${encodeURIComponent(item.ci)}&expedienteId=${item.id}`)}
+                        className="px-3 py-1.5 border border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+                        title="Emitir Plantilla A4"
+                      >
+                        <span>🖨️</span> Emitir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-xs text-slate-400">
+                    No se encontraron expedientes con los criterios seleccionados.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
