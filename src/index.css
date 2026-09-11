@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+﻿@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import '../design/theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -18,7 +18,7 @@ body {
   margin: 0;
 }
 
-/* ── BOTONES GLOBALES INSTITUCIONALES ── */
+/* â”€â”€ BOTONES GLOBALES INSTITUCIONALES â”€â”€ */
 .boton-crear {
   @apply bg-[#003366] text-sm text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
@@ -35,7 +35,7 @@ body {
   @apply text-white bg-[#C51D24] rounded-xl border border-[#C51D24] hover:bg-[#a3151b] leading-5 text-[11px] sm:text-[13px] font-bold px-4 py-2.5 transition-all cursor-pointer uppercase shadow-sm;
 }
 
-/* ── TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) ── */
+/* â”€â”€ TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) â”€â”€ */
 .card-uagrm, .card {
   @apply bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-5 md:p-6 text-[#1E293B];
 }
@@ -89,13 +89,13 @@ body {
 }
 
 /* ============================================================
-   @media print — Solo imprimir el documento, nada mas
+   @media print â€” Solo imprimir el documento, nada mas
    ============================================================ */
 @media print {
   /* Ocultar TODA la UI excepto el documento */
   @page {
     size: letter portrait;
-    margin: 12mm 10mm;
+    margin: 0;
   }
 
   /* Quitar header/footer del navegador (fecha, URL, titulo) */
@@ -107,17 +107,20 @@ body {
     print-color-adjust: exact !important;
   }
 
-  /* Ocultar sidebar, header layout, barra inferior, panel word */
+  /* Ocultar sidebar, barra inferior, panel word, botones — pero NO el header del documento */
   aside,
-  header,
   nav,
   .print\:hidden,
   [class*="fixed bottom-0"],
-  [class*="sticky top-0"],
   button,
   footer {
     display: none !important;
     visibility: hidden !important;
+  }
+
+  /* Ocultar SOLO el header del layout (SidebarNavWidget), no el header del informe */
+  .sticky.top-0.z-40 {
+    display: none !important;
   }
 
   /* El contenedor principal pierde su margin-left del sidebar */
@@ -165,4 +168,17 @@ body {
   /* No cortar contenido entre paginas dentro de la tabla */
   table { page-break-inside: auto; }
   tr { page-break-inside: avoid; page-break-after: auto; }
+
+  /* El template del informe necesita su propio padding interno al imprimir */
+  .font-serif[class*="print:p-0"] {
+    padding: 15mm 18mm !important;
+  }
+
+  /* Asegurar que el escudo UAGRM se imprima siempre */
+  img[alt="Escudo UAGRM"] {
+    display: block !important;
+    visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
