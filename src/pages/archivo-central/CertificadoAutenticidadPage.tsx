@@ -186,9 +186,10 @@ export function CertificadoAutenticidadPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
-      {/* Barra Superior Institucional Sin Badges de Tipo */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans pb-24">
+      
+      {/* Barra Superior Institucional (Sticky Header) */}
+      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xs sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-[#003366] text-white rounded-xl shadow-xs">
             <span className="material-symbols-outlined text-[22px]">description</span>
@@ -203,15 +204,15 @@ export function CertificadoAutenticidadPage() {
           </div>
         </div>
 
-        {/* Buscador e Interacción */}
+        {/* Buscador & Controles */}
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={cargarEjemploOriginalFisico}
-            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-xs rounded-xl border border-blue-200 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-xs rounded-xl border border-blue-200 transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px]">article</span>
-            Cargar Ejemplo Físico (0472)
+            Ejemplo Físico (0472)
           </button>
 
           <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-300">
@@ -227,7 +228,7 @@ export function CertificadoAutenticidadPage() {
               type="button"
               onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
               disabled={isSearching}
-              className="px-3.5 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1 shadow-xs"
+              className="px-3.5 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1 shadow-xs cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">search</span>
               {isSearching ? 'Buscando...' : 'Buscar'}
@@ -235,8 +236,9 @@ export function CertificadoAutenticidadPage() {
           </div>
 
           <button
+            type="button"
             onClick={() => setShowWordEditor(!showWordEditor)}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${
               showWordEditor ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-[#003366] text-white hover:bg-[#002244]'
             }`}
           >
@@ -246,35 +248,37 @@ export function CertificadoAutenticidadPage() {
         </div>
       </div>
 
-      {/* Contenedor Hoja Impresa Clean + Panel Word */}
-      <div className="flex-1 p-6 flex justify-center gap-6 overflow-auto">
+      {/* ÁREA DE TRABAJO PRINCIPAL: LIENZO DE HOJA (FLUJO NATURAL SIN SCROLL ANIDADO NI CORTES) */}
+      <div className="flex-1 p-6 md:p-8 flex flex-col md:flex-row justify-center items-start gap-8">
         
-        {/* Renderizado Estricto del Componente de Archivo Central */}
-        <div className="bg-slate-200/80 p-8 rounded-2xl border border-slate-300 overflow-auto flex justify-center items-start shadow-inner flex-1">
-          <InformeArchivoCentralTipo3
-            correlativoInforme={correlativoInforme}
-            fechaDoc={fechaDoc}
-            destinatarioNombre={destinatarioNombre}
-            destinatarioCargo={destinatarioCargo}
-            referencia={referencia}
-            fechaSolicitud={fechaSolicitud}
-            nroTestimonio={nroTestimonio}
-            apoderadoNombre={apoderadoNombre}
-            titularNombre={titularNombre}
-            titularCi={titularCi}
-            gradoMencion={gradoMencion}
-            nroTitulo={nroTitulo}
-            tableRows={tableRows}
-            incluirAclaratoriaHistorica={incluirAclaratoriaHistorica}
-            gestionHistorica={gestionHistorica}
-            incluirSupletorio={incluirSupletorio}
-            jefeArchivoNombre={jefeArchivoNombre}
-          />
+        {/* Lienzo del Documento (Flujo Estilo Word / Google Docs) */}
+        <div className="flex-1 w-full flex justify-center items-start">
+          <div className="bg-slate-200/90 p-6 md:p-10 rounded-2xl border border-slate-300 shadow-inner flex justify-center items-start w-full min-h-[1056px]">
+            <InformeArchivoCentralTipo3
+              correlativoInforme={correlativoInforme}
+              fechaDoc={fechaDoc}
+              destinatarioNombre={destinatarioNombre}
+              destinatarioCargo={destinatarioCargo}
+              referencia={referencia}
+              fechaSolicitud={fechaSolicitud}
+              nroTestimonio={nroTestimonio}
+              apoderadoNombre={apoderadoNombre}
+              titularNombre={titularNombre}
+              titularCi={titularCi}
+              gradoMencion={gradoMencion}
+              nroTitulo={nroTitulo}
+              tableRows={tableRows}
+              incluirAclaratoriaHistorica={incluirAclaratoriaHistorica}
+              gestionHistorica={gestionHistorica}
+              incluirSupletorio={incluirSupletorio}
+              jefeArchivoNombre={jefeArchivoNombre}
+            />
+          </div>
         </div>
 
-        {/* Panel Lateral de Edición Estilo Word (Derecha) */}
+        {/* Panel Lateral de Edición Estilo Word (Anclado Limpiamente Sticky) */}
         {showWordEditor && (
-          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-md border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[calc(100vh-140px)] sticky top-4 pb-20">
+          <div className="w-full md:w-96 bg-white p-5 space-y-5 print:hidden shadow-lg border border-slate-200 rounded-2xl shrink-0 sticky top-24 max-h-[calc(100vh-140px)] overflow-y-auto">
             
             <div className="border-b border-slate-200 pb-3 space-y-2">
               <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
@@ -285,7 +289,7 @@ export function CertificadoAutenticidadPage() {
               {/* Formato de Hoja Dentro del Panel Lateral */}
               <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
                 <label className="text-[10px] font-extrabold text-[#003366] block uppercase tracking-wider">
-                  📄 Tamaño de Hoja (Formato Impresión):
+                  📄 Formato de Papel (Impresión):
                 </label>
                 <div className="flex gap-1.5">
                   {(['carta', 'oficio', 'a4'] as const).map((size) => (
@@ -293,7 +297,7 @@ export function CertificadoAutenticidadPage() {
                       key={size}
                       type="button"
                       onClick={() => setPaperSize(size)}
-                      className={`flex-1 py-1.5 text-xs font-bold rounded-lg border transition-all uppercase ${
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-lg border transition-all uppercase cursor-pointer ${
                         paperSize === size
                           ? 'bg-[#003366] text-white border-[#003366] shadow-xs'
                           : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
@@ -320,7 +324,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={correlativoInforme}
                   onChange={(e) => setCorrelativoInforme(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366] focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -332,7 +336,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={fechaDoc}
                   onChange={(e) => setFechaDoc(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -344,7 +348,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={destinatarioNombre}
                   onChange={(e) => setDestinatarioNombre(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-800"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -356,7 +360,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={referencia}
                   onChange={(e) => setReferencia(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
             </div>
@@ -375,7 +379,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={titularNombre}
                   onChange={(e) => setTitularNombre(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-900 uppercase"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-900 uppercase focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -387,7 +391,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={titularCi}
                   onChange={(e) => setTitularCi(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366] focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -399,7 +403,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={apoderadoNombre}
                   onChange={(e) => setApoderadoNombre(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
@@ -412,7 +416,7 @@ export function CertificadoAutenticidadPage() {
                     type="text"
                     value={fechaSolicitud}
                     onChange={(e) => setFechaSolicitud(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
                   />
                 </div>
                 <div>
@@ -423,7 +427,7 @@ export function CertificadoAutenticidadPage() {
                     type="text"
                     value={nroTestimonio}
                     onChange={(e) => setNroTestimonio(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#003366]"
                   />
                 </div>
               </div>
@@ -438,7 +442,7 @@ export function CertificadoAutenticidadPage() {
                 <button
                   type="button"
                   onClick={handleAddRow}
-                  className="px-2.5 py-1 border border-[#003366] text-[#003366] hover:bg-blue-50 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs font-sans"
+                  className="px-2.5 py-1 border border-[#003366] text-[#003366] hover:bg-blue-50 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[14px]">add</span>
                   Fila
@@ -455,7 +459,7 @@ export function CertificadoAutenticidadPage() {
                       <button
                         type="button"
                         onClick={() => handleRemoveRow(row.id)}
-                        className="text-red-600 text-[10px] font-bold hover:underline"
+                        className="text-red-600 text-[10px] font-bold hover:underline cursor-pointer"
                       >
                         Eliminar
                       </button>
@@ -541,7 +545,7 @@ export function CertificadoAutenticidadPage() {
               </div>
             </div>
 
-            {/* Acciones del Panel Lateral con Colores Institucionales */}
+            {/* Acciones Directas del Panel Lateral */}
             <div className="pt-4 border-t border-slate-200 space-y-3">
               <button
                 type="button"
@@ -568,36 +572,70 @@ export function CertificadoAutenticidadPage() {
 
       </div>
 
-      {/* FOOTER ASISTIDO (BARRA INFERIOR DE GUÍA RÁPIDA) */}
-      <footer className="sticky bottom-0 left-0 right-0 bg-slate-100 border-t border-slate-200 text-xs text-slate-600 py-2.5 px-6 flex flex-wrap items-center justify-between font-sans z-40 shadow-inner">
-        <div className="flex items-center gap-6">
-          <span className="font-extrabold text-[#003366] uppercase text-[11px] tracking-wider flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>help</span>
-            Guía Rápida de Operación:
-          </span>
-          <div className="flex items-center gap-4 text-[11px] font-medium text-slate-700">
-            <span className="flex items-center gap-1">
-              <strong className="text-[#003366]">1.</strong> Consultar expediente (C.I. / N° Diploma)
-            </span>
-            <span className="text-slate-400">➔</span>
-            <span className="flex items-center gap-1">
-              <strong className="text-[#003366]">2.</strong> Editar en Panel Lateral
-            </span>
-            <span className="text-slate-400">➔</span>
-            <span className="flex items-center gap-1">
-              <strong className="text-[#003366]">3.</strong> Guardar en Base de Datos
-            </span>
-            <span className="text-slate-400">➔</span>
-            <span className="flex items-center gap-1">
-              <strong className="text-[#C51D24]">4.</strong> Imprimir Documento Limpio
-            </span>
+      {/* BARRA INFERIOR DE ACCIONES Y GUÍA RÁPIDA (STICKY BOTTOM ACTION BAR & FOOTER HELP) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 shadow-2xl print:hidden">
+        
+        {/* Acciones Rápidas con Botones Institucionales */}
+        <div className="px-8 py-3.5 flex flex-wrap justify-between items-center gap-4 bg-white">
+          <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#C51D24]"></span>
+            <span>Documento Activo:</span>
+            <strong className="text-[#003366] font-mono">
+              INFORME ARCHIVO CENTRAL (INF N° {correlativoInforme})
+            </strong>
+            <span className="text-slate-400 font-mono">| Sin sellos digitales</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleSaveDocument}
+              disabled={isSaving}
+              className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">save</span>
+              {isSaving ? 'Guardando...' : 'Guardar Documento'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="px-5 py-2.5 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">print</span>
+              Imprimir Documento Físico ({paperSize.toUpperCase()})
+            </button>
           </div>
         </div>
 
-        <div className="text-[10px] text-slate-500 font-mono">
-          Sistema de Emisión de Documentos UAGRM • Archivo Central
+        {/* Footer Help Banner (Guía Rápida) */}
+        <div className="bg-slate-100 border-t border-slate-200 text-xs text-slate-600 py-2 px-8 flex items-center justify-between font-sans">
+          <div className="flex items-center gap-3 text-[11px]">
+            <span className="font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-1">
+              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '16px' }}>help</span>
+              Flujo Rápido:
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">1. Consultar Expediente</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">2. Ajustar/Editar en Panel Lateral</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">3. Guardar en Base de Datos</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#C51D24]">4. Imprimir en Limpio</strong>]
+            </span>
+          </div>
+
+          <div className="text-[10px] text-slate-500 font-mono">
+            Sistema de Emisión UAGRM • Archivo Central
+          </div>
         </div>
-      </footer>
+
+      </div>
+
     </div>
   );
 }
