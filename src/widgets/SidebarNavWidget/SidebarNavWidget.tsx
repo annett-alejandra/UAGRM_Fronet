@@ -9,51 +9,29 @@ interface SidebarNavWidgetProps {
 interface NavItem {
   path: string;
   label: string;
-  icon: ReactNode;
+  iconName: string;
 }
 
 const ARCHIVO_NAV: readonly NavItem[] = [
   {
     path: '/archivo/autenticidad',
     label: '1. Certificado Autenticidad',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-        <polyline points="10 9 9 9 8 9" />
-      </svg>
-    ),
+    iconName: 'verified',
   },
   {
     path: '/archivo/triaje',
     label: '2. Triaje Documental',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-      </svg>
-    ),
+    iconName: 'filter_alt',
   },
   {
     path: '/archivo/subida',
     label: '3. Digitalización OCR',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="17 8 12 3 7 8" />
-        <line x1="12" y1="3" x2="12" y2="15" />
-      </svg>
-    ),
+    iconName: 'document_scanner',
   },
   {
     path: '/archivo/reconstruccion',
     label: '4. Reconstrucción Libros',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-      </svg>
-    ),
+    iconName: 'menu_book',
   },
 ];
 
@@ -61,41 +39,22 @@ const TITULOS_NAV: readonly NavItem[] = [
   {
     path: '/titulos/busqueda',
     label: '1. Búsqueda Global (Dashboard)',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-    ),
+    iconName: 'search',
   },
   {
     path: '/titulos/expediente/TIT-9901',
     label: '2. Visor Expediente Digital',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-      </svg>
-    ),
+    iconName: 'visibility',
   },
   {
     path: '/titulos/emision',
     label: '3. Emisión & Plantillas A4',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-        <path d="M6 12v5c3 3 9 3 12 0v-5" />
-      </svg>
-    ),
+    iconName: 'print',
   },
   {
     path: '/titulos/carga-libros',
     label: '4. Carga Libros Matrices',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-      </svg>
-    ),
+    iconName: 'collections_bookmark',
   },
 ];
 
@@ -103,21 +62,12 @@ const SECRETARIA_NAV: readonly NavItem[] = [
   {
     path: '/secretaria/reconstruccion-ocr',
     label: '1. Validación OCR & Dictamen',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" />
-      </svg>
-    ),
+    iconName: 'gavel',
   },
   {
     path: '/secretaria/autenticidad',
     label: '2. Emisión & Firma Digital',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M12 20h9" />
-        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-      </svg>
-    ),
+    iconName: 'draw',
   },
 ];
 
@@ -150,6 +100,7 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
   return (
     <div className="flex min-h-screen bg-[#F8FAFC] text-[#1E293B] font-sans relative overflow-hidden">
       
+      {/* Sidebar Izquierdo (#003366 Azul UAGRM) */}
       <aside className={`fixed top-0 left-0 bottom-0 z-50 bg-[#003366] text-white shadow-xl transition-all duration-300 flex flex-col justify-between ${isCollapsed ? 'w-20' : 'w-64'}`}>
         
         <div className="flex flex-col gap-6 p-4">
@@ -159,7 +110,7 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
               className="w-10 h-10 rounded-xl bg-[#C51D24] text-white flex items-center justify-center font-extrabold text-lg shadow-md cursor-pointer hover:scale-105 transition-transform"
               title="Ir a selección de módulo"
             >
-              🏛️
+              <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>account_balance</span>
             </div>
             {!isCollapsed && (
               <div className="overflow-hidden">
@@ -182,14 +133,16 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
                 <button
                   key={item.path}
                   onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     active
                       ? 'bg-[#C51D24] text-white font-bold shadow-md border-l-4 border-[#E5A823]'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
                   }`}
                   title={item.label}
                 >
-                  <span className={active ? 'text-[#E5A823]' : 'text-slate-300'}>{item.icon}</span>
+                  <span className={`material-symbols-outlined ${active ? 'text-[#E5A823]' : 'text-slate-300'}`} style={{ fontSize: '20px' }}>
+                    {item.iconName}
+                  </span>
                   {!isCollapsed && <span className="truncate">{item.label}</span>}
                 </button>
               );
@@ -200,17 +153,20 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
         <div className="p-4 border-t border-white/15 space-y-3">
           <button
             onClick={() => navigate('/login')}
-            className="w-full py-2.5 px-3 bg-[#C51D24] hover:bg-[#a3151b] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-wider"
+            className="w-full py-2.5 px-3 bg-[#C51D24] hover:bg-[#a3151b] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-wider cursor-pointer"
           >
-            <span>🔄</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>swap_horiz</span>
             {!isCollapsed && <span>CAMBIAR MÓDULO</span>}
           </button>
 
           <button
             onClick={() => setIsCollapsed((prev) => !prev)}
-            className="w-full py-2 bg-white/10 hover:bg-white/20 text-slate-200 text-xs rounded-xl transition-all text-center"
+            className="w-full py-2 bg-white/10 hover:bg-white/20 text-slate-200 text-xs rounded-xl transition-all text-center flex items-center justify-center gap-1 cursor-pointer"
           >
-            {isCollapsed ? '➡️' : '⬅️ Colapsar'}
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+              {isCollapsed ? 'chevron_right' : 'chevron_left'}
+            </span>
+            {!isCollapsed && <span>Colapsar</span>}
           </button>
         </div>
       </aside>
@@ -227,7 +183,8 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
 
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex px-3 py-1 bg-slate-100 border border-[#E2E8F0] text-[#1E293B] text-xs font-mono rounded-full items-center gap-2">
-              <span className="text-[#1B7A43] font-bold">⚡</span> Operador Sistema UAGRM
+              <span className="material-symbols-outlined text-[#1B7A43]" style={{ fontSize: '16px' }}>verified_user</span>
+              Operador Sistema UAGRM
             </span>
           </div>
         </header>
