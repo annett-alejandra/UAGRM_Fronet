@@ -506,31 +506,64 @@ export function EmisionPlantillas() {
 
       </div>
 
-      {/* Sticky Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-30 shadow-lg flex justify-between items-center px-8">
-        <div className="text-xs text-slate-500 font-medium flex items-center gap-2">
-          <span>Plantilla activa:</span>
-          <strong className={'px-2 py-0.5 rounded text-[11px] font-bold ' + (formData.tipoPlantilla === 'CertificadoTituloTipo2' ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-900')}>
-            {formData.tipoPlantilla === 'CertificadoTituloTipo2' ? 'Plantilla 2 de Títulos (Con Aclaratoria Histórica)' : 'Plantilla 1 de Títulos (Directa ≥2000)'}
-          </strong>
-          <span>| Cero sellos digitales para firma física en bolígrafo.</span>
+      {/* Sticky Action Bar & Footer Asistido */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 shadow-xl print:hidden">
+        {/* Barra de Acciones Principales con Colores Institucionales */}
+        <div className="p-4 px-8 flex flex-wrap justify-between items-center gap-4 bg-white">
+          <div className="text-xs text-slate-600 font-medium flex items-center gap-2">
+            <span>Plantilla activa:</span>
+            <strong className={'px-2.5 py-1 rounded-full text-[11px] font-bold ' + (formData.tipoPlantilla === 'CertificadoTituloTipo2' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-900 border border-emerald-300')}>
+              {formData.tipoPlantilla === 'CertificadoTituloTipo2' ? '📜 Plantilla 2 de Títulos (Con Aclaratoria Histórica ≤1999)' : '✨ Plantilla 1 de Títulos (Directa ≥2000)'}
+            </strong>
+            <span className="text-slate-400 font-mono">| Cero sellos digitales</span>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={handleSaveDraft}
+              disabled={saving}
+              className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">save</span>
+              {saving ? 'Guardando...' : 'Guardar Documento'}
+            </button>
+
+            <button
+              type="button"
+              onClick={handlePrintFinal}
+              className="px-5 py-2.5 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">print</span>
+              Imprimir Documento Físico
+            </button>
+          </div>
         </div>
 
-        <div className="flex gap-4">
-          <Button
-            variant="ghost"
-            onClick={handleSaveDraft}
-            isLoading={saving}
-          >
-            {saving ? 'Guardando...' : 'Guardar Borrador'}
-          </Button>
+        {/* Footer Help Banner (Cintillo Inferior de Guía Rápida) */}
+        <div className="bg-slate-100 border-t border-slate-200 text-xs text-slate-600 py-2.5 px-8 flex items-center justify-between font-sans">
+          <div className="flex items-center gap-3 text-[11px]">
+            <span className="font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-1">
+              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '16px' }}>help</span>
+              Flujo Rápido:
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">1. Consultar Expediente</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">2. Ajustar/Editar en Panel Lateral</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#003366]">3. Guardar en Base de Datos</strong>] ➔
+            </span>
+            <span className="flex items-center gap-1">
+              [<strong className="text-[#C51D24]">4. Imprimir en Limpio</strong>]
+            </span>
+          </div>
 
-          <Button
-            variant="primary"
-            onClick={handlePrintFinal}
-          >
-            🖨️ Imprimir Certificado Clean (Físico)
-          </Button>
+          <div className="text-[10px] text-slate-500 font-mono">
+            Módulo de Títulos y Grados UAGRM
+          </div>
         </div>
       </div>
     </div>

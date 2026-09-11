@@ -26,7 +26,7 @@ export function CertificadoAutenticidadPage() {
   // Estado del Expediente
   const [, setExpediente] = useState<ExpedienteTitulos | null>(null);
 
-  // Variables de Negocio (Módulo Archivo Central - Tipo 3 Única Plantilla)
+  // Variables de Negocio (Módulo Archivo Central - Plantilla Oficial de Informe)
   const [correlativoInforme, setCorrelativoInforme] = useState('0472');
   const [fechaDoc, setFechaDoc] = useState('20 de abril de 2026');
   const [destinatarioNombre, setDestinatarioNombre] = useState('MSc. Edy Acosta Claros');
@@ -177,7 +177,7 @@ export function CertificadoAutenticidadPage() {
         tipoPlantilla: 'InformeArchivoCentralTipo3',
         filas: tableRows
       });
-      alert('Informe de Archivo Central (Tipo 3) guardado exitosamente.');
+      alert('Informe Oficial de Archivo Central guardado exitosamente.');
     } catch {
       alert('Error al guardar el documento.');
     } finally {
@@ -185,98 +185,71 @@ export function CertificadoAutenticidadPage() {
     }
   };
 
-  const getPaperClass = () => {
-    switch (paperSize) {
-      case 'oficio':
-        return 'w-[216mm] min-h-[356mm] p-[18mm]';
-      case 'a4':
-        return 'w-[210mm] min-h-[297mm] p-[16mm]';
-      case 'carta':
-      default:
-        return 'w-[216mm] min-h-[279mm] p-[18mm]';
-    }
-  };
-
   return (
-    <div className="flex flex-col h-full bg-[#F8FAFC]">
-      {/* Barra Superior con Acciones y Búsqueda */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
+      {/* Barra Superior Institucional Sin Badges de Tipo */}
+      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#003366] text-white rounded-xl shadow-sm">
-            <span className="font-bold text-xs">📄 Tipo 3</span>
+          <div className="p-2.5 bg-[#003366] text-white rounded-xl shadow-xs">
+            <span className="material-symbols-outlined text-[22px]">description</span>
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-900 tracking-tight">
-              Módulo Archivo Central — Informe de Archivo Central (Tipo 3)
+            <h1 className="text-base font-extrabold text-[#003366] font-heading tracking-tight">
+              Módulo Archivo Central — Informe Oficial de Autenticidad
             </h1>
-            <p className="text-xs text-slate-500 font-mono">
-              Estructura de Carta Formal con Destinatario y Cuadro Tabulado de 9 Columnas
+            <p className="text-xs text-slate-500 font-sans">
+              Formato Carta Formal con Destinatario y Cuadro Tabulado de 9 Columnas
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Buscador e Interacción */}
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={cargarEjemploOriginalFisico}
-            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-xs rounded-xl border border-blue-200 transition-colors"
+            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-xs rounded-xl border border-blue-200 transition-colors flex items-center gap-1.5"
           >
-            📋 Cargar Ejemplo Físico Original (0472)
+            <span className="material-symbols-outlined text-[16px]">article</span>
+            Cargar Ejemplo Físico (0472)
           </button>
 
-          <input
-            type="text"
-            placeholder="N° Diploma / C.I..."
-            value={searchDiploma}
-            onChange={(e) => setSearchDiploma(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
-            className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-mono w-44 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="button"
-            onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
-            disabled={isSearching}
-            className="px-3.5 py-2 bg-[#003366] text-white font-bold text-xs rounded-xl hover:bg-blue-900 transition-colors"
-          >
-            {isSearching ? 'Buscando...' : '🔍 Buscar'}
-          </button>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-medium">
+          <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-300">
+            <input
+              type="text"
+              placeholder="N° Diploma / C.I..."
+              value={searchDiploma}
+              onChange={(e) => setSearchDiploma(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
+              className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono w-44 focus:outline-none focus:ring-2 focus:ring-[#003366]"
+            />
             <button
-              onClick={() => setPaperSize('carta')}
-              className={'px-2.5 py-1 rounded-lg transition-all ' + (paperSize === 'carta' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900')}
+              type="button"
+              onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
+              disabled={isSearching}
+              className="px-3.5 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1 shadow-xs"
             >
-              Carta
-            </button>
-            <button
-              onClick={() => setPaperSize('oficio')}
-              className={'px-2.5 py-1 rounded-lg transition-all ' + (paperSize === 'oficio' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900')}
-            >
-              Oficio
-            </button>
-            <button
-              onClick={() => setPaperSize('a4')}
-              className={'px-2.5 py-1 rounded-lg transition-all ' + (paperSize === 'a4' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900')}
-            >
-              A4
+              <span className="material-symbols-outlined text-[16px]">search</span>
+              {isSearching ? 'Buscando...' : 'Buscar'}
             </button>
           </div>
 
           <button
             onClick={() => setShowWordEditor(!showWordEditor)}
-            className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors"
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs ${
+              showWordEditor ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-[#003366] text-white hover:bg-[#002244]'
+            }`}
           >
-            {showWordEditor ? 'Ocultar Panel' : 'Panel Word'}
+            <span className="material-symbols-outlined text-[18px]">edit_note</span>
+            {showWordEditor ? 'Ocultar Panel' : 'Panel de Edición Word'}
           </button>
         </div>
       </div>
 
       {/* Contenedor Hoja Impresa Clean + Panel Word */}
-      <div className="flex-1 overflow-auto p-6 flex justify-center gap-6">
+      <div className="flex-1 p-6 flex justify-center gap-6 overflow-auto">
         
-        {/* Renderizado Estricto del Componente Tipo 3 de Archivo Central */}
+        {/* Renderizado Estricto del Componente de Archivo Central */}
         <div className="bg-slate-200/80 p-8 rounded-2xl border border-slate-300 overflow-auto flex justify-center items-start shadow-inner flex-1">
           <InformeArchivoCentralTipo3
             correlativoInforme={correlativoInforme}
@@ -301,15 +274,36 @@ export function CertificadoAutenticidadPage() {
 
         {/* Panel Lateral de Edición Estilo Word (Derecha) */}
         {showWordEditor && (
-          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-sm border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[85vh]">
+          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-sm border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[82vh]">
             
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">
-                Panel Word (Archivo Central - Tipo 3)
+            <div className="border-b border-slate-200 pb-3 space-y-2">
+              <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>edit_document</span>
+                Panel de Edición Word & Formato
               </h3>
-              <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
-                1 Única Plantilla
-              </span>
+              
+              {/* Formato de Hoja Dentro del Panel Lateral */}
+              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
+                <label className="text-[10px] font-extrabold text-[#003366] block uppercase tracking-wider">
+                  📄 Tamaño de Hoja (Formato Impresión):
+                </label>
+                <div className="flex gap-1.5">
+                  {(['carta', 'oficio', 'a4'] as const).map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      onClick={() => setPaperSize(size)}
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-lg border transition-all uppercase ${
+                        paperSize === size
+                          ? 'bg-[#003366] text-white border-[#003366] shadow-xs'
+                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Sección 1: Encabezado & Destinatario */}
@@ -326,7 +320,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={correlativoInforme}
                   onChange={(e) => setCorrelativoInforme(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366]"
                 />
               </div>
 
@@ -350,7 +344,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={destinatarioNombre}
                   onChange={(e) => setDestinatarioNombre(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-[#003366]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-800"
                 />
               </div>
 
@@ -367,8 +361,8 @@ export function CertificadoAutenticidadPage() {
               </div>
             </div>
 
-            {/* Sección 2: Solicitud Legal & Titular */}
-            <div className="space-y-3">
+            {/* Sección 2: Solicitud Legal & Interesada */}
+            <div className="space-y-3 border-t border-slate-200 pt-4">
               <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
                 2. Solicitud Legal & Interesada
               </h4>
@@ -381,7 +375,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={titularNombre}
                   onChange={(e) => setTitularNombre(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-[#003366]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-900 uppercase"
                 />
               </div>
 
@@ -393,7 +387,7 @@ export function CertificadoAutenticidadPage() {
                   type="text"
                   value={titularCi}
                   onChange={(e) => setTitularCi(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366]"
                 />
               </div>
 
@@ -435,7 +429,7 @@ export function CertificadoAutenticidadPage() {
               </div>
             </div>
 
-            {/* Sección 3: Tabla & Cláusulas Condicionales */}
+            {/* Sección 3: Tabla Matriz & Opciones */}
             <div className="space-y-3 border-t border-slate-200 pt-4">
               <div className="flex justify-between items-center">
                 <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
@@ -444,9 +438,10 @@ export function CertificadoAutenticidadPage() {
                 <button
                   type="button"
                   onClick={handleAddRow}
-                  className="px-2 py-1 bg-blue-50 text-[#003366] text-[10px] font-bold rounded border border-blue-200"
+                  className="px-2.5 py-1 border border-[#003366] text-[#003366] hover:bg-blue-50 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs font-sans"
                 >
-                  + Fila
+                  <span className="material-symbols-outlined text-[14px]">add</span>
+                  Fila
                 </button>
               </div>
 
@@ -460,7 +455,7 @@ export function CertificadoAutenticidadPage() {
                       <button
                         type="button"
                         onClick={() => handleRemoveRow(row.id)}
-                        className="text-red-600 text-[10px] font-bold"
+                        className="text-red-600 text-[10px] font-bold hover:underline"
                       >
                         Eliminar
                       </button>
@@ -512,23 +507,23 @@ export function CertificadoAutenticidadPage() {
               ))}
 
               <div className="space-y-2 pt-2">
-                <label className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
                   <span>Párrafo Aclaratorio Histórico:</span>
                   <input
                     type="checkbox"
                     checked={incluirAclaratoriaHistorica}
                     onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
                   />
                 </label>
 
-                <label className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
                   <span>Párrafo Supletorio:</span>
                   <input
                     type="checkbox"
                     checked={incluirSupletorio}
                     onChange={(e) => setIncluirSupletorio(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
                   />
                 </label>
 
@@ -546,23 +541,25 @@ export function CertificadoAutenticidadPage() {
               </div>
             </div>
 
-            {/* Acciones al Final del Panel Lateral */}
+            {/* Acciones del Panel Lateral con Colores Institucionales */}
             <div className="pt-4 border-t border-slate-200 space-y-3">
               <button
                 type="button"
                 onClick={handleSaveDocument}
                 disabled={isSaving}
-                className="w-full py-2.5 bg-[#003366] hover:bg-blue-900 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
+                className="w-full py-3 bg-[#003366] hover:bg-[#002244] text-white rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
               >
-                {isSaving ? 'Guardando Cambios...' : 'Guardar Documento'}
+                <span className="material-symbols-outlined text-[18px]">save</span>
+                {isSaving ? 'Guardando...' : 'Guardar en Base de Datos'}
               </button>
 
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
+                className="w-full py-3 bg-[#C51D24] hover:bg-[#A0161C] text-white rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
               >
-                🖨️ IMPRIMIR INFORME FÍSICO ({paperSize.toUpperCase()})
+                <span className="material-symbols-outlined text-[18px]">print</span>
+                Imprimir Documento Físico ({paperSize.toUpperCase()})
               </button>
             </div>
 
@@ -570,6 +567,37 @@ export function CertificadoAutenticidadPage() {
         )}
 
       </div>
+
+      {/* FOOTER ASISTIDO (BARRA INFERIOR DE GUÍA RÁPIDA) */}
+      <footer className="sticky bottom-0 left-0 right-0 bg-slate-100 border-t border-slate-200 text-xs text-slate-600 py-2.5 px-6 flex flex-wrap items-center justify-between font-sans z-40 shadow-inner">
+        <div className="flex items-center gap-6">
+          <span className="font-extrabold text-[#003366] uppercase text-[11px] tracking-wider flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>help</span>
+            Guía Rápida de Operación:
+          </span>
+          <div className="flex items-center gap-4 text-[11px] font-medium text-slate-700">
+            <span className="flex items-center gap-1">
+              <strong className="text-[#003366]">1.</strong> Consultar expediente (C.I. / N° Diploma)
+            </span>
+            <span className="text-slate-400">➔</span>
+            <span className="flex items-center gap-1">
+              <strong className="text-[#003366]">2.</strong> Editar en Panel Lateral
+            </span>
+            <span className="text-slate-400">➔</span>
+            <span className="flex items-center gap-1">
+              <strong className="text-[#003366]">3.</strong> Guardar en Base de Datos
+            </span>
+            <span className="text-slate-400">➔</span>
+            <span className="flex items-center gap-1">
+              <strong className="text-[#C51D24]">4.</strong> Imprimir Documento Limpio
+            </span>
+          </div>
+        </div>
+
+        <div className="text-[10px] text-slate-500 font-mono">
+          Sistema de Emisión de Documentos UAGRM • Archivo Central
+        </div>
+      </footer>
     </div>
   );
 }

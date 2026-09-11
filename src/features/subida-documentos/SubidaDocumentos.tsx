@@ -1,6 +1,160 @@
 import { useState, useRef } from 'react';
 import { titulosApi } from '../titulos/api/titulos-api';
 
+interface DocumentoLegajo {
+  id: string;
+  nombreArchivo: string;
+  tipoDocumento: string;
+  formato: 'pdf' | 'png' | 'jpg';
+  fechaHora: string;
+  tamano: string;
+  confianzaOcr: string;
+}
+
+interface LegajoEstudiante {
+  id: string;
+  ci: string;
+  ru: string;
+  titularNombre: string;
+  carrera: string;
+  facultad: string;
+  libro: string;
+  tomo: string;
+  folio: string;
+  gestion: string;
+  estadoOcr: 'Procesado (100%)' | 'Procesado (98%)' | 'Pendiente Convalidación';
+  documentos: DocumentoLegajo[];
+}
+
+const LEGAJOS_PROCESADOS: LegajoEstudiante[] = [
+  {
+    id: 'LEG-01',
+    ci: '3250858-SCZ',
+    ru: '219084732',
+    titularNombre: 'JENNY FLORES PEÑA',
+    carrera: 'BACHILLER EN HUMANIDADES',
+    facultad: 'FACULTAD DE HUMANIDADES',
+    libro: '19/98',
+    tomo: '02',
+    folio: '115/98',
+    gestion: '1998',
+    estadoOcr: 'Procesado (98%)',
+    documentos: [
+      {
+        id: 'DOC-101',
+        nombreArchivo: 'CI_JENNY_FLORES_PEÑA.pdf',
+        tipoDocumento: 'Cédula de Identidad Escaneada',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 10:15',
+        tamano: '1.2 MB',
+        confianzaOcr: '99%'
+      },
+      {
+        id: 'DOC-102',
+        nombreArchivo: 'HISTORICO_NOTAS_JENNY_FLORES.pdf',
+        tipoDocumento: 'Histórico Académico & Certificado de Notas',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 10:16',
+        tamano: '3.4 MB',
+        confianzaOcr: '98%'
+      },
+      {
+        id: 'DOC-103',
+        nombreArchivo: 'DIPLOMA_BACHILLER_014863.pdf',
+        tipoDocumento: 'Diploma de Bachiller / Título Académico',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 10:17',
+        tamano: '2.8 MB',
+        confianzaOcr: '97%'
+      },
+      {
+        id: 'DOC-104',
+        nombreArchivo: 'FORMULARIO_REQUISITOS_TRAMITE.pdf',
+        tipoDocumento: 'Formularios de Trámite y Requisitos',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 10:18',
+        tamano: '850 KB',
+        confianzaOcr: '99%'
+      }
+    ]
+  },
+  {
+    id: 'LEG-02',
+    ci: '8072900-SCZ',
+    ru: '21809931',
+    titularNombre: 'CARLOS MENDOZA ARTEAGA',
+    carrera: 'MEDICINA CIRUGÍA',
+    facultad: 'FACULTAD DE MEDICINA',
+    libro: '05/2022',
+    tomo: '01',
+    folio: '42/2022',
+    gestion: '2022',
+    estadoOcr: 'Procesado (100%)',
+    documentos: [
+      {
+        id: 'DOC-201',
+        nombreArchivo: 'CI_CARLOS_MENDOZA.pdf',
+        tipoDocumento: 'Cédula de Identidad Escaneada',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 09:40',
+        tamano: '1.1 MB',
+        confianzaOcr: '100%'
+      },
+      {
+        id: 'DOC-202',
+        nombreArchivo: 'HISTORICO_MEDICINA_MENDOZA.pdf',
+        tipoDocumento: 'Histórico Académico & Certificado de Notas',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 09:41',
+        tamano: '4.1 MB',
+        confianzaOcr: '99%'
+      },
+      {
+        id: 'DOC-203',
+        nombreArchivo: 'TITULO_PROVISION_NACIONAL_96071.pdf',
+        tipoDocumento: 'Título en Provisión Nacional',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 09:42',
+        tamano: '2.5 MB',
+        confianzaOcr: '100%'
+      }
+    ]
+  },
+  {
+    id: 'LEG-03',
+    ci: '4510293-CB',
+    ru: '21500192',
+    titularNombre: 'MARIA SUAREZ ROJAS',
+    carrera: 'DERECHO',
+    facultad: 'FACULTAD DE CIENCIAS JURÍDICAS',
+    libro: '01/1995',
+    tomo: '03',
+    folio: '88/1995',
+    gestion: '1995',
+    estadoOcr: 'Pendiente Convalidación',
+    documentos: [
+      {
+        id: 'DOC-301',
+        nombreArchivo: 'CI_MARIA_SUAREZ.pdf',
+        tipoDocumento: 'Cédula de Identidad Escaneada',
+        formato: 'pdf',
+        fechaHora: '11/09/2026 08:12',
+        tamano: '980 KB',
+        confianzaOcr: '95%'
+      },
+      {
+        id: 'DOC-302',
+        nombreArchivo: 'LIBRO_MATRIZ_1995_SCAN.png',
+        tipoDocumento: 'Libro Matriz Antiguo Escaneado',
+        formato: 'png',
+        fechaHora: '11/09/2026 08:14',
+        tamano: '5.6 MB',
+        confianzaOcr: '90%'
+      }
+    ]
+  }
+];
+
 export function SubidaDocumentos() {
   const [captureMethod, setCaptureMethod] = useState<'upload' | 'scanner' | 'qr'>('upload');
   
@@ -11,8 +165,10 @@ export function SubidaDocumentos() {
 
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
+  const [selectedDocumentTitle, setSelectedDocumentTitle] = useState<string>('CI_JENNY_FLORES_PEÑA.pdf');
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [expandedLegajoId, setExpandedLegajoId] = useState<string | null>('LEG-01');
 
   const [formData, setFormData] = useState({
     ci: '3250858-SCZ',
@@ -41,20 +197,7 @@ export function SubidaDocumentos() {
     setFile(selectedFile);
     const url = URL.createObjectURL(selectedFile);
     setPreviewUrl(url);
-    
-    setFormData({
-      ci: '3250858-SCZ',
-      ru: '219084732',
-      nombre: 'JENNY FLORES PEÑA',
-      carrera: 'BACHILLER EN HUMANIDADES',
-      facultad: 'FACULTAD DE HUMANIDADES',
-      libro: 'L-19/98',
-      tomo: 'T-02',
-      folio: 'F-115',
-      gestion: '1998',
-      tipoDocumento: 'Título Supletorio',
-      observaciones: 'Texto detectado mediante Celery OCR Engine'
-    });
+    setSelectedDocumentTitle(selectedFile.name);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -70,6 +213,24 @@ export function SubidaDocumentos() {
     if (method === 'upload') {
       fileInputRef.current?.click();
     }
+  };
+
+  const handleSelectDocument = (legajo: LegajoEstudiante, doc: DocumentoLegajo) => {
+    setFormData({
+      ci: legajo.ci,
+      ru: legajo.ru,
+      nombre: legajo.titularNombre,
+      carrera: legajo.carrera,
+      facultad: legajo.facultad,
+      libro: legajo.libro,
+      tomo: legajo.tomo,
+      folio: legajo.folio,
+      gestion: legajo.gestion,
+      tipoDocumento: doc.tipoDocumento,
+      observaciones: `Cargado reactivamente desde el Legajo Digital (${doc.nombreArchivo})`
+    });
+    setSelectedDocumentTitle(doc.nombreArchivo);
+    alert(`Documento '${doc.nombreArchivo}' cargado al visor para ${legajo.titularNombre}.`);
   };
 
   const handleSaveExpediente = async (e: React.FormEvent) => {
@@ -110,10 +271,10 @@ export function SubidaDocumentos() {
         <div>
           <h2 className="text-xl font-extrabold text-[#003366] font-heading tracking-tight flex items-center gap-2">
             <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '28px' }}>document_scanner</span>
-            3. Digitalización OCR & Convalidación de Expedientes
+            3. Digitalización OCR & Legajos Académicos
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Módulo interactivo para captura de expedientes físicos, extracción automática de metadatos OCR y convalidación institucional.
+            Gestión de Carpetas Multidocumento por Estudiante y Convalidación OCR Institucional.
           </p>
         </div>
         
@@ -157,15 +318,15 @@ export function SubidaDocumentos() {
       {/* Grid Principal Dividido: Visor Interactivo (Izquierda) + Formulario OCR (Derecha) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* COLUMNA IZQUIERDA: Visor de Documento Escaneado / Legajo (7 Cols) */}
+        {/* COLUMNA IZQUIERDA: Visor de Legajo (7 Cols) */}
         <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
           <div className="flex justify-between items-center border-b border-slate-200 pb-3">
             <h3 className="text-xs font-bold text-[#003366] uppercase tracking-wider flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C51D24]">preview</span>
-              Visor de Legajo Original Escaneado
+              Visor: <span className="font-mono text-slate-700">{selectedDocumentTitle}</span>
             </h3>
             
-            {/* Controles del Visor (Zoom, Rotación) */}
+            {/* Controles del Visor */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -195,7 +356,7 @@ export function SubidaDocumentos() {
             </div>
           </div>
 
-          {/* Área Dropzone / Previsualización */}
+          {/* Área Previsualización */}
           <div
             onDragOver={e => { e.preventDefault(); setDragActive(true); }}
             onDragLeave={() => setDragActive(false)}
@@ -223,18 +384,18 @@ export function SubidaDocumentos() {
             ) : (
               <div className="space-y-4 max-w-sm">
                 <div className="w-16 h-16 rounded-full bg-blue-100 text-[#003366] flex items-center justify-center mx-auto shadow-xs">
-                  <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>cloud_upload</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>folder_open</span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800">Arrastre y suelte el legajo digitalizado aquí</h4>
-                  <p className="text-xs text-slate-500 mt-1">Soporta formatos PDF, PNG, JPG de alta resolución (Hasta 50MB)</p>
+                  <h4 className="text-sm font-bold text-slate-800">Visualizando: {selectedDocumentTitle}</h4>
+                  <p className="text-xs text-slate-500 mt-1">Seleccione un documento de la carpeta del legajo inferior o suba un nuevo PDF.</p>
                 </div>
                 <button
                   type="button"
                   onClick={e => { e.stopPropagation(); fileInputRef.current?.click(); }}
-                  className="px-4 py-2 bg-[#003366] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+                  className="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white rounded-xl text-xs font-bold transition-all shadow-sm"
                 >
-                  Examinar Archivo Local
+                  Subir Nuevo Archivo
                 </button>
               </div>
             )}
@@ -387,7 +548,7 @@ export function SubidaDocumentos() {
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-[#003366] focus:bg-white focus:outline-none"
               >
                 <option value="Título Supletorio">Título Supletorio</option>
-                <option value="Certificado de Autenticidad (Tipo 3)">Certificado de Autenticidad (Tipo 3)</option>
+                <option value="Certificado de Autenticidad">Certificado de Autenticidad</option>
                 <option value="Diploma de Bachiller">Diploma de Bachiller</option>
                 <option value="Título en Provisión Nacional">Título en Provisión Nacional</option>
               </select>
@@ -399,7 +560,7 @@ export function SubidaDocumentos() {
             <button
               type="submit"
               disabled={uploading}
-              className="w-full py-3 bg-[#003366] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
+              className="w-full py-3 bg-[#003366] hover:bg-[#002244] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">verified</span>
               {uploading ? 'Guardando Expediente...' : 'Convalidar y Registrar Expediente'}
@@ -409,170 +570,119 @@ export function SubidaDocumentos() {
 
       </div>
 
-      {/* 3. BANDEJA INFERIOR DE ARCHIVOS / EXPEDIENTES PROCESADOS EN LOTE */}
+      {/* 3. BANDEJA INFERIOR: LEGAJO ACADÉMICO COMO CARPETA MULTIDOCUMENTO */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
         <div className="flex justify-between items-center border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-[#003366]"></span>
             <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '20px' }}>folder_managed</span>
-              Historial de Expedientes & Legajos Procesados (Lote Actual)
+              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '20px' }}>folder_shared</span>
+              Bandeja de Legajos Digitales (Estructura de Carpeta por Estudiante)
             </h3>
           </div>
           <span className="px-3 py-1 bg-blue-50 text-[#003366] font-mono text-xs font-bold rounded-full border border-blue-200">
-            3 Archivos en Lista
+            {LEGAJOS_PROCESADOS.length} Carpetas de Estudiantes
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-sans border-collapse">
-            <thead>
-              <tr className="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
-                <th className="p-3 rounded-l-xl">Archivo / Vista Previa</th>
-                <th className="p-3">Fecha / Hora Carga</th>
-                <th className="p-3">C.I. Detectado</th>
-                <th className="p-3">Titular / Expediente</th>
-                <th className="p-3">Estado OCR</th>
-                <th className="p-3 text-right rounded-r-xl">Acción Directa</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr className="hover:bg-slate-50 transition-colors">
-                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-red-600">picture_as_pdf</span>
-                  <span>EXPEDIENTE_JENNY_FLORES_3250858.pdf</span>
-                </td>
-                <td className="p-3 text-slate-600 font-mono">11/09/2026 10:15</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
-                    3250858-SCZ
-                  </span>
-                </td>
-                <td className="p-3 font-bold text-slate-800">JENNY FLORES PEÑA</td>
-                <td className="p-3">
-                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    Procesado (98%)
-                  </span>
-                </td>
-                <td className="p-3 text-right">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormData({
-                        ci: '3250858-SCZ',
-                        ru: '219084732',
-                        nombre: 'JENNY FLORES PEÑA',
-                        carrera: 'BACHILLER EN HUMANIDADES',
-                        facultad: 'FACULTAD DE HUMANIDADES',
-                        libro: '19/98',
-                        tomo: '02',
-                        folio: '115/98',
-                        gestion: '1998',
-                        tipoDocumento: 'Título Supletorio',
-                        observaciones: 'Cargado reactivamente desde el historial'
-                      });
-                      alert('Expediente de JENNY FLORES PEÑA cargado al visor y formulario OCR.');
-                    }}
-                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">visibility</span>
-                    Cargar al Visor
-                  </button>
-                </td>
-              </tr>
+        <div className="space-y-3">
+          {LEGAJOS_PROCESADOS.map((legajo) => {
+            const isExpanded = expandedLegajoId === legajo.id;
+            return (
+              <div key={legajo.id} className="border border-slate-200 rounded-xl overflow-hidden shadow-xs transition-all">
+                
+                {/* Cabecera de la Carpeta del Estudiante */}
+                <div 
+                  onClick={() => setExpandedLegajoId(isExpanded ? null : legajo.id)}
+                  className="bg-slate-100/90 hover:bg-blue-50/60 p-4 flex flex-wrap items-center justify-between gap-4 cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-[#003366]" style={{ fontSize: '28px' }}>
+                      {isExpanded ? 'folder_open' : 'folder'}
+                    </span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-extrabold text-sm text-[#003366] font-heading uppercase">
+                          {legajo.titularNombre}
+                        </h4>
+                        <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
+                          C.I. {legajo.ci}
+                        </span>
+                        <span className="px-2 py-0.5 bg-slate-200 text-slate-700 font-mono text-[10px] rounded">
+                          R.U. {legajo.ru}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        {legajo.carrera} • Matriz: Libro {legajo.libro} | Folio {legajo.folio} ({legajo.gestion})
+                      </p>
+                    </div>
+                  </div>
 
-              <tr className="hover:bg-slate-50 transition-colors">
-                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-red-600">picture_as_pdf</span>
-                  <span>CERT_CARLOS_MENDOZA_8072900.pdf</span>
-                </td>
-                <td className="p-3 text-slate-600 font-mono">11/09/2026 09:40</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
-                    8072900-SCZ
-                  </span>
-                </td>
-                <td className="p-3 font-bold text-slate-800">CARLOS MENDOZA ARTEAGA</td>
-                <td className="p-3">
-                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    Procesado (100%)
-                  </span>
-                </td>
-                <td className="p-3 text-right">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormData({
-                        ci: '8072900-SCZ',
-                        ru: '21809931',
-                        nombre: 'CARLOS MENDOZA ARTEAGA',
-                        carrera: 'MEDICINA CIRUGÍA',
-                        facultad: 'FACULTAD DE MEDICINA',
-                        libro: '05/2022',
-                        tomo: '01',
-                        folio: '42/2022',
-                        gestion: '2022',
-                        tipoDocumento: 'Título en Provisión Nacional',
-                        observaciones: 'Expediente digitalizado con validación automatizada'
-                      });
-                      alert('Expediente de CARLOS MENDOZA ARTEAGA cargado al visor y formulario OCR.');
-                    }}
-                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">visibility</span>
-                    Cargar al Visor
-                  </button>
-                </td>
-              </tr>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-2.5 py-1 font-bold rounded-full text-[10px] inline-flex items-center gap-1 ${
+                      legajo.estadoOcr.includes('100%')
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : legajo.estadoOcr.includes('98%')
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                      {legajo.estadoOcr}
+                    </span>
 
-              <tr className="hover:bg-slate-50 transition-colors">
-                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-amber-600">image</span>
-                  <span>HISTORICO_MARIA_SUAREZ_SCAN.png</span>
-                </td>
-                <td className="p-3 text-slate-600 font-mono">11/09/2026 08:12</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 bg-amber-100 text-amber-900 font-mono font-bold rounded text-[11px]">
-                    4510293-CB
-                  </span>
-                </td>
-                <td className="p-3 font-bold text-slate-800">MARIA SUAREZ ROJAS</td>
-                <td className="p-3">
-                  <span className="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                    Pendiente Convalidación
-                  </span>
-                </td>
-                <td className="p-3 text-right">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormData({
-                        ci: '4510293-CB',
-                        ru: '21500192',
-                        nombre: 'MARIA SUAREZ ROJAS',
-                        carrera: 'DERECHO',
-                        facultad: 'FACULTAD DE CIENCIAS JURÍDICAS',
-                        libro: '01/1995',
-                        tomo: '03',
-                        folio: '88/1995',
-                        gestion: '1995',
-                        tipoDocumento: 'Título Académico',
-                        observaciones: 'Libro antiguo con desgaste de tinta'
-                      });
-                      alert('Expediente de MARIA SUAREZ ROJAS cargado al visor y formulario OCR.');
-                    }}
-                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">visibility</span>
-                    Cargar al Visor
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <span className="px-3 py-1 bg-white text-[#003366] font-bold text-xs rounded-lg border border-slate-300 flex items-center gap-1 shadow-2xs">
+                      {legajo.documentos.length} PDFs en Carpeta
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                        {isExpanded ? 'expand_less' : 'expand_more'}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Despliegue de los Documentos de la Carpeta del Estudiante */}
+                {isExpanded && (
+                  <div className="p-4 bg-white border-t border-slate-200 space-y-2">
+                    <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 pl-2">
+                      📁 Documentos Digitalizados Asociados al C.I. {legajo.ci}:
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {legajo.documentos.map((doc) => (
+                        <div 
+                          key={doc.id}
+                          className="p-3 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-xl flex items-center justify-between gap-3 transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="material-symbols-outlined text-red-600 shrink-0" style={{ fontSize: '24px' }}>
+                              {doc.formato === 'pdf' ? 'picture_as_pdf' : 'image'}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="font-bold text-xs text-slate-800 truncate">
+                                {doc.tipoDocumento}
+                              </p>
+                              <p className="text-[10px] text-slate-500 font-mono truncate">
+                                {doc.nombreArchivo} ({doc.tamano})
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleSelectDocument(legajo, doc)}
+                            className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
+                          >
+                            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>visibility</span>
+                            Cargar al Visor
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            );
+          })}
         </div>
       </div>
 
