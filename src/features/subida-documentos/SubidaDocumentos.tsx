@@ -93,7 +93,7 @@ export function SubidaDocumentos() {
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12 font-sans bg-[#F8FAFC]">
+    <div className="max-w-[1600px] mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12 font-sans bg-[#F8FAFC]">
       
       {/* Input de archivo oculto */}
       <input 
@@ -105,477 +105,310 @@ export function SubidaDocumentos() {
         id="expediente-file-input"
       />
 
-      {/* 1. Barra de Métodos de Captura */}
-      <div className="card p-4 space-y-3 bg-white border border-[#E2E8F0] shadow-sm rounded-2xl">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[#E2E8F0] pb-3">
-          <div>
-            <h1 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#003366]">document_scanner</span>
-              Digitalización & Escaneo OCR de Expedientes
-            </h1>
-            <p className="text-[#64748B] text-xs mt-0.5">
-              Haga clic en 'Subir PDF / Archivo' para explorar en su equipo o arrastre directamente en el visor de la izquierda
-            </p>
-          </div>
-          
-          <span className="badge-status-publicado font-mono text-[10px] flex items-center gap-1">
-            <span className="material-symbols-outlined text-[#1B7A43]" style={{ fontSize: '14px' }}>bolt</span>
-            Motor OCR Activo (300 DPI)
-          </span>
+      {/* Encabezado Principal */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 className="text-xl font-extrabold text-[#003366] font-heading tracking-tight flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '28px' }}>document_scanner</span>
+            3. Digitalización OCR & Convalidación de Expedientes
+          </h2>
+          <p className="text-xs text-slate-500 mt-1">
+            Módulo interactivo para captura de expedientes físicos, extracción automática de metadatos OCR y convalidación institucional.
+          </p>
         </div>
-
-        {/* 3 Pestañas de Métodos de Captura Directa */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        
+        {/* Pestañas de Método de Captura */}
+        <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200 gap-1">
           <button
             type="button"
             onClick={() => handleTabClick('upload')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
-              captureMethod === 'upload'
-                ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
-                : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              captureMethod === 'upload' ? 'bg-[#003366] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'
             }`}
           >
-            <div className="w-9 h-9 rounded-lg bg-blue-100 text-[#003366] flex items-center justify-center font-bold text-base shrink-0">
-              <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>upload_file</span>
-            </div>
-            <div>
-              <div className="text-xs font-extrabold uppercase">1. Subir PDF / Archivo</div>
-              <div className={`text-[10px] ${captureMethod === 'upload' ? 'text-slate-200' : 'text-[#64748B]'}`}>Explorar en equipo / Carga inmediata</div>
-            </div>
+            <span className="material-symbols-outlined text-[18px]">upload_file</span>
+            Subir Archivo / PDF
           </button>
 
           <button
             type="button"
             onClick={() => handleTabClick('scanner')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
-              captureMethod === 'scanner'
-                ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
-                : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              captureMethod === 'scanner' ? 'bg-[#003366] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'
             }`}
           >
-            <div className="w-9 h-9 rounded-lg bg-emerald-100 text-[#1B7A43] flex items-center justify-center font-bold text-base shrink-0">
-              <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>print</span>
-            </div>
-            <div>
-              <div className="text-xs font-extrabold uppercase">2. Escanear Documento</div>
-              <div className={`text-[10px] ${captureMethod === 'scanner' ? 'text-slate-200' : 'text-[#64748B]'}`}>Conexión Escáner TWAIN</div>
-            </div>
+            <span className="material-symbols-outlined text-[18px]">scanner</span>
+            Escáner Físico USB
           </button>
 
           <button
             type="button"
             onClick={() => handleTabClick('qr')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
-              captureMethod === 'qr'
-                ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
-                : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              captureMethod === 'qr' ? 'bg-[#003366] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'
             }`}
           >
-            <div className="w-9 h-9 rounded-lg bg-amber-100 text-[#E5A823] flex items-center justify-center font-bold text-base shrink-0">
-              <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>qr_code_scanner</span>
-            </div>
-            <div>
-              <div className="text-xs font-extrabold uppercase">3. Captura Móvil / Celular</div>
-              <div className={`text-[10px] ${captureMethod === 'qr' ? 'text-slate-200' : 'text-[#64748B]'}`}>Escanear QR con Cámara</div>
-            </div>
+            <span className="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+            Escanear Código QR
           </button>
         </div>
-
-        {/* Paneles Informativos Slim */}
-        {captureMethod === 'scanner' && (
-          <div className="p-3 rounded-xl bg-slate-50 border border-[#E2E8F0] flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-xs text-[#1E293B]">
-              <span className="w-2 h-2 rounded-full bg-[#1B7A43] animate-pulse"></span>
-              <span className="font-bold">Escáner TWAIN Ventanilla (Fujitsu fi-7160):</span> Listo para capturar
-            </div>
-            <button
-              type="button"
-              onClick={() => alert('Escaneo TWAIN iniciado. Imagen capturada y enviada al visor.')}
-              className="btn-secundario-curvo py-1.5 px-4 text-xs flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>play_arrow</span>
-              Iniciar Escaneo Directo
-            </button>
-          </div>
-        )}
-
-        {captureMethod === 'qr' && (
-          <div className="p-3 rounded-xl bg-slate-50 border border-[#E2E8F0] flex items-center gap-4">
-            <div className="w-12 h-12 bg-white p-1 rounded-lg border border-[#E2E8F0] flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[#003366]" style={{ fontSize: '32px' }}>qr_code_2</span>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-[#003366]">Escanee este Código QR desde su Celular</h4>
-              <p className="text-[11px] text-[#64748B]">Sincronice la fotografía directamente al visor. Session: <span className="font-mono font-bold text-[#E5A823]">QR-UAGRM-99014</span></p>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* 2. Split-Screen 50/50 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      {/* Grid Principal Dividido: Visor Interactivo (Izquierda) + Formulario OCR (Derecha) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* PANEL IZQUIERDO: Visor de Legajo Original */}
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 space-y-4 shadow-sm flex flex-col min-h-[620px]">
-          
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
-            <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#003366]">image</span>
-              Visor de Legajo Original
+        {/* COLUMNA IZQUIERDA: Visor de Documento Escaneado / Legajo (7 Cols) */}
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+          <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+            <h3 className="text-xs font-bold text-[#003366] uppercase tracking-wider flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#C51D24]">preview</span>
+              Visor de Legajo Original Escaneado
             </h3>
             
+            {/* Controles del Visor (Zoom, Rotación) */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="px-2.5 py-1 text-xs font-bold text-[#003366] bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors flex items-center gap-1 cursor-pointer shadow-xs"
-                title="Cambiar o cargar otro archivo"
+                onClick={() => setZoomLevel(prev => Math.max(50, prev - 15))}
+                className="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs"
+                title="Alejar Zoom"
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>folder_open</span>
-                <span>{previewUrl ? 'Cambiar archivo' : 'Examinar'}</span>
+                🔍-
               </button>
-
-              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-[#E2E8F0] text-xs">
-                <button
-                  type="button"
-                  onClick={() => setZoomLevel(prev => Math.max(prev - 15, 50))}
-                  className="p-1 hover:bg-slate-200 rounded text-[#1E293B] flex items-center"
-                  title="Alejar"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>zoom_out</span>
-                </button>
-                <span className="font-mono text-[10px] text-[#003366] font-bold px-1">{zoomLevel}%</span>
-                <button
-                  type="button"
-                  onClick={() => setZoomLevel(prev => Math.min(prev + 15, 200))}
-                  className="p-1 hover:bg-slate-200 rounded text-[#1E293B] flex items-center"
-                  title="Acercar"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>zoom_in</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRotationAngle(prev => (prev + 90) % 360)}
-                  className="p-1 hover:bg-slate-200 rounded text-[#C51D24] ml-1 flex items-center gap-0.5"
-                  title="Rotar 90°"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>rotate_right</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setZoomLevel(100); setRotationAngle(0); }}
-                  className="p-1 hover:bg-slate-200 rounded text-[#64748B] flex items-center"
-                  title="Restablecer"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>restart_alt</span>
-                </button>
-              </div>
+              <span className="text-xs font-mono font-bold text-slate-700 w-12 text-center">{zoomLevel}%</span>
+              <button
+                type="button"
+                onClick={() => setZoomLevel(prev => Math.min(200, prev + 15))}
+                className="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs"
+                title="Acercar Zoom"
+              >
+                🔍+
+              </button>
+              <button
+                type="button"
+                onClick={() => setRotationAngle(prev => (prev + 90) % 360)}
+                className="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-bold text-xs"
+                title="Rotar 90°"
+              >
+                🔄 Rotar
+              </button>
             </div>
           </div>
 
-          <div className="flex-1 relative min-h-[520px] bg-slate-50/60 rounded-xl border border-[#E2E8F0] flex items-center justify-center overflow-hidden p-4">
-            
+          {/* Área Dropzone / Previsualización */}
+          <div
+            onDragOver={e => { e.preventDefault(); setDragActive(true); }}
+            onDragLeave={() => setDragActive(false)}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`min-h-[520px] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-all ${
+              dragActive
+                ? 'border-[#003366] bg-blue-50/50 scale-[0.99]'
+                : file
+                ? 'border-slate-300 bg-slate-50'
+                : 'border-slate-300 hover:border-[#003366] bg-slate-50/70 hover:bg-blue-50/30'
+            }`}
+          >
             {previewUrl ? (
-              <div className="w-full h-full flex items-center justify-center overflow-auto">
-                <div 
-                  className="transition-transform duration-200 ease-out flex justify-center"
-                  style={{
-                    transform: `scale(${zoomLevel / 100}) rotate(${rotationAngle}deg)`,
-                  }}
-                >
-                  <img 
-                    src={previewUrl} 
-                    alt="Previsualización Expediente" 
-                    className="max-h-[480px] w-auto object-contain rounded-lg shadow-md border border-[#E2E8F0]"
-                  />
-                </div>
+              <div 
+                className="w-full h-full flex items-center justify-center overflow-auto transition-transform duration-200"
+                style={{ transform: `scale(${zoomLevel / 100}) rotate(${rotationAngle}deg)` }}
+              >
+                {file?.type === 'application/pdf' ? (
+                  <iframe src={previewUrl} className="w-full h-[500px] rounded-lg border border-slate-300" title="PDF Visor" />
+                ) : (
+                  <img src={previewUrl} alt="Vista Previa Documento" className="max-h-[500px] object-contain rounded-lg shadow-sm" />
+                )}
               </div>
             ) : (
-              /* DROPZONE EMBEBIDA EN VISOR VACÍO */
-              <div 
-                onDragOver={e => { e.preventDefault(); setDragActive(true); }}
-                onDragLeave={() => setDragActive(false)}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className={`w-full h-full min-h-[480px] border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${
-                  dragActive 
-                    ? 'border-[#003366] bg-blue-50/70 scale-[0.99]' 
-                    : 'border-[#E2E8F0] hover:border-[#003366] hover:bg-white bg-slate-50/50'
-                }`}
-              >
-                <div className="w-16 h-16 rounded-full bg-blue-100 text-[#003366] flex items-center justify-center mb-4 text-3xl shadow-xs">
+              <div className="space-y-4 max-w-sm">
+                <div className="w-16 h-16 rounded-full bg-blue-100 text-[#003366] flex items-center justify-center mx-auto shadow-xs">
                   <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>cloud_upload</span>
                 </div>
-                
-                <h4 className="text-sm font-extrabold text-[#003366] uppercase tracking-wide mb-1">
-                  Cargar Expediente o Legajo Físico
-                </h4>
-                
-                <p className="text-xs text-[#1E293B] font-semibold max-w-sm mb-1">
-                  Arrastre y suelte el documento PDF o imagen escaneada aquí
-                </p>
-                
-                <p className="text-[11px] text-[#64748B] mb-5">
-                  Soporta archivos PDF, PNG, JPG hasta 50MB
-                </p>
-
+                <div>
+                  <h4 className="text-sm font-bold text-slate-800">Arrastre y suelte el legajo digitalizado aquí</h4>
+                  <p className="text-xs text-slate-500 mt-1">Soporta formatos PDF, PNG, JPG de alta resolución (Hasta 50MB)</p>
+                </div>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    fileInputRef.current?.click();
-                  }}
-                  className="boton-crear text-xs py-2.5 px-6 font-bold shadow-sm cursor-pointer hover:bg-[#002244] flex items-center gap-2"
+                  onClick={e => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                  className="px-4 py-2 bg-[#003366] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>folder_open</span>
-                  Examinar archivo...
+                  Examinar Archivo Local
                 </button>
               </div>
             )}
-
           </div>
-
-          {file && (
-            <div className="flex items-center justify-between text-xs text-[#64748B] pt-1 px-1 border-t border-[#E2E8F0]">
-              <span className="font-medium truncate max-w-[300px] flex items-center gap-1">
-                <span className="material-symbols-outlined text-[#003366]" style={{ fontSize: '16px' }}>description</span>
-                Archivo: <strong className="text-[#003366]">{file.name}</strong>
-              </span>
-              <span className="font-mono text-[10px] text-[#1B7A43] bg-[#1B7A43]/10 px-2 py-0.5 rounded font-bold flex items-center gap-1">
-                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>check_circle</span>
-                Carga completada
-              </span>
-            </div>
-          )}
-
         </div>
 
-        {/* PANEL DERECHO: Formulario de Convalidación OCR */}
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 space-y-4 shadow-sm">
-          
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
-            <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#003366]">edit_note</span>
+        {/* COLUMNA DERECHA: Formulario de Convalidación OCR (5 Cols) */}
+        <form onSubmit={handleSaveExpediente} className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-5">
+          <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+            <h3 className="text-xs font-bold text-[#003366] uppercase tracking-wider flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#C51D24]">fact_check</span>
               Formulario de Convalidación OCR
             </h3>
-            <span className="text-[10px] font-mono font-extrabold text-[#1B7A43] bg-[#1B7A43]/10 px-2 py-1 rounded-full flex items-center gap-1">
-              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>edit</span>
+            <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-full">
               Campos Editables al 100%
             </span>
           </div>
 
-          <form onSubmit={handleSaveExpediente} className="space-y-4">
-            
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2 flex items-center gap-1">
-                1. Datos del Expediente Académico
-              </h4>
+          {/* 1. Datos del Expediente Académico */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#C51D24]"></span>
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">1. Datos del Expediente Académico</h4>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[11px] font-bold text-[#1E293B]">
-                      Carnet de Identidad (C.I.) *
-                    </label>
-                    <span className="text-[9px] font-mono text-[#1B7A43] bg-[#1B7A43]/10 px-1.5 py-0.5 rounded font-bold">
-                      {ocrConfidence.ci} Confianza
-                    </span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.ci}
-                    onChange={e => handleChange('ci', e.target.value)}
-                    className="select-estilo font-mono font-bold"
-                  />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[11px] font-bold text-slate-700">Carnet de Identidad (C.I.):</label>
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 rounded">{ocrConfidence.ci} conf</span>
                 </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[11px] font-bold text-[#1E293B]">
-                      Registro Universitario (R.U.) *
-                    </label>
-                    <span className="text-[9px] font-mono text-[#1B7A43] bg-[#1B7A43]/10 px-1.5 py-0.5 rounded font-bold">
-                      {ocrConfidence.ru} Confianza
-                    </span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.ru}
-                    onChange={e => handleChange('ru', e.target.value)}
-                    className="select-estilo font-mono font-bold"
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={formData.ci}
+                  onChange={e => handleChange('ci', e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-[11px] font-bold text-[#1E293B]">
-                    Nombre Completo del Solicitante *
-                  </label>
-                  <span className="text-[9px] font-mono text-[#1B7A43] bg-[#1B7A43]/10 px-1.5 py-0.5 rounded font-bold">
-                    {ocrConfidence.nombre} Confianza
-                  </span>
+                  <label className="text-[11px] font-bold text-slate-700">Registro Univ. (R.U.):</label>
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 rounded">{ocrConfidence.ru} conf</span>
                 </div>
-                <input 
+                <input
                   type="text"
-                  required
-                  value={formData.nombre}
-                  onChange={e => handleChange('nombre', e.target.value)}
-                  className="select-estilo font-extrabold uppercase text-[#003366]"
+                  value={formData.ru}
+                  onChange={e => handleChange('ru', e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-1">
+                <label className="text-[11px] font-bold text-slate-700">Nombre Completo del Solicitante:</label>
+                <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 rounded">{ocrConfidence.nombre} conf</span>
+              </div>
+              <input
+                type="text"
+                value={formData.nombre}
+                onChange={e => handleChange('nombre', e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-extrabold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[11px] font-bold text-slate-700">Carrera / Grado:</label>
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 rounded">{ocrConfidence.carrera} conf</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.carrera}
+                  onChange={e => handleChange('carrera', e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[11px] font-bold text-[#1E293B]">
-                      Carrera *
-                    </label>
-                    <span className="text-[9px] font-mono text-[#1B7A43] bg-[#1B7A43]/10 px-1.5 py-0.5 rounded font-bold">
-                      {ocrConfidence.carrera} Confianza
-                    </span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.carrera}
-                    onChange={e => handleChange('carrera', e.target.value)}
-                    className="select-estilo"
-                  />
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[11px] font-bold text-slate-700">Facultad Emisora:</label>
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 rounded">{ocrConfidence.facultad} conf</span>
                 </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[11px] font-bold text-[#1E293B]">
-                      Facultad *
-                    </label>
-                    <span className="text-[9px] font-mono text-[#1B7A43] bg-[#1B7A43]/10 px-1.5 py-0.5 rounded font-bold">
-                      {ocrConfidence.facultad} Confianza
-                    </span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.facultad}
-                    onChange={e => handleChange('facultad', e.target.value)}
-                    className="select-estilo"
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={formData.facultad}
+                  onChange={e => handleChange('facultad', e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                />
               </div>
             </div>
+          </div>
 
-            <div className="space-y-3 border-t border-[#E2E8F0] pt-4">
-              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
-                2. Matriz de Archivo (Libro, Tomo, Folio, Gestión)
-              </h4>
+          {/* 2. Matriz de Archivo (Libro, Tomo, Folio, Gestión) */}
+          <div className="space-y-3 border-t border-slate-200 pt-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#003366]"></span>
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">2. Matriz de Archivo Físico</h4>
+            </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[10px] font-bold text-[#1E293B]">Libro *</label>
-                    <span className="text-[8px] font-mono text-[#1B7A43] font-bold">{ocrConfidence.libro}</span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.libro}
-                    onChange={e => handleChange('libro', e.target.value)}
-                    className="select-estilo font-mono text-center font-bold"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[10px] font-bold text-[#1E293B]">Tomo *</label>
-                    <span className="text-[8px] font-mono text-[#1B7A43] font-bold">{ocrConfidence.tomo}</span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.tomo}
-                    onChange={e => handleChange('tomo', e.target.value)}
-                    className="select-estilo font-mono text-center font-bold"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[10px] font-bold text-[#1E293B]">Folio *</label>
-                    <span className="text-[8px] font-mono text-[#1B7A43] font-bold">{ocrConfidence.folio}</span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.folio}
-                    onChange={e => handleChange('folio', e.target.value)}
-                    className="select-estilo font-mono text-center font-bold"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-[10px] font-bold text-[#1E293B]">Gestión *</label>
-                    <span className="text-[8px] font-mono text-[#1B7A43] font-bold">{ocrConfidence.gestion}</span>
-                  </div>
-                  <input 
-                    type="text"
-                    required
-                    value={formData.gestion}
-                    onChange={e => handleChange('gestion', e.target.value)}
-                    className="select-estilo font-mono text-center font-bold"
-                  />
-                </div>
+            <div className="grid grid-cols-4 gap-2">
+              <div>
+                <label className="text-[10px] font-bold text-slate-600 block mb-1">Libro:</label>
+                <input
+                  type="text"
+                  value={formData.libro}
+                  onChange={e => handleChange('libro', e.target.value)}
+                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-center font-bold"
+                />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#1E293B] mb-1">
-                  Tipo de Expediente
-                </label>
-                <select
-                  value={formData.tipoDocumento}
-                  onChange={e => handleChange('tipoDocumento', e.target.value)}
-                  className="select-estilo"
-                >
-                  <option value="Título Supletorio">Título Supletorio</option>
-                  <option value="Certificado de Notas">Certificado de Notas</option>
-                  <option value="Acta de Grado">Acta de Grado Académica</option>
-                  <option value="Diploma Academico">Diploma Académico Original</option>
-                </select>
+                <label className="text-[10px] font-bold text-slate-600 block mb-1">Tomo:</label>
+                <input
+                  type="text"
+                  value={formData.tomo}
+                  onChange={e => handleChange('tomo', e.target.value)}
+                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-center font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-600 block mb-1">Folio:</label>
+                <input
+                  type="text"
+                  value={formData.folio}
+                  onChange={e => handleChange('folio', e.target.value)}
+                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-center font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-600 block mb-1">Gestión:</label>
+                <input
+                  type="text"
+                  value={formData.gestion}
+                  onChange={e => handleChange('gestion', e.target.value)}
+                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-center font-bold"
+                />
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[#E2E8F0] flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setFormData({
-                    ci: '', ru: '', nombre: '', carrera: '', facultad: '',
-                    libro: '', tomo: '', folio: '', gestion: '', tipoDocumento: 'Título Supletorio', observaciones: ''
-                  });
-                }}
-                className="px-4 py-2.5 border border-[#E2E8F0] text-[#64748B] rounded-xl font-bold text-xs hover:bg-slate-100 transition-colors cursor-pointer flex items-center gap-1"
+            <div>
+              <label className="text-[11px] font-bold text-slate-700 block mb-1">Tipo de Expediente / Trámite:</label>
+              <select
+                value={formData.tipoDocumento}
+                onChange={e => handleChange('tipoDocumento', e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-[#003366] focus:bg-white focus:outline-none"
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>cleaning_services</span>
-                Limpiar Campos
-              </button>
-              
-              <button
-                type="submit"
-                disabled={uploading}
-                className="boton-editar py-2.5 px-6 text-xs font-bold shadow-sm cursor-pointer flex items-center gap-1.5"
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>save</span>
-                {uploading ? 'Convalidando...' : 'Convalidar y Registrar Expediente'}
-              </button>
+                <option value="Título Supletorio">Título Supletorio</option>
+                <option value="Certificado de Autenticidad (Tipo 3)">Certificado de Autenticidad (Tipo 3)</option>
+                <option value="Diploma de Bachiller">Diploma de Bachiller</option>
+                <option value="Título en Provisión Nacional">Título en Provisión Nacional</option>
+              </select>
             </div>
+          </div>
 
-          </form>
+          {/* Botones de Acción */}
+          <div className="pt-4 border-t border-slate-200 space-y-2">
+            <button
+              type="submit"
+              disabled={uploading}
+              className="w-full py-3 bg-[#003366] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">verified</span>
+              {uploading ? 'Guardando Expediente...' : 'Convalidar y Registrar Expediente'}
+            </button>
+          </div>
+        </form>
 
-        </div>
       </div>
-    
+
       {/* 3. BANDEJA INFERIOR DE ARCHIVOS / EXPEDIENTES PROCESADOS EN LOTE */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
         <div className="flex justify-between items-center border-b border-slate-200 pb-3">
@@ -744,3 +577,5 @@ export function SubidaDocumentos() {
       </div>
 
     </div>
+  );
+}
