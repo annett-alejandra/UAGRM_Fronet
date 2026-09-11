@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { titulosApi, type ExpedienteTitulos } from '../../features/titulos/api/titulos-api';
 
 interface TablaFila {
@@ -23,88 +23,105 @@ export function CertificadoAutenticidadPage() {
   const [searchDiploma, setSearchDiploma] = useState('');
 
   // Estado del Expediente
-  const [expediente, setExpediente] = useState<ExpedienteTitulos | null>(null);
+  const [, setExpediente] = useState<ExpedienteTitulos | null>(null);
 
-  // Variables Editables del Documento
-  const [correlativoInforme, setCorrelativoInforme] = useState('0471');
-  const [fechaDoc, setFechaDoc] = useState('20 de abril de 2026');
-  const [destinatarioNombre, setDestinatarioNombre] = useState('MSc. Edy Acosta Claros');
+  // Variables Editables del Documento (Plantilla Tipo 1 - Certificado de Autenticidad)
+  const [correlativoInforme, setCorrelativoInforme] = useState('117/2026');
+  const [fechaDoc, setFechaDoc] = useState('19 de enero del 2026');
+  const [destinatarioNombre, setDestinatarioNombre] = useState('Lic. Edy Acosta Claros');
   const [destinatarioCargo, setDestinatarioCargo] = useState('SECRETARIO GENERAL - U.A.G.R.M.');
-  const [referencia, setReferencia] = useState('INFORME DEL DIPLOMA DE BACHILLER');
+  const [referencia, setReferencia] = useState('CERTIFICADO DE AUTENTICIDAD DE TÍTULO EN PROVISIÓN NACIONAL');
   
-  const [fechaSolicitud, setFechaSolicitud] = useState('16 de abril de 2026');
-  const [nroTestimonio, setNroTestimonio] = useState('1246/2025');
-  const [solicitanteNombre, setSolicitanteNombre] = useState('Yuli Alison Romero Flores');
-  const [titularNombre, setTitularNombre] = useState('Jenny Flores Peña');
-  const [titularCi, setTitularCi] = useState('3250858-SCZ');
+  const [fechaSolicitud, setFechaSolicitud] = useState('13 de enero de 2026');
+  const [nroTestimonio, setNroTestimonio] = useState('INF N°094');
+  const [solicitanteNombre, setSolicitanteNombre] = useState('GUALBERTO MEDINA VARGAS');
+  const [titularNombre, setTitularNombre] = useState('GUALBERTO MEDINA VARGAS');
+  const [titularCi, setTitularCi] = useState('8072900-SCZ.');
+  const [gradoMencion, setGradoMencion] = useState('Título en Provisión Nacional de MÉDICO CIRUJANO');
+  const [nroTitulo, setNroTitulo] = useState('96071');
+  const [fechaEmisionOriginal, setFechaEmisionOriginal] = useState('11 de julio del año 2022');
 
-  // 3. Filas de la Tabla en blanco por defecto (se llenan automáticamente al consultar)
+  // Autoridades Editables para Firmas Estilo Word
+  const [autoridadSecretario, setAutoridadSecretario] = useState('Lic. Edy Acosta Claros');
+  const [autoridadRector, setAutoridadRector] = useState('Dr. Reinerio Vargas Banegas');
+
+  // Filas de la Tabla Registro Matriz
   const [tableRows, setTableRows] = useState<TablaFila[]>([
     {
       id: '1',
-      nroDiploma: '',
-      nombreTitular: '',
-      ci: '',
-      diplomaDe: '',
-      fojas: '',
-      libro: '',
-      fechaExtension: '',
-      nombreRector: '',
-      pieFirmaRector: ''
+      nroDiploma: '96071',
+      nombreTitular: 'GUALBERTO MEDINA VARGAS',
+      ci: '8072900-SCZ.',
+      diplomaDe: 'MÉDICO CIRUJANO',
+      fojas: '0027',
+      libro: '0017',
+      fechaExtension: '11 de julio del año 2022',
+      nombreRector: 'Dr. Reinerio Vargas Banegas',
+      pieFirmaRector: 'Firma Manual'
     }
   ]);
 
-  // 4. Consulta Automática al Backend (GET /api/expedientes/{id}/documentos/)
+  // Consulta Automática al Backend
   const handleConsultarExpediente = async (term: string) => {
     if (!term) return;
     setIsSearching(true);
     try {
       const data = await titulosApi.getInformeAutenticidadContext(term);
       if (data) {
-        setCorrelativoInforme(data.informe_nro || '0471');
-        setFechaDoc(data.fecha || '20 de abril de 2026');
-        setFechaSolicitud(data.fecha_solicitud || '16 de abril de 2026');
-        setNroTestimonio(data.nro_testimonio || '1246/2025');
-        setSolicitanteNombre(data.apoderado || 'Yuli Alison Romero Flores');
-        setTitularNombre(data.titular.nombre_completo || 'Jenny Flores Peña');
-        setTitularCi(data.titular.ci_expedido || '3250858-SCZ');
+        setCorrelativoInforme(data.informe_nro ? `${data.informe_nro}/2026` : '117/2026');
+        setFechaDoc(data.fecha || '19 de enero del 2026');
+        setFechaSolicitud(data.fecha_solicitud || '13 de enero de 2026');
+        setNroTestimonio(data.nro_testimonio || 'INF N°094');
+        setSolicitanteNombre(data.titular.nombre_completo || 'GUALBERTO MEDINA VARGAS');
+        setTitularNombre(data.titular.nombre_completo || 'GUALBERTO MEDINA VARGAS');
+        setTitularCi(data.titular.ci_expedido || '8072900-SCZ.');
+        if (data.carrera_colegio?.mencion) {
+          setGradoMencion(`Título en Provisión Nacional de ${data.carrera_colegio.mencion.toUpperCase()}`);
+        }
+        if (data.expediente?.nro_diploma) {
+          setNroTitulo(data.expediente.nro_diploma);
+        }
+        if (data.autoridad?.secretario_general) {
+          setAutoridadSecretario(data.autoridad.secretario_general);
+        }
+        if (data.autoridad?.rector_actual) {
+          setAutoridadRector(data.autoridad.rector_actual);
+        }
 
-        // Inyección de registros dinámicos a las celdas de la tabla
         setTableRows([
           {
             id: Date.now().toString(),
-            nroDiploma: data.expediente.nro_diploma || term || '014863',
-            nombreTitular: (data.titular.nombre_completo || 'JENNY FLORES PEÑA').toUpperCase(),
-            ci: data.titular.ci_expedido || '3250858-SCZ',
-            diplomaDe: (data.carrera_colegio.mencion || 'BACHILLER EN HUMANIDADES').replace('.', '').toUpperCase(),
-            fojas: data.archivo_fisico.fojas || '115/98',
-            libro: data.archivo_fisico.libro_matriz || '19/98',
-            fechaExtension: data.expediente.fecha_emision || '24 de julio de 1998',
-            nombreRector: (data.autoridad.rector_nombre || 'JORGE ORELLANA MORENO').toUpperCase(),
-            pieFirmaRector: data.archivo_fisico.observacion_firma || 'No tiene'
+            nroDiploma: data.expediente.nro_diploma || term || '96071',
+            nombreTitular: (data.titular.nombre_completo || 'GUALBERTO MEDINA VARGAS').toUpperCase(),
+            ci: data.titular.ci_expedido || '8072900-SCZ.',
+            diplomaDe: (data.carrera_colegio.mencion || 'MÉDICO CIRUJANO').toUpperCase(),
+            fojas: data.archivo_fisico.fojas || '0027',
+            libro: data.archivo_fisico.libro_matriz || '0017',
+            fechaExtension: data.expediente.fecha_emision || '11 de julio del año 2022',
+            nombreRector: (data.autoridad.rector_nombre || 'Dr. Reinerio Vargas Banegas').toUpperCase(),
+            pieFirmaRector: 'Firma Manual'
           }
         ]);
       }
     } catch {
-      /* fallback silencioso */
+      /* fallback */
     } finally {
       setIsSearching(false);
     }
   };
 
-  // Handlers para el Panel de Edición Derecho
   const handleAddRow = () => {
     const newRow: TablaFila = {
       id: Date.now().toString(),
-      nroDiploma: '',
+      nroDiploma: nroTitulo,
       nombreTitular: titularNombre.toUpperCase(),
       ci: titularCi,
-      diplomaDe: 'BACHILLER EN HUMANIDADES',
-      fojas: '',
-      libro: '',
-      fechaExtension: '',
-      nombreRector: '',
-      pieFirmaRector: 'No tiene'
+      diplomaDe: 'MÉDICO CIRUJANO',
+      fojas: '0027',
+      libro: '0017',
+      fechaExtension: fechaEmisionOriginal,
+      nombreRector: autoridadRector,
+      pieFirmaRector: 'Firma Manual'
     };
     setTableRows((prev) => [...prev, newRow]);
   };
@@ -120,7 +137,6 @@ export function CertificadoAutenticidadPage() {
     );
   };
 
-  // Guardar Certificado en el Backend
   const handleSaveDocument = async () => {
     setIsSaving(true);
     try {
@@ -131,15 +147,14 @@ export function CertificadoAutenticidadPage() {
         diploma: tableRows[0]?.nroDiploma || searchDiploma,
         filas: tableRows
       });
-      alert('Documento e informe guardados exitosamente.');
+      alert('Certificado de Autenticidad (Plantilla Tipo 1) guardado correctamente.');
     } catch {
-      alert('Error al guardar el documento.');
+      alert('Error al guardar el certificado.');
     } finally {
       setIsSaving(false);
     }
   };
 
-  // Dimensiones del papel
   const getPaperClass = () => {
     switch (paperSize) {
       case 'oficio':
@@ -148,461 +163,399 @@ export function CertificadoAutenticidadPage() {
         return 'w-[210mm] min-h-[297mm] p-[16mm]';
       case 'carta':
       default:
-        return 'w-[215.9mm] min-h-[279.4mm] p-[15mm]';
+        return 'w-[216mm] min-h-[279mm] p-[18mm]';
     }
   };
 
   return (
-    <div className="space-y-6 font-sans">
-      
-      {/* 5. Top Action Bar: Búsqueda y Botón "Ocultar Panel Word" en la parte superior sin iconos feos */}
-      <div className="card p-4 flex flex-wrap items-center justify-between gap-4 print:hidden">
-        
-        {/* Búsqueda por C.I. o Trámite */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void handleConsultarExpediente(searchDiploma);
-          }}
-          className="flex items-center gap-3"
-        >
-          <span className="text-xs font-bold text-[#2A3964] uppercase tracking-wider">
-            CONSULTAR EXPEDIENTE:
-          </span>
+    <div className="flex flex-col h-full bg-[#F8FAFC]">
+      {/* Barra Superior con Selector de Papel y Control de Edición */}
+      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-[#003366]/10 rounded-xl text-[#003366]">
+            <span className="font-bold text-sm">📄 Plantilla Tipo 1</span>
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-slate-900 tracking-tight">
+              Certificado de Autenticidad (Módulo de Títulos)
+            </h1>
+            <p className="text-xs text-slate-500 font-mono">
+              Identificador: PlantillaTipo1_CertificadoAutenticidad
+            </p>
+          </div>
+        </div>
+
+        {/* Búsqueda de Expediente por N° Diploma / C.I. */}
+        <div className="flex items-center gap-2">
           <input
             type="text"
+            placeholder="Buscar Expediente N° / C.I..."
             value={searchDiploma}
             onChange={(e) => setSearchDiploma(e.target.value)}
-            placeholder="Ingrese C.I. o N°..."
-            className="select-estilo w-48 font-mono font-bold"
+            onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
+            className="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-mono w-56 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
-            type="submit"
+            type="button"
+            onClick={() => handleConsultarExpediente(searchDiploma || '96071')}
             disabled={isSearching}
-            className="boton-crear py-2 px-4 text-xs font-bold"
+            className="px-3.5 py-2 bg-[#003366] text-white font-bold text-xs rounded-xl hover:bg-blue-900 transition-colors"
           >
-            {isSearching ? 'Buscando...' : 'Buscar'}
+            {isSearching ? 'Buscando...' : '🔍 Consultar Backend'}
           </button>
-        </form>
+        </div>
 
-        {/* 5. Botón de Ocultar/Mostrar Panel Word ARRIBA (Sin iconos feos) */}
-        <div>
+        {/* Selector de Tamaño de Papel & Toggle Lateral */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-medium">
+            <button
+              onClick={() => setPaperSize('carta')}
+              className={`px-3 py-1.5 rounded-lg transition-all ${paperSize === 'carta' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            >
+              Carta
+            </button>
+            <button
+              onClick={() => setPaperSize('oficio')}
+              className={`px-3 py-1.5 rounded-lg transition-all ${paperSize === 'oficio' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            >
+              Oficio
+            </button>
+            <button
+              onClick={() => setPaperSize('a4')}
+              className={`px-3 py-1.5 rounded-lg transition-all ${paperSize === 'a4' ? 'bg-white text-[#003366] font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            >
+              A4
+            </button>
+          </div>
+
           <button
-            onClick={() => setShowWordEditor((prev) => !prev)}
-            className="px-4 py-2 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all"
+            onClick={() => setShowWordEditor(!showWordEditor)}
+            className="px-3.5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors"
           >
-            {showWordEditor ? 'Ocultar Panel Word' : 'Mostrar Panel Word'}
+            {showWordEditor ? 'Ocultar Panel Lateral' : 'Mostrar Panel Word'}
           </button>
         </div>
       </div>
 
-      {/* Layout Principal: Documento al Centro + Panel Derecho Word (Zona Verde) */}
-      <div className="flex gap-6 items-start">
+      {/* Contenedor Principal: Vista Previa de Hoja Digital Clean + Panel Lateral Word */}
+      <div className="flex-1 overflow-auto p-6 flex justify-center gap-6">
         
-        {/* Centro: Vista Previa del Documento Imprimible */}
-        <div className="flex-1 flex justify-center bg-[#e2e8f0]/40 p-4 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto">
-          
+        {/* Contenedor Hoja Digital Impresa (100% Cero Sellos Digitales) */}
+        <div className="bg-slate-200/80 p-8 rounded-2xl border border-slate-300 overflow-auto flex justify-center items-start shadow-inner flex-1">
           <div
-            className={`bg-white text-slate-900 shadow-xl transition-all print:shadow-none print:m-0 print:p-0 font-serif leading-relaxed relative ${getPaperClass()}`}
-            style={{ color: '#111827' }}
+            className={`${getPaperClass()} bg-white shadow-2xl text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full`}
           >
-            {/* 1 & 7. Encabezado Centrado con Logo UAGRM (img1) y Metadatos al lado */}
-            <header className="flex justify-between items-center border-b-2 border-slate-900 pb-4 mb-6">
-              
-              {/* Logo UAGRM (img1) */}
-              <div className="w-24 shrink-0">
-                <img
-                  src="/images/img1.jpeg"
-                  alt="Logo UAGRM"
-                  className="h-20 w-auto object-contain"
-                  onError={(e) => {
-                    // Fallback visual en caso de que img1 no se cargue correctamente
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
+            <div>
+              {/* Franja Superior Institucional */}
+              <div className="absolute top-0 left-0 w-full h-3 bg-[#C51D24]"></div>
+              <div className="absolute top-3 left-0 w-full h-1 bg-[#003366]"></div>
 
-              {/* Encabezado Institucional Centrado */}
-              <div className="text-center flex-1 px-4 font-sans">
-                <h2 className="font-extrabold text-sm text-[#2A3964] leading-snug uppercase tracking-tight">
-                  UNIVERSIDAD AUTÓNOMA GABRIEL RENÉ MORENO
+              {/* Header Institucional UAGRM */}
+              <header className="flex justify-between items-center border-b-2 border-[#003366] pb-4 mb-6 mt-4">
+                <div className="text-left font-serif">
+                  <h2 className="font-extrabold text-base text-[#003366] leading-snug uppercase tracking-tight">
+                    UNIVERSIDAD AUTÓNOMA "GABRIEL RENÉ MORENO"
+                  </h2>
+                  <h3 className="font-bold text-xs text-[#C51D24] tracking-wider uppercase mt-0.5">
+                    DEPARTAMENTO DE TÍTULOS Y GRADOS
+                  </h3>
+                  <p className="text-[10px] text-slate-600 font-sans tracking-widest mt-0.5">
+                    SANTA CRUZ DE LA SIERRA - BOLIVIA
+                  </p>
+                </div>
+
+                <div className="text-right font-sans text-xs space-y-1">
+                  <p className="font-bold text-[#003366]">
+                    N° CERTIFICADO: <span className="font-mono underline">{correlativoInforme}</span>
+                  </p>
+                  <p className="text-slate-700 text-[11px]">
+                    REF: <span className="font-mono">{nroTestimonio}</span>
+                  </p>
+                  <p className="text-slate-600 text-[11px]">
+                    FECHA: <span>{fechaDoc}</span>
+                  </p>
+                </div>
+              </header>
+
+              {/* Título de Documento */}
+              <div className="my-6 text-center">
+                <h2 className="font-extrabold text-base text-[#003366] underline uppercase tracking-wide">
+                  CERTIFICADO DE AUTENTICIDAD
                 </h2>
-                <h3 className="font-extrabold text-xs text-[#880000] tracking-wider uppercase mt-0.5">
-                  DEPARTAMENTO DE ARCHIVO CENTRAL
-                </h3>
-                <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest mt-0.5">
-                  SANTA CRUZ - BOLIVIA
-                </p>
               </div>
 
-              {/* Metadatos del Documento al lado */}
-              <div className="text-right font-sans text-xs space-y-1 shrink-0">
-                <p className="font-extrabold text-[#2A3964]">
-                  SECCIÓN ARCHIVO / INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+              {/* Texto Base en Prosa Legal Continua con Inyección de Datos */}
+              <section className="mb-6 text-justify text-xs leading-relaxed space-y-4 font-serif text-slate-900">
+                <p className="indent-8">
+                  El que suscribe, Secretario General y el Rector de la Universidad Autónoma "Gabriel René Moreno", certifican que revisada la documentación existente en los libros matrices del Departamento de Títulos y Grados, se evidencia la emisión del{' '}
+                  <strong className="font-bold underline text-slate-900">{gradoMencion}</strong> con Número de Título N°{' '}
+                  <strong className="font-mono font-bold text-slate-900">{nroTitulo}</strong>, conferido legítimamente a favor del profesional Sr.(a){' '}
+                  <strong className="font-bold uppercase text-slate-900">{titularNombre}</strong>, con Cédula de Identidad con Extensión N°{' '}
+                  <strong className="font-mono font-bold text-slate-900">{titularCi}</strong>.
                 </p>
-                <p className="text-slate-700 font-medium text-[11px]">
-                  Santa Cruz de la Sierra, <span className="font-bold">{fechaDoc}</span>
+
+                <p className="indent-8">
+                  Asimismo, se verifica que la correspondiente matriz se encuentra debidamente asentada en el Libro de Registro N°{' '}
+                  <strong className="font-mono font-bold text-slate-900">{tableRows[0]?.libro || '0017'}</strong>, Fojas N°{' '}
+                  <strong className="font-mono font-bold text-slate-900">{tableRows[0]?.fojas || '0027'}</strong>, con Fecha de Emisión Original de{' '}
+                  <strong className="font-bold text-slate-900">{fechaEmisionOriginal}</strong>.
                 </p>
-              </div>
-            </header>
 
-            {/* Destinatario Formal */}
-            <section className="mb-4 font-sans text-xs space-y-1">
-              <p className="font-bold text-slate-800">Señor:</p>
-              <p className="font-extrabold text-sm text-[#2A3964]">{destinatarioNombre}</p>
-              <p className="font-bold uppercase text-slate-700">{destinatarioCargo}</p>
-            </section>
+                <p className="indent-8">
+                  Se extiende el presente Certificado de Autenticidad a solicitud del interesado para los fines legales y administrativos que convengan.
+                </p>
 
-            {/* 2. Referencia CENTRADA en medio */}
-            <div className="my-6 text-center">
-              <p className="font-extrabold text-sm text-[#2A3964] underline uppercase tracking-wide">
-                Ref.: {referencia}
-              </p>
-            </div>
+                <p className="text-right pt-4 font-sans font-medium text-slate-700">
+                  Santa Cruz de la Sierra, {fechaDoc}
+                </p>
+              </section>
 
-            {/* Párrafo Legal Introductorio */}
-            <section className="mb-6 text-justify text-xs leading-relaxed space-y-3 font-serif">
-              <p>
-                En atención a la solicitud presentada en fecha <span className="font-bold">{fechaSolicitud}</span>, mediante Testimonio N° <span className="font-bold font-mono">{nroTestimonio}</span>, incoado por el/la <span className="font-bold">{solicitanteNombre}</span>, a favor de <span className="font-extrabold underline text-[#2A3964]">{titularNombre}</span>, con C.I. N° <span className="font-bold font-mono">{titularCi}</span>, quien solicita la extensión del Certificado de Autenticidad de su Diploma de Bachiller.
-              </p>
-              <p>
-                Al respecto, revisada la documentación existente en el Archivo Central de esta Casa de Estudios Superiores, se evidencia el registro del asiento del Diploma de Bachiller correspondiente, según el siguiente detalle:
-              </p>
-            </section>
-
-            {/* 6. Cuadro Dinámico Central (Sin corte de palabras en celdas) */}
-            <section className="mb-6">
-              <div className="overflow-x-auto border border-slate-400 rounded-sm">
-                <table className="w-full text-center text-[10px] font-sans border-collapse table-fixed">
-                  <thead>
-                    <tr className="bg-[#2A3964] text-white font-bold uppercase tracking-wider">
-                      <th className="border-r border-slate-400 p-1.5 w-16 whitespace-normal break-words">N° DIPLOMA</th>
-                      <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">NOMBRES Y APELLIDOS</th>
-                      <th className="border-r border-slate-400 p-1.5 w-24 whitespace-normal break-words">CÉDULA IDENTIDAD</th>
-                      <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">DIPLOMA DE</th>
-                      <th className="border-r border-slate-400 p-1.5 w-14 whitespace-normal break-words">FOJAS</th>
-                      <th className="border-r border-slate-400 p-1.5 w-14 whitespace-normal break-words">LIBRO</th>
-                      <th className="border-r border-slate-400 p-1.5 w-20 whitespace-normal break-words">FECHA EXTENSIÓN</th>
-                      <th className="border-r border-slate-400 p-1.5 whitespace-normal break-words">RECTOR</th>
-                      <th className="p-1.5 w-16 whitespace-normal break-words">PIE FIRMA</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableRows.map((row, index) => (
-                      <tr
-                        key={row.id}
-                        className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}
-                      >
-                        <td className="border-r border-slate-300 p-1.5 font-mono font-bold text-[#880000] break-words">
-                          {row.nroDiploma}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 font-extrabold break-words">
-                          {row.nombreTitular}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 font-mono break-words">
-                          {row.ci}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 font-medium break-words">
-                          {row.diplomaDe}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 font-mono break-words">
-                          {row.fojas}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 font-mono break-words">
-                          {row.libro}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 break-words">
-                          {row.fechaExtension}
-                        </td>
-                        <td className="border-r border-slate-300 p-1.5 break-words">
-                          {row.nombreRector}
-                        </td>
-                        <td className="p-1.5 break-words">
-                          {row.pieFirmaRector}
-                        </td>
+              {/* Tabla de Registros en Matriz */}
+              <section className="mb-6">
+                <div className="overflow-x-auto border border-slate-300 rounded-sm">
+                  <table className="w-full text-center text-[10px] font-sans border-collapse table-fixed">
+                    <thead>
+                      <tr className="bg-[#003366] text-white font-bold uppercase tracking-wider">
+                        <th className="border-r border-slate-300 p-1.5 w-20">N° TÍTULO</th>
+                        <th className="border-r border-slate-300 p-1.5">NOMBRE DEL TITULAR</th>
+                        <th className="border-r border-slate-300 p-1.5 w-28">C.I. EXTENSIÓN</th>
+                        <th className="border-r border-slate-300 p-1.5">GRADO / MENCIÓN</th>
+                        <th className="border-r border-slate-300 p-1.5 w-16">LIBRO</th>
+                        <th className="border-r border-slate-300 p-1.5 w-16">FOJAS</th>
+                        <th className="p-1.5 w-28">FECHA EMISIÓN</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {tableRows.map((row, index) => (
+                        <tr key={row.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                          <td className="border-r border-slate-200 p-1.5 font-mono font-bold text-[#C51D24]">
+                            {row.nroDiploma}
+                          </td>
+                          <td className="border-r border-slate-200 p-1.5 font-bold uppercase">
+                            {row.nombreTitular}
+                          </td>
+                          <td className="border-r border-slate-200 p-1.5 font-mono">
+                            {row.ci}
+                          </td>
+                          <td className="border-r border-slate-200 p-1.5 font-medium">
+                            {row.diplomaDe}
+                          </td>
+                          <td className="border-r border-slate-200 p-1.5 font-mono">
+                            {row.libro}
+                          </td>
+                          <td className="border-r border-slate-200 p-1.5 font-mono">
+                            {row.fojas}
+                          </td>
+                          <td className="p-1.5">
+                            {row.fechaExtension}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            {/* Bloque de Firmas Institucionales (Estilo Word) */}
+            <div className="firmas-container mt-[80px] flex justify-around items-end w-full page-break-inside-avoid">
+              {/* Firma 1: Secretario General */}
+              <div className="firma-box text-center min-w-[240px]">
+                <div className="linea-guia border-t border-[#1e293b] mb-2 w-full"></div>
+                <p className="autoridad-nombre text-[13px] font-semibold text-[#1e293b] m-0">
+                  {autoridadSecretario}
+                </p>
+                <p className="autoridad-cargo text-[11px] text-[#475569] leading-snug mt-0.5 uppercase font-semibold">
+                  SECRETARIO GENERAL<br />U.A.G.R.M.
+                </p>
               </div>
-            </section>
 
-            {/* Párrafo Aclaratorio */}
-            <p className="text-justify text-xs font-sans text-slate-800 mb-4">
-              Aclarando que, en la gestión 1998, no se estilaba colocar pie de firma, toda vez que se evidencia el nombre impreso en la parte superior del Diploma del Rector.
-            </p>
-
-            {/* Párrafo Supletorio */}
-            <p className="text-justify text-xs font-sans text-slate-800 mb-4">
-              Así mismo y a solicitud de la interesada, se le extendió el{' '}
-              <span className="font-bold underline">
-                Supletorio del Diploma de {tableRows[0]?.diplomaDe || 'Bachiller en Humanidades.'} N° {tableRows[0]?.nroDiploma || searchDiploma || '014863'}
-              </span>
-              , es dado en la ciudad de Santa Cruz de la Sierra, a los <span className="font-bold">{fechaDoc}</span>, firmado por las autoridades correspondientes.
-            </p>
-
-            {/* Cierre */}
-            <p className="text-justify text-xs font-sans text-slate-800 mb-12">
-              Es cuanto informo, para los fines que usted considere conveniente, me despido de usted con las atenciones más distinguidas.
-            </p>
-
-            {/* 8. Firma del Señor alineada a un lado para dejar espacio a los dos sellos físicos */}
-            <div className="pt-8 flex justify-start items-end pl-8">
-              <div className="text-center font-sans text-xs space-y-1">
-                <div className="w-56 border-b border-slate-800 mx-auto mb-2"></div>
-                <p className="font-extrabold text-[#2A3964]">Moisés Cossío López</p>
-                <p className="font-bold text-[10px] uppercase text-slate-700">
-                  JEFE DE ARCHIVO U.A.G.R.M.
+              {/* Firma 2: Rector */}
+              <div className="firma-box text-center min-w-[240px]">
+                <div className="linea-guia border-t border-[#1e293b] mb-2 w-full"></div>
+                <p className="autoridad-nombre text-[13px] font-semibold text-[#1e293b] m-0">
+                  {autoridadRector}
+                </p>
+                <p className="autoridad-cargo text-[11px] text-[#475569] leading-snug mt-0.5 uppercase font-semibold">
+                  RECTOR<br />U.A.G.R.M.
                 </p>
               </div>
             </div>
 
-            {/* Pie de Página */}
-            <footer className="pt-6 border-t border-slate-300 font-sans text-[9px] text-slate-600 flex justify-between items-end mt-8">
-              <div>
-                <p className="font-bold">MCL/Sandra</p>
-                <p>Adj: fotocopias de la documentación respectiva.</p>
-                <p>Cc: /archivo</p>
-              </div>
-
-              <div className="text-right">
-                <p className="font-extrabold italic text-[#2A3964] text-[10px]">
-                  "Autonomía y Cambio con Excelencia Académica"
-                </p>
-                <p>📍 Av. Busch entre 2do. y 3er. anillo "Ciudad Universitaria" | Santa Cruz de la Sierra - Bolivia</p>
-              </div>
-            </footer>
           </div>
         </div>
 
-        {/* 5. Panel Lateral de Edición Word (Derecha) con Guardar e Imprimir ABAJO (Sin iconos feos) */}
+        {/* Panel Lateral de Edición Estilo Word (Derecha) */}
         {showWordEditor && (
-          <div className="w-96 card p-5 space-y-6 print:hidden shadow-lg border-l-4 border-[#880000] shrink-0">
+          <div className="w-96 bg-white p-5 space-y-5 print:hidden shadow-sm border border-slate-200 rounded-2xl shrink-0 overflow-y-auto max-h-[85vh]">
             
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="text-sm font-extrabold text-[#2A3964] font-heading">
-                PANEL DE EDICIÓN (ESTILO WORD)
+              <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">
+                Panel Lateral Word (Plantilla Tipo 1)
               </h3>
-              <span className="badge-status-publicado font-mono">
-                Sincronizado
+              <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
+                100% Reactivo
               </span>
             </div>
 
-            {/* Formato de Papel */}
-            <div className="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
-              <label className="block text-xs font-bold text-[#2A3964] uppercase tracking-wider">
-                Formato de Papel para Impresión:
-              </label>
-              <div className="flex items-center justify-between gap-2">
-                {(['carta', 'oficio', 'a4'] as const).map((size) => (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => setPaperSize(size)}
-                    className={`flex-1 py-2 rounded-xl text-xs font-extrabold uppercase transition-all ${
-                      paperSize === size
-                        ? 'bg-[#2A3964] text-white shadow-sm ring-2 ring-[#880000]/40'
-                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Sección 1: Informe Metadata */}
+            {/* Sección 1: Certificado & Referencia */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold text-[#2A3964] uppercase tracking-wider border-l-2 border-[#880000] pl-2">
-                Encabezado & Correlativo
+              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
+                1. Encabezado & Informe
               </h4>
               
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Correlativo de Informe:
+                  N° de Certificado:
                 </label>
                 <input
                   type="text"
                   value={correlativoInforme}
                   onChange={(e) => setCorrelativoInforme(e.target.value)}
-                  className="select-estilo font-mono"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold"
                 />
               </div>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Fecha del Documento:
+                  Informe de Referencia:
+                </label>
+                <input
+                  type="text"
+                  value={nroTestimonio}
+                  onChange={(e) => setNroTestimonio(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Fecha del Informe / Expedición:
                 </label>
                 <input
                   type="text"
                   value={fechaDoc}
                   onChange={(e) => setFechaDoc(e.target.value)}
-                  className="select-estilo"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
                 />
               </div>
             </div>
 
-            {/* Sección 2: Destinatario */}
+            {/* Sección 2: Datos del Titular y Grado */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold text-[#2A3964] uppercase tracking-wider border-l-2 border-[#880000] pl-2">
-                Destinatario Formal
+              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
+                2. Titular & Grado Académico
               </h4>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Nombre Destinatario:
-                </label>
-                <input
-                  type="text"
-                  value={destinatarioNombre}
-                  onChange={(e) => setDestinatarioNombre(e.target.value)}
-                  className="select-estilo"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Cargo Destinatario:
-                </label>
-                <input
-                  type="text"
-                  value={destinatarioCargo}
-                  onChange={(e) => setDestinatarioCargo(e.target.value)}
-                  className="select-estilo"
-                />
-              </div>
-            </div>
-
-            {/* Sección 3: Datos del Titular */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-[#2A3964] uppercase tracking-wider border-l-2 border-[#880000] pl-2">
-                Datos del Solicitante y Titular
-              </h4>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Nombre Completo Titular:
+                  Nombre Completo del Titular:
                 </label>
                 <input
                   type="text"
                   value={titularNombre}
                   onChange={(e) => setTitularNombre(e.target.value)}
-                  className="select-estilo font-bold text-[#2A3964]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-[#003366]"
                 />
               </div>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Cédula de Identidad (CI):
+                  Cédula de Identidad con Extensión:
                 </label>
                 <input
                   type="text"
                   value={titularCi}
                   onChange={(e) => setTitularCi(e.target.value)}
-                  className="select-estilo font-mono"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Número de Título:
+                </label>
+                <input
+                  type="text"
+                  value={nroTitulo}
+                  onChange={(e) => setNroTitulo(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono font-bold text-blue-700"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Grado / Mención Académica:
+                </label>
+                <input
+                  type="text"
+                  value={gradoMencion}
+                  onChange={(e) => setGradoMencion(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
                 />
               </div>
             </div>
 
-            {/* Sección 4: Filas Dinámicas de la Tabla */}
+            {/* Sección 3: Matriz & Autoridades */}
             <div className="space-y-3 border-t border-slate-200 pt-4">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-[#2A3964] uppercase tracking-wider border-l-2 border-[#880000] pl-2">
-                  Tabla Dinámica de Registro
-                </h4>
-                
-                <button
-                  type="button"
-                  onClick={handleAddRow}
-                  className="boton-crear text-xs py-1.5 px-3"
-                >
-                  Agregar Fila
-                </button>
+              <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
+                3. Matriz & Autoridades de Firma
+              </h4>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Fecha Emisión Original:
+                </label>
+                <input
+                  type="text"
+                  value={fechaEmisionOriginal}
+                  onChange={(e) => setFechaEmisionOriginal(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs"
+                />
               </div>
 
-              {tableRows.map((row, idx) => (
-                <div
-                  key={row.id}
-                  className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs"
-                >
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-1">
-                    <span className="font-bold text-[#880000] text-[10px]">
-                      Fila #{idx + 1} {row.nroDiploma ? `- Diploma N° ${row.nroDiploma}` : ''}
-                    </span>
-                    
-                    {tableRows.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveRow(row.id)}
-                        className="text-red-600 hover:text-red-700 text-[10px] font-bold"
-                      >
-                        Eliminar
-                      </button>
-                    )}
-                  </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Secretario General:
+                </label>
+                <input
+                  type="text"
+                  value={autoridadSecretario}
+                  onChange={(e) => setAutoridadSecretario(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold"
+                />
+              </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="text-[10px] text-slate-500">N° Diploma:</label>
-                      <input
-                        type="text"
-                        value={row.nroDiploma}
-                        onChange={(e) => handleUpdateRow(row.id, 'nroDiploma', e.target.value)}
-                        className="select-estilo text-[11px] h-[36px] font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] text-slate-500">Diploma De:</label>
-                      <input
-                        type="text"
-                        value={row.diplomaDe}
-                        onChange={(e) => handleUpdateRow(row.id, 'diplomaDe', e.target.value)}
-                        className="select-estilo text-[11px] h-[36px]"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="text-[10px] text-slate-500">Fojas:</label>
-                      <input
-                        type="text"
-                        value={row.fojas}
-                        onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
-                        className="select-estilo text-[11px] h-[36px] font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] text-slate-500">Libro:</label>
-                      <input
-                        type="text"
-                        value={row.libro}
-                        onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
-                        className="select-estilo text-[11px] h-[36px] font-mono"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Rector de la UAGRM:
+                </label>
+                <input
+                  type="text"
+                  value={autoridadRector}
+                  onChange={(e) => setAutoridadRector(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold"
+                />
+              </div>
             </div>
 
-            {/* 5. Acciones al final del Panel Word (Guardar e Imprimir sin iconos feos) */}
+            {/* Acciones al Final del Panel Lateral */}
             <div className="pt-4 border-t border-slate-200 space-y-3">
               <button
                 type="button"
                 onClick={handleSaveDocument}
                 disabled={isSaving}
-                className="w-full boton-editar justify-center py-2.5 shadow-sm text-xs font-bold"
+                className="w-full py-2.5 bg-[#003366] hover:bg-blue-900 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
               >
-                {isSaving ? 'Guardando Cambios...' : 'Guardar Documento'}
+                {isSaving ? 'Guardando Cambios...' : 'Guardar Certificado'}
               </button>
 
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="w-full btn-secundario-curvo justify-center py-2.5 shadow-sm text-xs font-bold"
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors"
               >
-                IMPRIMIR DOCUMENTO ({paperSize.toUpperCase()})
+                🖨️ IMPRIMIR CERTIFICADO ({paperSize.toUpperCase()})
               </button>
             </div>
 
