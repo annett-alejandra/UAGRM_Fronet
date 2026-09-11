@@ -3,6 +3,7 @@ import { SidebarNavWidget } from '../../widgets/SidebarNavWidget/SidebarNavWidge
 import { CertificadoAutenticidadPage } from './CertificadoAutenticidadPage';
 import { BandejaPendientesPage } from './BandejaPendientesPage';
 import { ReconstruccionExpedientePage } from './ReconstruccionExpedientePage';
+import { BusquedaExpedientesArchivoPage } from './BusquedaExpedientesArchivoPage';
 import { SubidaDocumentos } from '../../features/subida-documentos/SubidaDocumentos';
 
 export function ArchivoCentralLayout() {
@@ -16,6 +17,7 @@ export function ArchivoCentralLayout() {
             <Route path="triaje" element={<BandejaPendientesPage />} />
             <Route path="subida" element={<SubidaDocumentos />} />
             <Route path="reconstruccion" element={<ReconstruccionExpedientePage />} />
+            <Route path="busqueda-expedientes" element={<BusquedaExpedientesArchivoPage />} />
             <Route path="reconstruccion/:id" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos/:id" element={<ReconstruccionExpedientePage />} />

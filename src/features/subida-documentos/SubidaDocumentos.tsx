@@ -575,6 +575,172 @@ export function SubidaDocumentos() {
 
         </div>
       </div>
+    
+      {/* 3. BANDEJA INFERIOR DE ARCHIVOS / EXPEDIENTES PROCESADOS EN LOTE */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+        <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-[#003366]"></span>
+            <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '20px' }}>folder_managed</span>
+              Historial de Expedientes & Legajos Procesados (Lote Actual)
+            </h3>
+          </div>
+          <span className="px-3 py-1 bg-blue-50 text-[#003366] font-mono text-xs font-bold rounded-full border border-blue-200">
+            3 Archivos en Lista
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs font-sans border-collapse">
+            <thead>
+              <tr className="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
+                <th className="p-3 rounded-l-xl">Archivo / Vista Previa</th>
+                <th className="p-3">Fecha / Hora Carga</th>
+                <th className="p-3">C.I. Detectado</th>
+                <th className="p-3">Titular / Expediente</th>
+                <th className="p-3">Estado OCR</th>
+                <th className="p-3 text-right rounded-r-xl">Acción Directa</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-red-600">picture_as_pdf</span>
+                  <span>EXPEDIENTE_JENNY_FLORES_3250858.pdf</span>
+                </td>
+                <td className="p-3 text-slate-600 font-mono">11/09/2026 10:15</td>
+                <td className="p-3">
+                  <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
+                    3250858-SCZ
+                  </span>
+                </td>
+                <td className="p-3 font-bold text-slate-800">JENNY FLORES PEÑA</td>
+                <td className="p-3">
+                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Procesado (98%)
+                  </span>
+                </td>
+                <td className="p-3 text-right">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData({
+                        ci: '3250858-SCZ',
+                        ru: '219084732',
+                        nombre: 'JENNY FLORES PEÑA',
+                        carrera: 'BACHILLER EN HUMANIDADES',
+                        facultad: 'FACULTAD DE HUMANIDADES',
+                        libro: '19/98',
+                        tomo: '02',
+                        folio: '115/98',
+                        gestion: '1998',
+                        tipoDocumento: 'Título Supletorio',
+                        observaciones: 'Cargado reactivamente desde el historial'
+                      });
+                      alert('Expediente de JENNY FLORES PEÑA cargado al visor y formulario OCR.');
+                    }}
+                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                    Cargar al Visor
+                  </button>
+                </td>
+              </tr>
+
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-red-600">picture_as_pdf</span>
+                  <span>CERT_CARLOS_MENDOZA_8072900.pdf</span>
+                </td>
+                <td className="p-3 text-slate-600 font-mono">11/09/2026 09:40</td>
+                <td className="p-3">
+                  <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
+                    8072900-SCZ
+                  </span>
+                </td>
+                <td className="p-3 font-bold text-slate-800">CARLOS MENDOZA ARTEAGA</td>
+                <td className="p-3">
+                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Procesado (100%)
+                  </span>
+                </td>
+                <td className="p-3 text-right">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData({
+                        ci: '8072900-SCZ',
+                        ru: '21809931',
+                        nombre: 'CARLOS MENDOZA ARTEAGA',
+                        carrera: 'MEDICINA CIRUGÍA',
+                        facultad: 'FACULTAD DE MEDICINA',
+                        libro: '05/2022',
+                        tomo: '01',
+                        folio: '42/2022',
+                        gestion: '2022',
+                        tipoDocumento: 'Título en Provisión Nacional',
+                        observaciones: 'Expediente digitalizado con validación automatizada'
+                      });
+                      alert('Expediente de CARLOS MENDOZA ARTEAGA cargado al visor y formulario OCR.');
+                    }}
+                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                    Cargar al Visor
+                  </button>
+                </td>
+              </tr>
+
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="p-3 font-semibold text-[#003366] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-amber-600">image</span>
+                  <span>HISTORICO_MARIA_SUAREZ_SCAN.png</span>
+                </td>
+                <td className="p-3 text-slate-600 font-mono">11/09/2026 08:12</td>
+                <td className="p-3">
+                  <span className="px-2 py-0.5 bg-amber-100 text-amber-900 font-mono font-bold rounded text-[11px]">
+                    4510293-CB
+                  </span>
+                </td>
+                <td className="p-3 font-bold text-slate-800">MARIA SUAREZ ROJAS</td>
+                <td className="p-3">
+                  <span className="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                    Pendiente Convalidación
+                  </span>
+                </td>
+                <td className="p-3 text-right">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData({
+                        ci: '4510293-CB',
+                        ru: '21500192',
+                        nombre: 'MARIA SUAREZ ROJAS',
+                        carrera: 'DERECHO',
+                        facultad: 'FACULTAD DE CIENCIAS JURÍDICAS',
+                        libro: '01/1995',
+                        tomo: '03',
+                        folio: '88/1995',
+                        gestion: '1995',
+                        tipoDocumento: 'Título Académico',
+                        observaciones: 'Libro antiguo con desgaste de tinta'
+                      });
+                      alert('Expediente de MARIA SUAREZ ROJAS cargado al visor y formulario OCR.');
+                    }}
+                    className="px-3 py-1.5 bg-[#003366] hover:bg-blue-900 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 ml-auto shadow-xs"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                    Cargar al Visor
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
-  );
-}

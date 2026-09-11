@@ -33,6 +33,11 @@ const ARCHIVO_NAV: readonly NavItem[] = [
     label: '4. Reconstrucción Libros',
     iconName: 'menu_book',
   },
+  {
+    path: '/archivo/busqueda-expedientes',
+    label: '5. Búsqueda de Expedientes',
+    iconName: 'search_insights',
+  },
 ];
 
 const TITULOS_NAV: readonly NavItem[] = [
