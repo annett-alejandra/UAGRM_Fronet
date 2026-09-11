@@ -65,6 +65,13 @@ export function SubidaDocumentos() {
     }
   };
 
+  const handleTabClick = (method: 'upload' | 'scanner' | 'qr') => {
+    setCaptureMethod(method);
+    if (method === 'upload') {
+      fileInputRef.current?.click();
+    }
+  };
+
   const handleSaveExpediente = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
@@ -86,9 +93,9 @@ export function SubidaDocumentos() {
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12 font-sans">
+    <div className="max-w-[1600px] mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12 font-sans bg-[#F8FAFC]">
       
-      {/* Hidden File Input for Viewer and Toolbar */}
+      {/* Input de archivo oculto */}
       <input 
         type="file" 
         ref={fileInputRef}
@@ -98,15 +105,15 @@ export function SubidaDocumentos() {
         id="expediente-file-input"
       />
 
-      {/* 1. Barra Compacta de Métodos de Captura */}
-      <div className="card p-4 space-y-3 shadow-sm">
+      {/* 1. Barra de Métodos de Captura (Limpia, Sin Banner Gigante Intermedio) */}
+      <div className="card p-4 space-y-3 bg-white border border-[#E2E8F0] shadow-sm rounded-2xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[#E2E8F0] pb-3">
           <div>
             <h1 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading">
               Digitalización & Escaneo OCR de Expedientes
             </h1>
             <p className="text-[#64748B] text-xs mt-0.5">
-              Seleccione el método de origen o arrastre el archivo directamente en el visor de la izquierda
+              Haga clic en 'Subir PDF / Archivo' para explorar en su equipo o arrastre directamente en el visor de la izquierda
             </p>
           </div>
           
@@ -115,12 +122,12 @@ export function SubidaDocumentos() {
           </span>
         </div>
 
-        {/* 3 Pestañas de Métodos de Captura Slim */}
+        {/* 3 Pestañas de Métodos de Captura Directa */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <button
             type="button"
-            onClick={() => setCaptureMethod('upload')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${
+            onClick={() => handleTabClick('upload')}
+            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
               captureMethod === 'upload'
                 ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
                 : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
@@ -131,14 +138,14 @@ export function SubidaDocumentos() {
             </div>
             <div>
               <div className="text-xs font-extrabold uppercase">1. Subir PDF / Archivo</div>
-              <div className={`text-[10px] ${captureMethod === 'upload' ? 'text-slate-200' : 'text-[#64748B]'}`}>Carga directa en Visor</div>
+              <div className={`text-[10px] ${captureMethod === 'upload' ? 'text-slate-200' : 'text-[#64748B]'}`}>Explorar en equipo / Carga inmediata</div>
             </div>
           </button>
 
           <button
             type="button"
-            onClick={() => setCaptureMethod('scanner')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${
+            onClick={() => handleTabClick('scanner')}
+            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
               captureMethod === 'scanner'
                 ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
                 : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
@@ -155,8 +162,8 @@ export function SubidaDocumentos() {
 
           <button
             type="button"
-            onClick={() => setCaptureMethod('qr')}
-            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${
+            onClick={() => handleTabClick('qr')}
+            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
               captureMethod === 'qr'
                 ? 'bg-[#003366] border-[#003366] text-white font-bold shadow-sm'
                 : 'bg-slate-50 border-[#E2E8F0] text-[#1E293B] hover:bg-slate-100'
@@ -172,7 +179,7 @@ export function SubidaDocumentos() {
           </button>
         </div>
 
-        {/* Paneles Informativos Compactos para Escáner y QR (Solo si están activos) */}
+        {/* Paneles Informativos Slim para Escáner y QR */}
         {captureMethod === 'scanner' && (
           <div className="p-3 rounded-xl bg-slate-50 border border-[#E2E8F0] flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs text-[#1E293B]">
@@ -181,9 +188,7 @@ export function SubidaDocumentos() {
             </div>
             <button
               type="button"
-              onClick={() => {
-                alert('Escaneo TWAIN iniciado. Imagen capturada y enviada al visor.');
-              }}
+              onClick={() => alert('Escaneo TWAIN iniciado. Imagen capturada y enviada al visor.')}
               className="btn-secundario-curvo py-1.5 px-4 text-xs"
             >
               Iniciar Escaneo Directo
@@ -209,11 +214,11 @@ export function SubidaDocumentos() {
         )}
       </div>
 
-      {/* 2. Split-Screen 50/50 (Layout Dividido Sin Scroll Innecesario) */}
+      {/* 2. Split-Screen 50/50 en Tarjetas Blancas Puro (#FFFFFF) con Bordes Grises Sutiles (#E2E8F0) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         
-        {/* PANEL IZQUIERDO: Visor de Legajo Original + Dropzone Embebida */}
-        <div className="card p-5 space-y-4 shadow-sm flex flex-col min-h-[620px]">
+        {/* PANEL IZQUIERDO: Visor de Legajo Original */}
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 space-y-4 shadow-sm flex flex-col min-h-[620px]">
           
           <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
             <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
@@ -221,7 +226,6 @@ export function SubidaDocumentos() {
             </h3>
             
             <div className="flex items-center gap-2">
-              {/* Botón Reemplazar / Cambiar Archivo en la Barra de Herramientas */}
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
@@ -232,7 +236,6 @@ export function SubidaDocumentos() {
                 <span>{previewUrl ? 'Cambiar archivo' : 'Examinar'}</span>
               </button>
 
-              {/* Controles de Zoom y Rotación */}
               <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-[#E2E8F0] text-xs">
                 <button
                   type="button"
@@ -270,7 +273,6 @@ export function SubidaDocumentos() {
             </div>
           </div>
 
-          {/* Lienzo Principal del Visor / Dropzone Embebida (Empty State) */}
           <div className="flex-1 relative min-h-[520px] bg-slate-50/60 rounded-xl border border-[#E2E8F0] flex items-center justify-center overflow-hidden p-4">
             
             {previewUrl ? (
@@ -289,7 +291,7 @@ export function SubidaDocumentos() {
                 </div>
               </div>
             ) : (
-              /* EMPTY STATE DROPZONE EMBEBIDA EN EL VISOR */
+              /* DROPZONE EMBEBIDA EN VISOR VACÍO */
               <div 
                 onDragOver={e => { e.preventDefault(); setDragActive(true); }}
                 onDragLeave={() => setDragActive(false)}
@@ -341,8 +343,8 @@ export function SubidaDocumentos() {
 
         </div>
 
-        {/* PANEL DERECHO: Formulario de Convalidación y Validación OCR */}
-        <div className="card p-5 space-y-4 shadow-sm">
+        {/* PANEL DERECHO: Formulario de Convalidación OCR */}
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 space-y-4 shadow-sm">
           
           <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
             <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
@@ -355,7 +357,6 @@ export function SubidaDocumentos() {
 
           <form onSubmit={handleSaveExpediente} className="space-y-4">
             
-            {/* Sección 1: Datos Personales */}
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
                 1. Datos del Expediente Académico
@@ -456,7 +457,6 @@ export function SubidaDocumentos() {
               </div>
             </div>
 
-            {/* Sección 2: Libro, Tomo, Folio y Gestión */}
             <div className="space-y-3 border-t border-[#E2E8F0] pt-4">
               <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
                 2. Matriz de Archivo (Libro, Tomo, Folio, Gestión)
@@ -537,7 +537,6 @@ export function SubidaDocumentos() {
               </div>
             </div>
 
-            {/* Botón de Convalidación */}
             <div className="pt-3 border-t border-[#E2E8F0] flex justify-end gap-3">
               <button
                 type="button"
