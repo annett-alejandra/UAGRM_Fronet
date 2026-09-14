@@ -121,10 +121,10 @@ export function CertificadoAutenticidadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col justify-between pb-32">
+    <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col justify-between pb-28">
       
       {/* BARRA SUPERIOR DE BÚSQUEDA Y OPCIONES */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap justify-between items-center gap-4 sticky top-0 z-30 shadow-xs print:hidden">
+      <div className="bg-white border-b border-slate-200 px-6 py-3.5 flex flex-wrap justify-between items-center gap-4 sticky top-0 z-30 shadow-xs print:hidden">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-[#C51D24] uppercase tracking-wider">
             <span className="material-symbols-outlined text-sm">description</span>
@@ -179,11 +179,13 @@ export function CertificadoAutenticidadPage() {
         </div>
       </div>
 
-      {/* ÁREA PRINCIPAL: VISTA DE HOJA ÚNICA + PANEL EDITABLE LIMPIO EN TODO EL ALTO */}
-      <div className="flex-1 flex flex-col md:flex-row items-stretch justify-center gap-6 p-6 max-w-[1600px] w-full mx-auto">
+      {/* ÁREA PRINCIPAL: VISTA DE HOJA ÚNICA + PANEL LATERAL EDITABLE EXTENDIDO AL 100% HASTA ABAJO */}
+      <div className={`flex-1 flex justify-center items-start p-6 transition-all ${
+        showWordEditor ? 'pr-[400px] print:pr-0' : ''
+      }`}>
         
         {/* VISTA PREVIA HOJA OFICIAL MEMBRETADA (CENTRADA) */}
-        <div className="flex-1 flex justify-center items-start overflow-x-auto py-2">
+        <div className="w-full flex justify-center items-start overflow-x-auto py-2">
           <InformeArchivoCentralTipo1
             correlativoInforme={correlativoInforme}
             fechaDoc={fechaDoc}
@@ -205,11 +207,11 @@ export function CertificadoAutenticidadPage() {
           />
         </div>
 
-        {/* PANEL LATERAL DE EDICIÓN FLUIDO (SIN BOTÓN ROJO DUPLICADO, CÓMODO ESPACIADO) */}
+        {/* PANEL LATERAL DE EDICIÓN EXTENDIDO HASTA EL FINAL DE LA PANTALLA (TOP HEADER A BOTTOM FOOTER) */}
         {showWordEditor && (
-          <div className="w-96 shrink-0 bg-white p-5 print:hidden shadow-xl border-l border-slate-200 rounded-2xl sticky top-20 h-[calc(100vh-140px)] overflow-y-auto space-y-4">
+          <aside className="w-96 fixed right-0 top-[73px] bottom-[50px] bg-white print:hidden shadow-2xl border-l border-slate-200 z-30 p-5 overflow-y-auto space-y-4">
             
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3 sticky top-0 bg-white z-10 pt-1">
               <h2 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#C51D24] text-lg">edit</span>
                 Panel de Edición (Tipo 1)
@@ -223,8 +225,8 @@ export function CertificadoAutenticidadPage() {
               </button>
             </div>
 
-            {/* Campos de Edición con Espaciado Cómodo */}
-            <div className="space-y-4">
+            {/* Campos de Edición con Espaciado Cómodo que Fluyen hasta abajo */}
+            <div className="space-y-4 pb-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-700 mb-1">
@@ -396,7 +398,7 @@ export function CertificadoAutenticidadPage() {
               ))}
 
               <div className="space-y-3 pt-1">
-                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2.5 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
                   <span>Párrafo Aclaratorio Histórico:</span>
                   <input
                     type="checkbox"
@@ -406,7 +408,7 @@ export function CertificadoAutenticidadPage() {
                   />
                 </label>
 
-                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2.5 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
                   <span>Párrafo Supletorio:</span>
                   <input
                     type="checkbox"
@@ -430,7 +432,7 @@ export function CertificadoAutenticidadPage() {
               </div>
             </div>
 
-          </div>
+          </aside>
         )}
 
       </div>
@@ -478,7 +480,7 @@ export function CertificadoAutenticidadPage() {
               <span className="material-symbols-outlined text-[#C51D24] text-sm">help</span>
               Flujo Rápido:
             </span>
-            <span>[1. Consultar Expediente] → [2. Ajustar/Editar en Panel Lateral] → [3. Guardar Documento] → [4. Imprimir Hoja Única]</span>
+            <span>[1. Consultar Expediente] → [2. Ajustar/Editar en Panel Lateral Fijo] → [3. Guardar Documento] → [4. Imprimir Hoja Única]</span>
           </div>
 
           <div className="text-[10px] text-slate-500 font-mono">

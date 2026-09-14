@@ -76,7 +76,7 @@ export function InformeArchivoCentralTipo1({
       {/* Contenido Principal de la Hoja Única */}
       <div className="space-y-3">
 
-        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL SIN LÍNEA DIVISORIA NI HR */}
+        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL SIN LÍNEA DIVISORIA (FECHA PRIMERO, LUEGO CORRELATIVO) */}
         <header className="text-center font-serif pb-2 mb-2">
           <h1 className="font-extrabold text-base uppercase text-[#003366] tracking-wide leading-tight">
             UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
