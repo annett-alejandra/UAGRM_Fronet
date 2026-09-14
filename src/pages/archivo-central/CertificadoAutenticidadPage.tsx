@@ -19,7 +19,7 @@ export function CertificadoAutenticidadPage() {
   // Configuracion de Papel y Modos
   const [paperSize] = useState<'carta' | 'oficio' | 'a4'>('carta');
   const [showWordEditor, setShowWordEditor] = useState<boolean>(true);
-  const [usarHojaMembretadaFisica, setUsarHojaMembretadaFisica] = useState<boolean>(true);
+  const [usarHojaMembretadaFisica, setUsarHojaMembretadaFisica] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchDiploma, setSearchDiploma] = useState('');
@@ -296,7 +296,7 @@ export function CertificadoAutenticidadPage() {
                   />
                 </label>
                 <p className="text-[10px] text-slate-600 leading-tight">
-                  Fondo blanco con 4.0 cm de espacio superior reservado para papel oficial con membrete pre-impreso de Archivo Central.
+                  Al activar, deja 3.6 cm de margen superior para imprimir en hojas con membrete físico de Archivo Central.
                 </p>
               </div>
             </div>
@@ -585,7 +585,7 @@ export function CertificadoAutenticidadPage() {
             <strong className="text-[#003366] font-mono">
               INFORME ARCHIVO CENTRAL (INF N° {correlativoInforme})
             </strong>
-            <span className="text-slate-400 font-mono">| {usarHojaMembretadaFisica ? 'Fondo Blanco para Hoja Membretada' : 'Membrete Digital'}</span>
+            <span className="text-slate-400 font-mono">| Encabezado Centrado Oficial</span>
           </div>
 
           <div className="flex items-center gap-3">
