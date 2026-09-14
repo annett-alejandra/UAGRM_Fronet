@@ -1,307 +1,434 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface DocumentoCarpeta {
+interface DocumentoLegajo {
   nombre: string;
   tipo: string;
   icono: string;
 }
 
-interface ExpedienteBusqueda {
+interface GraduadoLegajo {
   id: string;
-  ci: string;
-  nombreTitular: string;
-  diplomaDe: string;
   nroDiploma: string;
-  libro: string;
+  nombreTitular: string;
+  ci: string;
   fojas: string;
-  gestion: string;
-  estadoLegajo: 'Digitalizado' | 'Verificado' | 'En Custodia Física';
-  esCarpetaCompleta: boolean; // true: Carpeta completa | false: Fallback / PDF suelto
-  documentosIncluidos?: DocumentoCarpeta[];
+  estado: 'Digitalizado' | 'Verificado' | 'En Custodia Física';
+  esCarpetaCompleta: boolean;
+  documentos?: DocumentoLegajo[];
 }
 
-const EXPEDIENTES_MOCK: ExpedienteBusqueda[] = [
+interface TomoLegajo {
+  id: string;
+  numeroTomo: string; // ej: Legajo #01
+  rangoInicial: string; // ej: 03399
+  rangoFinal: string; // ej: 03010
+  estadoTomo: 'Cerrado' | 'Abierto';
+  totalGraduados: number;
+  graduados: GraduadoLegajo[];
+}
+
+interface CarreraArchivo {
+  id: string;
+  nombreCarrera: string; // ej: LIC. EN CIENCIAS JURÍDICAS
+  tomos: TomoLegajo[];
+}
+
+interface GestionArchivo {
+  gestion: string; // ej: 2001, 2000, 1999
+  carreras: CarreraArchivo[];
+}
+
+// Estructura de Datos Jerárquica de Archivo Central (Gestión -> Carrera -> Tomo/Legajo)
+const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
   {
-    id: 'EXP-101',
-    ci: '3250858-SCZ',
-    nombreTitular: 'JENNY FLORES PEÑA',
-    diplomaDe: 'BACHILLER EN HUMANIDADES',
-    nroDiploma: '014863',
-    libro: '19/98',
-    fojas: '115/98',
-    gestion: '1998',
-    estadoLegajo: 'Digitalizado',
-    esCarpetaCompleta: true,
-    documentosIncluidos: [
-      { nombre: 'CI_JENNY_FLORES_PEÑA.pdf', tipo: 'Cédula de Identidad Escaneada', icono: 'badge' },
-      { nombre: 'HISTORICO_NOTAS_JENNY_FLORES.pdf', tipo: 'Histórico Académico & Notas', icono: 'history_edu' },
-      { nombre: 'CERTIFICADO_ESTUDIOS_COLEGIO_JENNY.pdf', tipo: 'Histórico de Estudio de Colegio', icono: 'school' },
-      { nombre: 'DIPLOMA_BACHILLER_014863.pdf', tipo: 'Diploma de Bachiller / Título', icono: 'workspace_premium' }
+    gestion: '2001',
+    carreras: [
+      {
+        id: 'car-2001-1',
+        nombreCarrera: 'LIC. EN CIENCIAS JURÍDICAS',
+        tomos: [
+          {
+            id: 'tomo-2001-cj-01',
+            numeroTomo: 'Legajo #01',
+            rangoInicial: '03399',
+            rangoFinal: '03010',
+            estadoTomo: 'Cerrado',
+            totalGraduados: 4,
+            graduados: [
+              {
+                id: 'grad-1',
+                nroDiploma: '03399',
+                nombreTitular: 'MARIA S. ARISPE LLANOS',
+                ci: '3491204-SCZ',
+                fojas: '102/2001',
+                estado: 'Digitalizado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_MARIA_ARISPE.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'TITULO_CIENCIAS_JURIDICAS_03399.pdf', tipo: 'Título Profesional en Provisión Nacional', icono: 'workspace_premium' },
+                  { nombre: 'HISTORICO_NOTAS_JURIDICAS.pdf', tipo: 'Histórico Académico & Certificado de Notas', icono: 'history_edu' }
+                ]
+              },
+              {
+                id: 'grad-2',
+                nroDiploma: '03398',
+                nombreTitular: 'LILIANA I. NAVARRO PAZ',
+                ci: '4512903-SCZ',
+                fojas: '101/2001',
+                estado: 'Verificado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_LILIANA_NAVARRO.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'TITULO_03398.pdf', tipo: 'Título en Provisión Nacional', icono: 'workspace_premium' }
+                ]
+              },
+              {
+                id: 'grad-3',
+                nroDiploma: '03393',
+                nombreTitular: 'HERIBERTO ORELLANA VILLANUEVA',
+                ci: '2901842-SCZ',
+                fojas: '096/2001',
+                estado: 'Digitalizado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_HERIBERTO_ORELLANA.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'TITULO_03393.pdf', tipo: 'Título Profesional', icono: 'workspace_premium' }
+                ]
+              },
+              {
+                id: 'grad-4',
+                nroDiploma: '03010',
+                nombreTitular: 'ROBERTO CARLOS ZABALA',
+                ci: '1904812-SCZ',
+                fojas: '001/2001',
+                estado: 'En Custodia Física',
+                esCarpetaCompleta: false, // Fallback foja única
+                documentos: [
+                  { nombre: 'LIBRO_2001_FOJA_001.pdf', tipo: 'Foja Única Reconstruida', icono: 'menu_book' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'car-2001-2',
+        nombreCarrera: 'MÉDICO CIRUJANO',
+        tomos: [
+          {
+            id: 'tomo-2001-[#C51D24]-01',
+            numeroTomo: 'Legajo #01',
+            rangoInicial: '96071',
+            rangoFinal: '96001',
+            estadoTomo: 'Cerrado',
+            totalGraduados: 2,
+            graduados: [
+              {
+                id: 'grad-m1',
+                nroDiploma: '96071',
+                nombreTitular: 'GUALBERTO MEDINA VARGAS',
+                ci: '8072900-SCZ',
+                fojas: '0027',
+                estado: 'Verificado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_GUALBERTO_MEDINA.pdf', tipo: 'Cédula de Identidad', icono: 'badge' },
+                  { nombre: 'TITULO_96071.pdf', tipo: 'Título Profesional en Provisión Nacional', icono: 'workspace_premium' }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     ]
   },
   {
-    id: 'EXP-102',
-    ci: '8072900-SCZ',
-    nombreTitular: 'GUALBERTO MEDINA VARGAS',
-    diplomaDe: 'MÉDICO CIRUJANO',
-    nroDiploma: '96071',
-    libro: '0017',
-    fojas: '0027',
-    gestion: '2022',
-    estadoLegajo: 'Verificado',
-    esCarpetaCompleta: true,
-    documentosIncluidos: [
-      { nombre: 'CI_GUALBERTO_MEDINA.pdf', tipo: 'Cédula de Identidad Escaneada', icono: 'badge' },
-      { nombre: 'HISTORICO_NOTAS_MEDICINA.pdf', tipo: 'Histórico Académico Universitario', icono: 'history_edu' },
-      { nombre: 'TITULO_PROVISION_MEDICINA_96071.pdf', tipo: 'Título Profesional en Provisión Nacional', icono: 'workspace_premium' }
-    ]
-  },
-  {
-    id: 'EXP-103',
-    ci: '4510293-CB',
-    nombreTitular: 'MARIA SUAREZ ROJAS',
-    diplomaDe: 'LICENCIADA EN DERECHO',
-    nroDiploma: '045129',
-    libro: '01/1995',
-    fojas: '88/1995',
-    gestion: '1995',
-    estadoLegajo: 'En Custodia Física',
-    esCarpetaCompleta: false, // Fallback último recurso (Documento/PDF suelto)
-    documentosIncluidos: [
-      { nombre: 'LIBRO_MATRIZ_1995_SCAN.pdf', tipo: 'Folio de Libro Matriz Escaneado (PDF Suelto - Sin Carpeta Completa)', icono: 'picture_as_pdf' }
+    gestion: '1999',
+    carreras: [
+      {
+        id: 'car-1999-1',
+        nombreCarrera: 'BACHILLER EN HUMANIDADES',
+        tomos: [
+          {
+            id: 'tomo-1999-bach-01',
+            numeroTomo: 'Legajo #01',
+            rangoInicial: '019741',
+            rangoFinal: '019700',
+            estadoTomo: 'Cerrado',
+            totalGraduados: 2,
+            graduados: [
+              {
+                id: 'grad-b1',
+                nroDiploma: '019741',
+                nombreTitular: 'LYNNE DENISSE PEREZ REVILLA',
+                ci: '4716343-SCZ',
+                fojas: '181/99',
+                estado: 'Digitalizado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_LYNNE_PEREZ.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'DIPLOMA_019741.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
+                ]
+              },
+              {
+                id: 'grad-b2',
+                nroDiploma: '014863',
+                nombreTitular: 'JENNY FLORES PEÑA',
+                ci: '3250858-SCZ',
+                fojas: '115/98',
+                estado: 'Digitalizado',
+                esCarpetaCompleta: true,
+                documentos: [
+                  { nombre: 'CI_JENNY_FLORES.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'DIPLOMA_014863.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
 ];
 
 export function BusquedaExpedientesArchivoPage() {
   const navigate = useNavigate();
-  const [ciQuery, setCiQuery] = useState('');
-  const [nombreQuery, setNombreQuery] = useState('');
-  const [diplomaQuery, setDiplomaQuery] = useState('');
-  const [matrizQuery, setMatrizQuery] = useState('');
 
-  const [expandedLegajoId, setExpandedLegajoId] = useState<string | null>('EXP-101');
-  const [selectedLegajoModal, setSelectedLegajoModal] = useState<ExpedienteBusqueda | null>(null);
+  // Estados de Filtros en Cascada (Gestión -> Carrera -> Tomo/Legajo)
+  const [selectedGestion, setSelectedGestion] = useState<string>('2001');
+  const [selectedCarreraId, setSelectedCarreraId] = useState<string>('car-2001-1');
+  const [selectedTomoId, setSelectedTomoId] = useState<string>('tomo-2001-cj-01');
 
-  const filteredExpedientes = EXPEDIENTES_MOCK.filter(exp => {
-    const matchCi = !ciQuery || exp.ci.toLowerCase().includes(ciQuery.toLowerCase());
-    const matchNombre = !nombreQuery || exp.nombreTitular.toLowerCase().includes(nombreQuery.toLowerCase());
-    const matchDiploma = !diplomaQuery || exp.nroDiploma.toLowerCase().includes(diplomaQuery.toLowerCase());
-    const matchMatriz = !matrizQuery || `${exp.libro}/${exp.fojas}`.toLowerCase().includes(matrizQuery.toLowerCase());
-    return matchCi && matchNombre && matchDiploma && matchMatriz;
-  });
+  // Filtro de texto libre opcional (C.I. o Nombre)
+  const [queryTexto, setQueryTexto] = useState('');
 
-  const handleLimpiarFiltros = () => {
-    setCiQuery('');
-    setNombreQuery('');
-    setDiplomaQuery('');
-    setMatrizQuery('');
+  // Modales
+  const [selectedGraduadoModal, setSelectedGraduadoModal] = useState<GraduadoLegajo | null>(null);
+
+  // 1. Obtener lista de Carreras para la Gestión seleccionada
+  const carrerasDisponibles = useMemo(() => {
+    const gestObj = JERARQUIA_ARCHIVO_MOCK.find(g => g.gestion === selectedGestion);
+    return gestObj ? gestObj.carreras : [];
+  }, [selectedGestion]);
+
+  // 2. Obtener lista de Tomos para la Carrera seleccionada
+  const tomosDisponibles = useMemo(() => {
+    const carObj = carrerasDisponibles.find(c => c.id === selectedCarreraId);
+    return carObj ? carObj.tomos : [];
+  }, [carrerasDisponibles, selectedCarreraId]);
+
+  // 3. Obtener Tomo/Legajo Activo Seleccionado
+  const tomoActivo = useMemo(() => {
+    return tomosDisponibles.find(t => t.id === selectedTomoId) || tomosDisponibles[0] || null;
+  }, [tomosDisponibles, selectedTomoId]);
+
+  // 4. Filtrar Graduados dentro del Tomo por texto opcional
+  const graduadosFiltrados = useMemo(() => {
+    if (!tomoActivo) return [];
+    if (!queryTexto) return tomoActivo.graduados;
+    return tomoActivo.graduados.filter(g =>
+      g.nombreTitular.toLowerCase().includes(queryTexto.toLowerCase()) ||
+      g.ci.toLowerCase().includes(queryTexto.toLowerCase()) ||
+      g.nroDiploma.toLowerCase().includes(queryTexto.toLowerCase())
+    );
+  }, [tomoActivo, queryTexto]);
+
+  // Manejador de Cambio de Gestión (Reinicia carrera y tomo)
+  const handleGestionChange = (nuevaGestion: string) => {
+    setSelectedGestion(nuevaGestion);
+    const gestObj = JERARQUIA_ARCHIVO_MOCK.find(g => g.gestion === nuevaGestion);
+    if (gestObj && gestObj.carreras.length > 0) {
+      const primerCarrera = gestObj.carreras[0];
+      setSelectedCarreraId(primerCarrera.id);
+      if (primerCarrera.tomos.length > 0) {
+        setSelectedTomoId(primerCarrera.tomos[0].id);
+      }
+    }
   };
 
-  const toggleExpandFolder = (id: string) => {
-    setExpandedLegajoId(expandedLegajoId === id ? null : id);
+  // Manejador de Cambio de Carrera
+  const handleCarreraChange = (nuevaCarreraId: string) => {
+    setSelectedCarreraId(nuevaCarreraId);
+    const carObj = carrerasDisponibles.find(c => c.id === nuevaCarreraId);
+    if (carObj && carObj.tomos.length > 0) {
+      setSelectedTomoId(carObj.tomos[0].id);
+    }
   };
 
   return (
     <div className="p-8 space-y-8 bg-slate-50 min-h-screen text-slate-900 font-sans pb-28">
-      {/* Encabezado Principal de Búsqueda */}
+      
+      {/* Encabezado Principal Archivo Central */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C51D24] mb-1">
-            <span className="material-symbols-[#C51D24] material-symbols-outlined text-sm">folder_shared</span>
-            Módulo de Consulta Archivo Central UAGRM
+            <span className="material-symbols-outlined text-sm">account_tree</span>
+            Módulo de Archivo Central • Estructura por Tomos y Legajos
           </div>
           <h1 className="text-2xl font-extrabold text-[#003366] tracking-tight font-heading">
-            5. Búsqueda Multiparamétrica de Expedientes y Carpetas
+            Búsqueda por Jerarquía de Libros, Tomos y Legajos
           </h1>
           <p className="text-xs text-slate-600 mt-1">
-            Consulta de expedientes personales por C.I. y Nombre (Prioridad Carpetas Digitalizadas).
+            Navegación en cascada por Gestión Anual ➔ Carrera / Programa ➔ Tomo / Legajo Físico.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1.5 bg-blue-50 text-[#003366] text-xs font-extrabold rounded-full border border-blue-200">
-            Total Registros: {filteredExpedientes.length}
+          <span className="px-3.5 py-1.5 bg-blue-50 text-[#003366] text-xs font-extrabold rounded-full border border-blue-200 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Gestión Activa: {selectedGestion}
           </span>
         </div>
       </div>
 
-      {/* Formulario de Criterios de Búsqueda Combinados */}
+      {/* FILTROS EN CASCADA (ÁRBOL DE NAVEGACIÓN: GESTIÓN ➔ CARRERA ➔ TOMO/LEGAJO) */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <div className="flex items-center gap-2 text-[#003366] font-extrabold text-sm border-b border-slate-100 pb-3">
-          <span className="material-symbols-outlined text-[#C51D24]">pageview</span>
-          CRITERIOS DE BÚSQUEDA COMBINADOS
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center gap-2 text-[#003366] font-extrabold text-xs uppercase tracking-wider">
+            <span className="material-symbols-outlined text-[#C51D24] text-lg">filter_alt</span>
+            Navegación Jerárquica en Cascada
+          </div>
+          <span className="text-[11px] text-slate-400 font-mono">ESTÁNDAR DOCUMENTAL UAGRM</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-1">
-          <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Carnet de Identidad (C.I.):
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          
+          {/* Selector 1: Gestión / Año */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              1. Selector de Gestión (Año):
             </label>
-            <input
-              type="text"
-              placeholder="Ej: 3250858-SCZ"
-              value={ciQuery}
-              onChange={(e) => setCiQuery(e.target.value)}
-              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all"
-            />
+            <select
+              value={selectedGestion}
+              onChange={(e) => handleGestionChange(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-extrabold text-[#003366] focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+            >
+              {JERARQUIA_ARCHIVO_MOCK.map((g) => (
+                <option key={g.gestion} value={g.gestion}>
+                  📁 Gestión {g.gestion}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Nombre Completo del Titular:
+          {/* Selector 2: Carrera / Programa */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              2. Carrera / Programa:
             </label>
-            <input
-              type="text"
-              placeholder="Ej: JENNY FLORES PEÑA"
-              value={nombreQuery}
-              onChange={(e) => setNombreQuery(e.target.value)}
-              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all"
-            />
+            <select
+              value={selectedCarreraId}
+              onChange={(e) => handleCarreraChange(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+            >
+              {carrerasDisponibles.map((c) => (
+                <option key={c.id} value={c.id}>
+                  🎓 {c.nombreCarrera}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Número de Título / Diploma:
+          {/* Selector 3: Tomo / Legajo */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              3. Selector de Tomo / Legajo:
             </label>
-            <input
-              type="text"
-              placeholder="Ej: 014863"
-              value={diplomaQuery}
-              onChange={(e) => setDiplomaQuery(e.target.value)}
-              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all"
-            />
+            <select
+              value={selectedTomoId}
+              onChange={(e) => setSelectedTomoId(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-extrabold text-[#C51D24] focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+            >
+              {tomosDisponibles.map((t) => (
+                <option key={t.id} value={t.id}>
+                  📙 {t.numeroTomo} (Del: {t.rangoInicial} al: {t.rangoFinal})
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Matriz Física (Libro / Fojas):
-            </label>
-            <input
-              type="text"
-              placeholder="Ej: 19/98 o 115/98"
-              value={matrizQuery}
-              onChange={(e) => setMatrizQuery(e.target.value)}
-              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all"
-            />
-          </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-2">
-          <button
-            type="button"
-            onClick={handleLimpiarFiltros}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
-          >
-            Limpiar Filtros
-          </button>
+        {/* Buscador secundario rápido por C.I. o Nombre dentro del Tomo */}
+        <div className="pt-2 flex items-center justify-between gap-4">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Filtrar por C.I. o Nombre dentro del legajo seleccionado..."
+              value={queryTexto}
+              onChange={(e) => setQueryTexto(e.target.value)}
+              className="w-full px-3.5 py-2 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none"
+            />
+            <span className="material-symbols-outlined absolute left-2.5 top-2 text-slate-400 text-sm">search</span>
+          </div>
 
-          <button
-            type="button"
-            className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-sm">search</span>
-            Buscar Expedientes
-          </button>
+          {tomoActivo && (
+            <div className="text-xs font-mono bg-blue-50 px-3.5 py-2 rounded-xl border border-blue-200 shrink-0 text-[#003366]">
+              Rango Correlativo: <strong>Del {tomoActivo.rangoInicial} al {tomoActivo.rangoFinal}</strong> ({tomoActivo.estadoTomo})
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Resultados de la Búsqueda - carpetas legajo prioritarias */}
+      {/* TABLA INDEXADA DEL TOMO SELECCIONADO */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-4 bg-slate-100/70 border-b border-slate-200 flex justify-between items-center">
+        <div className="p-4 bg-slate-100/70 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
           <h2 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#C51D24] text-lg">folder</span>
-            Expedientes Encontrados (Carpetas por C.I. y Nombre del Titular)
+            <span className="material-symbols-outlined text-[#C51D24] text-lg">menu_book</span>
+            Índice de Graduados — {tomoActivo?.numeroTomo} ({carrerasDisponibles.find(c => c.id === selectedCarreraId)?.nombreCarrera})
           </h2>
           <span className="text-[11px] text-slate-500 font-medium">
-            * Se muestran las carpetas completas y PDFs sueltos como último recurso
+            Total Graduados en Legajo: <strong>{graduadosFiltrados.length}</strong>
           </span>
         </div>
 
-        {filteredExpedientes.length === 0 ? (
-          <div className="p-12 text-center text-slate-500 space-y-2">
-            <span className="material-symbols-outlined text-4xl text-slate-400">folder_off</span>
-            <p className="text-sm font-bold">No se encontraron expedientes que coincidan con la búsqueda.</p>
-          </div>
-        ) : (
-          <div className="divide-y divide-slate-200">
-            {filteredExpedientes.map((exp) => {
-              const isExpanded = expandedLegajoId === exp.id;
-
-              return (
-                <div key={exp.id} className="transition-colors">
-                  {/* Encabezado Fila de Carpeta / Legajo */}
-                  <div className="p-4 hover:bg-slate-50 flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-3 min-w-[240px]">
-                      {/* Icono de Carpeta / PDF */}
-                      <div className={`p-2.5 rounded-xl flex items-center justify-center shrink-0 ${
-                        exp.esCarpetaCompleta ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-700'
-                      }`}>
-                        <span className="material-symbols-outlined text-2xl">
-                          {exp.esCarpetaCompleta ? 'folder' : 'picture_as_pdf'}
-                        </span>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-xs text-[#003366] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                            C.I. {exp.ci}
-                          </span>
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            exp.esCarpetaCompleta 
-                              ? 'bg-emerald-100 text-emerald-800' 
-                              : 'bg-amber-100 text-amber-800'
-                          }`}>
-                            {exp.esCarpetaCompleta ? '📁 Carpeta Completa' : '📄 Archivo PDF Suelto (Último Recurso)'}
-                          </span>
-                        </div>
-                        <h3 className="font-extrabold text-sm text-slate-900 mt-1">
-                          {exp.nombreTitular}
-                        </h3>
-                        <p className="text-xs text-slate-600 font-medium">
-                          {exp.diplomaDe} <span className="font-mono font-bold text-[#C51D24]">Nº {exp.nroDiploma}</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Matriz y Estado */}
-                    <div className="text-xs text-slate-700 space-y-1">
-                      <p className="font-mono text-slate-600">
-                        Libro: <strong className="text-slate-900">{exp.libro}</strong> | Fojas: <strong className="text-slate-900">{exp.fojas}</strong> ({exp.gestion})
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${
-                          exp.estadoLegajo === 'Digitalizado' ? 'bg-emerald-500' :
-                          exp.estadoLegajo === 'Verificado' ? 'bg-blue-500' : 'bg-amber-500'
-                        }`}></span>
-                        <span className="font-semibold text-slate-700">{exp.estadoLegajo}</span>
-                      </div>
-                    </div>
-
-                    {/* Acciones Directas */}
-                    <div className="flex items-center gap-2 shrink-0">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50 text-[#003366] font-bold uppercase text-[10px] tracking-wider select-none">
+                <th className="px-5 py-3.5">Nº Título / Correlativo</th>
+                <th className="px-5 py-3.5">Nombre del Graduado</th>
+                <th className="px-5 py-3.5">Cédula de Identidad</th>
+                <th className="px-5 py-3.5">Fojas / Registro</th>
+                <th className="px-5 py-3.5">Estado Legajo</th>
+                <th className="px-5 py-3.5 text-right">Acciones Directas</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
+              {graduadosFiltrados.length > 0 ? graduadosFiltrados.map((grad) => (
+                <tr key={grad.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-5 py-4 font-mono font-extrabold text-[#C51D24]">
+                    Nº {grad.nroDiploma}
+                  </td>
+                  <td className="px-5 py-4 font-bold text-slate-900 uppercase">
+                    {grad.nombreTitular}
+                  </td>
+                  <td className="px-5 py-4 font-mono font-medium text-slate-700">
+                    {grad.ci}
+                  </td>
+                  <td className="px-5 py-4 font-mono text-slate-600">
+                    Foja {grad.fojas}
+                  </td>
+                  <td className="px-5 py-4">
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold ${
+                      grad.esCarpetaCompleta 
+                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
+                        : 'bg-amber-100 text-amber-800 border border-amber-200'
+                    }`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                      {grad.esCarpetaCompleta ? '📁 Carpeta Completa' : '📄 Foja Única Reconstruida'}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <div className="flex justify-end items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => toggleExpandFolder(exp.id)}
-                        className="px-3.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#003366] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                        onClick={() => setSelectedGraduadoModal(grad)}
+                        className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
                       >
-                        <span className="material-symbols-outlined text-base">
-                          {isExpanded ? 'folder_open' : 'folder'}
-                        </span>
-                        {exp.documentosIncluidos?.length || 1} Documentos
-                        <span className="material-symbols-outlined text-base">
-                          {isExpanded ? 'expand_less' : 'expand_more'}
-                        </span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setSelectedLegajoModal(exp)}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
-                      >
-                        <span className="material-symbols-outlined text-base">visibility</span>
-                        Ver Legajo
+                        <span className="material-symbols-outlined text-base">folder_open</span>
+                        Ver Carpeta
                       </button>
 
                       <button
@@ -313,99 +440,32 @@ export function BusquedaExpedientesArchivoPage() {
                         Generar Informe (Tipo 1)
                       </button>
                     </div>
-                  </div>
-
-                  {/* Despliegue de los Archivos de la Carpeta */}
-                  {isExpanded && (
-                    <div className="p-4 bg-white border-t border-slate-200 space-y-3">
-                      <div className="text-xs font-extrabold text-[#003366] uppercase tracking-wider border-l-3 border-[#C51D24] pl-2 flex items-center justify-between">
-                        <span>Documentos Integrantes del Expediente de {exp.nombreTitular}:</span>
-                        
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedLegajoModal(exp)}
-                            className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
-                          >
-                            <span className="material-symbols-outlined text-sm">visibility</span>
-                            Ver Ficha Legajo
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => navigate('/archivo/autenticidad')}
-                            className="px-3 py-1 bg-[#C51D24] hover:bg-[#a3151b] text-white font-bold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
-                          >
-                            <span className="material-symbols-outlined text-sm">description</span>
-                            Generar Informe (Tipo 1)
-                          </button>
-                        </div>
-                      </div>
-
-                      {!exp.esCarpetaCompleta && (
-                        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-center gap-2">
-                          <span className="material-symbols-outlined text-amber-600 text-lg">warning</span>
-                          <span>
-                            <strong>Nota:</strong> No se encontró carpeta completa escaneada para este expediente. Se muestra como último recurso el PDF / documento matriz disponible.
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                        {exp.documentosIncluidos?.map((doc, idx) => (
-                          <div 
-                            key={idx}
-                            className="p-3.5 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-xl flex items-center justify-between gap-3 transition-colors shadow-2xs"
-                          >
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="p-2 bg-blue-100 text-[#003366] rounded-xl shrink-0">
-                                <span className="material-symbols-outlined text-xl">
-                                  {doc.icono}
-                                </span>
-                              </div>
-                              <div className="min-w-0">
-                                <p className="font-extrabold text-xs text-slate-900 truncate">
-                                  {doc.tipo}
-                                </p>
-                                <p className="text-[10px] text-slate-500 font-mono truncate mt-0.5">
-                                  📄 {doc.nombre}
-                                </p>
-                              </div>
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() => navigate('/archivo/autenticidad')}
-                              className="px-2.5 py-1 bg-[#003366] hover:bg-[#002244] text-white font-bold rounded-lg text-[11px] transition-colors flex items-center gap-1 shrink-0 cursor-pointer"
-                            >
-                              <span className="material-symbols-outlined text-xs">visibility</span>
-                              Visor
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              );
-            })}
-          </div>
-        )}
+                  </td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-xs text-slate-400">
+                    No se encontraron graduados en el tomo seleccionado.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Modal para Visualizar Legajo Digital */}
-      {selectedLegajoModal && (
+      {/* Modal para Visualizar Legajo / Carpeta Digital */}
+      {selectedGraduadoModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center border-b border-slate-200 pb-3">
               <h3 className="text-base font-extrabold text-[#003366] font-heading flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#C51D24]">folder_open</span>
-                Ficha Legajo: {selectedLegajoModal.nombreTitular} (C.I. {selectedLegajoModal.ci})
+                Legajo: {selectedGraduadoModal.nombreTitular} (C.I. {selectedGraduadoModal.ci})
               </h3>
               <button
                 type="button"
-                onClick={() => setSelectedLegajoModal(null)}
+                onClick={() => setSelectedGraduadoModal(null)}
                 className="text-slate-400 hover:text-slate-600 font-bold text-lg cursor-pointer"
               >
                 ✕
@@ -414,37 +474,37 @@ export function BusquedaExpedientesArchivoPage() {
 
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="text-slate-500 font-medium">Cédula de Identidad:</p>
-                <p className="font-mono font-bold text-slate-900">{selectedLegajoModal.ci}</p>
+                <p className="text-slate-500 font-medium">Nº Título / Diploma:</p>
+                <p className="font-mono font-bold text-[#C51D24]">{selectedGraduadoModal.nroDiploma}</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="text-slate-500 font-medium">Nº Diploma:</p>
-                <p className="font-mono font-bold text-[#C51D24]">{selectedLegajoModal.nroDiploma}</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="text-slate-500 font-medium">Grado / Mención:</p>
-                <p className="font-bold text-slate-900">{selectedLegajoModal.diplomaDe}</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="text-slate-500 font-medium">Ubicación Matriz:</p>
-                <p className="font-mono text-slate-900">Libro {selectedLegajoModal.libro} | Fojas {selectedLegajoModal.fojas}</p>
+                <p className="text-slate-500 font-medium">Ubicación Física:</p>
+                <p className="font-mono text-slate-900">{tomoActivo?.numeroTomo} | Foja {selectedGraduadoModal.fojas}</p>
               </div>
             </div>
 
-            <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl text-xs text-[#003366] space-y-2">
-              <p className="font-bold flex items-center gap-1">
-                <span className="material-symbols-outlined text-emerald-600 text-lg">verified</span>
-                Estado de Custodia Digital:
-              </p>
-              <p>
-                Este expediente cuenta con testimonio digitalizado en alta resolución a 300 DPI y la firma manuscrita verificada de autoridades universitarias.
-              </p>
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-[#003366] uppercase">Archivos Digitalizados del Legajo:</p>
+              <div className="space-y-2">
+                {selectedGraduadoModal.documentos?.map((doc, idx) => (
+                  <div key={idx} className="p-3 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-200 text-xs">
+                    <div className="flex items-center gap-3">
+                      <span className="material-symbols-outlined text-xl text-[#003366]">{doc.icono}</span>
+                      <div>
+                        <p className="font-bold text-slate-900">{doc.tipo}</p>
+                        <p className="text-[10px] text-slate-500 font-mono">📄 {doc.nombre}</p>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Verificado</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setSelectedLegajoModal(null)}
+                onClick={() => setSelectedGraduadoModal(null)}
                 className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
               >
                 Cerrar Visor
@@ -452,7 +512,7 @@ export function BusquedaExpedientesArchivoPage() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedLegajoModal(null);
+                  setSelectedGraduadoModal(null);
                   navigate('/archivo/autenticidad');
                 }}
                 className="px-4 py-2 bg-[#003366] hover:bg-blue-900 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"

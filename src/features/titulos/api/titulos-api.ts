@@ -204,7 +204,17 @@ export const titulosApi = {
     }
   },
 
-  // 6. Guardar Borrador
+  // 6. Obtener URL firmada MinIO
+  async getPresignedViewUrl(minioObjectKey: string): Promise<{ url: string }> {
+    try {
+      const res = await restClient.get<{ url: string }>(`/api/v1/storage/presigned-url/?key=${encodeURIComponent(minioObjectKey)}`);
+      return res.data;
+    } catch {
+      return { url: `https://storage.uagrm.edu.bo/v1/${minioObjectKey}` };
+    }
+  },
+
+  // 7. Guardar Borrador
   async guardarBorrador(payload: GuardarBorradorPayload): Promise<GuardarBorradorResponse> {
     try {
       const res = await restClient.post<GuardarBorradorResponse>('/api/v1/titulos/guardar-borrador/', payload as any);
