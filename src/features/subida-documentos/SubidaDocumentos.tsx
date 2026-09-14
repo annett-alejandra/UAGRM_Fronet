@@ -10,6 +10,7 @@ interface DocumentoLegajo {
   fechaHora: string;
   tamano: string;
   confianzaOcr: string;
+  detallesOcr?: Record<string, string>;
 }
 
 interface LegajoEstudiante {
@@ -27,80 +28,81 @@ interface LegajoEstudiante {
   documentos: DocumentoLegajo[];
 }
 
+export type TipoDocumentoClave =
+  | 'CI'
+  | 'HISTORICO_UNIV'
+  | 'HISTORICO_COLEGIO'
+  | 'TITULO'
+  | 'FORMULARIO'
+  | 'MATRIZ';
+
 export interface ClasificacionResultado {
-  tipoId: string;
+  tipoClave: TipoDocumentoClave;
   tipoNombre: string;
-  categoria: 'CI' | 'HISTORIAL' | 'TITULO' | 'FORMULARIO' | 'MATRIZ';
   icono: string;
   confianza: string;
   detalles: string;
 }
 
-// Clasificador inteligente de tipos de PDF según patrones de nombre y contenido OCR
+// Clasificador inteligente de tipos de PDF según el contenido escaneado y patrones de archivo
 export function clasificarDocumentoPDF(filename: string): ClasificacionResultado {
   const name = filename.toLowerCase();
 
   if (name.includes('ci') || name.includes('cedula') || name.includes('identidad') || name.includes('carnet') || name.includes('dni')) {
     return {
-      tipoId: 'ci',
+      tipoClave: 'CI',
       tipoNombre: 'Cédula de Identidad Escaneada',
-      categoria: 'CI',
       icono: 'badge',
       confianza: '99%',
-      detalles: 'Detectado anverso/reverso de Cédula de Identidad mediante OCR de código CI y firmas'
+      detalles: 'Campos OCR: N° C.I., Expedido, Nombres, Apellidos, Fecha Nac., Estado Civil, Vencimiento'
     };
   }
 
-  if (name.includes('historico') || name.includes('historial') || name.includes('nota') || name.includes('kardex') || name.includes('calificaci') || name.includes('materia')) {
+  if (name.includes('colegio') || name.includes('secundaria') || name.includes('sie') || name.includes('distrital')) {
     return {
-      tipoId: 'historial',
-      tipoNombre: 'Histórico Académico & Certificado de Notas',
-      categoria: 'HISTORIAL',
+      tipoClave: 'HISTORICO_COLEGIO',
+      tipoNombre: 'Histórico de Estudio de Colegio (Bachillerato)',
+      icono: 'school',
+      confianza: '97%',
+      detalles: 'Campos OCR: C.I., Alumno, Unidad Educativa, Código SIE, Distrito, Nivel, Gestión Egreso'
+    };
+  }
+
+  if (name.includes('historico') || name.includes('historial') || name.includes('nota') || name.includes('kardex') || name.includes('materia') || name.includes('univ')) {
+    return {
+      tipoClave: 'HISTORICO_UNIV',
+      tipoNombre: 'Histórico Académico Universitario & Notas',
       icono: 'history_edu',
       confianza: '98%',
-      detalles: 'Detectada grilla de asignaturas, calificaciones universitarias y sellos de Kardex'
+      detalles: 'Campos OCR: C.I., Estudiante, R.U., Carrera, Facultad, Plan de Estudios, Promedio'
     };
   }
 
   if (name.includes('titulo') || name.includes('diploma') || name.includes('provision') || name.includes('bachiller') || name.includes('licenciatu') || name.includes('acta')) {
     return {
-      tipoId: 'titulo',
+      tipoClave: 'TITULO',
       tipoNombre: 'Diploma Académico / Título Profesional',
-      categoria: 'TITULO',
       icono: 'workspace_premium',
       confianza: '99%',
-      detalles: 'Detectado formato oficial de Diploma de Bachiller / Título en Provisión Nacional UAGRM'
+      detalles: 'Campos OCR: N° Diploma, Titular, C.I., Grado, Libro Matriz, Tomo, Folio, Rector'
     };
   }
 
   if (name.includes('form') || name.includes('solicitud') || name.includes('tramite') || name.includes('requisito') || name.includes('poder') || name.includes('testimonio')) {
     return {
-      tipoId: 'formulario',
-      tipoNombre: 'Formularios de Trámite y Requisitos',
-      categoria: 'FORMULARIO',
+      tipoClave: 'FORMULARIO',
+      tipoNombre: 'Formularios de Trámite y Requisitos Notariales',
       icono: 'assignment',
       confianza: '97%',
-      detalles: 'Detectada carátula de trámite, testimonio notarial o formulario de solicitud'
-    };
-  }
-
-  if (name.includes('libro') || name.includes('matriz') || name.includes('folio') || name.includes('tomo')) {
-    return {
-      tipoId: 'matriz',
-      tipoNombre: 'Libro Matriz Antiguo Escaneado',
-      categoria: 'MATRIZ',
-      icono: 'menu_book',
-      confianza: '95%',
-      detalles: 'Detectado folio escaneado de Libro Matriz de Grados y Títulos'
+      detalles: 'Campos OCR: N° Hoja Ruta, Solicitante, C.I., Tipo Trámite, N° Testimonio, Apoderado'
     };
   }
 
   return {
-    tipoId: 'otro',
-    tipoNombre: 'Documento Digitalizado Autodetectado',
-    categoria: 'FORMULARIO',
+    tipoClave: 'HISTORICO_UNIV',
+    tipoNombre: 'Histórico Académico Universitario & Notas',
     icono: 'description',
-    confianza: '94%',
+    confianza: '95%',
     detalles: 'Clasificado mediante análisis de estructura y patrones de encabezado UAGRM'
   };
 }
@@ -131,7 +133,7 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
       {
         id: 'DOC-102',
         nombreArchivo: 'HISTORICO_NOTAS_JENNY_FLORES.pdf',
-        tipoDocumento: 'Histórico Académico & Certificado de Notas',
+        tipoDocumento: 'Histórico Académico Universitario & Notas',
         formato: 'pdf',
         fechaHora: '11/09/2026 10:16',
         tamano: '3.4 MB',
@@ -139,21 +141,21 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
       },
       {
         id: 'DOC-103',
-        nombreArchivo: 'DIPLOMA_BACHILLER_014863.pdf',
-        tipoDocumento: 'Diploma de Bachiller / Título Académico',
+        nombreArchivo: 'CERTIFICADO_ESTUDIOS_COLEGIO_JENNY.pdf',
+        tipoDocumento: 'Histórico de Estudio de Colegio (Bachillerato)',
         formato: 'pdf',
-        fechaHora: '11/09/2026 10:17',
-        tamano: '2.8 MB',
+        fechaHora: '11/09/2026 10:16',
+        tamano: '2.1 MB',
         confianzaOcr: '97%'
       },
       {
         id: 'DOC-104',
-        nombreArchivo: 'FORMULARIO_REQUISITOS_TRAMITE.pdf',
-        tipoDocumento: 'Formularios de Trámite y Requisitos',
+        nombreArchivo: 'DIPLOMA_BACHILLER_014863.pdf',
+        tipoDocumento: 'Diploma Académico / Título Profesional',
         formato: 'pdf',
-        fechaHora: '11/09/2026 10:18',
-        tamano: '850 KB',
-        confianzaOcr: '99%'
+        fechaHora: '11/09/2026 10:17',
+        tamano: '2.8 MB',
+        confianzaOcr: '97%'
       }
     ]
   },
@@ -182,7 +184,7 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
       {
         id: 'DOC-202',
         nombreArchivo: 'HISTORICO_MEDICINA_MENDOZA.pdf',
-        tipoDocumento: 'Histórico Académico & Certificado de Notas',
+        tipoDocumento: 'Histórico Académico Universitario & Notas',
         formato: 'pdf',
         fechaHora: '11/09/2026 09:41',
         tamano: '4.1 MB',
@@ -196,39 +198,6 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
         fechaHora: '11/09/2026 09:42',
         tamano: '2.5 MB',
         confianzaOcr: '100%'
-      }
-    ]
-  },
-  {
-    id: 'LEG-03',
-    ci: '4510293-CB',
-    ru: '21500192',
-    titularNombre: 'MARIA SUAREZ ROJAS',
-    carrera: 'DERECHO',
-    facultad: 'FACULTAD DE CIENCIAS JURÍDICAS',
-    libro: '01/1995',
-    tomo: '03',
-    folio: '88/1995',
-    gestion: '1995',
-    estadoOcr: 'Pendiente Convalidación',
-    documentos: [
-      {
-        id: 'DOC-301',
-        nombreArchivo: 'CI_MARIA_SUAREZ.pdf',
-        tipoDocumento: 'Cédula de Identidad Escaneada',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 08:12',
-        tamano: '980 KB',
-        confianzaOcr: '95%'
-      },
-      {
-        id: 'DOC-302',
-        nombreArchivo: 'LIBRO_MATRIZ_1995_SCAN.png',
-        tipoDocumento: 'Libro Matriz Antiguo Escaneado',
-        formato: 'png',
-        fechaHora: '11/09/2026 08:14',
-        tamano: '5.6 MB',
-        confianzaOcr: '90%'
       }
     ]
   }
@@ -251,38 +220,75 @@ export function SubidaDocumentos() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [expandedLegajoId, setExpandedLegajoId] = useState<string | null>('LEG-01');
 
-  // Estado de detección automática de tipo PDF
-  const [clasificacionActual, setClasificacionActual] = useState<ClasificacionResultado | null>({
-    tipoId: 'ci',
+  // Clasificación actual
+  const [clasificacionActual, setClasificacionActual] = useState<ClasificacionResultado>({
+    tipoClave: 'CI',
     tipoNombre: 'Cédula de Identidad Escaneada',
-    categoria: 'CI',
     icono: 'badge',
     confianza: '99%',
-    detalles: 'Detectado anverso/reverso de Cédula de Identidad mediante OCR de código CI y firmas'
+    detalles: 'Campos OCR: N° C.I., Expedido, Nombres, Apellidos, Fecha Nac., Estado Civil, Vencimiento'
   });
 
-  const [formData, setFormData] = useState({
+  // ESTADOS DINÁMICOS DE CAMPOS OCR SEGÚN TIPO DE DOCUMENTO
+  // 1. Cédula de Identidad
+  const [ciFields, setCiFields] = useState({
+    ci: '3250858',
+    expedido: 'SCZ',
+    nombres: 'JENNY',
+    apellidos: 'FLORES PEÑA',
+    fechaNac: '14/05/1980',
+    nacionalidad: 'BOLIVIANA',
+    estadoCivil: 'SOLTERA',
+    vencimientoCi: '12/09/2030'
+  });
+
+  // 2. Histórico Académico Universitario
+  const [histUnivFields, setHistUnivFields] = useState({
     ci: '3250858-SCZ',
+    estudiante: 'JENNY FLORES PEÑA',
     ru: '219084732',
-    nombre: 'JENNY FLORES PEÑA',
-    carrera: 'BACHILLER EN HUMANIDADES',
-    facultad: 'FACULTAD DE HUMANIDADES',
+    carrera: 'BIOQUÍMICA Y FARMACIA',
+    facultad: 'FACULTAD DE CIENCIAS FARMACÉUTICAS',
+    planEstudios: 'Plan 1998-2',
+    materiasAprobadas: '54 de 54 (100%)',
+    promedio: '78.4 / 100'
+  });
+
+  // 3. Histórico de Estudio de Colegio
+  const [histColegioFields, setHistColegioFields] = useState({
+    ci: '3250858-SCZ',
+    alumno: 'JENNY FLORES PEÑA',
+    colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO',
+    distrito: 'Santa Cruz I',
+    codigoSie: '81980012',
+    nivel: '6to de Secundaria / Bachillerato',
+    gestionEgreso: '1997',
+    nroRegistroDistrital: 'DIST-97/441'
+  });
+
+  // 4. Título / Diploma Académico
+  const [tituloFields, setTituloFields] = useState({
+    ci: '3250858-SCZ',
+    titular: 'JENNY FLORES PEÑA',
+    nroDiploma: '014863',
+    grado: 'BACHILLER EN HUMANIDADES',
     libro: '19/98',
     tomo: '02',
     folio: '115/98',
-    gestion: '1998',
-    tipoDocumento: 'Cédula de Identidad Escaneada',
-    observaciones: 'Expediente con OCR escaneado a 300 DPI',
+    fechaExtension: '24 de julio de 1998',
+    rector: 'JORGE ORELLANA MORENO'
   });
 
-  const [ocrConfidence] = useState({
-    ci: '98%', ru: '99%', nombre: '97%', carrera: '95%', facultad: '96%',
-    libro: '94%', tomo: '99%', folio: '95%', gestion: '99%'
+  // 5. Formulario de Trámite / Requisitos Notariales
+  const [formularioFields, setFormularioFields] = useState({
+    ci: '3250858-SCZ',
+    solicitante: 'JENNY FLORES PEÑA',
+    nroHojaRuta: 'TR-2026-0472',
+    tipoTramite: 'Certificado de Autenticidad / Supletorio',
+    nroTestimonio: '1246/2025',
+    apoderado: 'Yuli Alison Romero Flores',
+    fechaSolicitud: '16 de abril de 2026'
   });
-
-  const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const procesarArchivoPDF = (selectedFile: File) => {
     setFile(selectedFile);
@@ -294,48 +300,32 @@ export function SubidaDocumentos() {
     const res = clasificarDocumentoPDF(selectedFile.name);
     setClasificacionActual(res);
 
-    // Dinámicamente simular extracción OCR según el tipo detectado y el archivo
-    let newCi = formData.ci;
-    let newNombre = formData.nombre;
-    let newRu = formData.ru;
-    let newCarrera = formData.carrera;
-    let newLibro = formData.libro;
-    let newFolio = formData.folio;
-
+    // Adaptar dinámicamente los valores OCR según el archivo y tipo
     if (selectedFile.name.includes('CARLOS_GUTIERREZ') || selectedFile.name.includes('7795202')) {
-      newCi = '7795202-SCZ';
-      newNombre = 'CARLOS GUTIERREZ ALVAREZ';
-      newRu = '220041829';
-      newCarrera = 'INGENIERÍA EN SIEMAS';
-      newLibro = '08/2024';
-      newFolio = '31/2024';
+      const ciVal = '7795202';
+      const nomVal = 'CARLOS GUTIERREZ ALVAREZ';
+      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'CARLOS', apellidos: 'GUTIERREZ ALVAREZ' }));
+      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-SCZ`, estudiante: nomVal, ru: '220041829', carrera: 'INGENIERÍA EN SISTEMAS' }));
+      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, alumno: nomVal, colegio: 'COLEGIO BAUTISTA BOLIVIANO' }));
+      setTituloFields(p => ({ ...p, ci: `${ciVal}-SCZ`, titular: nomVal, nroDiploma: '96071', grado: 'INGENIERO DE SISTEMAS', libro: '08/2024', folio: '31/2024' }));
+      setFormularioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, solicitante: nomVal }));
     } else if (selectedFile.name.includes('MARIA_SUAREZ') || selectedFile.name.includes('4510293')) {
-      newCi = '4510293-CB';
-      newNombre = 'MARIA SUAREZ ROJAS';
-      newRu = '21500192';
-      newCarrera = 'DERECHO';
-      newLibro = '01/1995';
-      newFolio = '88/1995';
-    } else if (selectedFile.name.includes('JENNY_FLORES') || selectedFile.name.includes('3250858')) {
-      newCi = '3250858-SCZ';
-      newNombre = 'JENNY FLORES PEÑA';
-      newRu = '219084732';
-      newCarrera = 'BACHILLER EN HUMANIDADES';
-      newLibro = '19/98';
-      newFolio = '115/98';
+      const ciVal = '4510293';
+      const nomVal = 'MARIA SUAREZ ROJAS';
+      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'MARIA', apellidos: 'SUAREZ ROJAS' }));
+      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-CB`, estudiante: nomVal, ru: '21500192', carrera: 'DERECHO' }));
+      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-CB`, alumno: nomVal, colegio: 'LICEO SEÑOR DE MAYO' }));
+      setTituloFields(p => ({ ...p, ci: `${ciVal}-CB`, titular: nomVal, nroDiploma: '44819', grado: 'LICENCIADA EN DERECHO', libro: '01/1995', folio: '88/1995' }));
+      setFormularioFields(p => ({ ...p, ci: `${ciVal}-CB`, solicitante: nomVal }));
+    } else {
+      const ciVal = '3250858';
+      const nomVal = 'JENNY FLORES PEÑA';
+      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'JENNY', apellidos: 'FLORES PEÑA' }));
+      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-SCZ`, estudiante: nomVal, ru: '219084732', carrera: 'BACHILLER EN HUMANIDADES' }));
+      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, alumno: nomVal, colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO' }));
+      setTituloFields(p => ({ ...p, ci: `${ciVal}-SCZ`, titular: nomVal, nroDiploma: '014863', grado: 'BACHILLER EN HUMANIDADES', libro: '19/98', folio: '115/98' }));
+      setFormularioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, solicitante: nomVal }));
     }
-
-    setFormData(prev => ({
-      ...prev,
-      ci: newCi,
-      nombre: newNombre,
-      ru: newRu,
-      carrera: newCarrera,
-      libro: newLibro,
-      folio: newFolio,
-      tipoDocumento: res.tipoNombre,
-      observaciones: `Reconocido dinámicamente como '${res.tipoNombre}' (${res.confianza} confianza OCR)`
-    }));
   };
 
   const handleSimularPdf = (ejemploNombre: string) => {
@@ -358,23 +348,76 @@ export function SubidaDocumentos() {
     }
   };
 
+  // Obtener CI y Nombre activo del formulario dinámico según tipo
+  const getActiveCiAndName = () => {
+    switch (clasificacionActual.tipoClave) {
+      case 'CI':
+        return { ci: `${ciFields.ci}-${ciFields.expedido}`, nombre: `${ciFields.nombres} ${ciFields.apellidos}` };
+      case 'HISTORICO_UNIV':
+        return { ci: histUnivFields.ci, nombre: histUnivFields.estudiante };
+      case 'HISTORICO_COLEGIO':
+        return { ci: histColegioFields.ci, nombre: histColegioFields.alumno };
+      case 'TITULO':
+        return { ci: tituloFields.ci, nombre: tituloFields.titular };
+      case 'FORMULARIO':
+        return { ci: formularioFields.ci, nombre: formularioFields.solicitante };
+      default:
+        return { ci: histUnivFields.ci, nombre: histUnivFields.estudiante };
+    }
+  };
+
   const handleSelectDocument = (legajo: LegajoEstudiante, doc: DocumentoLegajo) => {
     const res = clasificarDocumentoPDF(doc.nombreArchivo);
     setClasificacionActual(res);
 
-    setFormData({
+    const cleanCiOnly = legajo.ci.split('-')[0] || legajo.ci;
+    const cleanExp = legajo.ci.split('-')[1] || 'SCZ';
+
+    setCiFields({
+      ci: cleanCiOnly,
+      expedido: cleanExp,
+      nombres: legajo.titularNombre.split(' ')[0] || '',
+      apellidos: legajo.titularNombre.split(' ').slice(1).join(' ') || '',
+      fechaNac: '14/05/1980',
+      nacionalidad: 'BOLIVIANA',
+      estadoCivil: 'SOLTERA',
+      vencimientoCi: '12/09/2030'
+    });
+
+    setHistUnivFields({
       ci: legajo.ci,
+      estudiante: legajo.titularNombre,
       ru: legajo.ru,
-      nombre: legajo.titularNombre,
       carrera: legajo.carrera,
       facultad: legajo.facultad,
+      planEstudios: 'Plan 1998-2',
+      materiasAprobadas: '54 de 54 (100%)',
+      promedio: '78.4 / 100'
+    });
+
+    setHistColegioFields({
+      ci: legajo.ci,
+      alumno: legajo.titularNombre,
+      colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO',
+      distrito: 'Santa Cruz I',
+      codigoSie: '81980012',
+      nivel: '6to de Secundaria / Bachillerato',
+      gestionEgreso: legajo.gestion,
+      nroRegistroDistrital: `DIST-${legajo.gestion}/441`
+    });
+
+    setTituloFields({
+      ci: legajo.ci,
+      titular: legajo.titularNombre,
+      nroDiploma: '014863',
+      grado: legajo.carrera,
       libro: legajo.libro,
       tomo: legajo.tomo,
       folio: legajo.folio,
-      gestion: legajo.gestion,
-      tipoDocumento: doc.tipoDocumento,
-      observaciones: `Cargado dinámicamente desde la Carpeta del Estudiante (${doc.nombreArchivo})`
+      fechaExtension: `24 de julio de ${legajo.gestion}`,
+      rector: 'JORGE ORELLANA MORENO'
     });
+
     setSelectedDocumentTitle(doc.nombreArchivo);
   };
 
@@ -382,33 +425,33 @@ export function SubidaDocumentos() {
     e.preventDefault();
     setUploading(true);
     try {
+      const active = getActiveCiAndName();
+
       await titulosApi.guardarBorrador({
-        expediente_id: formData.ru || 'EXP-2026',
-        tipo_plantilla: formData.tipoDocumento,
-        numero_libro: formData.libro,
-        tomo: formData.tomo,
-        folio: formData.folio,
-        observaciones: formData.observaciones
+        expediente_id: active.ci || 'EXP-2026',
+        tipo_plantilla: clasificacionActual.tipoNombre,
+        numero_libro: tituloFields.libro,
+        tomo: tituloFields.tomo,
+        folio: tituloFields.folio,
+        observaciones: `Convalidación de ${clasificacionActual.tipoNombre}`
       });
 
-      // Crear nuevo documento clasificado
       const nuevoDoc: DocumentoLegajo = {
         id: `DOC-${Date.now()}`,
         nombreArchivo: selectedDocumentTitle,
-        tipoDocumento: formData.tipoDocumento,
+        tipoDocumento: clasificacionActual.tipoNombre,
         formato: 'pdf',
         fechaHora: new Date().toLocaleString(),
         tamano: '2.1 MB',
-        confianzaOcr: clasificacionActual?.confianza || '98%'
+        confianzaOcr: clasificacionActual.confianza
       };
 
       setLegajosList(prev => {
-        const existeLegajo = prev.find(l => l.ci === formData.ci || l.titularNombre === formData.nombre);
+        const existe = prev.find(l => l.ci === active.ci || l.titularNombre === active.nombre.toUpperCase());
 
-        if (existeLegajo) {
-          // Si el estudiante ya tiene carpeta personalizada (C.I. + Nombre), añadir el documento
+        if (existe) {
           return prev.map(legajo => {
-            if (legajo.id === existeLegajo.id) {
+            if (legajo.id === existe.id) {
               return {
                 ...legajo,
                 documentos: [...legajo.documentos, nuevoDoc]
@@ -417,18 +460,17 @@ export function SubidaDocumentos() {
             return legajo;
           });
         } else {
-          // Si es un estudiante nuevo, crear dinámicamente su carpeta personalizada C.I. + Nombre
           const nuevoLegajo: LegajoEstudiante = {
             id: `LEG-${Date.now()}`,
-            ci: formData.ci,
-            ru: formData.ru,
-            titularNombre: formData.nombre.toUpperCase(),
-            carrera: formData.carrera,
-            facultad: formData.facultad || 'UAGRM ARCHIVO CENTRAL',
-            libro: formData.libro,
-            tomo: formData.tomo,
-            folio: formData.folio,
-            gestion: formData.gestion,
+            ci: active.ci,
+            ru: histUnivFields.ru || '220000000',
+            titularNombre: active.nombre.toUpperCase(),
+            carrera: histUnivFields.carrera || tituloFields.grado,
+            facultad: histUnivFields.facultad || 'UAGRM ARCHIVO CENTRAL',
+            libro: tituloFields.libro,
+            tomo: tituloFields.tomo,
+            folio: tituloFields.folio,
+            gestion: '2026',
             estadoOcr: 'Procesado (100%)',
             documentos: [nuevoDoc]
           };
@@ -437,7 +479,7 @@ export function SubidaDocumentos() {
         }
       });
 
-      alert(`✅ ¡Documento '${formData.tipoDocumento}' verificado con éxito! Se guardó en la Carpeta Personal de ${formData.nombre} (C.I. ${formData.ci}).`);
+      alert(`✅ ¡Campos de '${clasificacionActual.tipoNombre}' guardados exitosamente en el expediente personal de ${active.nombre} (C.I. ${active.ci})!`);
     } catch {
       alert('Error al guardar el expediente.');
     } finally {
@@ -448,22 +490,22 @@ export function SubidaDocumentos() {
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CARGA Y PRUEBAS RÁPIDAS */}
+      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CARGA Y PRUEBAS DINÁMICAS POR TIPO */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4 mb-4">
           <div>
             <h2 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '24px' }}>cloud_upload</span>
-              Digitalización e Ingreso de Expedientes (Reconocimiento Dinámico AI/OCR)
+              Digitalización de Expedientes (Campos OCR Dinámicos por Tipo de Documento)
             </h2>
             <p className="text-xs text-slate-600 mt-1">
-              Suba archivos PDF. El OCR reconocerá automáticamente si es Cédula, Histórico de Notas o Título y armará la carpeta personalizada del estudiante por su C.I. y Nombre.
+              Los campos OCR cambian dinámicamente según el documento: Cédula CI, Histórico Universitario, Histórico de Colegio, Títulos o Formulario Notarial.
             </p>
           </div>
 
-          {/* Quick PDF recognition triggers */}
+          {/* Quick PDF recognition triggers por Tipo */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pruebas Dinámicas PDF:</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Simular por Tipo:</span>
             <button
               type="button"
               onClick={() => handleSimularPdf('CI_JENNY_FLORES_PEÑA.pdf')}
@@ -475,10 +517,18 @@ export function SubidaDocumentos() {
             <button
               type="button"
               onClick={() => handleSimularPdf('HISTORIAL_NOTAS_JENNY_FLORES.pdf')}
-              className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] rounded-lg border border-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
+              className="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-[11px] rounded-lg border border-indigo-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[14px]">history_edu</span>
-              Histórico Notas
+              Histórico Univ.
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSimularPdf('CERTIFICADO_ESTUDIOS_COLEGIO.pdf')}
+              className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] rounded-lg border border-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[14px]">school</span>
+              Histórico Colegio
             </button>
             <button
               type="button"
@@ -486,7 +536,7 @@ export function SubidaDocumentos() {
               className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[14px]">workspace_premium</span>
-              Nuevo Estudiante
+              Título / Diploma
             </button>
           </div>
         </div>
@@ -505,7 +555,7 @@ export function SubidaDocumentos() {
             <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>picture_as_pdf</span>
             <div>
               <p className="font-extrabold text-xs uppercase tracking-wider">Subir Archivo PDF</p>
-              <p className="text-[10px] opacity-80 mt-0.5">Clasifica y extrae C.I., Notas y Título</p>
+              <p className="text-[10px] opacity-80 mt-0.5">Adaptación de campos OCR según documento</p>
             </div>
           </button>
 
@@ -544,43 +594,41 @@ export function SubidaDocumentos() {
       </div>
 
       {/* BANNER RECONOCIMIENTO INTELIGENTE DE TIPO DE DOCUMENTO */}
-      {clasificacionActual && (
-        <div className="bg-gradient-to-r from-blue-900 to-[#003366] text-white rounded-2xl p-4 shadow-md flex flex-wrap items-center justify-between gap-4 animate-in fade-in">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/10 rounded-xl backdrop-blur-xs shrink-0">
-              <span className="material-symbols-outlined text-amber-300 text-2xl">
-                {clasificacionActual.icono}
-              </span>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-amber-400 text-slate-900 font-mono text-[10px] font-black uppercase rounded">
-                  Reconocimiento AI/OCR
-                </span>
-                <h4 className="font-extrabold text-sm tracking-wide">
-                  {clasificacionActual.tipoNombre}
-                </h4>
-              </div>
-              <p className="text-xs text-blue-100 mt-0.5">
-                {clasificacionActual.detalles}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="text-right">
-              <p className="text-[10px] text-blue-200 uppercase font-mono">Confianza de Tipo</p>
-              <p className="text-lg font-black text-amber-300 font-mono">{clasificacionActual.confianza}</p>
-            </div>
-            <span className="px-3 py-1.5 bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs">
-              <span className="material-symbols-outlined text-[16px]">check_circle</span>
-              Tipo Confirmado
+      <div className="bg-gradient-to-r from-blue-900 to-[#003366] text-white rounded-2xl p-4 shadow-md flex flex-wrap items-center justify-between gap-4 animate-in fade-in">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-white/10 rounded-xl backdrop-blur-xs shrink-0">
+            <span className="material-symbols-outlined text-amber-300 text-2xl">
+              {clasificacionActual.icono}
             </span>
           </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 bg-amber-400 text-slate-900 font-mono text-[10px] font-black uppercase rounded">
+                Tipo OCR Detectado
+              </span>
+              <h4 className="font-extrabold text-sm tracking-wide">
+                {clasificacionActual.tipoNombre}
+              </h4>
+            </div>
+            <p className="text-xs text-blue-100 mt-0.5">
+              {clasificacionActual.detalles}
+            </p>
+          </div>
         </div>
-      )}
 
-      {/* 2. AREA PRINCIPAL: VISOR Y FORMULARIO DE CONVALIDACIÓN */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="text-right">
+            <p className="text-[10px] text-blue-200 uppercase font-mono">Confianza OCR</p>
+            <p className="text-lg font-black text-amber-300 font-mono">{clasificacionActual.confianza}</p>
+          </div>
+          <span className="px-3 py-1.5 bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs">
+            <span className="material-symbols-outlined text-[16px]">check_circle</span>
+            Campos Adaptados
+          </span>
+        </div>
+      </div>
+
+      {/* 2. AREA PRINCIPAL: VISOR Y FORMULARIO DINÁMICO DE CAMPOS OCR SEGÚN TIPO */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* VISOR DE DOCUMENTO A LA IZQUIERDA (7 Cols) */}
@@ -632,7 +680,7 @@ export function SubidaDocumentos() {
             onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
             onDragLeave={() => setDragActive(false)}
             onDrop={handleDrop}
-            className={`flex-1 min-h-[420px] rounded-xl border-2 border-dashed transition-all flex flex-col justify-center items-center p-6 relative overflow-hidden ${
+            className={`flex-1 min-h-[440px] rounded-xl border-2 border-dashed transition-all flex flex-col justify-center items-center p-6 relative overflow-hidden ${
               dragActive
                 ? 'border-[#003366] bg-blue-50/50'
                 : 'border-slate-300 bg-slate-50/70 hover:bg-slate-50'
@@ -656,7 +704,7 @@ export function SubidaDocumentos() {
                 <iframe
                   src={previewUrl}
                   title="Visor PDF"
-                  className="w-full h-[450px] rounded-lg border border-slate-200 shadow-sm"
+                  className="w-full h-[470px] rounded-lg border border-slate-200 shadow-sm"
                 />
               </div>
             ) : (
@@ -665,9 +713,9 @@ export function SubidaDocumentos() {
                   <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>upload_file</span>
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-sm text-[#003366]">Arrastre un archivo PDF de Cédula, Notas o Título</h4>
+                  <h4 className="font-extrabold text-sm text-[#003366]">Arrastre un archivo PDF</h4>
                   <p className="text-xs text-slate-500 mt-1">
-                    El reconocedor inteligente detectará automáticamente si es C.I., Histórico de Notas o Título y armará la carpeta personal por C.I. y Nombre.
+                    Cédula CI, Histórico Univ., Histórico de Colegio, Título o Formulario. Los campos OCR se ajustarán automáticamente.
                   </p>
                 </div>
                 <button
@@ -682,122 +730,437 @@ export function SubidaDocumentos() {
           </div>
         </div>
 
-        {/* FORMULARIO DE CONVALIDACIÓN A LA DERECHA (5 Cols) */}
+        {/* FORMULARIO DINÁMICO DE CAMPOS OCR SEGÚN TIPO DE DOCUMENTO (5 Cols) */}
         <form onSubmit={handleSaveExpediente} className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
-          <div className="border-b border-slate-200 pb-3 flex justify-between items-center">
-            <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>fact_check</span>
-              Campos Extraídos por OCR
-            </h3>
-            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold rounded">
-              Confianza General 98%
-            </span>
+          
+          {/* Selector de Tipo de Documento que cambia dinámicamente la estructura de campos */}
+          <div className="border-b border-slate-200 pb-3 space-y-2">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>tune</span>
+                Tipo de Documento &amp; Estructura OCR:
+              </h3>
+              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold rounded">
+                Confianza {clasificacionActual.confianza}
+              </span>
+            </div>
+
+            <select
+              value={clasificacionActual.tipoClave}
+              onChange={e => {
+                const val = e.target.value as TipoDocumentoClave;
+                let nom = 'Cédula de Identidad Escaneada';
+                let ico = 'badge';
+                let det = 'Campos C.I.';
+
+                if (val === 'CI') {
+                  nom = 'Cédula de Identidad Escaneada'; ico = 'badge'; det = 'Campos OCR: N° C.I., Expedido, Nombres, Apellidos, Fecha Nac., Estado Civil, Vencimiento';
+                } else if (val === 'HISTORICO_UNIV') {
+                  nom = 'Histórico Académico Universitario & Notas'; ico = 'history_edu'; det = 'Campos OCR: C.I., Estudiante, R.U., Carrera, Facultad, Plan de Estudios, Promedio';
+                } else if (val === 'HISTORICO_COLEGIO') {
+                  nom = 'Histórico de Estudio de Colegio (Bachillerato)'; ico = 'school'; det = 'Campos OCR: C.I., Alumno, Unidad Educativa, Código SIE, Distrito, Nivel, Gestión Egreso';
+                } else if (val === 'TITULO') {
+                  nom = 'Diploma Académico / Título Profesional'; ico = 'workspace_premium'; det = 'Campos OCR: N° Diploma, Titular, C.I., Grado, Libro Matriz, Tomo, Folio, Rector';
+                } else if (val === 'FORMULARIO') {
+                  nom = 'Formularios de Trámite y Requisitos Notariales'; ico = 'assignment'; det = 'Campos OCR: N° Hoja Ruta, Solicitante, C.I., Tipo Trámite, N° Testimonio, Apoderado';
+                }
+
+                setClasificacionActual({
+                  tipoClave: val,
+                  tipoNombre: nom,
+                  icono: ico,
+                  confianza: '98%',
+                  detalles: det
+                });
+              }}
+              className="w-full px-3 py-2 bg-amber-50/90 border border-amber-300 rounded-xl text-xs font-extrabold text-[#003366] focus:bg-white focus:outline-none"
+            >
+              <option value="CI">💳 1. Cédula de Identidad Escaneada (C.I.)</option>
+              <option value="HISTORICO_UNIV">📜 2. Histórico Académico Universitario & Certificado de Notas</option>
+              <option value="HISTORICO_COLEGIO">🏫 3. Histórico de Estudio de Colegio (Bachillerato)</option>
+              <option value="TITULO">🎓 4. Diploma Académico / Título Profesional</option>
+              <option value="FORMULARIO">📋 5. Formularios de Trámite & Requisitos Notariales</option>
+            </select>
           </div>
 
+          {/* RENDERIZADO CONDICIONAL Y DINÁMICO DE CAMPOS SEGÚN TIPO DE DOCUMENTO */}
           <div className="space-y-3">
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 block mb-1">Cédula de Identidad (C.I.):</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={formData.ci}
-                  onChange={e => handleChange('ci', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-bold text-[#003366] focus:bg-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-2.5 text-[10px] font-mono font-bold text-emerald-600">{ocrConfidence.ci}</span>
-              </div>
-            </div>
+            
+            {/* === CASO 1: CÉDULA DE IDENTIDAD (CI) === */}
+            {clasificacionActual.tipoClave === 'CI' && (
+              <div className="space-y-3 animate-in fade-in">
+                <div className="p-2 bg-blue-50/80 border border-blue-200 rounded-lg text-[11px] font-bold text-[#003366] flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">badge</span>
+                  Campos Específicos Extraídos de Cédula de Identidad (CI):
+                </div>
 
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 block mb-1">Nombre Completo del Titular:</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={formData.nombre}
-                  onChange={e => handleChange('nombre', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 uppercase focus:bg-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-2.5 text-[10px] font-mono font-bold text-emerald-600">{ocrConfidence.nombre}</span>
-              </div>
-            </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">N° Cédula Identidad:</label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={ciFields.ci}
+                        onChange={e => setCiFields({ ...ciFields, ci: e.target.value })}
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      />
+                      <span className="absolute right-2 top-2 text-[9px] font-mono font-bold text-emerald-600">99%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Expedido:</label>
+                    <input
+                      type="text"
+                      value={ciFields.expedido}
+                      onChange={e => setCiFields({ ...ciFields, expedido: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 uppercase"
+                    />
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="text-[11px] font-bold text-slate-700 block mb-1">Registro Univ. (R.U.):</label>
-                <input
-                  type="text"
-                  value={formData.ru}
-                  onChange={e => handleChange('ru', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-bold text-[#003366] focus:bg-white focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-[11px] font-bold text-slate-700 block mb-1">Gestión Matriz:</label>
-                <input
-                  type="text"
-                  value={formData.gestion}
-                  onChange={e => handleChange('gestion', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none"
-                />
-              </div>
-            </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Nombres:</label>
+                    <input
+                      type="text"
+                      value={ciFields.nombres}
+                      onChange={e => setCiFields({ ...ciFields, nombres: e.target.value })}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Apellidos:</label>
+                    <input
+                      type="text"
+                      value={ciFields.apellidos}
+                      onChange={e => setCiFields({ ...ciFields, apellidos: e.target.value })}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                    />
+                  </div>
+                </div>
 
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 block mb-1">Carrera / Mención:</label>
-              <input
-                type="text"
-                value={formData.carrera}
-                onChange={e => handleChange('carrera', e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none"
-              />
-            </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Fecha Nac.:</label>
+                    <input
+                      type="text"
+                      value={ciFields.fechaNac}
+                      onChange={e => setCiFields({ ...ciFields, fechaNac: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Estado Civil:</label>
+                    <input
+                      type="text"
+                      value={ciFields.estadoCivil}
+                      onChange={e => setCiFields({ ...ciFields, estadoCivil: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Vencimiento CI:</label>
+                    <input
+                      type="text"
+                      value={ciFields.vencimientoCi}
+                      onChange={e => setCiFields({ ...ciFields, vencimientoCi: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
-            <div className="grid grid-cols-3 gap-2">
-              <div>
-                <label className="text-[10px] font-bold text-slate-600 block mb-1">Libro:</label>
-                <input
-                  type="text"
-                  value={formData.libro}
-                  onChange={e => handleChange('libro', e.target.value)}
-                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] font-bold text-slate-600 block mb-1">Tomo:</label>
-                <input
-                  type="text"
-                  value={formData.tomo}
-                  onChange={e => handleChange('tomo', e.target.value)}
-                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] font-bold text-slate-600 block mb-1">Folio:</label>
-                <input
-                  type="text"
-                  value={formData.folio}
-                  onChange={e => handleChange('folio', e.target.value)}
-                  className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
-                />
-              </div>
-            </div>
+            {/* === CASO 2: HISTÓRICO ACADÉMICO UNIVERSITARIO === */}
+            {clasificacionActual.tipoClave === 'HISTORICO_UNIV' && (
+              <div className="space-y-3 animate-in fade-in">
+                <div className="p-2 bg-indigo-50/80 border border-indigo-200 rounded-lg text-[11px] font-bold text-indigo-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">history_edu</span>
+                  Campos Específicos de Histórico Académico Universitario &amp; Notas:
+                </div>
 
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 block mb-1">
-                Tipo Reconocido de Documento:
-              </label>
-              <select
-                value={formData.tipoDocumento}
-                onChange={e => handleChange('tipoDocumento', e.target.value)}
-                className="w-full px-3 py-2 bg-amber-50 border border-amber-300 rounded-xl text-xs font-extrabold text-[#003366] focus:bg-white focus:outline-none"
-              >
-                <option value="Cédula de Identidad Escaneada">💳 Cédula de Identidad Escaneada</option>
-                <option value="Histórico Académico & Certificado de Notas">📜 Histórico Académico & Certificado de Notas</option>
-                <option value="Diploma Académico / Título Profesional">🎓 Diploma Académico / Título Profesional</option>
-                <option value="Formularios de Trámite y Requisitos">📋 Formularios de Trámite y Requisitos</option>
-                <option value="Libro Matriz Antiguo Escaneado">📖 Libro Matriz Antiguo Escaneado</option>
-              </select>
-            </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">C.I. Estudiante:</label>
+                    <input
+                      type="text"
+                      value={histUnivFields.ci}
+                      onChange={e => setHistUnivFields({ ...histUnivFields, ci: e.target.value })}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">R.U. Univ.:</label>
+                    <input
+                      type="text"
+                      value={histUnivFields.ru}
+                      onChange={e => setHistUnivFields({ ...histUnivFields, ru: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Nombre Completo Estudiante:</label>
+                  <input
+                    type="text"
+                    value={histUnivFields.estudiante}
+                    onChange={e => setHistUnivFields({ ...histUnivFields, estudiante: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Carrera / Programa Universitario:</label>
+                  <input
+                    type="text"
+                    value={histUnivFields.carrera}
+                    onChange={e => setHistUnivFields({ ...histUnivFields, carrera: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Materias Aprobadas:</label>
+                    <input
+                      type="text"
+                      value={histUnivFields.materiasAprobadas}
+                      onChange={e => setHistUnivFields({ ...histUnivFields, materiasAprobadas: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-emerald-700 font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Promedio Ponderado:</label>
+                    <input
+                      type="text"
+                      value={histUnivFields.promedio}
+                      onChange={e => setHistUnivFields({ ...histUnivFields, promedio: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* === CASO 3: HISTÓRICO DE ESTUDIO DE COLEGIO === */}
+            {clasificacionActual.tipoClave === 'HISTORICO_COLEGIO' && (
+              <div className="space-y-3 animate-in fade-in">
+                <div className="p-2 bg-amber-50/80 border border-amber-200 rounded-lg text-[11px] font-bold text-amber-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">school</span>
+                  Campos Específicos de Certificado / Histórico de Colegio (Bachillerato):
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">C.I. Alumno:</label>
+                    <input
+                      type="text"
+                      value={histColegioFields.ci}
+                      onChange={e => setHistColegioFields({ ...histColegioFields, ci: e.target.value })}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Código SIE:</label>
+                    <input
+                      type="text"
+                      value={histColegioFields.codigoSie}
+                      onChange={e => setHistColegioFields({ ...histColegioFields, codigoSie: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Nombre Completo del Alumno:</label>
+                  <input
+                    type="text"
+                    value={histColegioFields.alumno}
+                    onChange={e => setHistColegioFields({ ...histColegioFields, alumno: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Unidad Educativa / Colegio:</label>
+                  <input
+                    type="text"
+                    value={histColegioFields.colegio}
+                    onChange={e => setHistColegioFields({ ...histColegioFields, colegio: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Distrito Educativo:</label>
+                    <input
+                      type="text"
+                      value={histColegioFields.distrito}
+                      onChange={e => setHistColegioFields({ ...histColegioFields, distrito: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Gestión Egreso:</label>
+                    <input
+                      type="text"
+                      value={histColegioFields.gestionEgreso}
+                      onChange={e => setHistColegioFields({ ...histColegioFields, gestionEgreso: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* === CASO 4: DIPLOMA ACADÉMICO / TÍTULO PROFESIONAL === */}
+            {clasificacionActual.tipoClave === 'TITULO' && (
+              <div className="space-y-3 animate-in fade-in">
+                <div className="p-2 bg-emerald-50/80 border border-emerald-200 rounded-lg text-[11px] font-bold text-emerald-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
+                  Campos Específicos del Diploma Académico / Título Profesional:
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">N° Diploma / Título:</label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={tituloFields.nroDiploma}
+                        onChange={e => setTituloFields({ ...tituloFields, nroDiploma: e.target.value })}
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                      />
+                      <span className="absolute right-2 top-2 text-[9px] font-mono font-bold text-emerald-600">99%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">C.I. Titular:</label>
+                    <input
+                      type="text"
+                      value={tituloFields.ci}
+                      onChange={e => setTituloFields({ ...tituloFields, ci: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Nombre Completo del Titular:</label>
+                  <input
+                    type="text"
+                    value={tituloFields.titular}
+                    onChange={e => setTituloFields({ ...tituloFields, titular: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Título / Grado Otorgado:</label>
+                  <input
+                    type="text"
+                    value={tituloFields.grado}
+                    onChange={e => setTituloFields({ ...tituloFields, grado: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Libro Matriz:</label>
+                    <input
+                      type="text"
+                      value={tituloFields.libro}
+                      onChange={e => setTituloFields({ ...tituloFields, libro: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Tomo:</label>
+                    <input
+                      type="text"
+                      value={tituloFields.tomo}
+                      onChange={e => setTituloFields({ ...tituloFields, tomo: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Folio:</label>
+                    <input
+                      type="text"
+                      value={tituloFields.folio}
+                      onChange={e => setTituloFields({ ...tituloFields, folio: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* === CASO 5: FORMULARIOS DE TRÁMITE Y REQUISITOS === */}
+            {clasificacionActual.tipoClave === 'FORMULARIO' && (
+              <div className="space-y-3 animate-in fade-in">
+                <div className="p-2 bg-purple-50/80 border border-purple-200 rounded-lg text-[11px] font-bold text-purple-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">assignment</span>
+                  Campos Específicos de Formulario de Trámite &amp; Requisitos:
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">N° Hoja Ruta / Trámite:</label>
+                    <input
+                      type="text"
+                      value={formularioFields.nroHojaRuta}
+                      onChange={e => setFormularioFields({ ...formularioFields, nroHojaRuta: e.target.value })}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">C.I.:</label>
+                    <input
+                      type="text"
+                      value={formularioFields.ci}
+                      onChange={e => setFormularioFields({ ...formularioFields, ci: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">Solicitante / Titular:</label>
+                  <input
+                    type="text"
+                    value={formularioFields.solicitante}
+                    onChange={e => setFormularioFields({ ...formularioFields, solicitante: e.target.value })}
+                    className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold uppercase text-slate-900"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">N° Testimonio Notarial:</label>
+                    <input
+                      type="text"
+                      value={formularioFields.nroTestimonio}
+                      onChange={e => setFormularioFields({ ...formularioFields, nroTestimonio: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-700 block mb-1">Nombre Apoderado:</label>
+                    <input
+                      type="text"
+                      value={formularioFields.apoderado}
+                      onChange={e => setFormularioFields({ ...formularioFields, apoderado: e.target.value })}
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
 
           <div className="pt-4 border-t border-slate-200 space-y-2">
