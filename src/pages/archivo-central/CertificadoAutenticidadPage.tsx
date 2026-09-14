@@ -124,25 +124,25 @@ export function CertificadoAutenticidadPage() {
   };
 
   return (
-    <div className="h-screen bg-slate-900 font-sans text-slate-900 flex flex-col overflow-hidden">
+    <div className="h-screen bg-slate-100 font-sans text-slate-900 flex flex-col overflow-hidden">
       
-      {/* 1. BARRA SUPERIOR DINÁMICA DE HERRAMIENTAS (HEADER) */}
-      <header className="bg-slate-900 border-b border-slate-800 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-white">
+      {/* 1. BARRA SUPERIOR BLANCA DE HERRAMIENTAS (SIN FONDO NEGRO) */}
+      <header className="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-slate-900 shadow-2xs">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-[#C51D24] text-white rounded-xl shadow-xs">
             <span className="material-symbols-outlined text-lg">description</span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-sm font-extrabold tracking-wide font-heading">
+              <h1 className="text-sm font-extrabold tracking-wide font-heading text-[#003366]">
                 Emisión de Informe de Certificación de Autenticidad (Tipo 1)
               </h1>
-              <span className="px-2 py-0.5 bg-blue-950 text-blue-300 font-mono text-[10px] font-bold rounded border border-blue-800">
+              <span className="px-2 py-0.5 bg-blue-50 text-[#003366] font-mono text-[10px] font-bold rounded border border-blue-200">
                 INF Nº {correlativoInforme}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Archivo Central UAGRM • Formato Estándar Margen 4cm Legajado
+            <p className="text-[11px] text-slate-500 font-medium">
+              Archivo Central UAGRM • Margen 4cm Legajado
             </p>
           </div>
         </div>
@@ -157,7 +157,7 @@ export function CertificadoAutenticidadPage() {
               value={searchDiploma}
               onChange={(e) => setSearchDiploma(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
-              className="px-3.5 py-1.5 pl-9 bg-slate-800 border border-slate-700 rounded-xl text-xs w-56 text-white focus:ring-2 focus:ring-[#003366] focus:bg-slate-900 outline-none transition-all placeholder:text-slate-500"
+              className="px-3.5 py-1.5 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs w-56 text-slate-900 focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all placeholder:text-slate-400"
             />
             <span className="material-symbols-outlined absolute left-2.5 top-2 text-slate-400 text-sm">search</span>
           </div>
@@ -173,20 +173,20 @@ export function CertificadoAutenticidadPage() {
           </button>
 
           {/* Controles de Zoom */}
-          <div className="flex items-center bg-slate-800 border border-slate-700 rounded-xl p-0.5 text-xs text-slate-300">
+          <div className="flex items-center bg-slate-100 border border-slate-300 rounded-xl p-0.5 text-xs text-slate-700">
             <button
               type="button"
               onClick={() => setZoomLevel(prev => Math.max(70, prev - 10))}
-              className="px-2 py-1 hover:bg-slate-700 rounded-lg cursor-pointer"
+              className="px-2 py-1 hover:bg-slate-200 rounded-lg cursor-pointer font-bold"
               title="Disminuir Zoom"
             >
               -
             </button>
-            <span className="px-2 font-mono font-bold text-[11px]">{zoomLevel}%</span>
+            <span className="px-2 font-mono font-bold text-[11px] text-[#003366]">{zoomLevel}%</span>
             <button
               type="button"
               onClick={() => setZoomLevel(prev => Math.min(130, prev + 10))}
-              className="px-2 py-1 hover:bg-slate-700 rounded-lg cursor-pointer"
+              className="px-2 py-1 hover:bg-slate-200 rounded-lg cursor-pointer font-bold"
               title="Aumentar Zoom"
             >
               +
@@ -199,8 +199,8 @@ export function CertificadoAutenticidadPage() {
             onClick={() => setShowWordEditor(!showWordEditor)}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               showWordEditor 
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
-                : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
+                ? 'bg-amber-100 text-amber-900 border border-amber-300' 
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300'
             }`}
           >
             <span className="material-symbols-outlined text-sm">edit_note</span>
@@ -209,14 +209,14 @@ export function CertificadoAutenticidadPage() {
         </div>
       </header>
 
-      {/* 2. ÁREA PRINCIPAL DIVIDIDA FLUIDA (DOCUMENTO A LA IZQUIERDA, PANEL A LA DERECHA SIN SOLAPAMIENTO) */}
+      {/* 2. ÁREA PRINCIPAL CON FONDO CLARO (SIN FONDO NEGRO) */}
       <div className="flex-1 flex overflow-hidden relative">
         
-        {/* VISTA PREVIA HOJA OFICIAL MEMBRETADA (ÁREA DINÁMICA CON ZOOM Y SCROLL LIMPIO) */}
-        <div className="flex-1 bg-slate-950/80 p-8 overflow-auto flex justify-center items-start transition-all">
+        {/* VISTA PREVIA HOJA OFICIAL MEMBRETADA (ÁREA CLARA SUAVE CON ZOOM Y SCROLL LIMPIO) */}
+        <div className="flex-1 bg-slate-200/70 p-8 overflow-auto flex justify-center items-start transition-all">
           <div 
             style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
-            className="transition-transform duration-200 my-2 shadow-2xl rounded"
+            className="transition-transform duration-200 my-2 shadow-xl rounded"
           >
             <InformeArchivoCentralTipo1
               correlativoInforme={correlativoInforme}
@@ -240,9 +240,9 @@ export function CertificadoAutenticidadPage() {
           </div>
         </div>
 
-        {/* PANEL LATERAL DE EDICIÓN FLUIDO POR PESTAÑAS (NO OVERLAY, SITÚA LADO A LADO) */}
+        {/* PANEL LATERAL DE EDICIÓN FLUIDO POR PESTAÑAS (BG WHITE) */}
         {showWordEditor && (
-          <aside className="w-96 bg-white border-l border-slate-200 flex flex-col shrink-0 shadow-2xl transition-all duration-300 print:hidden z-20">
+          <aside className="w-96 bg-white border-l border-slate-200 flex flex-col shrink-0 shadow-xl transition-all duration-300 print:hidden z-20">
             
             {/* Header del Panel Lateral */}
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -262,7 +262,7 @@ export function CertificadoAutenticidadPage() {
               </button>
             </div>
 
-            {/* Pestañas de Secciones (Navegación Limpia) */}
+            {/* Pestañas de Secciones */}
             <div className="flex border-b border-slate-200 bg-slate-100/70 p-1 gap-1 text-[11px] font-bold">
               {[
                 { id: 'general', label: 'Encabezado', icon: 'subject' },
@@ -513,15 +513,15 @@ export function CertificadoAutenticidadPage() {
 
       </div>
 
-      {/* 3. BARRA INFERIOR FIJA INTEGRADA (FOOTER BAR) */}
-      <footer className="bg-slate-900 border-t border-slate-800 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-white">
+      {/* 3. BARRA INFERIOR FIJA BLANCA (SIN FONDO NEGRO) */}
+      <footer className="bg-white border-t border-slate-200 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-slate-800 shadow-lg">
         <div className="flex items-center gap-3 text-xs">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-          <span className="text-slate-300">Documento Listo:</span>
-          <strong className="font-mono text-white">
+          <span className="text-slate-600 font-medium">Documento Activo:</span>
+          <strong className="font-mono text-[#003366]">
             INFORME ARCHIVO CENTRAL - TIPO 1 (INF Nº {correlativoInforme})
           </strong>
-          <span className="text-slate-500">| Margen 4cm Legajado</span>
+          <span className="text-slate-400">| Margen 4cm Legajado</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -529,7 +529,7 @@ export function CertificadoAutenticidadPage() {
             type="button"
             onClick={handleSaveDocument}
             disabled={isSaving}
-            className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer border border-blue-500/30"
+            className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
           >
             <span className="material-symbols-outlined text-base">save</span>
             {isSaving ? 'Guardando...' : 'Guardar Documento'}

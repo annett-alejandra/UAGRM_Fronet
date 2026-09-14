@@ -76,8 +76,8 @@ export function InformeArchivoCentralTipo1({
       {/* Contenido Principal de la Hoja Única */}
       <div className="space-y-3">
 
-        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL SIN LÍNEA DIVISORIA (FECHA PRIMERO, LUEGO CORRELATIVO) */}
-        <header className="text-center font-serif pb-2 mb-2">
+        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL */}
+        <header className="text-center font-serif pb-1 mb-2">
           <h1 className="font-extrabold text-base uppercase text-[#003366] tracking-wide leading-tight">
             UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
           </h1>
@@ -87,18 +87,19 @@ export function InformeArchivoCentralTipo1({
           <h3 className="font-semibold text-xs uppercase text-slate-700">
             Archivo Central
           </h3>
-
-          <div className="pt-2 text-xs font-sans space-y-0.5">
-            <p className="font-medium text-slate-700">
-              Santa Cruz de la Sierra, <strong className="font-bold text-slate-900">{fechaDoc}</strong>
-            </p>
-            <p className="font-extrabold text-[#003366]">
-              SECCION ARCHIVO / INF. No. <span className="underline font-mono">{correlativoInforme}</span>
-            </p>
-          </div>
         </header>
 
-        {/* 2. Destinatario y Referencia */}
+        {/* 2. FECHA Y CORRELATIVO UBICADOS JUSTO ARRIBA DEL DESTINATARIO (LIC ACOSTA) */}
+        <section className="font-sans text-xs space-y-0.5 text-left mb-2">
+          <p className="font-medium text-slate-800">
+            Santa Cruz de la Sierra, <strong className="font-bold text-slate-900">{fechaDoc}</strong>
+          </p>
+          <p className="font-extrabold text-[#003366]">
+            SECCION ARCHIVO / INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+          </p>
+        </section>
+
+        {/* 3. DESTINATARIO */}
         <section className="font-sans text-xs space-y-0.5 text-left">
           <p className="font-bold text-slate-800">Señor:</p>
           <p className="font-extrabold text-sm text-[#003366]">{destinatarioNombre}</p>
@@ -116,14 +117,14 @@ export function InformeArchivoCentralTipo1({
           De mi consideración:
         </p>
 
-        {/* 3. Párrafo Legal Introductorio */}
+        {/* 4. Párrafo Legal Introductorio */}
         <section className="text-justify text-xs leading-normal font-serif text-slate-900">
           <p className="indent-6">
             En respuesta a solicitud de la interesada presentada el <span className="font-bold">{fechaSolicitud}</span>, con Testimonio Nº <span className="font-bold font-mono">{nroTestimonio}</span>, Poder Especial Bastante y Suficiente que confiere la señora <span className="font-bold">{apoderadoNombre}</span>, a favor de la señora <span className="font-extrabold underline text-[#003366]">{titularNombre}</span>, con Cédula de Identidad Nº <span className="font-bold font-mono">{titularCi}</span>, solicita la autenticidad del {gradoMencion} que fue emitido por la Universidad Autónoma Gabriel René Moreno, informo que, los datos impresos en el cuadro siguiente, es parte de la documentación en custodia del Archivo Central - UAGRM:
           </p>
         </section>
 
-        {/* 4. Cuadro Tabular de 9 Columnas */}
+        {/* 5. Cuadro Tabular de 9 Columnas */}
         <section className="my-2">
           <div className="overflow-x-auto border border-slate-900 rounded-none">
             <table className="w-full text-center text-[10px] font-sans border-collapse table-fixed">
@@ -177,7 +178,7 @@ export function InformeArchivoCentralTipo1({
           </div>
         </section>
 
-        {/* 5. Párrafos Inferiores */}
+        {/* 6. Párrafos Inferiores */}
         {incluirAclaratoriaHistorica && (
           <p className="text-justify text-xs font-serif text-slate-900 bg-amber-50/50 p-2 rounded border-l-2 border-amber-500">
             Aclarando que, en la gestión del <strong>{gestionHistorica}</strong> no se estilaba colocar pie de firma de las autoridades, toda vez que en la parte superior del Diploma está rotulado el nombre completo del Rector.
