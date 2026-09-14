@@ -1,6 +1,6 @@
 import React from 'react';
 
-export interface InformeArchivoCentralTipo3Props {
+export interface InformeArchivoCentralTipo1Props {
   correlativoInforme: string;
   fechaDoc: string;
   destinatarioNombre: string;
@@ -32,7 +32,7 @@ export interface InformeArchivoCentralTipo3Props {
   usarHojaMembretadaFisica?: boolean;
 }
 
-export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Props) {
+export function InformeArchivoCentralTipo1(props: InformeArchivoCentralTipo1Props) {
   const {
     correlativoInforme,
     fechaDoc,
@@ -57,7 +57,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
       <div>
-        {/* 1. ENCABEZADO CENTRADO SIN LÍNEA DIVISORIA (Fiel al documento físico original) */}
+        {/* 1. ENCABEZADO CENTRADO SIN LÍNEA DIVISORIA (Tipo 1 Archivo Central UAGRM) */}
         {usarHojaMembretadaFisica ? (
           <div className="pt-[3.6cm] relative mb-6">
             {/* Visual Indicator on Screen for Pre-printed Letterhead Margin */}
@@ -97,7 +97,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
               </div>
             </div>
 
-            {/* Todo el Encabezado Institucional + Fecha + Correlativo CENTRADO EN EL MEDIO */}
+            {/* Encabezado Institucional + Fecha + Correlativo CENTRADO EN EL MEDIO */}
             <div className="text-center font-serif max-w-xl mx-auto space-y-1 pt-1">
               <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
                 UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
@@ -252,3 +252,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
     </div>
   );
 }
+
+// Export alias for backward compatibility
+export const InformeArchivoCentralTipo3 = InformeArchivoCentralTipo1;
+export type InformeArchivoCentralTipo3Props = InformeArchivoCentralTipo1Props;

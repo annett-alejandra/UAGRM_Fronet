@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { titulosApi, type ExpedienteTitulos } from '../../features/titulos/api/titulos-api';
-import { InformeArchivoCentralTipo3 } from '../../modules/archivo-central/templates/InformeArchivoCentralTipo3';
+import { InformeArchivoCentralTipo1 } from '../../modules/archivo-central/templates/InformeArchivoCentralTipo1';
 
 interface TablaFila {
   id: string;
@@ -27,7 +27,7 @@ export function CertificadoAutenticidadPage() {
   // Estado del Expediente
   const [, setExpediente] = useState<ExpedienteTitulos | null>(null);
 
-  // Variables de Negocio (Modulo Archivo Central - Plantilla Oficial de Informe)
+  // Variables de Negocio (Modulo Archivo Central - Plantilla Oficial Informe Tipo 1)
   const [correlativoInforme, setCorrelativoInforme] = useState('0472');
   const [fechaDoc, setFechaDoc] = useState('20 de abril de 2026');
   const [destinatarioNombre, setDestinatarioNombre] = useState('MSc. Edy Acosta Claros');
@@ -175,10 +175,10 @@ export function CertificadoAutenticidadPage() {
         titular: titularNombre,
         ci: titularCi,
         diploma: tableRows[0]?.nroDiploma || searchDiploma,
-        tipoPlantilla: 'InformeArchivoCentralTipo3',
+        tipoPlantilla: 'InformeArchivoCentralTipo1',
         filas: tableRows
       });
-      alert('Informe Oficial de Archivo Central guardado exitosamente.');
+      alert('Informe Oficial de Archivo Central (Tipo 1) guardado exitosamente.');
     } catch {
       alert('Error al guardar el documento.');
     } finally {
@@ -203,7 +203,7 @@ export function CertificadoAutenticidadPage() {
               boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
             }}
           >
-            <InformeArchivoCentralTipo3
+            <InformeArchivoCentralTipo1
               correlativoInforme={correlativoInforme}
               fechaDoc={fechaDoc}
               destinatarioNombre={destinatarioNombre}
@@ -235,7 +235,7 @@ export function CertificadoAutenticidadPage() {
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>edit_document</span>
-                  Panel de Edición
+                  Panel de Edición (Tipo 1)
                 </h3>
                 <button
                   type="button"
@@ -583,9 +583,9 @@ export function CertificadoAutenticidadPage() {
             <span className="w-2.5 h-2.5 rounded-full bg-[#C51D24]"></span>
             <span>Documento Activo:</span>
             <strong className="text-[#003366] font-mono">
-              INFORME ARCHIVO CENTRAL (INF N° {correlativoInforme})
+              INFORME ARCHIVO CENTRAL - TIPO 1 (INF N° {correlativoInforme})
             </strong>
-            <span className="text-slate-400 font-mono">| Encabezado Centrado Oficial</span>
+            <span className="text-slate-400 font-mono">| Encabezado Oficial Centrado</span>
           </div>
 
           <div className="flex items-center gap-3">
