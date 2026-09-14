@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+﻿@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import '../design/theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -18,7 +18,7 @@ body {
   margin: 0;
 }
 
-/* ── BOTONES GLOBALES INSTITUCIONALES ── */
+/* â”€â”€ BOTONES GLOBALES INSTITUCIONALES â”€â”€ */
 .boton-crear {
   @apply bg-[#003366] text-sm text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
@@ -35,7 +35,7 @@ body {
   @apply text-white bg-[#C51D24] rounded-xl border border-[#C51D24] hover:bg-[#a3151b] leading-5 text-[11px] sm:text-[13px] font-bold px-4 py-2.5 transition-all cursor-pointer uppercase shadow-sm;
 }
 
-/* ── TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) ── */
+/* â”€â”€ TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) â”€â”€ */
 .card-uagrm, .card {
   @apply bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-5 md:p-6 text-[#1E293B];
 }
@@ -88,79 +88,96 @@ body {
   }
 }
 
-
-
-/* ─────────────────────────────────────────────────────────────
-   ESTILOS DE IMPRESIÓN INSTITUCIONAL EXACTOS (PRINT CSS)
-   - Elimina la fecha, URL localhost y números de página del navegador.
-   - Preserva intacto el encabezado con el Escudo UAGRM sin recortes superiores.
-   - Oculta toda la interfaz web (sidebars, botones, paneles).
-   ───────────────────────────────────────────────────────────── */
-@page {
-  size: letter portrait;
-  margin: 12mm 15mm 12mm 15mm;
-}
-
+/* ============================================================
+   @media print â€” Solo imprimir el documento, nada mas
+   ============================================================ */
 @media print {
-  /* Ocultar barra lateral, navegación, buscadores, botones y paneles */
+  /* Ocultar TODA la UI excepto el documento */
+  @page {
+    size: letter portrait;
+    margin: 0;
+  }
+
+  /* Quitar header/footer del navegador (fecha, URL, titulo) */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ocultar sidebar, barra inferior, panel word, botones — pero NO el header del documento */
   aside,
-  header,
-  footer,
   nav,
   .print\:hidden,
-  .no-print,
+  [class*="fixed bottom-0"],
   button,
-  input,
-  select,
-  form,
-  .sticky,
-  .fixed {
+  footer {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Ocultar SOLO el header del layout (SidebarNavWidget), no el header del informe */
+  .sticky.top-0.z-40 {
     display: none !important;
   }
 
-  /* Reset del cuerpo */
-  body, html {
-    background: #ffffff !important;
-    color: #000000 !important;
+  /* El contenedor principal pierde su margin-left del sidebar */
+  body > div,
+  #root,
+  #root > div,
+  #root > div > div,
+  #root > div > div > div {
     margin: 0 !important;
     padding: 0 !important;
+    max-width: 100% !important;
     width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
   }
 
-  /* Reset de contenedores de la aplicación */
-  #root, 
-  main, 
-  .flex-1,
-  .p-6,
-  .p-8,
-  .md\:p-10 {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-
-  /* Documento imprimible en flujo estático sin posición absoluta recortada */
-  .printable-document {
-    display: block !important;
-    visibility: visible !important;
-    position: static !important;
+  /* La hoja carta: quitar sombra, expandir al ancho completo de la pagina impresa */
+  div[style*="width: 816px"] {
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
+    min-height: auto !important;
     padding: 0 !important;
+    margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
-    background: #ffffff !important;
-    page-break-inside: avoid !important;
   }
 
-  /* Forzar retención de imágenes (Escudo UAGRM) y colores de fondo */
-  * {
+  /* Asegurar que el flex wrapper no recorte nada */
+  .flex-1.flex.justify-center {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Forzar colores en tablas e imagenes */
+  img {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  table, th, td {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* No cortar contenido entre paginas dentro de la tabla */
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid; page-break-after: auto; }
+
+  /* El template del informe necesita su propio padding interno al imprimir */
+  .font-serif[class*="print:p-0"] {
+    padding: 15mm 18mm !important;
+  }
+
+  /* Asegurar que el escudo UAGRM se imprima siempre */
+  img[alt="Escudo UAGRM"] {
+    display: block !important;
+    visibility: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
