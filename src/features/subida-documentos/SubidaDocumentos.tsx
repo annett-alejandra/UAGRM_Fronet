@@ -206,8 +206,15 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
 export function SubidaDocumentos() {
   const navigate = useNavigate();
   const [legajosList, setLegajosList] = useState<LegajoEstudiante[]>(LEGAJOS_INICIALES);
-  const [captureMethod, setCaptureMethod] = useState<'upload' | 'scanner' | 'qr'>('upload');
   
+  // 4 MÉTODOS DE CAPTURA DINÁMICOS: PDF, ESCÁNER FÍSICO TWAIN, CAPTURA CELULAR MÓVIL, LECTOR QR
+  const [captureMethod, setCaptureMethod] = useState<'upload' | 'scanner' | 'mobile' | 'qr'>('upload');
+  
+  // Estados de escáner y celular
+  const [isScanningTWAIN, setIsScanningTWAIN] = useState(false);
+  const [mobileConnected, setMobileConnected] = useState(true);
+  const [qrDecodedMessage, setQrDecodedMessage] = useState<string | null>(null);
+
   const [, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -230,7 +237,6 @@ export function SubidaDocumentos() {
   });
 
   // ESTADOS DINÁMICOS DE CAMPOS OCR SEGÚN TIPO DE DOCUMENTO
-  // 1. Cédula de Identidad
   const [ciFields, setCiFields] = useState({
     ci: '3250858',
     expedido: 'SCZ',
@@ -242,7 +248,6 @@ export function SubidaDocumentos() {
     vencimientoCi: '12/09/2030'
   });
 
-  // 2. Histórico Académico Universitario
   const [histUnivFields, setHistUnivFields] = useState({
     ci: '3250858-SCZ',
     estudiante: 'JENNY FLORES PEÑA',
@@ -254,7 +259,6 @@ export function SubidaDocumentos() {
     promedio: '78.4 / 100'
   });
 
-  // 3. Histórico de Estudio de Colegio
   const [histColegioFields, setHistColegioFields] = useState({
     ci: '3250858-SCZ',
     alumno: 'JENNY FLORES PEÑA',
@@ -266,7 +270,6 @@ export function SubidaDocumentos() {
     nroRegistroDistrital: 'DIST-97/441'
   });
 
-  // 4. Título / Diploma Académico
   const [tituloFields, setTituloFields] = useState({
     ci: '3250858-SCZ',
     titular: 'JENNY FLORES PEÑA',
@@ -279,7 +282,6 @@ export function SubidaDocumentos() {
     rector: 'JORGE ORELLANA MORENO'
   });
 
-  // 5. Formulario de Trámite / Requisitos Notariales
   const [formularioFields, setFormularioFields] = useState({
     ci: '3250858-SCZ',
     solicitante: 'JENNY FLORES PEÑA',
@@ -329,8 +331,34 @@ export function SubidaDocumentos() {
   };
 
   const handleSimularPdf = (ejemploNombre: string) => {
+    setCaptureMethod('upload');
     const dummyFile = new File(['%PDF-1.4 mock content'], ejemploNombre, { type: 'application/pdf' });
     procesarArchivoPDF(dummyFile);
+  };
+
+  // Simulación de Escaneo TWAIN 300 DPI
+  const handleEjecutarEscaneoTWAIN = () => {
+    setIsScanningTWAIN(true);
+    setTimeout(() => {
+      setIsScanningTWAIN(false);
+      const scanFile = new File(['%PDF-1.4 scan content'], 'ESCANEO_TWAIN_300DPI_CI_JENNY_FLORES.pdf', { type: 'application/pdf' });
+      procesarArchivoPDF(scanFile);
+      alert('🖨️ Escaneo físico TWAIN completado exitosamente a 300 DPI. Imagen cargada al visor.');
+    }, 1800);
+  };
+
+  // Simulación de Fotos tomadas desde Celular Smartphone
+  const handleSimularFotoCelular = (tipoFoto: string) => {
+    const mobileFile = new File(['%PDF-1.4 mobile camera scan'], `CAMARA_CELULAR_${tipoFoto}_JENNY_FLORES.pdf`, { type: 'application/pdf' });
+    procesarArchivoPDF(mobileFile);
+    alert(`📲 ¡Foto enviada desde el Celular recibida! Documento '${tipoFoto}' cargado al visor y clasificado por OCR.`);
+  };
+
+  // Simulación de Lectura de Código QR
+  const handleEscaneoCodigoQR = () => {
+    setQrDecodedMessage('✅ Código QR UAGRM Auténtico | Titular: JENNY FLORES PEÑA | C.I.: 3250858-SCZ | Registro Matriz: 19/98-115');
+    const qrFile = new File(['%PDF-1.4 qr doc'], 'DOCUMENTO_VERIFICADO_QR_IMPRENTA.pdf', { type: 'application/pdf' });
+    procesarArchivoPDF(qrFile);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -341,7 +369,7 @@ export function SubidaDocumentos() {
     }
   };
 
-  const handleTabClick = (method: 'upload' | 'scanner' | 'qr') => {
+  const handleTabClick = (method: 'upload' | 'scanner' | 'mobile' | 'qr') => {
     setCaptureMethod(method);
     if (method === 'upload') {
       fileInputRef.current?.click();
@@ -490,22 +518,22 @@ export function SubidaDocumentos() {
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CARGA Y PRUEBAS DINÁMICAS POR TIPO */}
+      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CAPTURA DINÁMICO (PDF, ESCÁNER, CELULAR, QR) */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4 mb-4">
           <div>
             <h2 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '24px' }}>cloud_upload</span>
-              Digitalización de Expedientes (Campos OCR Dinámicos por Tipo de Documento)
+              Digitalización e Ingreso de Expedientes (Multicanal Dinámico)
             </h2>
             <p className="text-xs text-slate-600 mt-1">
-              Los campos OCR cambian dinámicamente según el documento: Cédula CI, Histórico Universitario, Histórico de Colegio, Títulos o Formulario Notarial.
+              Capture documentos por PDF, Escáner Físico, Celular Móvil o Lector QR. Los campos OCR se adaptan dinámicamente.
             </p>
           </div>
 
           {/* Quick PDF recognition triggers por Tipo */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Simular por Tipo:</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pruebas Rápidas:</span>
             <button
               type="button"
               onClick={() => handleSimularPdf('CI_JENNY_FLORES_PEÑA.pdf')}
@@ -524,14 +552,6 @@ export function SubidaDocumentos() {
             </button>
             <button
               type="button"
-              onClick={() => handleSimularPdf('CERTIFICADO_ESTUDIOS_COLEGIO.pdf')}
-              className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] rounded-lg border border-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[14px]">school</span>
-              Histórico Colegio
-            </button>
-            <button
-              type="button"
               onClick={() => handleSimularPdf('TITULO_PROVISION_CARLOS_GUTIERREZ_7795202.pdf')}
               className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
@@ -541,30 +561,33 @@ export function SubidaDocumentos() {
           </div>
         </div>
 
-        {/* Tabs de Métodos de Captura */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* 4 BOTONES DE CAPTURA DINÁMICOS E INTERACTIVOS (PDF, ESCÁNER, CELULAR, QR) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          
+          {/* Botón 1: Subir PDF */}
           <button
             type="button"
             onClick={() => handleTabClick('upload')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'upload'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md'
+                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>picture_as_pdf</span>
             <div>
               <p className="font-extrabold text-xs uppercase tracking-wider">Subir Archivo PDF</p>
-              <p className="text-[10px] opacity-80 mt-0.5">Adaptación de campos OCR según documento</p>
+              <p className="text-[10px] opacity-80 mt-0.5">Clasifica y extrae C.I., Notas y Títulos</p>
             </div>
           </button>
 
+          {/* Botón 2: Escanear Documento (TWAIN 300 DPI) */}
           <button
             type="button"
-            onClick={() => setCaptureMethod('scanner')}
+            onClick={() => handleTabClick('scanner')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'scanner'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md'
+                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
@@ -575,22 +598,148 @@ export function SubidaDocumentos() {
             </div>
           </button>
 
+          {/* Botón 3: Subir por el Celular (Móvil / Smartphone Scanner) */}
           <button
             type="button"
-            onClick={() => setCaptureMethod('qr')}
+            onClick={() => handleTabClick('mobile')}
+            className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
+              captureMethod === 'mobile'
+                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
+                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+            }`}
+          >
+            <span className="material-symbols-outlined text-amber-400" style={{ fontSize: '28px' }}>smartphone</span>
+            <div>
+              <p className="font-extrabold text-xs uppercase tracking-wider">Subir por Celular</p>
+              <p className="text-[10px] opacity-80 mt-0.5">Fotos desde Cámara de Smartphone</p>
+            </div>
+          </button>
+
+          {/* Botón 4: Lector de Código QR */}
+          <button
+            type="button"
+            onClick={() => handleTabClick('qr')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'qr'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md'
+                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>qr_code_scanner</span>
             <div>
-              <p className="font-extrabold text-xs uppercase tracking-wider">Lector de Código QR</p>
+              <p className="font-extrabold text-xs uppercase tracking-wider">Lector Código QR</p>
               <p className="text-[10px] opacity-80 mt-0.5">Validación de firma digital e imprenta</p>
             </div>
           </button>
+
         </div>
+
+        {/* PANEL DINÁMICO SEGÚN EL MÉTODO DE CAPTURA SELECCIONADO */}
+        {captureMethod === 'scanner' && (
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl space-y-3 animate-in fade-in">
+            <div className="flex flex-wrap justify-between items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#003366]">print font</span>
+                <div>
+                  <h4 className="font-extrabold text-xs text-[#003366] uppercase">Controlador de Escáner Físico TWAIN / WIA</h4>
+                  <p className="text-[11px] text-slate-600">Dispositivo activo: Canon DR-C225 / Fujitsu Fi-7160 (300 DPI, Alimentador ADF)</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleEjecutarEscaneoTWAIN}
+                disabled={isScanningTWAIN}
+                className="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer uppercase tracking-wider"
+              >
+                <span className="material-symbols-outlined text-[18px]">scanner</span>
+                {isScanningTWAIN ? 'Escaneando hoja...' : 'Ejecutar Escaneo Físico TWAIN'}
+              </button>
+            </div>
+
+            {isScanningTWAIN && (
+              <div className="p-3 bg-white border border-blue-300 rounded-lg flex items-center gap-3">
+                <span className="material-symbols-outlined text-blue-600 animate-spin">sync</span>
+                <span className="text-xs font-bold text-blue-900">Alimentando papel physical ADF... Digitalizando a 300 DPI con OCR en tiempo real...</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {captureMethod === 'mobile' && (
+          <div className="mt-4 p-4 bg-amber-50 border border-amber-300 rounded-xl space-y-3 animate-in fade-in">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 bg-white border border-amber-300 rounded-xl p-1.5 flex justify-center items-center shrink-0 shadow-xs">
+                  <span className="material-symbols-outlined text-amber-700" style={{ fontSize: '38px' }}>qr_code_2</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 bg-emerald-500 text-white font-mono text-[10px] font-bold rounded-full flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                      Móvil Conectado
+                    </span>
+                    <h4 className="font-extrabold text-xs text-amber-950 uppercase">Escaneo Remoto con Cámara de Celular</h4>
+                  </div>
+                  <p className="text-[11px] text-slate-600 mt-0.5">
+                    Escanee el código QR desde el celular del estudiante o del operador para capturar fotos de C.I. o Certificados en alta definición.
+                  </p>
+                </div>
+              </div>
+
+              {/* Botones de captura remota desde celular */}
+              <div className="flex flex-wrap gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleSimularFotoCelular('CEDULA_CI')}
+                  className="px-3 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">photo_camera</span>
+                  Foto C.I. desde Celular
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSimularFotoCelular('HISTORICO_NOTAS')}
+                  className="px-3 py-2 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">add_a_photo</span>
+                  Foto Notas desde Celular
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {captureMethod === 'qr' && (
+          <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-xl space-y-3 animate-in fade-in">
+            <div className="flex flex-wrap justify-between items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-purple-800 text-2xl">qr_code_scanner</span>
+                <div>
+                  <h4 className="font-extrabold text-xs text-purple-900 uppercase">Validador de Código QR de Imprenta / Firma Digital</h4>
+                  <p className="text-[11px] text-slate-600">Escanea el código QR del documento para validar firma digital y extraer datos sin digitación.</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleEscaneoCodigoQR}
+                className="px-4 py-2 bg-purple-800 hover:bg-purple-900 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-wider"
+              >
+                <span className="material-symbols-outlined text-[18px]">camera</span>
+                Leer Código QR del Documento
+              </button>
+            </div>
+
+            {qrDecodedMessage && (
+              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-lg text-xs font-bold text-emerald-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-emerald-600">verified</span>
+                {qrDecodedMessage}
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
 
       {/* BANNER RECONOCIMIENTO INTELIGENTE DE TIPO DE DOCUMENTO */}
