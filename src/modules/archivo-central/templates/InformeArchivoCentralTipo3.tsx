@@ -64,13 +64,20 @@ export function InformeArchivoCentralTipo1({
   jefeArchivoNombre = 'Moisés Cossio López'
 }: InformeArchivoCentralTipo1Props) {
   return (
-    <div className="bg-white p-8 max-w-[210mm] mx-auto min-h-[275mm] max-h-[296mm] flex flex-col justify-between shadow-xl print:shadow-none print:p-6 print:m-0 print:w-full print:max-h-none text-slate-900 border border-slate-200 print:border-none relative box-border overflow-hidden print:overflow-visible break-inside-avoid">
-      
+    <div 
+      className="bg-white max-w-[210mm] mx-auto min-h-[297mm] max-h-[297mm] flex flex-col justify-between shadow-xl print:shadow-none print:m-0 print:w-full print:max-h-none text-slate-900 border border-slate-200 print:border-none relative box-border overflow-hidden print:overflow-visible break-inside-avoid"
+      style={{
+        paddingTop: '3.5cm',
+        paddingLeft: '4cm',
+        paddingRight: '2cm',
+        paddingBottom: '2cm'
+      }}
+    >
       {/* Contenido Principal de la Hoja Única */}
       <div className="space-y-3">
 
-        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL SIN LOGO (Fondo Blanco Puro Membretado) */}
-        <header className="text-center font-serif border-b border-slate-300 pb-3 mb-2">
+        {/* 1. ENCABEZADO CENTRADO INSTITUCIONAL SIN LÍNEA DIVISORIA NI HR */}
+        <header className="text-center font-serif pb-2 mb-2">
           <h1 className="font-extrabold text-base uppercase text-[#003366] tracking-wide leading-tight">
             UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
           </h1>
@@ -81,11 +88,11 @@ export function InformeArchivoCentralTipo1({
             Archivo Central
           </h3>
 
-          <div className="pt-2 text-xs font-sans">
+          <div className="pt-2 text-xs font-sans space-y-0.5">
             <p className="font-medium text-slate-700">
               Santa Cruz de la Sierra, <strong className="font-bold text-slate-900">{fechaDoc}</strong>
             </p>
-            <p className="font-extrabold text-[#003366] mt-0.5">
+            <p className="font-extrabold text-[#003366]">
               SECCION ARCHIVO / INF. No. <span className="underline font-mono">{correlativoInforme}</span>
             </p>
           </div>
@@ -192,7 +199,7 @@ export function InformeArchivoCentralTipo1({
         </p>
 
         {/* Firma Única de Jefe de Archivo */}
-        <div className="pt-6 flex justify-center items-center text-center">
+        <div className="pt-4 flex justify-center items-center text-center">
           <div className="text-center font-sans text-xs space-y-0.5 mx-auto w-72">
             <div className="w-60 border-b border-slate-800 mx-auto mb-1.5"></div>
             <p className="font-extrabold text-[#003366] text-xs">{jefeArchivoNombre}</p>
@@ -204,7 +211,7 @@ export function InformeArchivoCentralTipo1({
       </div>
 
       {/* Pie de Página Institucional */}
-      <footer className="pt-2 border-t border-slate-300 font-sans text-[9px] text-slate-600 flex justify-between items-end mt-4">
+      <footer className="pt-2 border-t border-slate-300 font-sans text-[9px] text-slate-600 flex justify-between items-end mt-2">
         <div>
           <p className="font-bold">MCL/Sandra</p>
           <p>Adj: fotocopias de la documentación respectiva.</p>

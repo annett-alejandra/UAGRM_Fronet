@@ -128,7 +128,7 @@ export function CertificadoAutenticidadPage() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-[#C51D24] uppercase tracking-wider">
             <span className="material-symbols-outlined text-sm">description</span>
-            Archivo Central UAGRM • Plantilla Oficial Limpia
+            Archivo Central UAGRM • Margen 4cm Legajado
           </div>
           <h1 className="text-xl font-extrabold text-[#003366] font-heading">
             Emisión de Informe de Certificación de Autenticidad (Tipo 1)
@@ -179,7 +179,7 @@ export function CertificadoAutenticidadPage() {
         </div>
       </div>
 
-      {/* ÁREA PRINCIPAL: VISTA DE HOJA ÚNICA + PANEL EDITABLE EXTENDIDO HASTA ABAJO */}
+      {/* ÁREA PRINCIPAL: VISTA DE HOJA ÚNICA + PANEL EDITABLE LIMPIO EN TODO EL ALTO */}
       <div className="flex-1 flex flex-col md:flex-row items-stretch justify-center gap-6 p-6 max-w-[1600px] w-full mx-auto">
         
         {/* VISTA PREVIA HOJA OFICIAL MEMBRETADA (CENTRADA) */}
@@ -205,253 +205,229 @@ export function CertificadoAutenticidadPage() {
           />
         </div>
 
-        {/* PANEL LATERAL DE EDICIÓN ESTILO WORD (EXTENDIDO HASTA ABAJO H-FULL H-[CALC(100VH-80PX)]) */}
+        {/* PANEL LATERAL DE EDICIÓN FLUIDO (SIN BOTÓN ROJO DUPLICADO, CÓMODO ESPACIADO) */}
         {showWordEditor && (
-          <div className="w-96 shrink-0 bg-white p-5 print:hidden shadow-xl border-l border-slate-200 rounded-2xl sticky top-20 h-[calc(100vh-140px)] overflow-y-auto flex flex-col justify-between space-y-4">
+          <div className="w-96 shrink-0 bg-white p-5 print:hidden shadow-xl border-l border-slate-200 rounded-2xl sticky top-20 h-[calc(100vh-140px)] overflow-y-auto space-y-4">
             
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h2 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#C51D24] text-lg">edit</span>
+                Panel de Edición (Tipo 1)
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowWordEditor(false)}
+                className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Campos de Edición con Espaciado Cómodo */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                <h2 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#C51D24] text-lg">edit</span>
-                  Panel de Edición (Tipo 1)
-                </h2>
-                <button
-                  type="button"
-                  onClick={() => setShowWordEditor(false)}
-                  className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
-                >
-                  ✕
-                </button>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Nº Inf. Correlativo:
+                  </label>
+                  <input
+                    type="text"
+                    value={correlativoInforme}
+                    onChange={(e) => setCorrelativoInforme(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold text-[#003366] focus:ring-2 focus:ring-[#003366] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Fecha Documento:
+                  </label>
+                  <input
+                    type="text"
+                    value={fechaDoc}
+                    onChange={(e) => setFechaDoc(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#003366] outline-none"
+                  />
+                </div>
               </div>
 
-              {/* Secciones de Edición */}
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Destinatario (Señor):
+                </label>
+                <input
+                  type="text"
+                  value={destinatarioNombre}
+                  onChange={(e) => setDestinatarioNombre(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 mb-1.5 focus:ring-2 focus:ring-[#003366] outline-none"
+                />
+                <input
+                  type="text"
+                  value={destinatarioCargo}
+                  onChange={(e) => setDestinatarioCargo(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-[11px] uppercase font-medium text-slate-700 focus:ring-2 focus:ring-[#003366] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Asunto / Referencia:
+                </label>
+                <input
+                  type="text"
+                  value={referencia}
+                  onChange={(e) => setReferencia(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-[#003366] focus:ring-2 focus:ring-[#003366] outline-none"
+                />
+              </div>
+
+              <div className="p-3.5 bg-slate-50 rounded-xl space-y-3 border border-slate-200">
+                <span className="text-xs font-extrabold text-[#003366] block">Datos del Solicitante / Titular:</span>
+                
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                      Nº Inf. Correlativo:
-                    </label>
+                    <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Fecha Solicitud:</label>
                     <input
                       type="text"
-                      value={correlativoInforme}
-                      onChange={(e) => setCorrelativoInforme(e.target.value)}
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-mono font-bold text-[#003366]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                      Fecha Documento:
-                    </label>
-                    <input
-                      type="text"
-                      value={fechaDoc}
-                      onChange={(e) => setFechaDoc(e.target.value)}
+                      value={fechaSolicitud}
+                      onChange={(e) => setFechaSolicitud(e.target.value)}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
                     />
                   </div>
+                  <div>
+                    <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Nº Testimonio:</label>
+                    <input
+                      type="text"
+                      value={nroTestimonio}
+                      onChange={(e) => setNroTestimonio(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                    Destinatario (Señor):
-                  </label>
+                  <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Nombre Apoderado:</label>
                   <input
                     type="text"
-                    value={destinatarioNombre}
-                    onChange={(e) => setDestinatarioNombre(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-900 mb-1"
-                  />
-                  <input
-                    type="text"
-                    value={destinatarioCargo}
-                    onChange={(e) => setDestinatarioCargo(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-[11px] uppercase font-medium text-slate-700"
+                    value={apoderadoNombre}
+                    onChange={(e) => setApoderadoNombre(e.target.value)}
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                    Asunto / Referencia:
-                  </label>
+                  <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Nombre Titular:</label>
                   <input
                     type="text"
-                    value={referencia}
-                    onChange={(e) => setReferencia(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-[#003366]"
+                    value={titularNombre}
+                    onChange={(e) => setTitularNombre(e.target.value)}
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-bold text-xs"
                   />
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl space-y-2 border border-slate-200">
-                  <span className="text-[11px] font-extrabold text-[#003366] block">Datos del Solicitante / Titular:</span>
-                  
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="text-[10px] text-slate-500">Fecha Solicitud:</label>
-                      <input
-                        type="text"
-                        value={fechaSolicitud}
-                        onChange={(e) => setFechaSolicitud(e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-300 text-[11px]"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] text-slate-500">Nº Testimonio:</label>
-                      <input
-                        type="text"
-                        value={nroTestimonio}
-                        onChange={(e) => setNroTestimonio(e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
-                      />
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] text-slate-500">Nombre Apoderado:</label>
+                    <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">C.I. Titular:</label>
                     <input
                       type="text"
-                      value={apoderadoNombre}
-                      onChange={(e) => setApoderadoNombre(e.target.value)}
-                      className="w-full px-2 py-1 rounded border border-slate-300 text-[11px]"
+                      value={titularCi}
+                      onChange={(e) => setTitularCi(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
                     />
                   </div>
-
                   <div>
-                    <label className="text-[10px] text-slate-500">Nombre Titular:</label>
+                    <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Nº Diploma:</label>
                     <input
                       type="text"
-                      value={titularNombre}
-                      onChange={(e) => setTitularNombre(e.target.value)}
-                      className="w-full px-2 py-1 rounded border border-slate-300 font-bold text-xs"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="text-[10px] text-slate-500">C.I. Titular:</label>
-                      <input
-                        type="text"
-                        value={titularCi}
-                        onChange={(e) => setTitularCi(e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] text-slate-500">Nº Diploma:</label>
-                      <input
-                        type="text"
-                        value={nroTitulo}
-                        onChange={(e) => setNroTitulo(e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono font-bold text-[#C51D24] text-[11px]"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Filas de la Tabla */}
-                {tableRows.map((row) => (
-                  <div key={row.id} className="p-3 bg-blue-50/50 rounded-xl space-y-2 border border-blue-100">
-                    <span className="text-[11px] font-bold text-[#003366] block">Datos del Cuadro Tabular:</span>
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="text-[10px] text-slate-500">Rector:</label>
-                        <input
-                          type="text"
-                          value={row.nombreRector}
-                          onChange={(e) => handleUpdateRow(row.id, 'nombreRector', e.target.value)}
-                          className="w-full px-2 py-1 rounded border border-slate-300 text-[11px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] text-slate-500">Diploma de:</label>
-                        <input
-                          type="text"
-                          value={row.diplomaDe}
-                          onChange={(e) => handleUpdateRow(row.id, 'diplomaDe', e.target.value)}
-                          className="w-full px-2 py-1 rounded border border-slate-300 text-[11px]"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="text-[10px] text-slate-500">Fojas:</label>
-                        <input
-                          type="text"
-                          value={row.fojas}
-                          onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
-                          className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] text-slate-500">Libro:</label>
-                        <input
-                          type="text"
-                          value={row.libro}
-                          onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
-                          className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                <div className="space-y-2 pt-2">
-                  <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
-                    <span>Párrafo Aclaratorio Histórico:</span>
-                    <input
-                      type="checkbox"
-                      checked={incluirAclaratoriaHistorica}
-                      onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
-                      className="w-4 h-4 text-[#003366] rounded cursor-pointer"
-                    />
-                  </label>
-
-                  <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
-                    <span>Párrafo Supletorio:</span>
-                    <input
-                      type="checkbox"
-                      checked={incluirSupletorio}
-                      onChange={(e) => setIncluirSupletorio(e.target.checked)}
-                      className="w-4 h-4 text-[#003366] rounded cursor-pointer"
-                    />
-                  </label>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                      Jefe de Archivo (Firma):
-                    </label>
-                    <input
-                      type="text"
-                      value={jefeArchivoNombre}
-                      onChange={(e) => setJefeArchivoNombre(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-[#003366]"
+                      value={nroTitulo}
+                      onChange={(e) => setNroTitulo(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono font-bold text-[#C51D24] text-xs"
                     />
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Acciones Directas del Panel Lateral (Abajo) */}
-            <div className="pt-4 border-t border-slate-200 space-y-2 mt-auto">
-              <button
-                type="button"
-                onClick={handleSaveDocument}
-                disabled={isSaving}
-                className="w-full py-2.5 bg-[#003366] hover:bg-[#002244] text-white rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-base">save</span>
-                {isSaving ? 'Guardando...' : 'Guardar Documento'}
-              </button>
+              {/* Filas de la Tabla */}
+              {tableRows.map((row) => (
+                <div key={row.id} className="p-3.5 bg-blue-50/50 rounded-xl space-y-3 border border-blue-100">
+                  <span className="text-xs font-bold text-[#003366] block">Datos del Cuadro Tabular:</span>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Rector:</label>
+                      <input
+                        type="text"
+                        value={row.nombreRector}
+                        onChange={(e) => handleUpdateRow(row.id, 'nombreRector', e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Diploma de:</label>
+                      <input
+                        type="text"
+                        value={row.diplomaDe}
+                        onChange={(e) => handleUpdateRow(row.id, 'diplomaDe', e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
+                      />
+                    </div>
+                  </div>
 
-              <button
-                type="button"
-                onClick={() => window.print()}
-                className="w-full py-2.5 bg-[#C51D24] hover:bg-[#A0161C] text-white rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-base">print</span>
-                Imprimir Hoja Única ({paperSize.toUpperCase()})
-              </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Fojas:</label>
+                      <input
+                        type="text"
+                        value={row.fojas}
+                        onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-semibold block mb-0.5">Libro:</label>
+                      <input
+                        type="text"
+                        value={row.libro}
+                        onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <div className="space-y-3 pt-1">
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2 bg-slate-50 rounded-xl border border-slate-200">
+                  <span>Párrafo Aclaratorio Histórico:</span>
+                  <input
+                    type="checkbox"
+                    checked={incluirAclaratoriaHistorica}
+                    onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
+                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
+                  />
+                </label>
+
+                <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-2 bg-slate-50 rounded-xl border border-slate-200">
+                  <span>Párrafo Supletorio:</span>
+                  <input
+                    type="checkbox"
+                    checked={incluirSupletorio}
+                    onChange={(e) => setIncluirSupletorio(e.target.checked)}
+                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
+                  />
+                </label>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Jefe de Archivo (Firma):
+                  </label>
+                  <input
+                    type="text"
+                    value={jefeArchivoNombre}
+                    onChange={(e) => setJefeArchivoNombre(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-[#003366]"
+                  />
+                </div>
+              </div>
             </div>
 
           </div>
@@ -459,7 +435,7 @@ export function CertificadoAutenticidadPage() {
 
       </div>
 
-      {/* BARRA INFERIOR DE ACCIONES (STICKY BOTTOM) */}
+      {/* BARRA INFERIOR FIJA DE ACCIONES PRINCIPALES (STICKY BOTTOM) */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 shadow-2xl print:hidden">
         
         {/* Acciones Rápidas */}
@@ -470,7 +446,7 @@ export function CertificadoAutenticidadPage() {
             <strong className="text-[#003366] font-mono">
               INFORME ARCHIVO CENTRAL - TIPO 1 (INF Nº {correlativoInforme})
             </strong>
-            <span className="text-slate-400 font-mono">| Plantilla Hoja Única Fondo Blanco</span>
+            <span className="text-slate-400 font-mono">| Margen 4cm Legajado</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -478,7 +454,7 @@ export function CertificadoAutenticidadPage() {
               type="button"
               onClick={handleSaveDocument}
               disabled={isSaving}
-              className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+              className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
             >
               <span className="material-symbols-outlined text-base">save</span>
               {isSaving ? 'Guardando...' : 'Guardar Documento'}
@@ -487,7 +463,7 @@ export function CertificadoAutenticidadPage() {
             <button
               type="button"
               onClick={() => window.print()}
-              className="px-5 py-2 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+              className="px-5 py-2.5 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
             >
               <span className="material-symbols-outlined text-base">print</span>
               Imprimir Hoja Única ({paperSize.toUpperCase()})
