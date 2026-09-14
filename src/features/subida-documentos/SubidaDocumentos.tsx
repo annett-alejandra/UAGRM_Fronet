@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { titulosApi } from '../titulos/api/titulos-api';
+import { useNavigate } from 'react-router-dom';
 
 interface DocumentoLegajo {
   id: string;
@@ -35,7 +36,7 @@ export interface ClasificacionResultado {
   detalles: string;
 }
 
-// Clasificador inteligente de tipos de PDF
+// Clasificador inteligente de tipos de PDF según patrones de nombre y contenido OCR
 export function clasificarDocumentoPDF(filename: string): ClasificacionResultado {
   const name = filename.toLowerCase();
 
@@ -190,7 +191,7 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
       {
         id: 'DOC-203',
         nombreArchivo: 'TITULO_PROVISION_NACIONAL_96071.pdf',
-        tipoDocumento: 'Título en Provisión Nacional',
+        tipoDocumento: 'Diploma Académico / Título Profesional',
         formato: 'pdf',
         fechaHora: '11/09/2026 09:42',
         tamano: '2.5 MB',
@@ -234,6 +235,7 @@ const LEGAJOS_INICIALES: LegajoEstudiante[] = [
 ];
 
 export function SubidaDocumentos() {
+  const navigate = useNavigate();
   const [legajosList, setLegajosList] = useState<LegajoEstudiante[]>(LEGAJOS_INICIALES);
   const [captureMethod, setCaptureMethod] = useState<'upload' | 'scanner' | 'qr'>('upload');
   
@@ -256,7 +258,7 @@ export function SubidaDocumentos() {
     categoria: 'CI',
     icono: 'badge',
     confianza: '99%',
-    detalles: 'Detectado anverso/reverso de Cédula de Identidad mediante OCR'
+    detalles: 'Detectado anverso/reverso de Cédula de Identidad mediante OCR de código CI y firmas'
   });
 
   const [formData, setFormData] = useState({
@@ -288,13 +290,51 @@ export function SubidaDocumentos() {
     setPreviewUrl(url);
     setSelectedDocumentTitle(selectedFile.name);
 
-    // Reconocimiento automático del tipo de PDF
+    // Reconocimiento inteligente del tipo de PDF
     const res = clasificarDocumentoPDF(selectedFile.name);
     setClasificacionActual(res);
+
+    // Dinámicamente simular extracción OCR según el tipo detectado y el archivo
+    let newCi = formData.ci;
+    let newNombre = formData.nombre;
+    let newRu = formData.ru;
+    let newCarrera = formData.carrera;
+    let newLibro = formData.libro;
+    let newFolio = formData.folio;
+
+    if (selectedFile.name.includes('CARLOS_GUTIERREZ') || selectedFile.name.includes('7795202')) {
+      newCi = '7795202-SCZ';
+      newNombre = 'CARLOS GUTIERREZ ALVAREZ';
+      newRu = '220041829';
+      newCarrera = 'INGENIERÍA EN SIEMAS';
+      newLibro = '08/2024';
+      newFolio = '31/2024';
+    } else if (selectedFile.name.includes('MARIA_SUAREZ') || selectedFile.name.includes('4510293')) {
+      newCi = '4510293-CB';
+      newNombre = 'MARIA SUAREZ ROJAS';
+      newRu = '21500192';
+      newCarrera = 'DERECHO';
+      newLibro = '01/1995';
+      newFolio = '88/1995';
+    } else if (selectedFile.name.includes('JENNY_FLORES') || selectedFile.name.includes('3250858')) {
+      newCi = '3250858-SCZ';
+      newNombre = 'JENNY FLORES PEÑA';
+      newRu = '219084732';
+      newCarrera = 'BACHILLER EN HUMANIDADES';
+      newLibro = '19/98';
+      newFolio = '115/98';
+    }
+
     setFormData(prev => ({
       ...prev,
+      ci: newCi,
+      nombre: newNombre,
+      ru: newRu,
+      carrera: newCarrera,
+      libro: newLibro,
+      folio: newFolio,
       tipoDocumento: res.tipoNombre,
-      observaciones: `Detectado automáticamente como '${res.tipoNombre}' (${res.confianza} confianza)`
+      observaciones: `Reconocido dinámicamente como '${res.tipoNombre}' (${res.confianza} confianza OCR)`
     }));
   };
 
@@ -333,7 +373,7 @@ export function SubidaDocumentos() {
       folio: legajo.folio,
       gestion: legajo.gestion,
       tipoDocumento: doc.tipoDocumento,
-      observaciones: `Cargado reactivamente desde Legajo Digital (${doc.nombreArchivo})`
+      observaciones: `Cargado dinámicamente desde la Carpeta del Estudiante (${doc.nombreArchivo})`
     });
     setSelectedDocumentTitle(doc.nombreArchivo);
   };
@@ -351,7 +391,7 @@ export function SubidaDocumentos() {
         observaciones: formData.observaciones
       });
 
-      // Añadir documento clasificado a la lista de legajos
+      // Crear nuevo documento clasificado
       const nuevoDoc: DocumentoLegajo = {
         id: `DOC-${Date.now()}`,
         nombreArchivo: selectedDocumentTitle,
@@ -362,17 +402,42 @@ export function SubidaDocumentos() {
         confianzaOcr: clasificacionActual?.confianza || '98%'
       };
 
-      setLegajosList(prev => prev.map(legajo => {
-        if (legajo.ci === formData.ci || legajo.ru === formData.ru) {
-          return {
-            ...legajo,
-            documentos: [...legajo.documentos, nuevoDoc]
-          };
-        }
-        return legajo;
-      }));
+      setLegajosList(prev => {
+        const existeLegajo = prev.find(l => l.ci === formData.ci || l.titularNombre === formData.nombre);
 
-      alert(`Expediente convalidado. Documento registrado como '${formData.tipoDocumento}' en la carpeta del estudiante.`);
+        if (existeLegajo) {
+          // Si el estudiante ya tiene carpeta personalizada (C.I. + Nombre), añadir el documento
+          return prev.map(legajo => {
+            if (legajo.id === existeLegajo.id) {
+              return {
+                ...legajo,
+                documentos: [...legajo.documentos, nuevoDoc]
+              };
+            }
+            return legajo;
+          });
+        } else {
+          // Si es un estudiante nuevo, crear dinámicamente su carpeta personalizada C.I. + Nombre
+          const nuevoLegajo: LegajoEstudiante = {
+            id: `LEG-${Date.now()}`,
+            ci: formData.ci,
+            ru: formData.ru,
+            titularNombre: formData.nombre.toUpperCase(),
+            carrera: formData.carrera,
+            facultad: formData.facultad || 'UAGRM ARCHIVO CENTRAL',
+            libro: formData.libro,
+            tomo: formData.tomo,
+            folio: formData.folio,
+            gestion: formData.gestion,
+            estadoOcr: 'Procesado (100%)',
+            documentos: [nuevoDoc]
+          };
+          setExpandedLegajoId(nuevoLegajo.id);
+          return [nuevoLegajo, ...prev];
+        }
+      });
+
+      alert(`✅ ¡Documento '${formData.tipoDocumento}' verificado con éxito! Se guardó en la Carpeta Personal de ${formData.nombre} (C.I. ${formData.ci}).`);
     } catch {
       alert('Error al guardar el expediente.');
     } finally {
@@ -383,33 +448,33 @@ export function SubidaDocumentos() {
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CARGA */}
+      {/* 1. SECCIÓN SUPERIOR: SELECCIÓN DE MÉTODO DE CARGA Y PRUEBAS RÁPIDAS */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4 mb-4">
           <div>
             <h2 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '24px' }}>cloud_upload</span>
-              Digitalización e Ingreso de Expedientes (Reconocimiento Inteligente de PDFs)
+              Digitalización e Ingreso de Expedientes (Reconocimiento Dinámico AI/OCR)
             </h2>
             <p className="text-xs text-slate-600 mt-1">
-              Suba archivos PDF de Cédulas, Históricos Académicos o Títulos. El sistema detectará automáticamente el tipo de documento.
+              Suba archivos PDF. El OCR reconocerá automáticamente si es Cédula, Histórico de Notas o Título y armará la carpeta personalizada del estudiante por su C.I. y Nombre.
             </p>
           </div>
 
           {/* Quick PDF recognition triggers */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pruebas Rápidas PDF:</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pruebas Dinámicas PDF:</span>
             <button
               type="button"
-              onClick={() => handleSimularPdf('CI_JENNY_FLORES_2026.pdf')}
+              onClick={() => handleSimularPdf('CI_JENNY_FLORES_PEÑA.pdf')}
               className="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-[11px] rounded-lg border border-blue-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[14px]">badge</span>
-              Cédula (CI)
+              Cédula C.I.
             </button>
             <button
               type="button"
-              onClick={() => handleSimularPdf('HISTORIAL_NOTAS_UAGRM.pdf')}
+              onClick={() => handleSimularPdf('HISTORIAL_NOTAS_JENNY_FLORES.pdf')}
               className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] rounded-lg border border-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[14px]">history_edu</span>
@@ -417,11 +482,11 @@ export function SubidaDocumentos() {
             </button>
             <button
               type="button"
-              onClick={() => handleSimularPdf('TITULO_PROVISION_NACIONAL.pdf')}
+              onClick={() => handleSimularPdf('TITULO_PROVISION_CARLOS_GUTIERREZ_7795202.pdf')}
               className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[14px]">workspace_premium</span>
-              Título / Diploma
+              Nuevo Estudiante
             </button>
           </div>
         </div>
@@ -440,7 +505,7 @@ export function SubidaDocumentos() {
             <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>picture_as_pdf</span>
             <div>
               <p className="font-extrabold text-xs uppercase tracking-wider">Subir Archivo PDF</p>
-              <p className="text-[10px] opacity-80 mt-0.5">Auto-reconocimiento de CI, Notas, Títulos</p>
+              <p className="text-[10px] opacity-80 mt-0.5">Clasifica y extrae C.I., Notas y Título</p>
             </div>
           </button>
 
@@ -602,7 +667,7 @@ export function SubidaDocumentos() {
                 <div>
                   <h4 className="font-extrabold text-sm text-[#003366]">Arrastre un archivo PDF de Cédula, Notas o Título</h4>
                   <p className="text-xs text-slate-500 mt-1">
-                    El reconocedor inteligente detectará automáticamente si es C.I., Histórico de Notas o Título Académico.
+                    El reconocedor inteligente detectará automáticamente si es C.I., Histórico de Notas o Título y armará la carpeta personal por C.I. y Nombre.
                   </p>
                 </div>
                 <button
@@ -731,8 +796,6 @@ export function SubidaDocumentos() {
                 <option value="Diploma Académico / Título Profesional">🎓 Diploma Académico / Título Profesional</option>
                 <option value="Formularios de Trámite y Requisitos">📋 Formularios de Trámite y Requisitos</option>
                 <option value="Libro Matriz Antiguo Escaneado">📖 Libro Matriz Antiguo Escaneado</option>
-                <option value="Título Supletorio">Título Supletorio</option>
-                <option value="Certificado de Autenticidad">Certificado de Autenticidad</option>
               </select>
             </div>
           </div>
@@ -751,18 +814,18 @@ export function SubidaDocumentos() {
 
       </div>
 
-      {/* 3. BANDEJA INFERIOR: LEGAJO ACADÉMICO COMO CARPETA MULTIDOCUMENTO */}
+      {/* 3. BANDEJA INFERIOR: CARPETAS PERSONALIZADAS POR ESTUDIANTE (C.I. + NOMBRE) */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
         <div className="flex justify-between items-center border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-[#003366]"></span>
             <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '20px' }}>folder_shared</span>
-              Bandeja de Legajos Digitales (Estructura de Carpeta por Estudiante)
+              Bandeja de Expedientes Personales (Carpetas Digitales por C.I. y Nombre)
             </h3>
           </div>
           <span className="px-3 py-1 bg-blue-50 text-[#003366] font-mono text-xs font-bold rounded-full border border-blue-200">
-            {legajosList.length} Carpetas de Estudiantes
+            {legajosList.length} Expedientes Personales Activos
           </span>
         </div>
 
@@ -772,21 +835,23 @@ export function SubidaDocumentos() {
             return (
               <div key={legajo.id} className="border border-slate-200 rounded-xl overflow-hidden shadow-xs transition-all">
                 
-                {/* Cabecera de la Carpeta del Estudiante */}
+                {/* Cabecera de la Carpeta del Estudiante (C.I. + Nombre) */}
                 <div 
                   onClick={() => setExpandedLegajoId(isExpanded ? null : legajo.id)}
                   className="bg-slate-100/90 hover:bg-blue-50/60 p-4 flex flex-wrap items-center justify-between gap-4 cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[#003366]" style={{ fontSize: '28px' }}>
-                      {isExpanded ? 'folder_open' : 'folder'}
-                    </span>
+                    <div className="p-2.5 bg-blue-100 text-[#003366] rounded-xl shrink-0">
+                      <span className="material-symbols-outlined text-2xl">
+                        {isExpanded ? 'folder_open' : 'folder_shared'}
+                      </span>
+                    </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <h4 className="font-extrabold text-sm text-[#003366] font-heading uppercase">
                           {legajo.titularNombre}
                         </h4>
-                        <span className="px-2 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold rounded text-[11px]">
+                        <span className="px-2.5 py-0.5 bg-[#003366] text-white font-mono font-bold rounded text-[11px] shadow-2xs">
                           C.I. {legajo.ci}
                         </span>
                         <span className="px-2 py-0.5 bg-slate-200 text-slate-700 font-mono text-[10px] rounded">
@@ -794,7 +859,7 @@ export function SubidaDocumentos() {
                         </span>
                       </div>
                       <p className="text-xs text-slate-600 mt-0.5">
-                        {legajo.carrera} • Matriz: Libro {legajo.libro} | Folio {legajo.folio} ({legajo.gestion})
+                        Carrera: <strong>{legajo.carrera}</strong> • Matriz: Libro {legajo.libro} | Folio {legajo.folio} ({legajo.gestion})
                       </p>
                     </div>
                   </div>
@@ -812,7 +877,7 @@ export function SubidaDocumentos() {
                     </span>
 
                     <span className="px-3 py-1 bg-white text-[#003366] font-bold text-xs rounded-lg border border-slate-300 flex items-center gap-1 shadow-2xs">
-                      {legajo.documentos.length} Documentos en Carpeta
+                      {legajo.documentos.length} Documentos en Expediente
                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
                         {isExpanded ? 'expand_less' : 'expand_more'}
                       </span>
@@ -822,37 +887,44 @@ export function SubidaDocumentos() {
 
                 {/* Despliegue de los Documentos de la Carpeta del Estudiante */}
                 {isExpanded && (
-                  <div className="p-4 bg-white border-t border-slate-200 space-y-2">
-                    <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 pl-2 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[#003366]" style={{ fontSize: '16px' }}>folder_zip</span>
-                      Documentos Digitalizados en el Legajo de C.I. {legajo.ci}:
+                  <div className="p-4 bg-white border-t border-slate-200 space-y-3">
+                    <div className="text-xs font-extrabold text-[#003366] uppercase tracking-wider border-l-3 border-[#C51D24] pl-2 flex items-center justify-between">
+                      <span>Los documentos siguientes pertenecen al Expediente Personal de {legajo.titularNombre} (C.I. {legajo.ci}):</span>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/archivo/autenticidad')}
+                        className="px-3 py-1 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-[11px] rounded-lg shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">verified</span>
+                        Emitir Informe para este Expediente
+                      </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                       {legajo.documentos.map((doc) => {
                         const clasif = clasificarDocumentoPDF(doc.nombreArchivo);
                         return (
                           <div 
                             key={doc.id}
-                            className="p-3 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-xl flex items-center justify-between gap-3 transition-colors"
+                            className="p-3.5 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-xl flex items-center justify-between gap-3 transition-colors shadow-2xs"
                           >
-                            <div className="flex items-center gap-2.5 min-w-0">
-                              <div className="p-2 bg-blue-100/60 rounded-lg text-[#003366] shrink-0">
-                                <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="p-2.5 bg-blue-100/70 rounded-xl text-[#003366] shrink-0">
+                                <span className="material-symbols-outlined text-2xl">
                                   {clasif.icono}
                                 </span>
                               </div>
                               <div className="min-w-0">
-                                <div className="flex items-center gap-1.5">
-                                  <p className="font-bold text-xs text-slate-800 truncate">
+                                <div className="flex items-center gap-2">
+                                  <p className="font-extrabold text-xs text-slate-900 truncate">
                                     {doc.tipoDocumento}
                                   </p>
                                   <span className="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 text-[9px] font-mono font-bold rounded">
-                                    {doc.confianzaOcr}
+                                    OCR {doc.confianzaOcr}
                                   </span>
                                 </div>
-                                <p className="text-[10px] text-slate-500 font-mono truncate">
-                                  {doc.nombreArchivo} ({doc.tamano})
+                                <p className="text-[10px] text-slate-500 font-mono truncate mt-0.5">
+                                  📄 {doc.nombreArchivo} ({doc.tamano}) • {doc.fechaHora}
                                 </p>
                               </div>
                             </div>
