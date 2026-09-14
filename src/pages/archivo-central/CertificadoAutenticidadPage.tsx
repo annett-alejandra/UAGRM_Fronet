@@ -17,8 +17,9 @@ interface TablaFila {
 
 export function CertificadoAutenticidadPage() {
   // Configuracion de Papel y Modos
-  const [paperSize, setPaperSize] = useState<'carta' | 'oficio' | 'a4'>('carta');
+  const [paperSize] = useState<'carta' | 'oficio' | 'a4'>('carta');
   const [showWordEditor, setShowWordEditor] = useState<boolean>(true);
+  const [usarHojaMembretadaFisica, setUsarHojaMembretadaFisica] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchDiploma, setSearchDiploma] = useState('');
@@ -36,7 +37,7 @@ export function CertificadoAutenticidadPage() {
   const [fechaSolicitud, setFechaSolicitud] = useState('16 de abril de 2026');
   const [nroTestimonio, setNroTestimonio] = useState('1246/2025');
   const [apoderadoNombre, setApoderadoNombre] = useState('Yuli Alison Romero Flores');
-  const [titularNombre, setTitularNombre] = useState('Jenny Flores Pe\u00f1a');
+  const [titularNombre, setTitularNombre] = useState('Jenny Flores Peña');
   const [titularCi, setTitularCi] = useState('3250858-SCZ');
   const [gradoMencion, setGradoMencion] = useState('Diploma de Bachiller');
   const [nroTitulo, setNroTitulo] = useState('014863');
@@ -44,14 +45,14 @@ export function CertificadoAutenticidadPage() {
   const [incluirAclaratoriaHistorica, setIncluirAclaratoriaHistorica] = useState(true);
   const [gestionHistorica, setGestionHistorica] = useState('1998');
   const [incluirSupletorio, setIncluirSupletorio] = useState(true);
-  const [jefeArchivoNombre, setJefeArchivoNombre] = useState('Mois\u00e9s Cossio L\u00f3pez');
+  const [jefeArchivoNombre, setJefeArchivoNombre] = useState('Moisés Cossio López');
 
   // Filas de la Tabla Tabular de 9 Columnas
   const [tableRows, setTableRows] = useState<TablaFila[]>([
     {
       id: '1',
       nroDiploma: '014863',
-      nombreTitular: 'JENNY FLORES PE\u00d1A',
+      nombreTitular: 'JENNY FLORES PEÑA',
       ci: '3250858-SCZ',
       diplomaDe: 'BACHILLER EN HUMANIDADES',
       fojas: '115/98',
@@ -73,7 +74,7 @@ export function CertificadoAutenticidadPage() {
         setFechaSolicitud(data.fecha_solicitud || '16 de abril de 2026');
         setNroTestimonio(data.nro_testimonio || '1246/2025');
         setApoderadoNombre(data.apoderado || 'Yuli Alison Romero Flores');
-        setTitularNombre(data.titular.nombre_completo || 'Jenny Flores Pe\u00f1a');
+        setTitularNombre(data.titular.nombre_completo || 'Jenny Flores Peña');
         setTitularCi(data.titular.ci_expedido || '3250858-SCZ');
         if (data.carrera_colegio?.mencion) {
           setGradoMencion(data.carrera_colegio.mencion);
@@ -89,7 +90,7 @@ export function CertificadoAutenticidadPage() {
           {
             id: Date.now().toString(),
             nroDiploma: data.expediente.nro_diploma || term || '014863',
-            nombreTitular: (data.titular.nombre_completo || 'JENNY FLORES PE\u00d1A').toUpperCase(),
+            nombreTitular: (data.titular.nombre_completo || 'JENNY FLORES PEÑA').toUpperCase(),
             ci: data.titular.ci_expedido || '3250858-SCZ',
             diplomaDe: (data.carrera_colegio.mencion || 'BACHILLER EN HUMANIDADES').replace('.', '').toUpperCase(),
             fojas: data.archivo_fisico.fojas || '115/98',
@@ -116,19 +117,19 @@ export function CertificadoAutenticidadPage() {
     setFechaSolicitud('16 de abril de 2026');
     setNroTestimonio('1246/2025');
     setApoderadoNombre('Yuli Alison Romero Flores');
-    setTitularNombre('Jenny Flores Pe\u00f1a');
+    setTitularNombre('Jenny Flores Peña');
     setTitularCi('3250858-SCZ');
     setGradoMencion('Diploma de Bachiller');
     setNroTitulo('014863');
     setIncluirAclaratoriaHistorica(true);
     setGestionHistorica('1998');
     setIncluirSupletorio(true);
-    setJefeArchivoNombre('Mois\u00e9s Cossio L\u00f3pez');
+    setJefeArchivoNombre('Moisés Cossio López');
 
     setTableRows([{
       id: '1',
       nroDiploma: '014863',
-      nombreTitular: 'JENNY FLORES PE\u00d1A',
+      nombreTitular: 'JENNY FLORES PEÑA',
       ci: '3250858-SCZ',
       diplomaDe: 'BACHILLER EN HUMANIDADES',
       fojas: '115/98',
@@ -220,6 +221,7 @@ export function CertificadoAutenticidadPage() {
               gestionHistorica={gestionHistorica}
               incluirSupletorio={incluirSupletorio}
               jefeArchivoNombre={jefeArchivoNombre}
+              usarHojaMembretadaFisica={usarHojaMembretadaFisica}
             />
           </div>
         </div>
@@ -233,7 +235,7 @@ export function CertificadoAutenticidadPage() {
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>edit_document</span>
-                  Panel de Edici&#243;n
+                  Panel de Edición
                 </h3>
                 <button
                   type="button"
@@ -253,7 +255,7 @@ export function CertificadoAutenticidadPage() {
                 <div className="flex gap-1.5">
                   <input
                     type="text"
-                    placeholder="N&#176; Diploma / C.I..."
+                    placeholder="N° Diploma / C.I..."
                     value={searchDiploma}
                     onChange={(e) => setSearchDiploma(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
@@ -275,31 +277,27 @@ export function CertificadoAutenticidadPage() {
                   className="w-full py-1.5 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-[10px] rounded-lg border border-blue-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[12px]">article</span>
-                  Cargar Ejemplo F&#237;sico (INF 0472)
+                  Cargar Ejemplo Físico (INF 0472)
                 </button>
               </div>
 
-              {/* Formato de Hoja */}
-              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
-                <label className="text-[10px] font-extrabold text-[#003366] block uppercase tracking-wider">
-                  Formato de Papel:
+              {/* Modo Hoja Membretada Pre-impresa Toggle */}
+              <div className="p-3 bg-blue-50/80 border border-blue-200 rounded-xl space-y-1.5">
+                <label className="flex items-center justify-between text-xs font-extrabold text-[#003366] cursor-pointer">
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>description</span>
+                    Modo Hoja Membretada:
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={usarHojaMembretadaFisica}
+                    onChange={(e) => setUsarHojaMembretadaFisica(e.target.checked)}
+                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
+                  />
                 </label>
-                <div className="flex gap-1.5">
-                  {(['carta', 'oficio', 'a4'] as const).map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      onClick={() => setPaperSize(size)}
-                      className={`flex-1 py-1.5 text-xs font-bold rounded-lg border transition-all uppercase cursor-pointer ${
-                        paperSize === size
-                          ? 'bg-[#003366] text-white border-[#003366] shadow-xs'
-                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
+                <p className="text-[10px] text-slate-600 leading-tight">
+                  Fondo blanco con 4.0 cm de espacio superior reservado para papel oficial con membrete pre-impreso de Archivo Central.
+                </p>
               </div>
             </div>
 
@@ -311,7 +309,7 @@ export function CertificadoAutenticidadPage() {
               
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Correlativo (INF N&#176;):
+                  Correlativo (INF N°):
                 </label>
                 <input
                   type="text"
@@ -347,7 +345,7 @@ export function CertificadoAutenticidadPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  L&#237;nea de Referencia:
+                  Línea de Referencia:
                 </label>
                 <input
                   type="text"
@@ -378,7 +376,7 @@ export function CertificadoAutenticidadPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  C&#233;dula de Identidad (C.I.):
+                  Cédula de Identidad (C.I.):
                 </label>
                 <input
                   type="text"
@@ -403,39 +401,39 @@ export function CertificadoAutenticidadPage() {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    N° Testimonio:
+                  </label>
+                  <input
+                    type="text"
+                    value={nroTestimonio}
+                    onChange={(e) => setNroTestimonio(e.target.value)}
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                     Fecha Solicitud:
                   </label>
                   <input
                     type="text"
                     value={fechaSolicitud}
                     onChange={(e) => setFechaSolicitud(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                    N&#176; Testimonio:
-                  </label>
-                  <input
-                    type="text"
-                    value={nroTestimonio}
-                    onChange={(e) => setNroTestimonio(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#003366]"
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#003366]"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Seccion 3: Tabla Matriz & Opciones */}
+            {/* Seccion 3: Edicion de Filas Tabulares (9 Columnas) */}
             <div className="space-y-3 border-t border-slate-200 pt-4">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <h4 className="text-xs font-bold text-[#003366] uppercase tracking-wider border-l-2 border-[#C51D24] pl-2">
-                  3. Tabla Matriz &amp; Opciones
+                  3. Datos Tabulares del Registro ({tableRows.length})
                 </h4>
                 <button
                   type="button"
                   onClick={handleAddRow}
-                  className="px-2.5 py-1 border border-[#003366] text-[#003366] hover:bg-blue-50 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs cursor-pointer"
+                  className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-[#003366] font-bold text-[10px] rounded flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[14px]">add</span>
                   Fila
@@ -443,16 +441,16 @@ export function CertificadoAutenticidadPage() {
               </div>
 
               {tableRows.map((row, idx) => (
-                <div key={row.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
-                  <div className="flex justify-between items-center border-b border-slate-200 pb-1">
-                    <span className="font-bold text-[#C51D24] text-[10px]">
-                      Fila #{idx + 1} - Diploma N&#176; {row.nroDiploma}
+                <div key={row.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 relative">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-bold text-[#003366] font-mono">
+                      Fila #{idx + 1}
                     </span>
                     {tableRows.length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveRow(row.id)}
-                        className="text-red-600 text-[10px] font-bold hover:underline cursor-pointer"
+                        className="text-red-500 hover:text-red-700 text-[10px] font-bold"
                       >
                         Eliminar
                       </button>
@@ -461,16 +459,16 @@ export function CertificadoAutenticidadPage() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="text-[10px] text-slate-500">N&#176; Diploma:</label>
+                      <label className="text-[10px] text-slate-500">N° Diploma:</label>
                       <input
                         type="text"
                         value={row.nroDiploma}
                         onChange={(e) => handleUpdateRow(row.id, 'nroDiploma', e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-[11px]"
+                        className="w-full px-2 py-1 rounded border border-slate-300 font-mono text-xs font-bold text-[#C51D24]"
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-500">Diploma De:</label>
+                      <label className="text-[10px] text-slate-500">Diploma de:</label>
                       <input
                         type="text"
                         value={row.diplomaDe}
@@ -505,7 +503,7 @@ export function CertificadoAutenticidadPage() {
 
               <div className="space-y-2 pt-2">
                 <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
-                  <span>P&#225;rrafo Aclaratorio Hist&#243;rico:</span>
+                  <span>Párrafo Aclaratorio Histórico:</span>
                   <input
                     type="checkbox"
                     checked={incluirAclaratoriaHistorica}
@@ -515,7 +513,7 @@ export function CertificadoAutenticidadPage() {
                 </label>
 
                 <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer">
-                  <span>P&#225;rrafo Supletorio:</span>
+                  <span>Párrafo Supletorio:</span>
                   <input
                     type="checkbox"
                     checked={incluirSupletorio}
@@ -556,7 +554,7 @@ export function CertificadoAutenticidadPage() {
                 className="w-full py-3 bg-[#C51D24] hover:bg-[#A0161C] text-white rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">print</span>
-                Imprimir Documento F&#237;sico ({paperSize.toUpperCase()})
+                Imprimir Documento Físico ({paperSize.toUpperCase()})
               </button>
             </div>
 
@@ -569,7 +567,7 @@ export function CertificadoAutenticidadPage() {
             type="button"
             onClick={() => setShowWordEditor(true)}
             className="fixed right-6 top-24 z-30 p-3 bg-[#003366] hover:bg-[#002244] text-white rounded-xl shadow-lg transition-all cursor-pointer"
-            title="Abrir Panel de Edici&#243;n"
+            title="Abrir Panel de Edición"
           >
             <span className="material-symbols-outlined text-[22px]">edit_note</span>
           </button>
@@ -585,9 +583,9 @@ export function CertificadoAutenticidadPage() {
             <span className="w-2.5 h-2.5 rounded-full bg-[#C51D24]"></span>
             <span>Documento Activo:</span>
             <strong className="text-[#003366] font-mono">
-              INFORME ARCHIVO CENTRAL (INF N&#176; {correlativoInforme})
+              INFORME ARCHIVO CENTRAL (INF N° {correlativoInforme})
             </strong>
-            <span className="text-slate-400 font-mono">| Sin sellos digitales</span>
+            <span className="text-slate-400 font-mono">| {usarHojaMembretadaFisica ? 'Fondo Blanco para Hoja Membretada' : 'Membrete Digital'}</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -607,7 +605,7 @@ export function CertificadoAutenticidadPage() {
               className="px-5 py-2.5 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">print</span>
-              Imprimir Documento F&#237;sico ({paperSize.toUpperCase()})
+              Imprimir Documento Físico ({paperSize.toUpperCase()})
             </button>
           </div>
         </div>
@@ -617,7 +615,7 @@ export function CertificadoAutenticidadPage() {
           <div className="flex items-center gap-3 text-[11px]">
             <span className="font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-1">
               <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '16px' }}>help</span>
-              Flujo R&#225;pido:
+              Flujo Rápido:
             </span>
             <span className="flex items-center gap-1">
               [<strong className="text-[#003366]">1. Consultar Expediente</strong>] &#8594;
@@ -634,7 +632,7 @@ export function CertificadoAutenticidadPage() {
           </div>
 
           <div className="text-[10px] text-slate-500 font-mono">
-            Sistema de Emisi&#243;n UAGRM &#8226; Archivo Central
+            Sistema de Emisión UAGRM • Archivo Central
           </div>
         </div>
 

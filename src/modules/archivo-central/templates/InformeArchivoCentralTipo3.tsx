@@ -29,6 +29,7 @@ export interface InformeArchivoCentralTipo3Props {
   gestionHistorica: string;
   incluirSupletorio: boolean;
   jefeArchivoNombre: string;
+  usarHojaMembretadaFisica?: boolean;
 }
 
 export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Props) {
@@ -49,52 +50,76 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
     incluirAclaratoriaHistorica,
     gestionHistorica,
     incluirSupletorio,
-    jefeArchivoNombre
+    jefeArchivoNombre,
+    usarHojaMembretadaFisica = true
   } = props;
 
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
       <div>
-        {/* 1. Encabezado Físico Exacto */}
-        <header className="flex justify-between items-start border-b-2 border-slate-300 pb-4 mb-6">
-          <div className="flex items-center gap-3">
-            {/* Escudo UAGRM circular oficial desde public/images/img1.jpeg */}
-            <div className="w-[70px] shrink-0">
-              <img
-                src="/images/img1.jpeg"
-                alt="Escudo UAGRM"
-                className="w-[70px] h-auto object-contain rounded-full border border-slate-200 shadow-xs"
-              />
+        {/* 1. ENCABEZADO / ESPACIO MEMBRETADO */}
+        {usarHojaMembretadaFisica ? (
+          <div className="pt-[4cm] relative mb-6">
+            {/* Visual Indicator on Screen for Pre-printed Letterhead Margin */}
+            <div className="absolute top-0 left-0 right-0 h-[3.8cm] border-2 border-dashed border-slate-300 rounded-lg flex flex-col justify-center items-center text-center p-3 bg-slate-50/80 print:hidden">
+              <span className="material-symbols-outlined text-[#003366] text-2xl mb-1">description</span>
+              <p className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">
+                Fondo Blanco - Espacio Reservado para Hoja Membretada Pre-impresa
+              </p>
+              <p className="text-[10px] text-slate-600 font-mono mt-0.5">
+                Margen superior limpio de 4.0 cm para papel oficial de Archivo Central (Escudo e institucional no se imprimen)
+              </p>
             </div>
-            {/* Barra Vertical: A R C H I V O   C E N T R A L */}
-            <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.25em] uppercase text-slate-700 leading-tight">
-              A R C H I V O<br />C E N T R A L
+
+            {/* Fecha y Correlativo alineados a la derecha bajo el margen de membrete */}
+            <div className="flex justify-end items-center border-b-2 border-slate-300 pb-3 mb-6">
+              <div className="text-right font-sans text-xs space-y-1">
+                <p className="text-slate-800 font-medium">
+                  Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
+                </p>
+                <p className="font-extrabold text-[#003366]">
+                  SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+                </p>
+              </div>
             </div>
           </div>
+        ) : (
+          <header className="flex justify-between items-start border-b-2 border-slate-300 pb-4 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-[70px] shrink-0">
+                <img
+                  src="/images/img1.jpeg"
+                  alt="Escudo UAGRM"
+                  className="w-[70px] h-auto object-contain rounded-full border border-slate-200 shadow-xs"
+                />
+              </div>
+              <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.25em] uppercase text-slate-700 leading-tight">
+                A R C H I V O<br />C E N T R A L
+              </div>
+            </div>
 
-          {/* Encabezado Centrado Formal */}
-          <div className="text-center font-serif flex-1 px-4">
-            <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
-              UNIVERSIDAD AUTÓNOMA “GABRIEL RENÉ MORENO”
-            </h2>
-            <h3 className="font-extrabold text-xs text-slate-800 tracking-wider uppercase mt-0.5">
-              SECRETARÍA GENERAL
-            </h3>
-            <p className="text-[11px] font-bold text-[#C51D24] uppercase tracking-wide mt-0.5 font-sans">
-              Archivo Central
-            </p>
-          </div>
+            <div className="text-center font-serif flex-1 px-4">
+              <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
+                UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
+              </h2>
+              <h3 className="font-extrabold text-xs text-slate-800 tracking-wider uppercase mt-0.5">
+                SECRETARÍA GENERAL
+              </h3>
+              <p className="text-[11px] font-bold text-[#C51D24] uppercase tracking-wide mt-0.5 font-sans">
+                Archivo Central
+              </p>
+            </div>
 
-          {/* Ubicación y Correlativo Alineados a la Derecha */}
-          <div className="text-right font-sans text-xs space-y-1 shrink-0">
-            <p className="text-slate-800 font-medium">
-              Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
-            </p>
-            <p className="font-extrabold text-[#003366]">
-              SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
-            </p>
-          </div>
-        </header>
+            <div className="text-right font-sans text-xs space-y-1 shrink-0">
+              <p className="text-slate-800 font-medium">
+                Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
+              </p>
+              <p className="font-extrabold text-[#003366]">
+                SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+              </p>
+            </div>
+          </header>
+        )}
 
         {/* 2. Destinatario y Referencia (Carta Formal) */}
         <section className="mb-4 font-sans text-xs space-y-0.5 text-left">
@@ -117,7 +142,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
         {/* 3. Párrafo Legal Introductorio */}
         <section className="mb-5 text-justify text-xs leading-relaxed space-y-3 font-serif text-slate-900">
           <p className="indent-6">
-            En respuesta a solicitud de la interesada presentada el <span className="font-bold">{fechaSolicitud}</span>, con Testimonio Nº <span className="font-bold font-mono">{nroTestimonio}</span>, Poder Especial Bastante y Suficiente que confiere la señora <span className="font-bold">{apoderadoNombre}</span>, a favor de la señora <span className="font-extrabold underline text-[#003366]">{titularNombre}</span>, con Cédula de Identidad Nº <span className="font-bold font-mono">{titularCi}</span>, solicita la autenticidad del {gradoMencion} que fué emitido por la Universidad Autónoma Gabriel René Moreno, informo qué, los datos impresos en el cuadro siguiente, es parte de la documentación en custodia del Archivo Central - UAGRM:
+            En respuesta a solicitud de la interesada presentada el <span className="font-bold">{fechaSolicitud}</span>, con Testimonio N° <span className="font-bold font-mono">{nroTestimonio}</span>, Poder Especial Bastante y Suficiente que confiere la señora <span className="font-bold">{apoderadoNombre}</span>, a favor de la señora <span className="font-extrabold underline text-[#003366]">{titularNombre}</span>, con Cédula de Identidad N° <span className="font-bold font-mono">{titularCi}</span>, solicita la autenticidad del {gradoMencion} que fue emitido por la Universidad Autónoma Gabriel René Moreno, informo que, los datos impresos en el cuadro siguiente, es parte de la documentación en custodia del Archivo Central - UAGRM:
           </p>
         </section>
 
@@ -178,7 +203,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
         {/* 5. Párrafos Inferiores */}
         {incluirAclaratoriaHistorica && (
           <p className="text-justify text-xs font-serif text-slate-900 mb-3 bg-amber-50/50 p-2.5 rounded border-l-2 border-amber-500">
-            Aclarando que, en la gestión del <strong>{gestionHistorica}</strong> no se estilaba colocar pie de firma de las autoridades, toda vez que en la parte superior del Diploma esta rotulado el nombre completo del Rector.
+            Aclarando que, en la gestión del <strong>{gestionHistorica}</strong> no se estilaba colocar pie de firma de las autoridades, toda vez que en la parte superior del Diploma está rotulado el nombre completo del Rector.
           </p>
         )}
 
@@ -196,7 +221,7 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
           Es cuanto informo, para los fines que usted considere conveniente, me despido de usted con las atenciones más distinguidas.
         </p>
 
-        {/* Firma Única de Jefe de Archivo - Centrado Horizontal Estricto */}
+        {/* Firma Única de Jefe de Archivo */}
         <div className="pt-12 flex justify-center items-center my-6 text-center">
           <div className="text-center font-sans text-xs space-y-1 mx-auto w-72">
             <div className="w-64 border-b border-slate-800 mx-auto mb-2"></div>
@@ -218,9 +243,9 @@ export function InformeArchivoCentralTipo3(props: InformeArchivoCentralTipo3Prop
 
         <div className="text-right space-y-0.5">
           <p className="font-extrabold italic text-[#003366] text-[10px]">
-            "Autonomía y Cambio con Excelencia Académica"
+            &quot;Autonomía y Cambio con Excelencia Académica&quot;
           </p>
-          <p>📍 Av. Busch entre 2do. y 3er. anillo "Ciudad Universitaria" | Santa Cruz de la Sierra - Bolivia</p>
+          <p>Av. Busch entre 2do. y 3er. anillo &quot;Ciudad Universitaria&quot; | Santa Cruz de la Sierra - Bolivia</p>
         </div>
       </footer>
     </div>
