@@ -19,7 +19,6 @@ export function CertificadoAutenticidadPage() {
   // Configuracion de Papel y Modos
   const [paperSize] = useState<'carta' | 'oficio' | 'a4'>('carta');
   const [showWordEditor, setShowWordEditor] = useState<boolean>(true);
-  const [usarHojaMembretadaFisica, setUsarHojaMembretadaFisica] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchDiploma, setSearchDiploma] = useState('');
@@ -221,7 +220,6 @@ export function CertificadoAutenticidadPage() {
               gestionHistorica={gestionHistorica}
               incluirSupletorio={incluirSupletorio}
               jefeArchivoNombre={jefeArchivoNombre}
-              usarHojaMembretadaFisica={usarHojaMembretadaFisica}
             />
           </div>
         </div>
@@ -230,7 +228,7 @@ export function CertificadoAutenticidadPage() {
         {showWordEditor && (
           <div className="w-80 shrink-0 bg-white p-5 space-y-5 print:hidden shadow-lg border border-slate-200 rounded-2xl sticky top-4 max-h-[calc(100vh-120px)] overflow-y-auto">
             
-            {/* Cabecera del Panel + Toggle */}
+            {/* Cabecera del Panel */}
             <div className="border-b border-slate-200 pb-3 space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
@@ -279,25 +277,6 @@ export function CertificadoAutenticidadPage() {
                   <span className="material-symbols-outlined text-[12px]">article</span>
                   Cargar Ejemplo Físico (INF 0472)
                 </button>
-              </div>
-
-              {/* Modo Hoja Membretada Pre-impresa Toggle */}
-              <div className="p-3 bg-blue-50/80 border border-blue-200 rounded-xl space-y-1.5">
-                <label className="flex items-center justify-between text-xs font-extrabold text-[#003366] cursor-pointer">
-                  <span className="flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>description</span>
-                    Modo Hoja Membretada:
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={usarHojaMembretadaFisica}
-                    onChange={(e) => setUsarHojaMembretadaFisica(e.target.checked)}
-                    className="w-4 h-4 text-[#003366] rounded cursor-pointer"
-                  />
-                </label>
-                <p className="text-[10px] text-slate-600 leading-tight">
-                  Al activar, deja 3.6 cm de margen superior para imprimir en hojas con membrete físico de Archivo Central.
-                </p>
               </div>
             </div>
 
@@ -585,7 +564,7 @@ export function CertificadoAutenticidadPage() {
             <strong className="text-[#003366] font-mono">
               INFORME ARCHIVO CENTRAL - TIPO 1 (INF N° {correlativoInforme})
             </strong>
-            <span className="text-slate-400 font-mono">| Encabezado Oficial Centrado</span>
+            <span className="text-slate-400 font-mono">| Plantilla Limpia Fondo Blanco</span>
           </div>
 
           <div className="flex items-center gap-3">

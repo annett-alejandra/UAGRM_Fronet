@@ -29,7 +29,6 @@ export interface InformeArchivoCentralTipo1Props {
   gestionHistorica: string;
   incluirSupletorio: boolean;
   jefeArchivoNombre: string;
-  usarHojaMembretadaFisica?: boolean;
 }
 
 export function InformeArchivoCentralTipo1(props: InformeArchivoCentralTipo1Props) {
@@ -50,77 +49,34 @@ export function InformeArchivoCentralTipo1(props: InformeArchivoCentralTipo1Prop
     incluirAclaratoriaHistorica,
     gestionHistorica,
     incluirSupletorio,
-    jefeArchivoNombre,
-    usarHojaMembretadaFisica = false
+    jefeArchivoNombre
   } = props;
 
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white shadow-xl p-[3.5rem] text-slate-900 shrink-0 relative flex flex-col justify-between rounded-sm print:p-0 print:shadow-none print:w-full font-serif">
       <div>
-        {/* 1. ENCABEZADO CENTRADO SIN LÍNEA DIVISORIA (Tipo 1 Archivo Central UAGRM) */}
-        {usarHojaMembretadaFisica ? (
-          <div className="pt-[3.6cm] relative mb-6">
-            {/* Visual Indicator on Screen for Pre-printed Letterhead Margin */}
-            <div className="absolute top-0 left-0 right-0 h-[3.2cm] border-2 border-dashed border-slate-300 rounded-lg flex flex-col justify-center items-center text-center p-3 bg-slate-50/80 print:hidden">
-              <span className="material-symbols-outlined text-[#003366] text-xl mb-0.5">description</span>
-              <p className="text-xs font-extrabold text-[#003366] uppercase tracking-wider">
-                Fondo Blanco - Espacio Reservado para Hoja Membretada Pre-impresa
-              </p>
-              <p className="text-[10px] text-slate-600 font-mono mt-0.5">
-                Margen superior limpio de 3.6 cm (Papel oficial UAGRM con membrete físico)
-              </p>
-            </div>
+        {/* 1. ENCABEZADO CENTRADO LIMPIO (SIN LOGOS NI ESCUDOS - FONDO TOTALMENTE BLANCO) */}
+        <header className="text-center font-serif space-y-1 mb-8 pt-2">
+          <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
+            UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
+          </h2>
+          <h3 className="font-extrabold text-xs text-slate-800 tracking-wider uppercase">
+            SECRETARÍA GENERAL
+          </h3>
+          <p className="text-[11px] font-bold text-[#C51D24] uppercase tracking-wide font-sans">
+            Archivo Central
+          </p>
 
-            {/* Fecha y Correlativo Centrados bajo el membrete físico */}
-            <div className="text-center font-sans text-xs space-y-1 mb-6">
-              <p className="text-slate-800 font-medium">
-                Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
-              </p>
-              <p className="font-extrabold text-[#003366]">
-                SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
-              </p>
-            </div>
+          {/* Fecha y Correlativo Centrados Directamente Debajo del Título */}
+          <div className="pt-3 font-sans text-xs space-y-0.5">
+            <p className="text-slate-800 font-medium">
+              Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
+            </p>
+            <p className="font-extrabold text-[#003366]">
+              SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
+            </p>
           </div>
-        ) : (
-          <header className="relative mb-8 pt-1">
-            {/* Escudo UAGRM + Título Vertical en la esquina izquierda */}
-            <div className="absolute left-0 top-0 flex items-start gap-3">
-              <div className="w-[68px] shrink-0">
-                <img
-                  src="/images/img1.jpeg"
-                  alt="Escudo UAGRM"
-                  className="w-[68px] h-auto object-contain rounded-full border border-slate-200 shadow-xs"
-                />
-              </div>
-              <div className="border-l-2 border-slate-800 pl-2 text-[9px] font-bold font-mono tracking-[0.25em] uppercase text-slate-700 leading-tight">
-                A R C H I V O<br />C E N T R A L
-              </div>
-            </div>
-
-            {/* Encabezado Institucional + Fecha + Correlativo CENTRADO EN EL MEDIO */}
-            <div className="text-center font-serif max-w-xl mx-auto space-y-1 pt-1">
-              <h2 className="font-extrabold text-sm text-[#003366] leading-snug uppercase tracking-tight">
-                UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
-              </h2>
-              <h3 className="font-extrabold text-xs text-slate-800 tracking-wider uppercase">
-                SECRETARÍA GENERAL
-              </h3>
-              <p className="text-[11px] font-bold text-[#C51D24] uppercase tracking-wide font-sans">
-                Archivo Central
-              </p>
-
-              {/* Fecha y Correlativo Centrados Directamente Debajo */}
-              <div className="pt-2 font-sans text-xs space-y-0.5">
-                <p className="text-slate-800 font-medium">
-                  Santa Cruz de la Sierra, <strong className="font-bold">{fechaDoc}</strong>
-                </p>
-                <p className="font-extrabold text-[#003366]">
-                  SECCION ARCHIVO /INF. No. <span className="underline font-mono">{correlativoInforme}</span>
-                </p>
-              </div>
-            </div>
-          </header>
-        )}
+        </header>
 
         {/* 2. Destinatario y Referencia (Carta Formal) */}
         <section className="mb-4 font-sans text-xs space-y-0.5 text-left">
