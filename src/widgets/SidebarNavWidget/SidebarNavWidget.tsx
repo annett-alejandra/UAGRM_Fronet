@@ -20,7 +20,7 @@ const ARCHIVO_NAV: readonly NavItem[] = [
   },
   {
     path: '/archivo/triaje',
-    label: '2. Triaje Documental',
+    label: '2. Triaje Documental (Bandeja)',
     iconName: 'filter_alt',
   },
   {
@@ -37,6 +37,11 @@ const ARCHIVO_NAV: readonly NavItem[] = [
     path: '/archivo/busqueda-expedientes',
     label: '5. Búsqueda de Expedientes',
     iconName: 'search_insights',
+  },
+  {
+    path: '/archivo/subida-excel',
+    label: '6. Subida por Excel (Libros Históricos)',
+    iconName: 'table_view',
   },
 ];
 
@@ -78,6 +83,7 @@ const SECRETARIA_NAV: readonly NavItem[] = [
 
 export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -102,10 +108,16 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
     return location.pathname.startsWith(path);
   };
 
+  const notifications = [
+    { id: '1', titulo: 'Nueva solicitud derivada de Títulos', desc: 'Trámite TR-88421 (Jenny Flores Peña) derivado a Archivo Central', tiempo: 'Hace 10 min' },
+    { id: '2', titulo: 'Transferencia a Secretaría General', desc: 'Informe INF N° 0472 enviado a revisión de Secretaría', tiempo: 'Hace 45 min' },
+    { id: '3', titulo: 'Digitalización por Excel Lista', desc: 'Tomo Jurídicas #01 (2001) guardado correctamente', tiempo: 'Hace 2 horas' }
+  ];
+
   return (
     <div className="flex min-h-screen bg-[#F8FAFC] text-[#1E293B] font-sans relative overflow-hidden">
       
-      {/* Sidebar Izquierdo (#003366 Azul UAGRM) */}
+      {/* Sidebar Izquierdo (#003366 Azul UAGRM) con Opcion 6 */}
       <aside className={`fixed top-0 left-0 bottom-0 z-50 bg-[#003366] text-white shadow-xl transition-all duration-300 flex flex-col justify-between ${isCollapsed ? 'w-20' : 'w-64'}`}>
         
         <div className="flex flex-col gap-6 p-4">
@@ -176,6 +188,7 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
         </div>
       </aside>
 
+      {/* Contenido Principal con Barra Superior Limpia y Campanita de Notificaciones */}
       <div className={`flex flex-col flex-1 transition-all duration-300 ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
         
         <header className="sticky top-0 z-40 flex items-center justify-between px-8 h-16 bg-white border-b border-[#E2E8F0] shadow-xs">
@@ -187,6 +200,58 @@ export function SidebarNavWidget({ children, pageTitle }: SidebarNavWidgetProps)
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Campanita de Notificaciones en la Barra Superior */}
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all relative flex items-center justify-center"
+                title="Notificaciones de Derivaciones"
+              >
+                <span className="material-symbols-outlined text-xl">notifications</span>
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[9px] font-extrabold rounded-full flex items-center justify-center border border-white animate-pulse">
+                  3
+                </span>
+              </button>
+
+              {/* Menú Desplegable de Notificaciones */}
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-900 z-50 animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
+                  <div className="p-3 bg-[#003366] text-white flex justify-between items-center border-b border-slate-800">
+                    <h4 className="text-xs font-extrabold flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm text-[#E5A823]">notifications_active</span>
+                      Notificaciones & Derivaciones
+                    </h4>
+                    <span className="text-[10px] font-mono bg-blue-600 px-2 py-0.5 rounded-full font-bold">3 Nuevas</span>
+                  </div>
+
+                  <div className="divide-y divide-slate-100 max-h-64 overflow-auto text-xs">
+                    {notifications.map(n => (
+                      <div
+                        key={n.id}
+                        className="p-3 hover:bg-slate-50 transition-colors cursor-pointer"
+                        onClick={() => { setShowNotifications(false); navigate('/archivo/triaje'); }}
+                      >
+                        <div className="flex justify-between items-start mb-1">
+                          <strong className="text-slate-900 text-[11px] font-extrabold">{n.titulo}</strong>
+                          <span className="text-[9px] text-slate-400 font-mono">{n.tiempo}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 leading-tight">{n.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
+                    <button
+                      onClick={() => { setShowNotifications(false); navigate('/archivo/triaje'); }}
+                      className="text-[11px] font-bold text-[#003366] hover:underline"
+                    >
+                      Ver Bandeja de Triaje y Derivaciones ➔
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <span className="hidden sm:inline-flex px-3 py-1 bg-slate-100 border border-[#E2E8F0] text-[#1E293B] text-xs font-mono rounded-full items-center gap-2">
               <span className="material-symbols-outlined text-[#1B7A43]" style={{ fontSize: '16px' }}>verified_user</span>
               Operador Sistema UAGRM
