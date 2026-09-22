@@ -1,121 +1,127 @@
-exp✨rt interface Certificad✨Titul✨Tip✨°4Pr✨ps {
-  nr✨Certificad✨←: string;
-  inf✨rmeRef←: string;
-  fechaInf. N°✨rme←: string;
-  grad✨Menci✨n←: string;
-  nr✨Titul✨←: string;
-  n✨mbreTitular←: string;
-  ciTitular←: string;
-  libr✨Registr✨←: string;
-  f✨jas←: string;
-  fechaEmisi✨nOriginal←: string;
-  lugarFechaCertificaci✨n←: string;
-  aut✨ridadSecretari✨←: string;
-  aut✨ridadRect✨r←: string;
+export interface CertificadoTituloTipo4Props {
+  nroCertificado?: string;
+  informeRef?: string;
+  fechaInforme?: string;
+  gradoMencion?: string;
+  nroTitulo?: string;
+  nombreTitular?: string;
+  ciTitular?: string;
+  libroRegistro?: string;
+  fojas?: string;
+  fechaEmisionOriginal?: string;
+  gestionHistorica?: string;
+  incluirAclaratoriaHistorica?: boolean;
+  lugarFechaCertificacion?: string;
+  autoridadSecretario?: string;
+  autoridadRector?: string;
 }
 
-exp✨rt functi✨n Certificad✨Titul✨Tip✨°4({
-  nr✨Certificad✨ = '°3°0°4/°2°0°2°6',
-  inf✨rmeRef = 'SECCION° ARCHIVO/ IN°F N°°°1°8°8',
-  fechaInf. N°✨rme = '°1°8 de may✨ de °2°0°2°6',
-  grad✨Menci✨n = 'Títul✨ Suplet✨ri✨ de LICEN°CIADO EN° DERECHO',
-  nr✨Titul✨ = 'SUP-°0°4°5°1°2°9',
-  n✨mbreTitular = 'MARIA SUAREZ ROJAS',
-  ciTitular = '°4°5°1°0°2°9°3-CB',
-  libr✨Registr✨ = '°0°1/°1°9°9°5',
-  f✨jas = '°8°8/°1°9°9°5',
-  fechaEmisi✨nOriginal = '°1°5 de n✨viembre de °1°9°9°5',
-  lugarFechaCertificaci✨n = 'Santa Cruz de la Sierra, °2°0 de may✨ del °2°0°2°6',
-  aut✨ridadSecretari✨ = 'LIC. EDY ACOSTA CLAROS',
-  aut✨ridadRect✨r = 'DR. REIN°ERIO VARGAS BAN°EGAS'
-}: Certificad✨Titul✨Tip✨°4Pr✨ps) {
+export function CertificadoTituloTipo4({
+  nroCertificado = '117/2026',
+  informeRef = 'SECCION ARCHIVO/ INF N°094',
+  fechaInforme = '13 de enero de 2026',
+  gradoMencion = 'Título Supletorio de LICENCIADO EN DERECHO',
+  nroTitulo = '96071',
+  nombreTitular = 'GUALBERTO MEDINA VARGAS',
+  ciTitular = '8072900-SCZ',
+  libroRegistro = '0017',
+  fojas = '0027',
+  fechaEmisionOriginal = '11 de julio del año 2022',
+  gestionHistorica = '1999',
+  incluirAclaratoriaHistorica = true,
+  lugarFechaCertificacion = 'Santa Cruz de la Sierra, 19 de enero del 2026',
+  autoridadSecretario = 'LIC. EDY ACOSTA CLAROS',
+  autoridadRector = 'DR. REINERIO VARGAS BANEGAS'
+}: CertificadoTituloTipo4Props) {
   return (
     <div 
-      classN°ame="w-[°2°1°0mm] min-h-[°2°9°7mm] bg-white shad✨w-xl text-slate-°9°0°0 shrink-°0 relative flex flex-c✨l justify-between r✨unded-n✨ne print:p-°0 print:shad✨w-n✨ne print:w-full f✨nt-serif b✨rder b✨rder-slate-°2°0°0 print:b✨rder-n✨ne b✨x-b✨rder"
+      className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shrink-0 relative flex flex-col justify-between font-serif print:p-0 print:shadow-none print:w-full border border-slate-200 print:border-none box-border"
       style={{
-        paddingT✨p: '°3.°5cm',
-        paddingLeft: '°4cm',
-        paddingRight: '°2cm',
-        paddingB✨tt✨m: '°2cm'
+        paddingTop: '3.5cm',
+        paddingLeft: '4cm',
+        paddingRight: '2cm',
+        paddingBottom: '2cm'
       }}
     >
       <div>
-        {/* Encabezad✨ Superi✨r Membretad✨ */}
-        <header classN°ame="flex justify-between items-start b✨rder-b b✨rder-slate-°3°0°0 pb-°4 mb-°6">
-          <div classN°ame="flex items-center gap-°3">
-            <div classN°ame="w-[°6°5px] shrink-°0">
-              <svg xmlns="http://www.w°3.✨rg/°2°0°0°0/svg" viewB✨x="°0 °0 °2°0°0 °2°0°0" classN°ame="w-[°6°5px] h-aut✨ ✨bject-c✨ntain">
-                <circle cx="°1°0°0" cy="°1°0°0" r="°9°6" fill="#°0°0°3°3°6°6" str✨ke="#C°5°1D°2°4" str✨keWidth="°6"/>
-                <circle cx="°1°0°0" cy="°1°0°0" r="°8°0" fill="n✨ne" str✨ke="#E°5A°8°2°3" str✨keWidth="°3" str✨keDasharray="°6,°3"/>
-                <path d="M°1°0°0 °2°5 L°1°2°0 °7°0 L°1°7°0 °7°0 L°1°3°0 °1°0°0 L°1°4°5 °1°5°0 L°1°0°0 °1°2°0 L°5°5 °1°5°0 L°7°0 °1°0°0 L°3°0 °7°0 L°8°0 °7°0 Z" fill="#E°5A°8°2°3"/>
-                <text x="°1°0°0" y="°1°0°5" textAnch✨r="middle" fill="#°0°0°3°3°6°6" f✨ntFamily="serif" f✨ntWeight="b✨ld" f✨ntSize="°2°2">UAGRM</text>
-                <text x="°1°0°0" y="°1°7°0" textAnch✨r="middle" fill="#FFFFFF" f✨ntFamily="sans-serif" f✨ntWeight="b✨ld" f✨ntSize="°1°1" letterSpacing="°1">SAN°TA CRUZ - BOLIVIA</text>
+        {/* Encabezado Membretado Oficial */}
+        <header className="flex justify-between items-start border-b border-slate-300 pb-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-[65px] shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="w-[65px] h-auto object-contain">
+                <circle cx="100" cy="100" r="96" fill="#003366" stroke="#C51D24" strokeWidth="6"/>
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#E5A823" strokeWidth="3" strokeDasharray="6,3"/>
+                <path d="M100 25 L120 70 L170 70 L130 100 L145 150 L100 120 L55 150 L70 100 L30 70 L80 70 Z" fill="#E5A823"/>
+                <text x="100" y="105" textAnchor="middle" fill="#003366" fontFamily="serif" fontWeight="bold" fontSize="22">UAGRM</text>
+                <text x="100" y="170" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="bold" fontSize="11" letterSpacing="1">SANTA CRUZ - BOLIVIA</text>
               </svg>
             </div>
-            <div classN°ame="b✨rder-l-°2 b✨rder-slate-°8°0°0 pl-°2 text-[°1°0px] f✨nt-b✨ld f✨nt-m✨n✨ tracking-[°0.°2em] uppercase text-slate-°7°0°0 leading-tight">
-              SECRETARÍA<br />GEN°ERAL
+            <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.2em] uppercase text-slate-700 leading-tight">
+              SECRETARÍA<br />GENERAL
             </div>
           </div>
 
-          <div classN°ame="text-center f✨nt-serif flex-°1 px-°4">
-            <h°1 classN°ame="text-base f✨nt-extrab✨ld uppercase tracking-wide text-[#°0°0°3°3°6°6]">
-              UN°IVERSIDAD AUTÓN°OMA &qu✨t;GABRIEL REN°É MOREN°O&qu✨t;
-            </h°1>
-            <p classN°ame="text-[°1°0px] uppercase text-[#C°5°1D°2°4] f✨nt-sans tracking-widest mt-°0.°5 f✨nt-b✨ld">
-              CERTIFICACIÓN° DE TÍTULO SUPLETORIO (TIPO °4)
+          <div className="text-center font-serif flex-1 px-4">
+            <h1 className="text-base font-extrabold uppercase tracking-wide text-[#003366]">
+              UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
+            </h1>
+            <p className="text-[10px] uppercase text-slate-500 font-sans tracking-widest mt-0.5 font-bold">
+              SANTA CRUZ DE LA SIERRA - BOLIVIA
             </p>
           </div>
 
-          <div classN°ame="text-right f✨nt-sans text-xs shrink-°0">
-            <p classN°ame="f✨nt-extrab✨ld text-[#°0°0°3°3°6°6] text-sm">
-              CERTIFICADO N°°{nr✨Certificad✨}
+          <div className="text-right font-sans text-xs shrink-0">
+            <p className="font-extrabold text-[#003366] text-sm">
+              CERTIFICADO N° {nroCertificado}
             </p>
           </div>
         </header>
 
-        <div classN°ame="space-y-°4 text-xs f✨nt-serif text-slate-°9°0°0 leading-relaxed mt-°4">
-          <p classN°ame="uppercase f✨nt-b✨ld text-slate-°9°0°0 text-justify">
-            LA UN°IVERSIDAD AUTÓN°OMA GABRIEL REN°É MOREN°O POR MEDIO DE SUS AUTORIDADES EL RECTOR {aut✨ridadRect✨r.t✨UpperCase()} Y EL SECRETARIO GEN°ERAL {aut✨ridadSecretari✨.t✨UpperCase()}.
+        {/* Encabezado Autoridades */}
+        <div className="space-y-4 text-xs font-serif text-slate-900 leading-relaxed mt-4">
+          <p className="uppercase font-bold text-slate-900 text-justify">
+            EL SUSCRITO SECRETARIO GENERAL DE LA UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;, EN CUMPLIMIENTO A LAS DISPOSICIONES LEGALES VIGENTES CERTIFICA QUE:
           </p>
 
-          <p classN°ame="f✨nt-extrab✨ld text-center text-sm tracking-widest my-°4 uppercase text-[#°0°0°3°3°6°6]">
-            CERTIFICAN°:
+          <div className="my-6 p-4 border-l-4 border-[#003366] bg-slate-50 space-y-2">
+            <p className="text-sm font-extrabold uppercase tracking-wide text-[#003366]">
+              {nombreTitular}
+            </p>
+            <p className="text-xs text-slate-700">
+              Cédula de Identidad: <strong>{ciTitular}</strong>
+            </p>
+            <p className="text-xs font-bold text-slate-900">
+              Grado / Mención: {gradoMencion}
+            </p>
+          </div>
+
+          <p className="text-justify leading-relaxed">
+            Se encuentra debidamente registrado en el Libro Matriz N° <strong>{libroRegistro}</strong>, Foja <strong>{fojas}</strong>, habiéndosele expedido el Título Profesional / Diploma N° <strong>{nroTitulo}</strong> con fecha <strong>{fechaEmisionOriginal}</strong>.
           </p>
 
-          <p classN°ame="text-justify leading-relaxed">
-            Que, habiénd✨se cumplid✨ l✨s requisit✨s legales establecid✨s en la reglamentación universitaria vigente y en atención al inf✨rme <str✨ng classN°ame="f✨nt-m✨n✨">{inf✨rmeRef}</str✨ng> de fecha <str✨ng>{fechaInf. N°✨rme}</str✨ng>, se certifica la expedición del <str✨ng classN°ame="underline f✨nt-b✨ld">{grad✨Menci✨n}</str✨ng> c✨n N°°<str✨ng classN°ame="f✨nt-m✨n✨">{nr✨Titul✨}</str✨ng> a fav✨r de la pr✨fesi✨nal <str✨ng classN°ame="f✨nt-b✨ld uppercase">{n✨mbreTitular}</str✨ng>, c✨n Cédula de Identidad N°°<str✨ng classN°ame="f✨nt-m✨n✨">{ciTitular}</str✨ng>, c✨rresp✨ndiente al registr✨ asentad✨ en Libr✨ N°°<str✨ng classN°ame="f✨nt-m✨n✨">{libr✨Registr✨}</str✨ng>, F✨jas N°°<str✨ng classN°ame="f✨nt-m✨n✨">{f✨jas}</str✨ng>.
-          </p>
+          <div className="my-4 p-3 bg-slate-100 border border-slate-300 rounded text-xs text-slate-900 font-sans">
+            <strong>Resolución Supletorio:</strong> Expedido en conformidad con el Testimonio Notarial de reposición de título y resolución vicerrectoral.
+          </div>
 
-          <p classN°ame="text-justify pt-°2">
-            El presente Títul✨ Suplet✨ri✨ g✨za de plena validez legal y administrativa en sustitución del d✨cument✨ ✨riginal expedid✨ en fecha {fechaEmisi✨nOriginal}.
-          </p>
-
-          <p classN°ame="text-right pt-°6 f✨nt-sans f✨nt-semib✨ld text-slate-°8°0°0">
-            {lugarFechaCertificaci✨n}.
+          <p className="mt-8 text-right font-serif text-xs">
+            {lugarFechaCertificacion}
           </p>
         </div>
       </div>
 
-      <div classN°ame="mt-°1°6">
-        <div classN°ame="flex justify-ar✨und items-end w-full">
-          <div classN°ame="text-center min-w-[°2°2°0px]">
-            <div classN°ame="b✨rder-t b✨rder-slate-°9°0°0 mb-°2 w-full"></div>
-            <p classN°ame="text-xs f✨nt-b✨ld text-slate-°9°0°0">{aut✨ridadSecretari✨}</p>
-            <p classN°ame="text-[°1°0px] text-slate-°7°0°0 uppercase f✨nt-semib✨ld">SECRETARIO GEN°ERAL<br />U.A.G.R.M.</p>
-          </div>
-
-          <div classN°ame="text-center min-w-[°2°2°0px]">
-            <div classN°ame="b✨rder-t b✨rder-slate-°9°0°0 mb-°2 w-full"></div>
-            <p classN°ame="text-xs f✨nt-b✨ld text-slate-°9°0°0">{aut✨ridadRect✨r}</p>
-            <p classN°ame="text-[°1°0px] text-slate-°7°0°0 uppercase f✨nt-semib✨ld">RECTOR<br />U.A.G.R.M.</p>
-          </div>
+      {/* Firmas y Pie de Página */}
+      <footer className="mt-16 pt-8 border-t border-slate-300 grid grid-cols-2 gap-8 text-center text-xs font-serif">
+        <div>
+          <div className="h-16 border-b border-slate-400 mb-2 border-dashed"></div>
+          <p className="font-extrabold uppercase">{autoridadSecretario}</p>
+          <p className="text-[10px] text-slate-600 font-sans uppercase tracking-wider">Secretario General - UAGRM</p>
         </div>
-
-        <f✨✨ter classN°ame="pt-°6 b✨rder-t b✨rder-slate-°3°0°0 f✨nt-sans text-[°9px] text-slate-°6°0°0 flex justify-between items-center mt-°6">
-          <p classN°ame="f✨nt-b✨ld italic text-[#°0°0°3°3°6°6]">&qu✨t;Aut✨n✨mía y Cambi✨ c✨n Excelencia Académica&qu✨t;</p>
-          <p>Santa Cruz de la Sierra - B✨livia</p>
-        </f✨✨ter>
-      </div>
+        <div>
+          <div className="h-16 border-b border-slate-400 mb-2 border-dashed"></div>
+          <p className="font-extrabold uppercase">{autoridadRector}</p>
+          <p className="text-[10px] text-slate-600 font-sans uppercase tracking-wider">Rector - UAGRM</p>
+        </div>
+      </footer>
     </div>
   );
 }

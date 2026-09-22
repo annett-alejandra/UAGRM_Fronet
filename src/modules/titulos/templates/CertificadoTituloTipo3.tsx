@@ -1,115 +1,127 @@
-exp✨rt interface Certificad✨Titul✨Tip✨°3Pr✨ps {
-  c✨rrelativ✨Inf. N°✨rme←: string;
-  fechaD✨c←: string;
-  destinatari✨N°✨mbre←: string;
-  destinatari✨Carg✨←: string;
-  referencia←: string;
-  fechaS✨licitud←: string;
-  nr✨Testim✨ni✨←: string;
-  ap✨derad✨N°✨mbre←: string;
-  titularN°✨mbre←: string;
-  titularCi←: string;
-  grad✨Menci✨n←: string;
-  nr✨Titul✨←: string;
-  libr✨←: string;
-  f✨jas←: string;
-  gesti✨nHist✨rica←: string;
-  jefeArchiv✨N°✨mbre←: string;
+export interface CertificadoTituloTipo3Props {
+  nroCertificado?: string;
+  informeRef?: string;
+  fechaInforme?: string;
+  gradoMencion?: string;
+  nroTitulo?: string;
+  nombreTitular?: string;
+  ciTitular?: string;
+  libroRegistro?: string;
+  fojas?: string;
+  fechaEmisionOriginal?: string;
+  gestionHistorica?: string;
+  incluirAclaratoriaHistorica?: boolean;
+  lugarFechaCertificacion?: string;
+  autoridadSecretario?: string;
+  autoridadRector?: string;
 }
 
-exp✨rt functi✨n Certificad✨Titul✨Tip✨°3({
-  c✨rrelativ✨Inf. N°✨rme = '°0°4°7°2',
-  fechaD✨c = '°2°0 de abril de °2°0°2°6',
-  destinatari✨N°✨mbre = 'MSc. Edy Ac✨sta Clar✨s',
-  destinatari✨Carg✨ = 'SECRETARIO GEN°ERAL - U.A.G.R.M.',
-  referencia = 'IN°FORME DEL DIPLOMA DE BACHILLER.',
-  fechaS✨licitud = '°1°6 de abril de °2°0°2°6',
-  nr✨Testim✨ni✨ = '°1°2°4°6/°2°0°2°5',
-  ap✨derad✨N°✨mbre = 'Yuli Alis✨n R✨mer✨ Fl✨res',
-  titularN°✨mbre = 'Jenny Fl✨res Peña',
-  titularCi = '°3°2°5°0°8°5°8-SCZ',
-  grad✨Menci✨n = 'Dipl✨ma de Bachiller',
-  nr✨Titul✨ = '°0°1°4°8°6°3',
-  libr✨ = '°1°9/°9°8',
-  f✨jas = '°1°1°5/°9°8',
-  gesti✨nHist✨rica = '°1°9°9°8',
-  jefeArchiv✨N°✨mbre = 'M✨isés C✨ssi✨ López'
-}: Certificad✨Titul✨Tip✨°3Pr✨ps) {
+export function CertificadoTituloTipo3({
+  nroCertificado = '117/2026',
+  informeRef = 'SECCION ARCHIVO/ INF N°094',
+  fechaInforme = '13 de enero de 2026',
+  gradoMencion = 'Copia Legalizada de Foja Reconstruida por OCR',
+  nroTitulo = '96071',
+  nombreTitular = 'GUALBERTO MEDINA VARGAS',
+  ciTitular = '8072900-SCZ',
+  libroRegistro = '0017',
+  fojas = '0027',
+  fechaEmisionOriginal = '11 de julio del año 2022',
+  gestionHistorica = '1999',
+  incluirAclaratoriaHistorica = true,
+  lugarFechaCertificacion = 'Santa Cruz de la Sierra, 19 de enero del 2026',
+  autoridadSecretario = 'LIC. EDY ACOSTA CLAROS',
+  autoridadRector = 'DR. REINERIO VARGAS BANEGAS'
+}: CertificadoTituloTipo3Props) {
   return (
     <div 
-      classN°ame="bg-white max-w-[°2°1°0mm] mx-aut✨ min-h-[°2°9°7mm] max-h-[°2°9°7mm] flex flex-c✨l justify-between shad✨w-xl print:shad✨w-n✨ne print:m-°0 print:w-full print:max-h-n✨ne text-slate-°9°0°0 b✨rder b✨rder-slate-°2°0°0 print:b✨rder-n✨ne relative b✨x-b✨rder ✨verfl✨w-hidden print:✨verfl✨w-visible break-inside-av✨id f✨nt-sans"
+      className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shrink-0 relative flex flex-col justify-between font-serif print:p-0 print:shadow-none print:w-full border border-slate-200 print:border-none box-border"
       style={{
-        paddingT✨p: '°3.°5cm',
-        paddingLeft: '°4cm',
-        paddingRight: '°2cm',
-        paddingB✨tt✨m: '°2cm'
+        paddingTop: '3.5cm',
+        paddingLeft: '4cm',
+        paddingRight: '2cm',
+        paddingBottom: '2cm'
       }}
     >
-      <div classN°ame="space-y-°3">
-        {/* Encabezad✨ */}
-        <header classN°ame="text-center f✨nt-serif pb-°1 mb-°2">
-          <h°1 classN°ame="f✨nt-extrab✨ld text-base uppercase text-[#°0°0°3°3°6°6] tracking-wide leading-tight">
-            UN°IVERSIDAD AUTÓN°OMA &qu✨t;GABRIEL REN°É MOREN°O&qu✨t;
-          </h°1>
-          <h°2 classN°ame="f✨nt-b✨ld text-xs uppercase text-slate-°8°0°0 tracking-wider">
-            SECRETARÍA GEN°ERAL
-          </h°2>
-          <h°3 classN°ame="f✨nt-semib✨ld text-xs uppercase text-slate-°7°0°0">
-            Archiv✨ Central • Tip✨ °3
-          </h°3>
-        </header>
+      <div>
+        {/* Encabezado Membretado Oficial */}
+        <header className="flex justify-between items-start border-b border-slate-300 pb-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-[65px] shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="w-[65px] h-auto object-contain">
+                <circle cx="100" cy="100" r="96" fill="#003366" stroke="#C51D24" strokeWidth="6"/>
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#E5A823" strokeWidth="3" strokeDasharray="6,3"/>
+                <path d="M100 25 L120 70 L170 70 L130 100 L145 150 L100 120 L55 150 L70 100 L30 70 L80 70 Z" fill="#E5A823"/>
+                <text x="100" y="105" textAnchor="middle" fill="#003366" fontFamily="serif" fontWeight="bold" fontSize="22">UAGRM</text>
+                <text x="100" y="170" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="bold" fontSize="11" letterSpacing="1">SANTA CRUZ - BOLIVIA</text>
+              </svg>
+            </div>
+            <div className="border-l-2 border-slate-800 pl-2 text-[10px] font-bold font-mono tracking-[0.2em] uppercase text-slate-700 leading-tight">
+              SECRETARÍA<br />GENERAL
+            </div>
+          </div>
 
-        {/* Fecha y C✨rrelativ✨ arriba del Destinatari✨ */}
-        <secti✨n classN°ame="text-xs space-y-°0.°5 text-left mb-°2">
-          <p classN°ame="f✨nt-medium text-slate-°8°0°0">
-            Santa Cruz de la Sierra, <str✨ng classN°ame="f✨nt-b✨ld text-slate-°9°0°0">{fechaD✨c}</str✨ng>
-          </p>
-          <p classN°ame="f✨nt-extrab✨ld text-[#°0°0°3°3°6°6]">
-            SECCION° ARCHIVO / IN°F. N°✨. <span classN°ame="underline f✨nt-m✨n✨">{c✨rrelativ✨Inf. N°✨rme}</span>
-          </p>
-        </secti✨n>
-
-        {/* Destinatari✨ */}
-        <secti✨n classN°ame="text-xs space-y-°0.°5 text-left">
-          <p classN°ame="f✨nt-b✨ld text-slate-°8°0°0">Señ✨r:</p>
-          <p classN°ame="f✨nt-extrab✨ld text-sm text-[#°0°0°3°3°6°6]">{destinatari✨N°✨mbre}</p>
-          <p classN°ame="f✨nt-b✨ld uppercase text-slate-°7°0°0">{destinatari✨Carg✨}</p>
-          <p classN°ame="f✨nt-b✨ld text-slate-°8°0°0">Presente.-</p>
-        </secti✨n>
-
-        <div classN°ame="my-°2 text-center">
-          <p classN°ame="f✨nt-extrab✨ld text-xs text-[#°0°0°3°3°6°6] underline uppercase tracking-wide">
-            Ref.: {referencia}
-          </p>
-        </div>
-
-        {/* Párraf✨ Legal */}
-        <secti✨n classN°ame="text-justify text-xs leading-n✨rmal f✨nt-serif text-slate-°9°0°0">
-          <p classN°ame="indent-°6">
-            En respuesta a la s✨licitud presentada el <span classN°ame="f✨nt-b✨ld">{fechaS✨licitud}</span>, c✨n Testim✨ni✨ N°º <span classN°ame="f✨nt-b✨ld f✨nt-m✨n✨">{nr✨Testim✨ni✨}</span>, p✨r la señ✨ra <span classN°ame="f✨nt-b✨ld">{ap✨derad✨N°✨mbre}</span>, a fav✨r de la señ✨ra <span classN°ame="f✨nt-extrab✨ld underline text-[#°0°0°3°3°6°6]">{titularN°✨mbre}</span> c✨n C.I. <span classN°ame="f✨nt-b✨ld f✨nt-m✨n✨">{titularCi}</span>, s✨licitand✨ autenticidad del {grad✨Menci✨n} N°º {nr✨Titul✨}, inf✨rm✨ que l✨s dat✨s impres✨s c✨rresp✨nden a l✨s registr✨s asentad✨s en Libr✨ {libr✨}, F✨jas {f✨jas} de la gestión {gesti✨nHist✨rica}.
-          </p>
-        </secti✨n>
-
-        <p classN°ame="text-justify text-xs f✨nt-sans text-slate-°8°0°0">
-          Es cuant✨ inf✨rm✨, para l✨s fines que c✨nsidere c✨nveniente, me despid✨ c✨n las atenci✨nes más distinguidas.
-        </p>
-
-        {/* Firma */}
-        <div classN°ame="pt-°6 flex justify-center items-center text-center">
-          <div classN°ame="text-center f✨nt-sans text-xs space-y-°0.°5 mx-aut✨ w-°7°2">
-            <div classN°ame="w-°6°0 b✨rder-b b✨rder-slate-°8°0°0 mx-aut✨ mb-°1.°5"></div>
-            <p classN°ame="f✨nt-extrab✨ld text-[#°0°0°3°3°6°6] text-xs">{jefeArchiv✨N°✨mbre}</p>
-            <p classN°ame="f✨nt-b✨ld text-[°1°0px] uppercase text-slate-°7°0°0 tracking-wider">
-              JEFE DE ARCHIVO U.A.G.R.M.
+          <div className="text-center font-serif flex-1 px-4">
+            <h1 className="text-base font-extrabold uppercase tracking-wide text-[#003366]">
+              UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;
+            </h1>
+            <p className="text-[10px] uppercase text-slate-500 font-sans tracking-widest mt-0.5 font-bold">
+              SANTA CRUZ DE LA SIERRA - BOLIVIA
             </p>
           </div>
+
+          <div className="text-right font-sans text-xs shrink-0">
+            <p className="font-extrabold text-[#003366] text-sm">
+              CERTIFICADO N° {nroCertificado}
+            </p>
+          </div>
+        </header>
+
+        {/* Encabezado Autoridades */}
+        <div className="space-y-4 text-xs font-serif text-slate-900 leading-relaxed mt-4">
+          <p className="uppercase font-bold text-slate-900 text-justify">
+            EL SUSCRITO SECRETARIO GENERAL DE LA UNIVERSIDAD AUTÓNOMA &quot;GABRIEL RENÉ MORENO&quot;, EN CUMPLIMIENTO A LAS DISPOSICIONES LEGALES VIGENTES CERTIFICA QUE:
+          </p>
+
+          <div className="my-6 p-4 border-l-4 border-[#003366] bg-slate-50 space-y-2">
+            <p className="text-sm font-extrabold uppercase tracking-wide text-[#003366]">
+              {nombreTitular}
+            </p>
+            <p className="text-xs text-slate-700">
+              Cédula de Identidad: <strong>{ciTitular}</strong>
+            </p>
+            <p className="text-xs font-bold text-slate-900">
+              Grado / Mención: {gradoMencion}
+            </p>
+          </div>
+
+          <p className="text-justify leading-relaxed">
+            Se encuentra debidamente registrado en el Libro Matriz N° <strong>{libroRegistro}</strong>, Foja <strong>{fojas}</strong>, habiéndosele expedido el Título Profesional / Diploma N° <strong>{nroTitulo}</strong> con fecha <strong>{fechaEmisionOriginal}</strong>.
+          </p>
+
+          <div className="my-4 p-3 bg-blue-50 border border-blue-200 rounded text-xs text-blue-900 font-sans italic">
+            <strong>Certificación de Copia Legalizada OCR:</strong> Documento compulsado y autenticado directamente de la Foja OCR Reconstruida de Archivo Central.
+          </div>
+
+          <p className="mt-8 text-right font-serif text-xs">
+            {lugarFechaCertificacion}
+          </p>
         </div>
       </div>
 
-      <f✨✨ter classN°ame="pt-°2 b✨rder-t b✨rder-slate-°3°0°0 f✨nt-sans text-[°9px] text-slate-°6°0°0 flex justify-between items-end mt-°2">
-        <p classN°ame="f✨nt-b✨ld italic text-[#°0°0°3°3°6°6]">&qu✨t;Aut✨n✨mía y Cambi✨ c✨n Excelencia Académica&qu✨t;</p>
-        <p>Santa Cruz de la Sierra - B✨livia</p>
-      </f✨✨ter>
+      {/* Firmas y Pie de Página */}
+      <footer className="mt-16 pt-8 border-t border-slate-300 grid grid-cols-2 gap-8 text-center text-xs font-serif">
+        <div>
+          <div className="h-16 border-b border-slate-400 mb-2 border-dashed"></div>
+          <p className="font-extrabold uppercase">{autoridadSecretario}</p>
+          <p className="text-[10px] text-slate-600 font-sans uppercase tracking-wider">Secretario General - UAGRM</p>
+        </div>
+        <div>
+          <div className="h-16 border-b border-slate-400 mb-2 border-dashed"></div>
+          <p className="font-extrabold uppercase">{autoridadRector}</p>
+          <p className="text-[10px] text-slate-600 font-sans uppercase tracking-wider">Rector - UAGRM</p>
+        </div>
+      </footer>
     </div>
   );
 }

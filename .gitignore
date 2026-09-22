@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Carpeta aislada para referencia de desarrolladores
+codigo_desarrolladores_logro/
