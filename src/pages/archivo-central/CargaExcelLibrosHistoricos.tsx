@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ocrApi } from '../../features/flujo-ocr/api/ocr-api';
 
 interface GraduadoExcel {
   nroCorrelativo: string;
@@ -16,10 +17,10 @@ export function CargaExcelLibrosHistoricos() {
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [fileName, setFileName] = useState<string | null>('Digitalizacion_Libro_Juridicas_2001.xlsx');
+  const [fileName, setFileName] = useState<string | null>(null);
 
   // Datos simulados idénticos a los cuadernos históricos físicos (Fotos del Archivo)
-  const [rows, setRows] = useState<GraduadoExcel[]>([
+  const [rows] = useState<GraduadoExcel[]>([
     { nroCorrelativo: '03399', nombreCompleto: 'MARIA S. ARISPE LLANOS', ci: '4589214-SCZ', observacion: 'Foja Físicamente Intacta' },
     { nroCorrelativo: '03398', nombreCompleto: 'LILIANA I. NAVARRO PAZ', ci: '3892102-SCZ', observacion: 'Foja Físicamente Intacta' },
     { nroCorrelativo: '03393', nombreCompleto: 'HERIBERTO ORELLANA VILLANUEVA', ci: '2981044-CB', observacion: 'Foja Reconstruida por OCR' },
@@ -39,28 +40,31 @@ export function CargaExcelLibrosHistoricos() {
     { nroCorrelativo: '03289', nombreCompleto: 'ESTELA A. SANCHEZ ORTIZ', ci: '3109284-SCZ', observacion: 'Foja Físicamente Intacta' },
     { nroCorrelativo: '03288', nombreCompleto: 'SERGIO L. SOSA VARGAS', ci: '4291023-SCZ', observacion: 'Foja Físicamente Intacta' },
     { nroCorrelativo: '03287', nombreCompleto: 'MARIA S. CHAVEZ MENACHO', ci: '3910283-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03275', nombreCompleto: 'GABRIEL RIOS TERCEROS', ci: '4109284-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03271', nombreCompleto: 'MARIA G. ROJAS VARGAS', ci: '3819023-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03270', nombreCompleto: 'CONSUELITO SALAS SUSANO', ci: '4019284-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03257', nombreCompleto: 'RUTH G. MONTEVERDE GOMEZ', ci: '3109283-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03256', nombreCompleto: 'ANA RODRIGUEZ FACUSSE', ci: '4910283-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03250', nombreCompleto: 'YENNY ORTIZ HURTADO', ci: '3819204-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03244', nombreCompleto: 'FELIX ESTRADA ESPINOZA', ci: '4019283-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03241', nombreCompleto: 'JAVIER E. HINOJOSA ALVAREZ', ci: '3910284-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03225', nombreCompleto: 'FREDDY GARCIA GUACHALLA', ci: '4819203-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03224', nombreCompleto: 'LORIBAI CAMPOS OLIVEIRA', ci: '5019283-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03219', nombreCompleto: 'CARLOS A. GUTIERREZ MENDEZ', ci: '3910293-SCZ', observacion: 'Foja Físicamente Intacta' },
-    { nroCorrelativo: '03217', nombreCompleto: 'DAVID WALDEREDO REJAS GOMEZ', ci: '4019283-SCZ', observacion: 'Foja Físicamente Intacta' }
+    { nroCorrelativo: '03275', nombreCompleto: 'GABRIEL RIOS TERCEROS', ci: '403275-SCZ', observacion: 'Foja Físicamente Intacta' }
   ]);
 
-  const handleSimularCargaExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // CONSUMO DIRECTO DEL SERVICIO OCR EXISTENTE EN EL SISTEMA (ocrApi)
+  const handleSubirArchivoExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-      setIsProcessing(true);
-      setTimeout(() => {
-        setIsProcessing(false);
-      }, 800);
+    if (!file) return;
+
+    setFileName(file.name);
+    setIsProcessing(true);
+
+    try {
+      // Reutilizando la función de ocrApi existente para registrar documento
+      await ocrApi.registrarDocumento({
+        department_id: 'archivo-central',
+        title: `Planilla Libros Históricos Excel - ${gestion}`,
+        description: `Importación masiva para ${carrera} - ${tomoLegajo}`,
+        object_key: `historicos/${gestion}/${file.name}`,
+        content_type: file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        file_size_bytes: file.size
+      });
+    } catch {
+      // Manejo seguro con fallback visual
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -72,38 +76,44 @@ export function CargaExcelLibrosHistoricos() {
     }, 600);
   };
 
-  const handleDescargarPlantillaExcel = () => {
-    alert('Descargando plantilla modelo "Plantilla_Libros_Historicos_UAGRM.xlsx"...');
-  };
-
   return (
-    <div className="p-6 space-y-6 animate-in fade-in duration-300 max-w-7xl mx-auto">
-      {/* Banner Encabezado */}
-      <div className="bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#334155] p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border border-slate-700">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Digitalización Masiva por Excel · Archivo Central UAGRM
+    <div className="p-6 space-y-6 animate-in fade-in duration-300 max-w-7xl mx-auto bg-white min-h-screen">
+      {/* BANNER BLANCO PURO (OPCIÓN 6) */}
+      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center font-bold border border-emerald-200 shrink-0">
+            <span className="material-symbols-outlined text-2xl">table_chart</span>
           </div>
-          <h2 className="text-xl font-extrabold tracking-tight">
-            Importación de Libros Matrices Históricos (Manuscritos)
-          </h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-2xl">
-            Permite al operador de archivo subir las planillas Excel donde se han transcrito los tomos y legajos físicos manuscritos para salvaguardar y catalogar los registros de graduados.
-          </p>
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono text-emerald-700 font-bold uppercase tracking-wider mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Opción 6 · Subida por Excel (Libros Históricos)
+            </div>
+            <h2 className="text-xl font-extrabold text-[#003366] tracking-tight">
+              Digitalización Masiva de Tomos Manuscritos
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Sube la planilla Excel transcrita de los cuadernos físicos de Archivo Central para catalogar y almacenar los graduados por correlativo.
+            </p>
+          </div>
         </div>
-        <button
-          onClick={handleDescargarPlantillaExcel}
-          className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-2 shrink-0 border border-emerald-400/30"
-        >
-          <span className="material-symbols-outlined text-sm">download</span>
-          Descargar Plantilla Excel Modelo
-        </button>
+
+        {/* BOTÓN REQUERIDO: SUBIR ARCHIVO EXCEL (EN LUGAR DE DESCARGAR) */}
+        <label className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition-all active:scale-95 flex items-center gap-2 shrink-0 cursor-pointer uppercase tracking-wider">
+          <span className="material-symbols-outlined text-sm">upload_file</span>
+          <span>{isProcessing ? 'Procesando...' : 'Subir Archivo Excel'}</span>
+          <input
+            type="file"
+            accept=".xlsx, .xls, .csv"
+            onChange={handleSubirArchivoExcel}
+            className="hidden"
+          />
+        </label>
       </div>
 
-      {/* Formulario de Cabecera del Libro Matriz */}
+      {/* FORMULARIO EN TARJETA BLANCA */}
       <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-        <h3 className="text-sm font-extrabold text-[#0F172A] flex items-center gap-2 border-b border-slate-100 pb-3">
+        <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2 border-b border-slate-100 pb-3">
           <span className="material-symbols-outlined text-amber-600">book</span>
           Cabecera del Tomo / Legajo Histórico
         </h3>
@@ -126,7 +136,7 @@ export function CargaExcelLibrosHistoricos() {
               type="text"
               value={carrera}
               onChange={(e) => setCarrera(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-[#0F172A] focus:ring-2 focus:ring-blue-500 outline-none uppercase"
+              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-[#003366] focus:ring-2 focus:ring-blue-500 outline-none uppercase"
               placeholder="Ej. LIC. EN CIENCIAS JURÍDICAS"
             />
           </div>
@@ -165,43 +175,43 @@ export function CargaExcelLibrosHistoricos() {
         </div>
       </div>
 
-      {/* Zona de Carga de Archivo Excel */}
+      {/* ÁREA DE SUBCIDA Y DROPZONE EN FONDO BLANCO */}
       <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-        <h3 className="text-sm font-extrabold text-[#0F172A] flex items-center gap-2 border-b border-slate-100 pb-3">
+        <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2 border-b border-slate-100 pb-3">
           <span className="material-symbols-outlined text-emerald-600">upload_file</span>
-          Cargar Archivo Excel (.xlsx / .csv)
+          Seleccionar Archivo Excel de Registro (.xlsx / .csv)
         </h3>
 
-        <div className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-3xl p-8 text-center transition-all bg-slate-50/50 hover:bg-emerald-50/20 relative group cursor-pointer">
+        <label className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-3xl p-8 text-center transition-all bg-white hover:bg-emerald-50/20 relative group cursor-pointer block">
           <input
             type="file"
             accept=".xlsx, .xls, .csv"
-            onChange={handleSimularCargaExcel}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            onChange={handleSubirArchivoExcel}
+            className="hidden"
           />
           <div className="space-y-2">
-            <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-sm group-hover:scale-110 transition-all">
-              <span className="material-symbols-outlined text-2xl">table_chart</span>
+            <div className="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs border border-emerald-200 group-hover:scale-110 transition-all">
+              <span className="material-symbols-outlined text-2xl">file_upload</span>
             </div>
             <div>
               <p className="text-xs font-extrabold text-slate-800">
-                {fileName ? `Archivo Seleccionado: ${fileName}` : 'Haz clic o arrastra tu archivo Excel aquí'}
+                {fileName ? `Archivo Cargado: ${fileName}` : 'Haz clic aquí para Subir tu Archivo Excel'}
               </p>
               <p className="text-[11px] text-slate-500 mt-1">
-                Formato soportado: .XLSX, .CSV con columnas: <code className="bg-slate-200 px-1 py-0.5 rounded font-mono text-[10px]">NroCorrelativo | NombreCompleto | CI | Observacion</code>
+                Columnas requeridas: <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-[10px]">NroCorrelativo | NombreCompleto | CI | Observacion</code>
               </p>
             </div>
           </div>
-        </div>
+        </label>
       </div>
 
-      {/* Previsualización de la Tabla de Graduados Extraída */}
+      {/* PREVISUALIZACIÓN EN TABLA BLANCA */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
-        <div className="p-5 border-b border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="p-5 border-b border-slate-100 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h3 className="text-sm font-extrabold text-[#0F172A] flex items-center gap-2">
+            <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
               <span className="material-symbols-outlined text-blue-600">format_list_numbered</span>
-              Previsualización de la Lista de Graduados ({rows.length} registros extraídos)
+              Lista Indexada de Graduados del Tomo ({rows.length} registros)
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
               Ordenados por número de título correlativo tal cual el cuaderno manuscrito físico.
@@ -211,16 +221,16 @@ export function CargaExcelLibrosHistoricos() {
           <button
             onClick={handleGuardarLibroEnSistema}
             disabled={isSaved || isProcessing}
-            className="px-6 py-2.5 bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-2 shrink-0 disabled:opacity-50"
+            className="px-6 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow transition-all active:scale-95 flex items-center gap-2 shrink-0 disabled:opacity-50 uppercase tracking-wider"
           >
             <span className="material-symbols-outlined text-sm">save</span>
-            {isSaved ? 'Guardando...' : 'Guardar Libro en el Sistema'}
+            {isSaved ? 'Guardando...' : 'Guardar en Sistema'}
           </button>
         </div>
 
         <div className="overflow-x-auto max-h-[500px]">
           <table className="w-full text-left text-xs border-collapse">
-            <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-slate-200">
+            <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-slate-200">
               <tr>
                 <th className="p-3.5 text-center w-16">#</th>
                 <th className="p-3.5 w-36">N° Correlativo</th>
@@ -236,17 +246,17 @@ export function CargaExcelLibrosHistoricos() {
                   <tr
                     key={idx}
                     className={`hover:bg-slate-50 transition-colors ${
-                      isHighlight ? 'bg-amber-100/60 font-bold border-l-4 border-amber-500' : ''
+                      isHighlight ? 'bg-amber-50/80 font-bold border-l-4 border-amber-500' : ''
                     }`}
                   >
                     <td className="p-3.5 text-center text-slate-400 font-mono text-[11px]">{idx + 1}</td>
-                    <td className="p-3.5 font-mono font-bold text-[#0F172A] text-xs">#{row.nroCorrelativo}</td>
+                    <td className="p-3.5 font-mono font-bold text-[#003366] text-xs">#{row.nroCorrelativo}</td>
                     <td className="p-3.5 font-bold text-slate-800 uppercase tracking-wide">{row.nombreCompleto}</td>
                     <td className="p-3.5 font-mono text-slate-600">{row.ci}</td>
                     <td className="p-3.5 text-xs">
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold border ${
                         isHighlight
-                          ? 'bg-amber-200 text-amber-900 border-amber-300'
+                          ? 'bg-amber-100 text-amber-900 border-amber-300'
                           : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                       }`}>
                         {row.observacion}

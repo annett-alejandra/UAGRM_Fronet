@@ -18,8 +18,8 @@ interface TablaFila {
 export function CertificadoAutenticidadPage() {
   // Configuración de Papel y Modos
   const [paperSize] = useState<'carta' | 'oficio' | 'a4'>('carta');
-  const [showEditor, setShowEditor] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'general' | 'titular' | 'tabular' | 'firmas'>('general');
+  const [showWordEditor, setShowWordEditor] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<'general' | 'titular' | 'tabular' | 'opciones'>('general');
   const [zoomLevel, setZoomLevel] = useState<number>(100);
 
   const [isSaving, setIsSaving] = useState(false);
@@ -47,15 +47,7 @@ export function CertificadoAutenticidadPage() {
   const [incluirAclaratoriaHistorica, setIncluirAclaratoriaHistorica] = useState(true);
   const [gestionHistorica, setGestionHistorica] = useState('1998');
   const [incluirSupletorio, setIncluirSupletorio] = useState(true);
-  
-  // Nombres de Autoridades y Párrafo Creativo de Firma Editable
   const [jefeArchivoNombre, setJefeArchivoNombre] = useState('Moisés Cossio López');
-  const [jefeArchivoCargo, setJefeArchivoCargo] = useState('JEFE DE SECCIÓN ARCHIVO CENTRAL');
-  const [secretarioNombre, setSecretarioNombre] = useState('MSc. Edy Acosta Claros');
-  const [secretarioCargo, setSecretarioCargo] = useState('SECRETARIO GENERAL');
-  const [textoFirmaPersonalizable, setTextoFirmaPersonalizable] = useState(
-    'Es cuanto informo a su autoridad para los fines legales convenientes. Documento verificado físicamente contra Libro Matriz N° 19/98 y Folio N° 115/98.'
-  );
 
   // Filas de la Tabla Tabular de 9 Columnas
   const [tableRows, setTableRows] = useState<TablaFila[]>([
@@ -127,372 +119,104 @@ export function CertificadoAutenticidadPage() {
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
-      alert(`Informe de Autenticidad INF N° ${correlativoInforme} guardado correctamente en la Base de Datos.`);
+      alert('Informe de Archivo Central (Tipo 1) guardado exitosamente.');
     }, 800);
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#F8FAFC] overflow-hidden">
-      {/* 1. ENCABEZADO PRINCIPAL ELEVADO (PROMOVIDO ARRIBA SIN EL BANNER FEO REDUNDANTE) */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shrink-0 shadow-sm z-20">
+    <div className="h-screen bg-slate-100 font-sans text-slate-900 flex flex-col overflow-hidden">
+      
+      {/* 1. BARRA SUPERIOR BLANCA DE HERRAMIENTAS (SIN FONDO NEGRO) */}
+      <header className="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-slate-900 shadow-2xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#C51D24] text-white rounded-2xl flex items-center justify-center shadow-md font-bold shrink-0">
-            <span className="material-symbols-outlined text-xl">description</span>
+          <div className="p-2 bg-[#C51D24] text-white rounded-xl shadow-xs">
+            <span className="material-symbols-outlined text-lg">description</span>
           </div>
           <div>
-            <h1 className="text-base font-extrabold text-[#0F172A] flex items-center gap-2">
-              <span>Emisión de Informe de Certificación de Autenticidad (Tipo 1)</span>
-              <span className="px-3 py-0.5 bg-blue-50 border border-blue-200 text-[#003366] text-xs font-mono font-bold rounded-lg">
-                INF N° {correlativoInforme}
+            <div className="flex items-center gap-2">
+              <h1 className="text-sm font-extrabold tracking-wide font-heading text-[#003366]">
+                Emisión de Informe de Certificación de Autenticidad (Tipo 1)
+              </h1>
+              <span className="px-2 py-0.5 bg-blue-50 text-[#003366] font-mono text-[10px] font-bold rounded border border-blue-200">
+                INF Nº {correlativoInforme}
               </span>
-            </h1>
-            <p className="text-xs text-slate-500 font-sans mt-0.5">
-              Archivo Central UAGRM · Formato Oficial Membretado con Margen 4cm Legajado
+            </div>
+            <p className="text-[11px] text-slate-500 font-medium">
+              Archivo Central UAGRM • Margen 4cm Legajado
             </p>
           </div>
         </div>
 
-        {/* Acciones de la Barra Superior */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200 text-xs font-bold text-slate-700">
+        {/* Acciones de Cabecera */}
+        <div className="flex items-center gap-3">
+          {/* Buscador de Título */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Buscar Nº Título (Ej: 014863)..."
+              value={searchDiploma}
+              onChange={(e) => setSearchDiploma(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
+              className="px-3.5 py-1.5 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs w-56 text-slate-900 focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none transition-all placeholder:text-slate-400"
+            />
+            <span className="material-symbols-outlined absolute left-2.5 top-2 text-slate-400 text-sm">search</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
+            disabled={isSearching}
+            className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+          >
+            <span className="material-symbols-outlined text-sm">find_in_page</span>
+            {isSearching ? 'Buscando...' : 'Autocompletar'}
+          </button>
+
+          {/* Controles de Zoom */}
+          <div className="flex items-center bg-slate-100 border border-slate-300 rounded-xl p-0.5 text-xs text-slate-700">
             <button
-              onClick={() => setZoomLevel(prev => Math.max(prev - 10, 50))}
-              className="px-2 py-1 hover:bg-white rounded-lg transition-all"
+              type="button"
+              onClick={() => setZoomLevel(prev => Math.max(70, prev - 10))}
+              className="px-2 py-1 hover:bg-slate-200 rounded-lg cursor-pointer font-bold"
+              title="Disminuir Zoom"
             >
               -
             </button>
-            <span className="px-3 font-mono text-[11px]">{zoomLevel}%</span>
+            <span className="px-2 font-mono font-bold text-[11px] text-[#003366]">{zoomLevel}%</span>
             <button
-              onClick={() => setZoomLevel(prev => Math.min(prev + 10, 150))}
-              className="px-2 py-1 hover:bg-white rounded-lg transition-all"
+              type="button"
+              onClick={() => setZoomLevel(prev => Math.min(130, prev + 10))}
+              className="px-2 py-1 hover:bg-slate-200 rounded-lg cursor-pointer font-bold"
+              title="Aumentar Zoom"
             >
               +
             </button>
           </div>
 
+          {/* Botón para alternar Panel */}
           <button
-            onClick={() => setShowEditor(!showEditor)}
-            className={`px-3 py-2 text-xs font-bold rounded-xl border transition-all flex items-center gap-1.5 ${
-              showEditor
-                ? 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
-                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+            type="button"
+            onClick={() => setShowWordEditor(!showWordEditor)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              showWordEditor 
+                ? 'bg-amber-100 text-amber-900 border border-amber-300' 
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300'
             }`}
           >
-            <span className="material-symbols-outlined text-sm">
-              {showEditor ? 'expand_less' : 'edit_note'}
-            </span>
-            {showEditor ? 'Ocultar Panel Edición' : 'Editar Datos'}
-          </button>
-
-          <button
-            onClick={handleSaveDocument}
-            disabled={isSaving}
-            className="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5 uppercase"
-          >
-            <span className="material-symbols-outlined text-sm">save</span>
-            {isSaving ? 'Guardando...' : 'Guardar'}
-          </button>
-
-          <button
-            onClick={() => window.print()}
-            className="px-4 py-2 bg-[#C51D24] hover:bg-[#A0161C] text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5 uppercase"
-          >
-            <span className="material-symbols-outlined text-sm">print</span>
-            Imprimir PDF
+            <span className="material-symbols-outlined text-sm">edit_note</span>
+            {showWordEditor ? 'Ocultar Edición' : 'Abrir Edición'}
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* 2. BUSCADOR HÉROE PROMINENTE GRANDOTE Y CENTRADO */}
-      <div className="bg-slate-100/90 border-b border-slate-200 px-6 py-4 flex justify-center items-center shrink-0 z-10 print:hidden">
-        <div className="w-full max-w-3xl bg-white p-2.5 rounded-2xl border-2 border-blue-200 shadow-md flex items-center gap-2">
-          <span className="material-symbols-outlined text-blue-600 text-xl pl-2">search</span>
-          <input
-            type="text"
-            value={searchDiploma}
-            onChange={(e) => setSearchDiploma(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleConsultarExpediente(searchDiploma)}
-            placeholder="BUSCADOR HÉROE: Ingrese N° de Diploma (Ej. 014863) o Cédula de Identidad..."
-            className="w-full text-sm font-semibold text-[#0F172A] placeholder-slate-400 outline-none bg-transparent"
-          />
-          <button
-            onClick={() => handleConsultarExpediente(searchDiploma || '014863')}
-            disabled={isSearching}
-            className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-extrabold rounded-xl transition-all shadow shrink-0 flex items-center gap-1.5 uppercase"
-          >
-            <span className="material-symbols-outlined text-sm">manage_search</span>
-            {isSearching ? 'Buscando...' : 'Buscar e Importar'}
-          </button>
-          <button
-            onClick={() => handleConsultarExpediente('014863')}
-            className="px-3 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold rounded-xl transition-all shadow shrink-0 flex items-center gap-1"
-            title="Autocompletar datos modelo para prueba"
-          >
-            <span className="material-symbols-outlined text-sm">auto_fix_high</span>
-            Autocompletar
-          </button>
-        </div>
-      </div>
-
-      {/* 3. ÁREA DE TRABAJO PRINCIPAL (FLUIDA, NO APACHURRADA) */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* PANEL DESPLEGABLE DE EDICIÓN (DESAPACHURRADO Y FLUIDO) */}
-        {showEditor && (
-          <aside className="w-[480px] bg-white border-r border-slate-200 flex flex-col shrink-0 overflow-hidden shadow-lg animate-in slide-in-from-left duration-300 print:hidden z-10">
-            {/* Pestañas de Navegación del Panel */}
-            <div className="bg-slate-100 p-2 flex border-b border-slate-200 text-xs font-bold gap-1 shrink-0">
-              <button
-                onClick={() => setActiveTab('general')}
-                className={`flex-1 py-2 px-2 rounded-lg transition-all text-center ${
-                  activeTab === 'general' ? 'bg-white text-[#003366] shadow-sm font-extrabold' : 'text-slate-600 hover:bg-white/50'
-                }`}
-              >
-                Encabezado
-              </button>
-              <button
-                onClick={() => setActiveTab('titular')}
-                className={`flex-1 py-2 px-2 rounded-lg transition-all text-center ${
-                  activeTab === 'titular' ? 'bg-white text-[#003366] shadow-sm font-extrabold' : 'text-slate-600 hover:bg-white/50'
-                }`}
-              >
-                Titular
-              </button>
-              <button
-                onClick={() => setActiveTab('tabular')}
-                className={`flex-1 py-2 px-2 rounded-lg transition-all text-center ${
-                  activeTab === 'tabular' ? 'bg-white text-[#003366] shadow-sm font-extrabold' : 'text-slate-600 hover:bg-white/50'
-                }`}
-              >
-                Tabla (9 Col)
-              </button>
-              <button
-                onClick={() => setActiveTab('firmas')}
-                className={`flex-1 py-2 px-2 rounded-lg transition-all text-center ${
-                  activeTab === 'firmas' ? 'bg-white text-[#003366] shadow-sm font-extrabold' : 'text-slate-600 hover:bg-white/50'
-                }`}
-              >
-                Firmas y Texto
-              </button>
-            </div>
-
-            {/* Contenido de Pestañas */}
-            <div className="flex-1 overflow-auto p-5 space-y-4 text-xs font-sans">
-              {activeTab === 'general' && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">N° Informe Correlativo:</label>
-                    <input
-                      type="text"
-                      value={correlativoInforme}
-                      onChange={(e) => setCorrelativoInforme(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Fecha de Emisión del Informe:</label>
-                    <input
-                      type="text"
-                      value={fechaDoc}
-                      onChange={(e) => setFechaDoc(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Nombre Destinatario:</label>
-                    <input
-                      type="text"
-                      value={destinatarioNombre}
-                      onChange={(e) => setDestinatarioNombre(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-[#0F172A] focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Cargo Destinatario:</label>
-                    <input
-                      type="text"
-                      value={destinatarioCargo}
-                      onChange={(e) => setDestinatarioCargo(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs uppercase focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Referencia del Informe:</label>
-                    <input
-                      type="text"
-                      value={referencia}
-                      onChange={(e) => setReferencia(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold uppercase focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'titular' && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Nombre del Titular:</label>
-                    <input
-                      type="text"
-                      value={titularNombre}
-                      onChange={(e) => setTitularNombre(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold text-xs uppercase focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Cédula de Identidad:</label>
-                    <input
-                      type="text"
-                      value={titularCi}
-                      onChange={(e) => setTitularCi(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Mención / Diploma:</label>
-                    <input
-                      type="text"
-                      value={gradoMencion}
-                      onChange={(e) => setGradoMencion(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">N° Testimonio Notarial:</label>
-                    <input
-                      type="text"
-                      value={nroTestimonio}
-                      onChange={(e) => setNroTestimonio(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Nombre del Apoderado:</label>
-                    <input
-                      type="text"
-                      value={apoderadoNombre}
-                      onChange={(e) => setApoderadoNombre(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'tabular' && (
-                <div className="space-y-4">
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    Edición directa de la Fila del Diploma (Tabla Tabular oficial de 9 columnas):
-                  </p>
-                  {tableRows.map((row) => (
-                    <div key={row.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500">N° Diploma:</label>
-                        <input
-                          type="text"
-                          value={row.nroDiploma}
-                          onChange={(e) => handleUpdateRow(row.id, 'nroDiploma', e.target.value)}
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-xs font-mono font-bold"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500">Nombre Titular:</label>
-                        <input
-                          type="text"
-                          value={row.nombreTitular}
-                          onChange={(e) => handleUpdateRow(row.id, 'nombreTitular', e.target.value)}
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-xs font-bold uppercase"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-500">Libro:</label>
-                          <input
-                            type="text"
-                            value={row.libro}
-                            onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
-                            className="w-full px-2 py-1 border border-slate-300 rounded text-xs font-mono"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-500">Fojas:</label>
-                          <input
-                            type="text"
-                            value={row.fojas}
-                            onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
-                            className="w-full px-2 py-1 border border-slate-300 rounded text-xs font-mono"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500">Rector que firmó:</label>
-                        <input
-                          type="text"
-                          value={row.nombreRector}
-                          onChange={(e) => handleUpdateRow(row.id, 'nombreRector', e.target.value)}
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-xs font-bold uppercase"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {activeTab === 'firmas' && (
-                <div className="space-y-4">
-                  <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
-                    <h4 className="text-xs font-extrabold text-blue-900 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm">history_edu</span>
-                      Firma y Texto Libre Personalizable
-                    </h4>
-                    <p className="text-[11px] text-slate-600">
-                      Escriba aquí el texto personalizado u observaciones oficiales de firma que se guardarán en el sistema:
-                    </p>
-                    <textarea
-                      value={textoFirmaPersonalizable}
-                      onChange={(e) => setTextoFirmaPersonalizable(e.target.value)}
-                      rows={4}
-                      className="w-full p-2.5 border border-blue-300 rounded-xl text-xs font-serif text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none leading-relaxed"
-                      placeholder="Escriba el párrafo personalizado de cierre y firma..."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Nombre del Jefe de Archivo:</label>
-                    <input
-                      type="text"
-                      value={jefeArchivoNombre}
-                      onChange={(e) => setJefeArchivoNombre(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Cargo Jefe de Archivo:</label>
-                    <input
-                      type="text"
-                      value={jefeArchivoCargo}
-                      onChange={(e) => setJefeArchivoCargo(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs uppercase focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-slate-700 mb-1">Nombre Secretario General:</label>
-                    <input
-                      type="text"
-                      value={secretarioNombre}
-                      onChange={(e) => setSecretarioNombre(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase"
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </aside>
-        )}
-
-        {/* LIENZO DE PREVISUALIZACIÓN DEL DOCUMENTO MEMBRETADO (LIBRE Y AMPLIO) */}
-        <main className="flex-1 overflow-auto p-8 bg-slate-200/70 flex justify-center items-start">
-          <div
-            className="transition-transform duration-200 origin-top shadow-2xl"
-            style={{ transform: `scale(${zoomLevel / 100})` }}
+      {/* 2. ÁREA PRINCIPAL CON FONDO CLARO (SIN FONDO NEGRO) */}
+      <div className="flex-1 flex overflow-hidden relative">
+        
+        {/* VISTA PREVIA HOJA OFICIAL MEMBRETADA (ÁREA CLARA SUAVE CON ZOOM Y SCROLL LIMPIO) */}
+        <div className="flex-1 bg-slate-200/70 p-8 overflow-auto flex justify-center items-start transition-all">
+          <div 
+            style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
+            className="transition-transform duration-200 my-2 shadow-xl rounded"
           >
             <InformeArchivoCentralTipo1
               correlativoInforme={correlativoInforme}
@@ -507,16 +231,321 @@ export function CertificadoAutenticidadPage() {
               titularCi={titularCi}
               gradoMencion={gradoMencion}
               nroTitulo={nroTitulo}
+              tableRows={tableRows}
               incluirAclaratoriaHistorica={incluirAclaratoriaHistorica}
               gestionHistorica={gestionHistorica}
               incluirSupletorio={incluirSupletorio}
               jefeArchivoNombre={jefeArchivoNombre}
-              tableRows={tableRows}
-              textoFirmaPersonalizable={textoFirmaPersonalizable}
             />
           </div>
-        </main>
+        </div>
+
+        {/* PANEL LATERAL DE EDICIÓN FLUIDO POR PESTAÑAS (BG WHITE) */}
+        {showWordEditor && (
+          <aside className="w-96 bg-white border-l border-slate-200 flex flex-col shrink-0 shadow-xl transition-all duration-300 print:hidden z-20">
+            
+            {/* Header del Panel Lateral */}
+            <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#C51D24] text-lg">tune</span>
+                <h2 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading">
+                  Panel de Edición Dinámico
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowWordEditor(false)}
+                className="text-slate-400 hover:text-slate-700 text-base font-bold cursor-pointer p-1 rounded hover:bg-slate-200 transition-colors"
+                title="Cerrar Panel"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Pestañas de Secciones */}
+            <div className="flex border-b border-slate-200 bg-slate-100/70 p-1 gap-1 text-[11px] font-bold">
+              {[
+                { id: 'general', label: 'Encabezado', icon: 'subject' },
+                { id: 'titular', label: 'Titular', icon: 'person' },
+                { id: 'tabular', label: 'Tabular', icon: 'table_chart' },
+                { id: 'opciones', label: 'Firmas', icon: 'history_edu' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`flex-1 py-1.5 px-2 rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                    activeTab === tab.id
+                      ? 'bg-white text-[#003366] shadow-2xs font-extrabold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-xs">{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Contenido de la Pestaña Activa con Scroll Limpio */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+              
+              {/* Pestaña 1: Encabezado & Asunto */}
+              {activeTab === 'general' && (
+                <div className="space-y-3 animate-in fade-in duration-200">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Nº Inf. Correlativo:
+                      </label>
+                      <input
+                        type="text"
+                        value={correlativoInforme}
+                        onChange={(e) => setCorrelativoInforme(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold text-[#003366] focus:ring-2 focus:ring-[#003366] outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Fecha Documento:
+                      </label>
+                      <input
+                        type="text"
+                        value={fechaDoc}
+                        onChange={(e) => setFechaDoc(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#003366] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Destinatario (Señor):
+                    </label>
+                    <input
+                      type="text"
+                      value={destinatarioNombre}
+                      onChange={(e) => setDestinatarioNombre(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 mb-1.5 focus:ring-2 focus:ring-[#003366] outline-none"
+                    />
+                    <input
+                      type="text"
+                      value={destinatarioCargo}
+                      onChange={(e) => setDestinatarioCargo(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-[11px] uppercase font-medium text-slate-700 focus:ring-2 focus:ring-[#003366] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Asunto / Referencia:
+                    </label>
+                    <input
+                      type="text"
+                      value={referencia}
+                      onChange={(e) => setReferencia(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-[#003366] focus:ring-2 focus:ring-[#003366] outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Pestaña 2: Solicitante & Titular */}
+              {activeTab === 'titular' && (
+                <div className="space-y-3 animate-in fade-in duration-200">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-bold block mb-1">Fecha Solicitud:</label>
+                      <input
+                        type="text"
+                        value={fechaSolicitud}
+                        onChange={(e) => setFechaSolicitud(e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-bold block mb-1">Nº Testimonio:</label>
+                      <input
+                        type="text"
+                        value={nroTestimonio}
+                        onChange={(e) => setNroTestimonio(e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-slate-500 font-bold block mb-1">Nombre Apoderado:</label>
+                    <input
+                      type="text"
+                      value={apoderadoNombre}
+                      onChange={(e) => setApoderadoNombre(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-slate-500 font-bold block mb-1">Nombre Titular:</label>
+                    <input
+                      type="text"
+                      value={titularNombre}
+                      onChange={(e) => setTitularNombre(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-extrabold text-xs text-[#003366]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-bold block mb-1">C.I. Titular:</label>
+                      <input
+                        type="text"
+                        value={titularCi}
+                        onChange={(e) => setTitularCi(e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-slate-500 font-bold block mb-1">Nº Diploma:</label>
+                      <input
+                        type="text"
+                        value={nroTitulo}
+                        onChange={(e) => setNroTitulo(e.target.value)}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono font-bold text-[#C51D24] text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Pestaña 3: Cuadro Tabular */}
+              {activeTab === 'tabular' && (
+                <div className="space-y-3 animate-in fade-in duration-200">
+                  {tableRows.map((row) => (
+                    <div key={row.id} className="p-3.5 bg-blue-50/50 rounded-xl space-y-3 border border-blue-100">
+                      <span className="text-xs font-bold text-[#003366] block">Valores del Registro Matriz:</span>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Rector:</label>
+                          <input
+                            type="text"
+                            value={row.nombreRector}
+                            onChange={(e) => handleUpdateRow(row.id, 'nombreRector', e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Diploma de:</label>
+                          <input
+                            type="text"
+                            value={row.diplomaDe}
+                            onChange={(e) => handleUpdateRow(row.id, 'diplomaDe', e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Fojas:</label>
+                          <input
+                            type="text"
+                            value={row.fojas}
+                            onChange={(e) => handleUpdateRow(row.id, 'fojas', e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Libro:</label>
+                          <input
+                            type="text"
+                            value={row.libro}
+                            onChange={(e) => handleUpdateRow(row.id, 'libro', e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-mono text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pestaña 4: Opciones de Párrafos Especiales y Firma */}
+              {activeTab === 'opciones' && (
+                <div className="space-y-3 animate-in fade-in duration-200">
+                  <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-3 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+                    <span>Párrafo Aclaratorio Histórico:</span>
+                    <input
+                      type="checkbox"
+                      checked={incluirAclaratoriaHistorica}
+                      onChange={(e) => setIncluirAclaratoriaHistorica(e.target.checked)}
+                      className="w-4 h-4 text-[#003366] rounded cursor-pointer"
+                    />
+                  </label>
+
+                  <label className="flex items-center justify-between text-xs font-semibold text-slate-800 cursor-pointer p-3 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+                    <span>Párrafo Supletorio:</span>
+                    <input
+                      type="checkbox"
+                      checked={incluirSupletorio}
+                      onChange={(e) => setIncluirSupletorio(e.target.checked)}
+                      className="w-4 h-4 text-[#003366] rounded cursor-pointer"
+                    />
+                  </label>
+
+                  <div className="pt-2">
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Jefe de Archivo (Firma Autorizada):
+                    </label>
+                    <input
+                      type="text"
+                      value={jefeArchivoNombre}
+                      onChange={(e) => setJefeArchivoNombre(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-[#003366]"
+                    />
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+          </aside>
+        )}
+
       </div>
+
+      {/* 3. BARRA INFERIOR FIJA BLANCA (SIN FONDO NEGRO) */}
+      <footer className="bg-white border-t border-slate-200 px-6 py-3 flex justify-between items-center shrink-0 z-30 print:hidden text-slate-800 shadow-lg">
+        <div className="flex items-center gap-3 text-xs">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span className="text-slate-600 font-medium">Documento Activo:</span>
+          <strong className="font-mono text-[#003366]">
+            INFORME ARCHIVO CENTRAL - TIPO 1 (INF Nº {correlativoInforme})
+          </strong>
+          <span className="text-slate-400">| Margen 4cm Legajado</span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleSaveDocument}
+            disabled={isSaving}
+            className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-base">save</span>
+            {isSaving ? 'Guardando...' : 'Guardar Documento'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="px-5 py-2 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-base">print</span>
+            Imprimir Hoja Única ({paperSize.toUpperCase()})
+          </button>
+        </div>
+      </footer>
+
     </div>
   );
 }

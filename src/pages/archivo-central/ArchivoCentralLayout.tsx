@@ -5,6 +5,7 @@ import { BandejaPendientesPage } from './BandejaPendientesPage';
 import { ReconstruccionExpedientePage } from './ReconstruccionExpedientePage';
 import { BusquedaExpedientesArchivoPage } from './BusquedaExpedientesArchivoPage';
 import { CargaExcelLibrosHistoricos } from './CargaExcelLibrosHistoricos';
+import { DashboardNotificacionesPage } from './DashboardNotificacionesPage';
 import { SubidaDocumentos } from '../../features/subida-documentos/SubidaDocumentos';
 
 export function ArchivoCentralLayout() {
@@ -20,6 +21,7 @@ export function ArchivoCentralLayout() {
             <Route path="reconstruccion" element={<ReconstruccionExpedientePage />} />
             <Route path="busqueda-expedientes" element={<BusquedaExpedientesArchivoPage />} />
             <Route path="subida-excel" element={<CargaExcelLibrosHistoricos />} />
+            <Route path="dashboard-notificaciones" element={<DashboardNotificacionesPage />} />
             <Route path="reconstruccion/:id" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos/:id" element={<ReconstruccionExpedientePage />} />
