@@ -1,3 +1,4 @@
+import { BookOpen, Search, FileCheck, Clock, AlertTriangle, CheckCircle2, Plus, Sparkles, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { OCRViewer } from '../../features/visor-ocr/ui/OCRViewer';
@@ -35,7 +36,7 @@ export function ReconstruccionExpedientePage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-xl font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
-                <span>📚</span> Reconstrucción y Validación de Legajos Históricos
+                <BookOpen className="w-6 h-6 text-[#003366] inline-block mr-1" /> Reconstrucción y Validación de Legajos Históricos
               </h1>
               <p className="text-[#64748B] text-xs mt-1">
                 Ingrese el número de expediente, C.I. o R.U. para cargar la vista previa del documento y su matriz de archivo
@@ -50,7 +51,7 @@ export function ReconstruccionExpedientePage() {
           {/* Buscador de Legajos */}
           <form onSubmit={handleSearchSubmit} className="mt-6 flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <span className="absolute left-3.5 top-3 text-[#64748B] text-sm">🔍</span>
+              <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#64748B] pointer-events-none" />
               <input
                 type="text"
                 placeholder="Ingrese C.I., R.U. o Código de Legajo (Ej. EXP-2026, 3250858-SCZ)"

@@ -1,202 +1,317 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import {
+  Inbox,
+  Hourglass,
+  Send,
+  CheckCircle2,
+  ArrowRight,
+  LayoutDashboard,
+  ListOrdered,
+  ChevronRight,
+  Bell,
+  Globe,
+  Building2,
+  FileCheck,
+  AlertCircle,
+  Search,
+  Filter
+} from 'lucide-react';
 
-interface SolicitudDerivada {
+interface SolicitudCentral {
   id: string;
   codigoTramite: string;
   solicitanteNombre: string;
   ci: string;
-  unidadOrigen: string;
-  unidadDestino: string;
+  origen: 'REGISTRO_WEB' | 'ENTIDAD_PUBLICA' | 'PRESENCIAL';
   tipoTramite: string;
-  fechaDerivacion: string;
-  estado: 'PENDIENTE' | 'EN_PROCESO' | 'DERIVADO_SECRETARIA' | 'COMPLETADO';
+  fechaRegistro: string;
+  estado: 'PENDIENTE' | 'EN_REVISION' | 'COMPLETADO';
 }
 
 export function DashboardNotificacionesPage() {
   const navigate = useNavigate();
-  const [filtroEstado, setFiltroEstado] = useState<'TODOS' | 'PENDIENTE' | 'DERIVADO'>('TODOS');
+  const [filtroEstado, setFiltroEstado] = useState<'TODOS' | 'PENDIENTE' | 'EN_REVISION' | 'COMPLETADO'>('TODOS');
+  const [filtroOrigen, setFiltroOrigen] = useState<'TODOS' | 'REGISTRO_WEB' | 'ENTIDAD_PUBLICA'>('TODOS');
+  const [query, setQuery] = useState('');
+  const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
 
-  // Datos de prueba en blanco
-  const [solicitudes] = useState<SolicitudDerivada[]>([
-    { id: '1', codigoTramite: 'TR-88421', solicitanteNombre: 'JENNY FLORES PEÑA', ci: '3250858-SCZ', unidadOrigen: 'Unidad de Títulos y Grados', unidadDestino: 'Archivo Central', tipoTramite: 'Certificación de Autenticidad', fechaDerivacion: '14/09/2026 08:30 AM', estado: 'PENDIENTE' },
-    { id: '2', codigoTramite: 'TR-88422', solicitanteNombre: 'GUALBERTO MEDINA VARGAS', ci: '8072900-SCZ', unidadOrigen: 'Unidad de Títulos y Grados', unidadDestino: 'Archivo Central', tipoTramite: 'Título Supletorio Médico Cirujano', fechaDerivacion: '14/09/2026 09:15 AM', estado: 'PENDIENTE' },
-    { id: '3', codigoTramite: 'TR-88420', solicitanteNombre: 'MARIA S. ARISPE LLANOS', ci: '4589214-SCZ', unidadOrigen: 'Archivo Central', unidadDestino: 'Despacho Secretaría General', tipoTramite: 'Dictamen de Autenticidad Histórica 2001', fechaDerivacion: '13/09/2026 16:45 PM', estado: 'DERIVADO_SECRETARIA' },
-    { id: '4', codigoTramite: 'TR-88419', solicitanteNombre: 'LILIANA I. NAVARRO PAZ', ci: '3892102-SCZ', unidadOrigen: 'Archivo Central', unidadDestino: 'Asesoría Legal UAGRM', tipoTramite: 'Revisión Testimonio Notarial Supletorio', fechaDerivacion: '13/09/2026 14:20 PM', estado: 'DERIVADO_SECRETARIA' },
-    { id: '5', codigoTramite: 'TR-88415', solicitanteNombre: 'HERIBERTO ORELLANA VILLANUEVA', ci: '2981044-CB', unidadOrigen: 'Unidad de Títulos y Grados', unidadDestino: 'Archivo Central', tipoTramite: 'Copia Legalizada Foja OCR', fechaDerivacion: '12/09/2026 11:00 AM', estado: 'COMPLETADO' }
+  const [solicitudes] = useState<SolicitudCentral[]>([
+    { id: '1', codigoTramite: 'ARC-2026-001', solicitanteNombre: 'GUALBERTO MEDINA VARGAS', ci: '8072900-SCZ', origen: 'REGISTRO_WEB', tipoTramite: 'Búsqueda Folio Tomo 1995', fechaRegistro: '24/09/2026 08:30 AM', estado: 'PENDIENTE' },
+    { id: '2', codigoTramite: 'ARC-2026-002', solicitanteNombre: 'DRA. JENNY FLORES PEÑA', ci: '3250858-SCZ', origen: 'ENTIDAD_PUBLICA', tipoTramite: 'Informe Autenticidad Título Médico', fechaRegistro: '24/09/2026 09:15 AM', estado: 'PENDIENTE' },
+    { id: '3', codigoTramite: 'ARC-2026-003', solicitanteNombre: 'ING. MARISOL ROCA TERRAZAS', ci: '4589214-SCZ', origen: 'REGISTRO_WEB', tipoTramite: 'Digitalización OCR Expediente 2001', fechaRegistro: '23/09/2026 14:10 PM', estado: 'EN_REVISION' },
+    { id: '4', codigoTramite: 'ARC-2026-004', solicitanteNombre: 'MINISTERIO DE SALUD - LOTE #4', ci: 'VARARIOS (15 PER)', origen: 'ENTIDAD_PUBLICA', tipoTramite: 'Verificación por Lote de Convenio', fechaRegistro: '23/09/2026 11:20 AM', estado: 'EN_REVISION' },
+    { id: '5', codigoTramite: 'ARC-2026-005', solicitanteNombre: 'CARLOS ALBERTO AGUILAR', ci: '1928301-SCZ', origen: 'REGISTRO_WEB', tipoTramite: 'Certificado de Autenticidad Folio', fechaRegistro: '22/09/2026 16:45 PM', estado: 'COMPLETADO' },
   ]);
 
   const solicitudesFiltradas = solicitudes.filter(s => {
-    if (filtroEstado === 'PENDIENTE') return s.estado === 'PENDIENTE';
-    if (filtroEstado === 'DERIVADO') return s.estado === 'DERIVADO_SECRETARIA';
-    return true;
+    const matchEstado = filtroEstado === 'TODOS' || s.estado === filtroEstado;
+    const matchOrigen = filtroOrigen === 'TODOS' || s.origen === filtroOrigen;
+    const matchQuery = s.solicitanteNombre.toLowerCase().includes(query.toLowerCase()) || s.codigoTramite.toLowerCase().includes(query.toLowerCase()) || s.ci.toLowerCase().includes(query.toLowerCase());
+    return matchEstado && matchOrigen && matchQuery;
   });
 
+  const totalPendientes = solicitudes.filter(s => s.estado === 'PENDIENTE').length;
+  const totalRevision = solicitudes.filter(s => s.estado === 'EN_REVISION').length;
+  const totalCompletados = solicitudes.filter(s => s.estado === 'COMPLETADO').length;
+
   return (
-    <div className="p-6 space-y-6 animate-in fade-in duration-300 max-w-7xl mx-auto bg-white min-h-screen">
-      {/* BANNER BLANCO LIMPIO (OPCIÓN 7) */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-6 space-y-6 max-w-7xl mx-auto font-sans"
+    >
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-blue-50 text-[#003366] rounded-2xl flex items-center justify-center font-bold border border-blue-200 shrink-0">
-            <span className="material-symbols-outlined text-2xl">dashboard</span>
+          <div className="p-3.5 bg-gradient-to-br from-[#003366] to-[#002244] text-[#E5A823] rounded-2xl shadow-md">
+            <LayoutDashboard className="w-8 h-8" />
           </div>
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-blue-700 font-bold uppercase tracking-wider mb-0.5">
-              <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-              Opción 7 · Dashboard Executivo & Notificaciones
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                Archivo Central • Módulo 01
+              </span>
             </div>
-            <h2 className="text-xl font-extrabold text-[#003366] tracking-tight">
-              Bandeja de Entrada, Notificaciones & Derivaciones
+            <h2 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
+              Dashboard de Notificaciones & Control de Solicitudes
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Control centralizado de solicitudes derivadas por la Unidad de Títulos y transferencias enviadas a otras unidades.
+            <p className="text-xs text-slate-500 mt-1">
+              Haga clic en las tarjetas superiores para filtrar dinámicamente el estado de atención.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            onClick={() => navigate('/archivo/triaje')}
-            className="px-4 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-2 uppercase tracking-wider"
-          >
-            <span className="material-symbols-outlined text-sm">move_to_inbox</span>
-            Ir a Triaje Documental
-          </button>
-        </div>
+        <button
+          onClick={() => setShowNotificationDrawer(!showNotificationDrawer)}
+          className="relative p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer border border-slate-200"
+          title="Ver Notificaciones"
+        >
+          <Bell className="w-5 h-5 text-[#003366]" />
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#C51D24] text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-xs">
+            3
+          </span>
+        </button>
       </div>
 
-      {/* TARJETAS DE MÉTRICAS EJECUTIVAS EN FONDO BLANCO */}
+      {/* DRAWER DE NOTIFICACIONES ACTIVAS */}
+      {showNotificationDrawer && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="bg-amber-50/90 border border-amber-200 rounded-2xl p-5 space-y-3 shadow-sm"
+        >
+          <div className="flex justify-between items-center border-b border-amber-200/60 pb-2">
+            <h4 className="text-xs font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-amber-700" />
+              Notificaciones Pendientes de Archivo Central
+            </h4>
+            <button onClick={() => setShowNotificationDrawer(false)} className="text-xs text-amber-800 font-bold hover:underline cursor-pointer">
+              Cerrar
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div className="bg-white p-3 rounded-xl border border-amber-200/80 shadow-2xs">
+              <span className="font-bold text-[#003366]">Lote Entidades Públicas:</span>
+              <p className="text-slate-600 mt-1">15 carpetas adjuntas para revisión de convenio del Min. Salud.</p>
+            </div>
+            <div className="bg-white p-3 rounded-xl border border-amber-200/80 shadow-2xs">
+              <span className="font-bold text-indigo-700">Digitalización Histórica:</span>
+              <p className="text-slate-600 mt-1">Tomo III - Año 2002 listo para indexar folios pendientes.</p>
+            </div>
+            <div className="bg-white p-3 rounded-xl border border-amber-200/80 shadow-2xs">
+              <span className="font-bold text-emerald-700">Solicitud Web Recibida:</span>
+              <p className="text-slate-600 mt-1">Certificado de Autenticidad abonado por QR Gaby (Bs. 30).</p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* TARJETAS KPI DINÁMICAS E INTERACTIVAS (CLICK PARA FILTRAR) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-          <div className="flex justify-between items-center text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Solicitudes Entrantes</span>
-            <span className="material-symbols-outlined text-blue-600">inbox</span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold font-mono text-[#003366]">12</span>
-            <span className="text-[10px] text-slate-500 font-medium">Derivadas de Títulos</span>
-          </div>
-        </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-          <div className="flex justify-between items-center text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Pendientes de Revisión</span>
-            <span className="material-symbols-outlined text-amber-600">hourglass_empty</span>
+        <motion.div 
+          whileHover={{ y: -3 }}
+          onClick={() => setFiltroEstado('TODOS')}
+          className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
+            filtroEstado === 'TODOS' ? 'bg-blue-50/90 border-[#003366] ring-2 ring-[#003366]/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+          }`}
+        >
+          <div className="w-1.5 h-full bg-[#003366] absolute left-0 top-0 rounded-l-2xl" />
+          <div className="flex justify-between items-center text-slate-500 pl-1">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#003366]">Total Solicitudes</span>
+            <div className="p-2 bg-blue-100 text-[#003366] rounded-xl group-hover:scale-110 transition-transform">
+              <Inbox className="w-4 h-4" />
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold font-mono text-amber-600">5</span>
-            <span className="text-[10px] text-amber-700 font-medium">Requieren firma / foja</span>
+          <div className="flex items-baseline gap-2.5 pl-1 mt-3">
+            <span className="text-3xl font-extrabold font-mono text-[#003366]">{solicitudes.length}</span>
+            <span className="text-xs text-slate-500 font-medium">Registros totales</span>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-          <div className="flex justify-between items-center text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Derivados a Secretaría</span>
-            <span className="material-symbols-outlined text-purple-600">send</span>
+        <motion.div 
+          whileHover={{ y: -3 }}
+          onClick={() => setFiltroEstado('PENDIENTE')}
+          className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
+            filtroEstado === 'PENDIENTE' ? 'bg-amber-50/90 border-amber-500 ring-2 ring-amber-500/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+          }`}
+        >
+          <div className="w-1.5 h-full bg-amber-500 absolute left-0 top-0 rounded-l-2xl" />
+          <div className="flex justify-between items-center text-slate-500 pl-1">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700">Pendientes</span>
+            <div className="p-2 bg-amber-100 text-amber-700 rounded-xl group-hover:scale-110 transition-transform">
+              <Hourglass className="w-4 h-4" />
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold font-mono text-purple-700">8</span>
-            <span className="text-[10px] text-slate-500 font-medium">En revisión de firma</span>
+          <div className="flex items-baseline gap-2.5 pl-1 mt-3">
+            <span className="text-3xl font-extrabold font-mono text-amber-600">{totalPendientes}</span>
+            <span className="text-xs text-amber-700 font-medium">Por procesar</span>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-          <div className="flex justify-between items-center text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Completados Hoy</span>
-            <span className="material-symbols-outlined text-emerald-600">task_alt</span>
+        <motion.div 
+          whileHover={{ y: -3 }}
+          onClick={() => setFiltroEstado('EN_REVISION')}
+          className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
+            filtroEstado === 'EN_REVISION' ? 'bg-indigo-50/90 border-indigo-600 ring-2 ring-indigo-600/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+          }`}
+        >
+          <div className="w-1.5 h-full bg-indigo-600 absolute left-0 top-0 rounded-l-2xl" />
+          <div className="flex justify-between items-center text-slate-500 pl-1">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-700">En Revisión</span>
+            <div className="p-2 bg-indigo-100 text-indigo-700 rounded-xl group-hover:scale-110 transition-transform">
+              <FileCheck className="w-4 h-4" />
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold font-mono text-emerald-600">18</span>
-            <span className="text-[10px] text-emerald-700 font-medium">Informes certificados</span>
+          <div className="flex items-baseline gap-2.5 pl-1 mt-3">
+            <span className="text-3xl font-extrabold font-mono text-indigo-700">{totalRevision}</span>
+            <span className="text-xs text-indigo-700 font-medium">Con cotejo OCR</span>
           </div>
-        </div>
+        </motion.div>
+
+        <motion.div 
+          whileHover={{ y: -3 }}
+          onClick={() => setFiltroEstado('COMPLETADO')}
+          className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
+            filtroEstado === 'COMPLETADO' ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-600/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+          }`}
+        >
+          <div className="w-1.5 h-full bg-emerald-600 absolute left-0 top-0 rounded-l-2xl" />
+          <div className="flex justify-between items-center text-slate-500 pl-1">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">Completados</span>
+            <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl group-hover:scale-110 transition-transform">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="flex items-baseline gap-2.5 pl-1 mt-3">
+            <span className="text-3xl font-extrabold font-mono text-emerald-600">{totalCompletados}</span>
+            <span className="text-xs text-emerald-700 font-medium">Derivados a Títulos</span>
+          </div>
+        </motion.div>
+
       </div>
 
-      {/* BANDEJA DE SOLICITUDES Y DERIVACIONES (TABLA EN FONDO BLANCO) */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
+      {/* TABLA Y BUSCADOR DINÁMICO */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden space-y-4">
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white">
           <div>
-            <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
-              <span className="material-symbols-outlined text-blue-600">list_alt</span>
-              Bandeja de Entrada de Solicitudes y Derivaciones Entre Unidades
+            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2.5">
+              <ListOrdered className="w-5 h-5 text-[#003366]" />
+              Bandeja de Entrada de Solicitudes Recibidas ({solicitudesFiltradas.length})
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Filtre las solicitudes recibidas o enviadas hacia Secretaría General o Asesoría Legal.
+            <p className="text-xs text-slate-500 mt-1 font-normal">
+              Filtrado activo: <span className="font-bold text-[#003366]">{filtroEstado}</span>
             </p>
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
-            <button
-              onClick={() => setFiltroEstado('TODOS')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                filtroEstado === 'TODOS' ? 'bg-white text-[#003366] shadow-sm font-extrabold' : 'text-slate-600'
-              }`}
-            >
-              Todas (5)
-            </button>
-            <button
-              onClick={() => setFiltroEstado('PENDIENTE')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                filtroEstado === 'PENDIENTE' ? 'bg-white text-amber-700 shadow-sm font-extrabold' : 'text-slate-600'
-              }`}
-            >
-              Pendientes (2)
-            </button>
-            <button
-              onClick={() => setFiltroEstado('DERIVADO')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                filtroEstado === 'DERIVADO' ? 'bg-white text-purple-700 shadow-sm font-extrabold' : 'text-slate-600'
-              }`}
-            >
-              Derivadas (2)
-            </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:w-64">
+              <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Buscar solicitante o C.I..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              />
+            </div>
+
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold border border-slate-200">
+              <button
+                onClick={() => setFiltroOrigen('TODOS')}
+                className={`px-3 py-1 rounded-lg text-xs cursor-pointer ${filtroOrigen === 'TODOS' ? 'bg-white text-[#003366] font-bold shadow-2xs' : 'text-slate-600'}`}
+              >
+                Todas
+              </button>
+              <button
+                onClick={() => setFiltroOrigen('REGISTRO_WEB')}
+                className={`px-3 py-1 rounded-lg text-xs cursor-pointer ${filtroOrigen === 'REGISTRO_WEB' ? 'bg-white text-indigo-700 font-bold shadow-2xs' : 'text-slate-600'}`}
+              >
+                Web
+              </button>
+              <button
+                onClick={() => setFiltroOrigen('ENTIDAD_PUBLICA')}
+                className={`px-3 py-1 rounded-lg text-xs cursor-pointer ${filtroOrigen === 'ENTIDAD_PUBLICA' ? 'bg-white text-emerald-700 font-bold shadow-2xs' : 'text-slate-600'}`}
+              >
+                Entidades
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
-            <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
+            <thead className="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
               <tr>
-                <th className="p-3.5">Código Trámite</th>
-                <th className="p-3.5">Solicitante / Titular</th>
-                <th className="p-3.5">C.I.</th>
-                <th className="p-3.5">Unidad Origen ➔ Destino</th>
-                <th className="p-3.5">Tipo de Trámite</th>
-                <th className="p-3.5">Fecha Derivación</th>
-                <th className="p-3.5 text-center">Estado</th>
-                <th className="p-3.5 text-right">Acción</th>
+                <th className="py-3.5 px-4">Código Trámite</th>
+                <th className="py-3.5 px-4">Solicitante / Titular</th>
+                <th className="py-3.5 px-4">C.I. / CUI</th>
+                <th className="py-3.5 px-4">Origen</th>
+                <th className="py-3.5 px-4">Tipo Trámite</th>
+                <th className="py-3.5 px-4">Fecha Registro</th>
+                <th className="py-3.5 px-4 text-center">Estado</th>
+                <th className="py-3.5 px-4 text-right">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-sans">
               {solicitudesFiltradas.map((s) => (
-                <tr key={s.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="p-3.5 font-mono font-bold text-[#003366]">{s.codigoTramite}</td>
-                  <td className="p-3.5 font-bold text-slate-800 uppercase">{s.solicitanteNombre}</td>
-                  <td className="p-3.5 font-mono text-slate-600">{s.ci}</td>
-                  <td className="p-3.5 font-medium text-slate-700">
-                    <span className="text-slate-500">{s.unidadOrigen}</span>
-                    <span className="mx-1.5 text-blue-600 font-bold">➔</span>
-                    <strong className="text-[#003366]">{s.unidadDestino}</strong>
+                <tr key={s.id} className="hover:bg-blue-50/40 transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-[#003366]">{s.codigoTramite}</td>
+                  <td className="py-3.5 px-4 font-bold text-slate-800 uppercase">{s.solicitanteNombre}</td>
+                  <td className="py-3.5 px-4 font-mono text-slate-600">{s.ci}</td>
+                  <td className="py-3.5 px-4">
+                    {s.origen === 'REGISTRO_WEB' ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        <Globe className="w-3 h-3" /> Web
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <Building2 className="w-3 h-3" /> Entidad Pública
+                      </span>
+                    )}
                   </td>
-                  <td className="p-3.5 text-slate-700 font-medium">{s.tipoTramite}</td>
-                  <td className="p-3.5 font-mono text-slate-500 text-[11px]">{s.fechaDerivacion}</td>
-                  <td className="p-3.5 text-center">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold border ${
+                  <td className="py-3.5 px-4 text-slate-700 font-medium">{s.tipoTramite}</td>
+                  <td className="py-3.5 px-4 font-mono text-slate-500 text-[11px]">{s.fechaRegistro}</td>
+                  <td className="py-3.5 px-4 text-center">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                       s.estado === 'PENDIENTE'
                         ? 'bg-amber-50 text-amber-800 border-amber-200'
-                        : s.estado === 'DERIVADO_SECRETARIA'
-                        ? 'bg-purple-50 text-purple-800 border-purple-200'
+                        : s.estado === 'EN_REVISION'
+                        ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
                         : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                     }`}>
-                      {s.estado === 'PENDIENTE' ? 'Pendiente' : s.estado === 'DERIVADO_SECRETARIA' ? 'Derivado a Secretaría' : 'Completado'}
+                      {s.estado}
                     </span>
                   </td>
-                  <td className="p-3.5 text-right">
+                  <td className="py-3.5 px-4 text-right">
                     <button
                       onClick={() => navigate('/archivo/triaje')}
-                      className="px-3 py-1.5 bg-[#003366] text-white hover:bg-[#002244] font-bold rounded-lg text-xs transition-all shadow-xs"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-[#003366] hover:bg-[#002244] text-white font-bold rounded-lg text-xs transition-all shadow-xs cursor-pointer"
                     >
-                      Atender
+                      <span>Procesar</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                   </td>
                 </tr>
@@ -205,6 +320,6 @@ export function DashboardNotificacionesPage() {
           </table>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

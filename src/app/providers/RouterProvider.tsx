@@ -7,6 +7,7 @@ import { SecretariaLayout } from '../../pages/secretaria/SecretariaLayout';
 import { SidebarNavWidget } from '../../widgets/SidebarNavWidget/SidebarNavWidget';
 import { CargadorOcrWizard } from '../../features/flujo-ocr/ui/CargadorOcrWizard';
 import { PantallaVerificacionOcr } from '../../features/flujo-ocr/ui/PantallaVerificacionOcr';
+import { PortalSolicitantePage } from '../../pages/solicitante/PortalSolicitantePage';
 
 export function RouterProvider() {
   return (
@@ -17,6 +18,10 @@ export function RouterProvider() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/sso/callback" element={<SSOCallbackPage />} />
         <Route path="/login/sso/callback" element={<SSOCallbackPage />} />
+
+        {/* Portal del Solicitante (Public / Entidades) */}
+        <Route path="/solicitante/*" element={<PortalSolicitantePage />} />
+        <Route path="/solicitante" element={<PortalSolicitantePage />} />
 
         {/* Flujo OCR */}
         <Route path="/archivo/subir-ocr" element={<SidebarNavWidget pageTitle="Subir Expediente"><CargadorOcrWizard /></SidebarNavWidget>} />

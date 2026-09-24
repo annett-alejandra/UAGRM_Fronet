@@ -43,27 +43,37 @@ const ARCHIVO_NAV: readonly NavItem[] = [
     label: '6. Subida por Excel (Libros Históricos)',
     iconName: 'table_view',
   },
+  {
+    path: '/archivo/ver-libros-tomo',
+    label: '7. Ver Libros por Tomo',
+    iconName: 'menu_book',
+  },
 ];
 
 const TITULOS_NAV: readonly NavItem[] = [
   {
-    path: '/titulos/busqueda',
-    label: '1. Búsqueda Global (Dashboard)',
+    path: '/titulos/dashboard-notificaciones',
+    label: '1. Dashboard & Notificaciones',
+    iconName: 'dashboard',
+  },
+  {
+    path: '/titulos/busqueda-informix',
+    label: '2. Búsqueda Informix (CUI/Título)',
     iconName: 'search',
   },
   {
-    path: '/titulos/expediente/TIT-9901',
-    label: '2. Visor Expediente Digital',
+    path: '/titulos/visor-expediente',
+    label: '3. Reconstrucción & Visor Digital',
     iconName: 'visibility',
   },
   {
-    path: '/titulos/emision',
-    label: '3. Emisión & Plantillas A4',
+    path: '/titulos/emision-plantillas',
+    label: '4. Emisión & Plantillas A4',
     iconName: 'print',
   },
   {
     path: '/titulos/carga-libros',
-    label: '4. Carga Libros Matrices',
+    label: '5. Carga Libros Matrices',
     iconName: 'collections_bookmark',
   },
 ];
@@ -102,6 +112,7 @@ export function SidebarNavWidget({ children }: SidebarNavWidgetProps) {
 
   const isActive = (path: string) => {
     if (path === '/archivo/dashboard-notificaciones' && (location.pathname === '/archivo' || location.pathname === '/archivo/')) return true;
+    if (path === '/titulos/dashboard-notificaciones' && (location.pathname === '/titulos' || location.pathname === '/titulos/')) return true;
     return location.pathname.startsWith(path);
   };
 

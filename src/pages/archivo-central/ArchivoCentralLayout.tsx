@@ -6,6 +6,7 @@ import { ReconstruccionExpedientePage } from './ReconstruccionExpedientePage';
 import { BusquedaExpedientesArchivoPage } from './BusquedaExpedientesArchivoPage';
 import { CargaExcelLibrosHistoricos } from './CargaExcelLibrosHistoricos';
 import { DashboardNotificacionesPage } from './DashboardNotificacionesPage';
+import { VerLibrosPorTomoPage } from './VerLibrosPorTomoPage';
 import { SubidaDocumentos } from '../../features/subida-documentos/SubidaDocumentos';
 
 export function ArchivoCentralLayout() {
@@ -21,6 +22,7 @@ export function ArchivoCentralLayout() {
             <Route path="subida" element={<SubidaDocumentos />} />
             <Route path="busqueda-expedientes" element={<BusquedaExpedientesArchivoPage />} />
             <Route path="subida-excel" element={<CargaExcelLibrosHistoricos />} />
+            <Route path="ver-libros-tomo" element={<VerLibrosPorTomoPage />} />
             <Route path="reconstruccion" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion/:id" element={<ReconstruccionExpedientePage />} />
             <Route path="reconstruccion-legajos" element={<ReconstruccionExpedientePage />} />

@@ -1,3 +1,4 @@
+import { Search, Folder, FileText, BookOpen, Building2, ChevronRight, ChevronDown, Calendar, User, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -263,7 +264,7 @@ export function BusquedaExpedientesArchivoPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C51D24] mb-1">
-            <span className="material-symbols-outlined text-sm">account_tree</span>
+            <BookOpen className="w-4 h-4 text-[#C51D24]" />
             Módulo de Archivo Central • Estructura por Tomos y Legajos
           </div>
           <h1 className="text-2xl font-extrabold text-[#003366] tracking-tight font-heading">

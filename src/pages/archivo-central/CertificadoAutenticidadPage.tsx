@@ -1,3 +1,4 @@
+import { Search, Save, FileText, Printer, ZoomIn, ZoomOut, RotateCw, ChevronRight, Building2, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { titulosApi, type ExpedienteTitulos } from '../../features/titulos/api/titulos-api';
 import { InformeArchivoCentralTipo1 } from '../../modules/archivo-central/templates/InformeArchivoCentralTipo1';
@@ -147,7 +148,7 @@ export function CertificadoAutenticidadPage() {
         {/* CENTRO: BUSCADOR Y AUTOCOMPLETAR (ANTES EN MORADO, AHORA PERFECTAMENTE ALINEADO) */}
         <div className="flex items-center gap-2 flex-1 max-w-md mx-2">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-600 text-lg pointer-events-none">search</span>
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-blue-600 pointer-events-none" />
             <input
               type="text"
               value={searchDiploma}
@@ -200,7 +201,7 @@ export function CertificadoAutenticidadPage() {
             disabled={isSaving}
             className="px-3.5 py-1.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-extrabold rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-1.5 uppercase cursor-pointer"
           >
-            <span className="material-symbols-outlined text-sm">save</span>
+            <Save className="w-4 h-4" />
             {isSaving ? 'Guardando...' : 'Guardar'}
           </button>
         </div>

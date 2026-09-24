@@ -1,9 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { SidebarNavWidget } from '../../widgets/SidebarNavWidget/SidebarNavWidget';
-import { BusquedaGlobalTitulos } from '../../features/titulos/BusquedaGlobalTitulos';
-import { VisorExpedienteDigital } from '../../features/titulos/VisorExpedienteDigital';
-import { EmisionPlantillas } from '../../features/titulos/EmisionPlantillas';
-import { CargaLibrosMatrices } from '../../features/titulos/CargaLibrosMatrices';
+import { DashboardNotificacionesTitulosPage } from './DashboardNotificacionesTitulosPage';
+import { BusquedaInformixPage } from './BusquedaInformixPage';
+import { VisorExpedienteDigitalPage } from './VisorExpedienteDigitalPage';
+import { EmisionPlantillasTitulosPage } from './EmisionPlantillasTitulosPage';
+import { CargaLibrosMatricesTitulosPage } from './CargaLibrosMatricesTitulosPage';
 
 export function TitulosLayout() {
   return (
@@ -11,12 +12,25 @@ export function TitulosLayout() {
       <div className="flex flex-col h-full bg-[#F8FAFC]">
         <main className="flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<Navigate to="busqueda" replace />} />
-            <Route path="busqueda" element={<BusquedaGlobalTitulos />} />
-            <Route path="expediente/:id" element={<VisorExpedienteDigital />} />
-            <Route path="emision" element={<EmisionPlantillas />} />
-            <Route path="carga-libros" element={<CargaLibrosMatrices />} />
-            <Route path="*" element={<Navigate to="busqueda" replace />} />
+            <Route index element={<DashboardNotificacionesTitulosPage />} />
+            <Route path="" element={<DashboardNotificacionesTitulosPage />} />
+            <Route path="dashboard" element={<DashboardNotificacionesTitulosPage />} />
+            <Route path="dashboard-notificaciones" element={<DashboardNotificacionesTitulosPage />} />
+            <Route path="dashboard%20notificaciones" element={<DashboardNotificacionesTitulosPage />} />
+            
+            <Route path="busqueda-informix" element={<BusquedaInformixPage />} />
+            <Route path="busqueda" element={<BusquedaInformixPage />} />
+            
+            <Route path="visor-expediente" element={<VisorExpedienteDigitalPage />} />
+            <Route path="visor-expediente/:id" element={<VisorExpedienteDigitalPage />} />
+            <Route path="expediente" element={<VisorExpedienteDigitalPage />} />
+            <Route path="expediente/:id" element={<VisorExpedienteDigitalPage />} />
+            
+            <Route path="emision-plantillas" element={<EmisionPlantillasTitulosPage />} />
+            <Route path="emision" element={<EmisionPlantillasTitulosPage />} />
+            
+            <Route path="carga-libros" element={<CargaLibrosMatricesTitulosPage />} />
+            <Route path="*" element={<DashboardNotificacionesTitulosPage />} />
           </Routes>
         </main>
       </div>

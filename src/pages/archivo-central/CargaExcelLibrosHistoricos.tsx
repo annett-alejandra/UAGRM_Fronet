@@ -1,3 +1,4 @@
+import { BookOpen, FileSpreadsheet, UploadCloud, CheckCircle2, AlertTriangle, Edit3, Save, Trash2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { ocrApi } from '../../features/flujo-ocr/api/ocr-api';
 
@@ -136,7 +137,7 @@ export function CargaExcelLibrosHistoricos() {
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
         <div className="flex items-center gap-2.5 text-[#003366] font-extrabold text-base border-b border-slate-100 pb-3">
           <span className="p-1.5 bg-amber-50 text-amber-600 rounded-lg border border-amber-200/60 flex items-center justify-center shadow-2xs">
-            <span className="material-symbols-outlined text-lg">book_4</span>
+            <BookOpen className="w-5 h-5 text-amber-600" />
           </span>
           <h3>Asignación a Gestión Anual &amp; Tomo / Libro Matriz</h3>
         </div>

@@ -1,3 +1,4 @@
+import { CheckCircle2, Clock, AlertTriangle, FileText, Search, Filter, Share2, Send, Eye, Download, Building2, Sparkles, ChevronRight, User, Calendar, DollarSign, Phone, Mail, FileCheck, ShieldCheck, Inbox, ListOrdered } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -144,7 +145,7 @@ const INITIAL_PENDIENTES: SolicitudPendiente[] = [
         icono: 'workspace_premium',
         verificado: false,
         obligatorio: true,
-        nombreArchivo: 'TITULO_MEDICINA_SOLO_ANVERSO.pdf',
+        nombreArchivo: 'TITULO_MEDICIÓNA_SOLO_ANVERSO.pdf',
         paginas: 1
       },
       {
@@ -277,10 +278,10 @@ export function BandejaPendientesPage() {
     <div className="p-8 space-y-8 bg-slate-50 min-h-screen text-slate-900 font-sans pb-28">
       
       {/* Encabezado Principal */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 bg-white/95 backdrop-blur-sm">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C51D24] mb-1">
-            <span className="material-symbols-outlined text-sm">checklist</span>
+            <ListOrdered className="w-4 h-4 text-[#C51D24]" />
             Módulo de Archivo Central • Triaje de Recepción
           </div>
           <h1 className="text-2xl font-extrabold text-[#003366] tracking-tight font-heading">
@@ -305,7 +306,7 @@ export function BandejaPendientesPage() {
         <div className="lg:col-span-5 space-y-4">
           
           {/* Filtros y Buscador */}
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+          <div className="bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 bg-white/95 backdrop-blur-sm space-y-3">
             <div className="relative">
               <input
                 type="text"
