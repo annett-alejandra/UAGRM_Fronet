@@ -14,9 +14,9 @@ interface NavItem {
 
 const ARCHIVO_NAV: readonly NavItem[] = [
   {
-    path: '/archivo/autenticidad',
-    label: '1. Certificado Autenticidad',
-    iconName: 'verified',
+    path: '/archivo/dashboard-notificaciones',
+    label: '1. Dashboard de Notificaciones',
+    iconName: 'dashboard',
   },
   {
     path: '/archivo/triaje',
@@ -24,14 +24,14 @@ const ARCHIVO_NAV: readonly NavItem[] = [
     iconName: 'filter_alt',
   },
   {
-    path: '/archivo/subida',
-    label: '3. Digitalización OCR',
-    iconName: 'document_scanner',
+    path: '/archivo/autenticidad',
+    label: '3. Certificado Autenticidad',
+    iconName: 'verified',
   },
   {
-    path: '/archivo/reconstruccion',
-    label: '4. Reconstrucción Libros',
-    iconName: 'menu_book',
+    path: '/archivo/subida',
+    label: '4. Digitalización OCR (Solicitud)',
+    iconName: 'document_scanner',
   },
   {
     path: '/archivo/busqueda-expedientes',
@@ -42,11 +42,6 @@ const ARCHIVO_NAV: readonly NavItem[] = [
     path: '/archivo/subida-excel',
     label: '6. Subida por Excel (Libros Históricos)',
     iconName: 'table_view',
-  },
-  {
-    path: '/archivo/dashboard-notificaciones',
-    label: '7. Dashboard de Notificaciones',
-    iconName: 'dashboard',
   },
 ];
 
@@ -106,13 +101,12 @@ export function SidebarNavWidget({ children }: SidebarNavWidgetProps) {
   }
 
   const isActive = (path: string) => {
-    if (path === '/archivo/autenticidad' && location.pathname === '/archivo') return true;
+    if (path === '/archivo/dashboard-notificaciones' && (location.pathname === '/archivo' || location.pathname === '/archivo/')) return true;
     return location.pathname.startsWith(path);
   };
 
   return (
     <div className="flex h-screen bg-[#F8FAFC] text-[#1E293B] font-sans overflow-hidden">
-      {/* Sidebar Izquierdo (#003366 Azul UAGRM) */}
       <aside className={`fixed top-0 left-0 bottom-0 z-50 bg-[#003366] text-white shadow-xl transition-all duration-300 flex flex-col justify-between ${isCollapsed ? 'w-20' : 'w-64'}`}>
         <div className="flex flex-col gap-5 p-4">
           <div className="flex items-center gap-3 px-2 py-2 border-b border-white/15 pb-4">
@@ -182,7 +176,6 @@ export function SidebarNavWidget({ children }: SidebarNavWidgetProps) {
         </div>
       </aside>
 
-      {/* Contenido Principal Limpio Sin Header Duplicado Superior */}
       <div className={`flex flex-col flex-1 h-screen overflow-hidden transition-all duration-300 ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
         <main className="flex-1 overflow-hidden bg-[#F8FAFC] flex flex-col">
           {children}
