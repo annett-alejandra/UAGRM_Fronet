@@ -26,11 +26,11 @@ export function CargaExcelLibrosHistoricos() {
   // Modal de Edición Directa
   const [editingRow, setEditingRow] = useState<RegistroDobleConvalidacion | null>(null);
 
-  // Registros de Doble Convalidación con MARÍA S. ALPIRI LLANOS como ejemplo explícito
+  // Registros de Doble Convalidación con MARÍA S. ALPIRI LLANOS como ejemplo
   const [registros, setRegistros] = useState<RegistroDobleConvalidacion[]>([
     {
       id: '1',
-      nroCorrelativo: '03399',
+      nroCorrelativo: '#03399',
       detectadoNombre: 'MARÍA S. ALPIRI LLANOS',
       detectadoCi: '4589214-SCZ',
       bdNombre: 'MARÍA S. ALPIRI LLANOS',
@@ -40,7 +40,7 @@ export function CargaExcelLibrosHistoricos() {
     },
     {
       id: '2',
-      nroCorrelativo: '03398',
+      nroCorrelativo: '#03398',
       detectadoNombre: 'LILIANA I. NAVARRO PAZ',
       detectadoCi: '3892102-SCZ',
       bdNombre: 'LILIANA I. NAVARRO PAZ',
@@ -50,7 +50,7 @@ export function CargaExcelLibrosHistoricos() {
     },
     {
       id: '3',
-      nroCorrelativo: '03393',
+      nroCorrelativo: '#03393',
       detectadoNombre: 'HERIBERTO ORELLANA VILLANUEVA',
       detectadoCi: '2981044-CB',
       bdNombre: 'HERIBERTO ORELLANA V.',
@@ -60,7 +60,7 @@ export function CargaExcelLibrosHistoricos() {
     },
     {
       id: '4',
-      nroCorrelativo: '03389',
+      nroCorrelativo: '#03389',
       detectadoNombre: 'MIGUEL A. BARRIOS MONJE',
       detectadoCi: '5019231-SCZ',
       bdNombre: 'MIGUEL A. BARRIOS MONJE',
@@ -70,7 +70,7 @@ export function CargaExcelLibrosHistoricos() {
     },
     {
       id: '5',
-      nroCorrelativo: '03384',
+      nroCorrelativo: '#03384',
       detectadoNombre: 'JUANA R. ESCALANTE FARFAN',
       detectadoCi: '3109283-TJ',
       bdNombre: 'JUANA R. ESCALANTE FARFAN',
@@ -131,197 +131,172 @@ export function CargaExcelLibrosHistoricos() {
 
   return (
     <div className="p-6 space-y-6 animate-in fade-in duration-300 max-w-7xl mx-auto bg-white min-h-screen font-sans">
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center font-bold border border-emerald-200 shrink-0">
-            <span className="material-symbols-outlined text-2xl">sync_alt</span>
-          </div>
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-700 font-bold uppercase tracking-wider mb-0.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              Opción 6 – Subida por Excel / Foto OCR (Libros Históricos)
-            </div>
-            <h2 className="text-xl font-extrabold text-[#003366] tracking-tight">
-              Visor Espejo de Doble Convalidación y Edición Directa
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Organizado por Gestión Anual y Libro Matriz. Permite comparar, editar celdas (ej. S por 5) y aprobar registros manualmente.
-            </p>
-          </div>
+      
+      {/* CARD 1: ASIGNACIÓN A GESTIÓN ANUAL & TOMO / LIBRO MATRIZ */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
+        <div className="flex items-center gap-2.5 text-[#003366] font-extrabold text-base border-b border-slate-100 pb-3">
+          <span className="p-1.5 bg-amber-50 text-amber-600 rounded-lg border border-amber-200/60 flex items-center justify-center shadow-2xs">
+            <span className="material-symbols-outlined text-lg">book_4</span>
+          </span>
+          <h3>Asignación a Gestión Anual &amp; Tomo / Libro Matriz</h3>
         </div>
 
-        <label className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition-all active:scale-95 flex items-center gap-2 shrink-0 cursor-pointer uppercase tracking-wider">
-          <span className="material-symbols-outlined text-sm">upload_file</span>
-          <span>{isProcessing ? 'Procesando OCR/Excel...' : 'Subir Archivo Excel / Foto OCR'}</span>
-          <input
-            type="file"
-            accept=".xlsx, .xls, .csv, image/*, .pdf"
-            onChange={handleSubirArchivo}
-            className="hidden"
-          />
-        </label>
-      </div>
-
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-        <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2 border-b border-slate-100 pb-3">
-          <span className="material-symbols-outlined text-amber-600">collections_bookmark</span>
-          Asignación a Gestión Anual & Tomo / Libro Matriz
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Gestión / Año:</label>
+            <label className="block text-xs font-bold text-slate-600 mb-1.5">Gestión / Año:</label>
             <input
               type="text"
               value={gestion}
               onChange={(e) => setGestion(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="Ej. 2001"
+              className="w-full px-4 py-2 text-center rounded-full border border-slate-200 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-2xs text-xs transition-all"
             />
           </div>
 
-          <div className="lg:col-span-2">
-            <label className="block text-xs font-bold text-slate-700 mb-1">Carrera / Programa:</label>
+          <div>
+            <label className="block text-xs font-bold text-slate-600 mb-1.5">Carrera / Programa:</label>
             <input
               type="text"
               value={carrera}
               onChange={(e) => setCarrera(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-[#003366] focus:ring-2 focus:ring-blue-500 outline-none uppercase"
-              placeholder="Ej. LIC. EN CIENCIAS JURÍDICAS"
+              className="w-full px-4 py-2 text-center rounded-full border border-slate-200 bg-white font-bold text-slate-800 uppercase focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-2xs text-xs transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Identificador Legajo / Tomo:</label>
+            <label className="block text-xs font-bold text-slate-600 mb-1.5">Identificador Legajo / Tomo:</label>
             <input
               type="text"
               value={tomoLegajo}
               onChange={(e) => setTomoLegajo(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase"
-              placeholder="Ej. LEGAJO # 01"
+              className="w-full px-4 py-2 text-center rounded-full border border-slate-200 bg-white font-bold text-slate-800 uppercase focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-2xs text-xs transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Rango Correlativo (Del / Al):</label>
-            <div className="flex items-center gap-1">
+            <label className="block text-xs font-bold text-slate-600 mb-1.5">Rango Correlativo (Del / Al):</label>
+            <div className="flex items-center justify-between gap-2 px-3 py-1 bg-white border border-slate-200 rounded-full shadow-2xs">
               <input
                 type="text"
                 value={rangoInicial}
                 onChange={(e) => setRangoInicial(e.target.value)}
-                className="w-1/2 px-2 py-2 border border-slate-300 rounded-xl font-mono text-xs text-center font-bold"
-                placeholder="03399"
+                className="w-16 text-center font-bold text-slate-800 focus:outline-none text-xs bg-transparent"
               />
-              <span className="text-xs text-slate-400 font-bold">-</span>
+              <span className="text-slate-400 font-bold text-xs">-</span>
               <input
                 type="text"
                 value={rangoFinal}
                 onChange={(e) => setRangoFinal(e.target.value)}
-                className="w-1/2 px-2 py-2 border border-slate-300 rounded-xl font-mono text-xs text-center font-bold"
-                placeholder="03010"
+                className="w-16 text-center font-bold text-slate-800 focus:outline-none text-xs bg-transparent"
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
-        <div className="p-5 border-b border-slate-100 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* CARD 2: VISOR ESPEJO TABLA DE CONVALIDACIÓN */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-3.5">
           <div>
-            <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
-              <span className="material-symbols-outlined text-blue-600">compare</span>
-              Visor Espejo: Columna A (Dato Detectado en Foto/Excel) VS. Columna B (Base de Datos)
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Verdes: Coincidencia 100% | Ámbar/Rojo: Requiere edición o aprobación del operador.
+            <div className="flex items-center gap-2.5 text-[#003366] font-extrabold text-base">
+              <span className="p-1.5 bg-blue-50 text-blue-600 rounded-lg border border-blue-200/60 flex items-center justify-center shadow-2xs">
+                <span className="material-symbols-outlined text-lg">find_in_page</span>
+              </span>
+              <h3>Visor Espejo: Columna A (Dato Detectado en Foto/Excel) VS. Columna B (Base de Datos)</h3>
+            </div>
+            <p className="text-xs text-slate-500 mt-1 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold"><span className="w-2 h-2 rounded-full bg-emerald-500"></span>Verdes: Coincidencia 100%</span>
+              <span className="text-slate-300">|</span>
+              <span className="inline-flex items-center gap-1.5 text-amber-700 font-semibold"><span className="w-2 h-2 rounded-full bg-amber-500"></span>Ámbar/Rojo: Requiere edición o aprobación del operador.</span>
             </p>
           </div>
 
-          <button
-            onClick={handleConfirmarYGuardar}
-            disabled={isSaved || isProcessing}
-            className="px-6 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow transition-all active:scale-95 flex items-center gap-2 shrink-0 disabled:opacity-50 uppercase tracking-wider cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-sm">verified_user</span>
-            {isSaved ? 'Guardando Convalidación...' : 'Confirmar & Guardar Convalidación'}
-          </button>
+          <div className="flex items-center gap-3 shrink-0 self-end lg:self-auto">
+            <label className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200/70">
+              <span className="material-symbols-outlined text-sm">upload_file</span>
+              {isProcessing ? 'Procesando...' : 'Cargar Excel / Foto OCR'}
+              <input type="file" accept=".xlsx,.xls,.csv,image/*" onChange={handleSubirArchivo} className="hidden" />
+            </label>
+
+            <button
+              onClick={handleConfirmarYGuardar}
+              disabled={isSaved}
+              className="px-6 py-2.5 bg-[#002B5B] hover:bg-[#001D3D] active:scale-98 text-white font-extrabold rounded-full text-xs tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-blue-900/15 uppercase"
+            >
+              <span className="material-symbols-outlined text-base">shield</span>
+              {isSaved ? 'GUARDANDO...' : 'CONFIRMAR & GUARDAR CONVALIDACIÓN'}
+            </button>
+          </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-extrabold tracking-wider border-b border-slate-200">
-              <tr>
-                <th className="p-3.5 w-28">N° Correlativo</th>
-                <th className="p-3.5 bg-blue-50/60 border-l border-blue-200 text-blue-900">
-                  COLUMNA A: Dato Detectado (Excel / Foto OCR)
-                </th>
-                <th className="p-3.5 bg-emerald-50/60 border-l border-emerald-200 text-emerald-900">
-                  COLUMNA B: Dato Registrado (Base de Datos Gestión)
-                </th>
-                <th className="p-3.5 text-center w-36">Estado Convalidación</th>
-                <th className="p-3.5 text-center w-48">Acciones</th>
+        {/* TABLA PRINCIPAL VISOR ESPEJO */}
+        <div className="overflow-hidden rounded-xl border border-slate-200/90 shadow-2xs">
+          <table className="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr className="bg-slate-50 text-slate-600 font-extrabold uppercase border-b border-slate-200 tracking-wider text-[10px]">
+                <th className="p-3.5 text-center w-28 border-r border-slate-200/60">N° CORRELATIVO</th>
+                <th className="p-3.5 border-r border-slate-200/60 bg-blue-50/40 text-blue-950">COLUMNA A: DATO DETECTADO (EXCEL / FOTO OCR)</th>
+                <th className="p-3.5 border-r border-slate-200/60 bg-emerald-50/30 text-emerald-950">COLUMNA B: DATO REGISTRADO (BASE DE DATOS GESTIÓN)</th>
+                <th className="p-3.5 text-center w-48 border-r border-slate-200/60">ESTADO CONVALIDACIÓN</th>
+                <th className="p-3.5 text-center w-36">ACCIONES</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-sans">
+            <tbody className="divide-y divide-slate-200/70 bg-white font-medium">
               {registros.map((r) => (
-                <tr key={r.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="p-3.5 font-mono font-bold text-[#003366] text-xs">#{r.nroCorrelativo}</td>
-                  
-                  <td className={`p-3.5 border-l border-slate-200 ${
-                    r.coincidenciaExacta ? 'bg-emerald-50/40 text-emerald-900' : 'bg-amber-50 text-amber-950 font-bold'
-                  }`}>
-                    <div className="font-bold uppercase">{r.detectadoNombre}</div>
-                    <div className="font-mono text-[11px] text-slate-500">CI: {r.detectadoCi}</div>
+                <tr key={r.id} className={`transition-colors ${r.coincidenciaExacta ? 'hover:bg-slate-50/80' : 'bg-amber-50/40 hover:bg-amber-50/70'}`}>
+                  <td className="p-3.5 text-center font-mono font-extrabold text-slate-800 border-r border-slate-200/60">
+                    {r.nroCorrelativo}
                   </td>
 
-                  <td className={`p-3.5 border-l border-slate-200 ${
-                    r.coincidenciaExacta ? 'bg-emerald-50/40 text-emerald-900 font-bold' : 'bg-amber-50/80 text-amber-950'
-                  }`}>
-                    <div className="font-bold uppercase">{r.bdNombre}</div>
-                    <div className="font-mono text-[11px] text-slate-500">CI: {r.bdCi}</div>
+                  <td className="p-3.5 border-r border-slate-200/60">
+                    <div className="font-extrabold text-emerald-800 uppercase tracking-tight">{r.detectadoNombre}</div>
+                    <div className="font-mono text-[11px] text-slate-500 mt-0.5">CI: {r.detectadoCi}</div>
+                  </td>
+
+                  <td className={`p-3.5 border-r border-slate-200/60 ${r.coincidenciaExacta ? '' : 'bg-amber-50/60'}`}>
+                    <div className="font-extrabold text-emerald-800 uppercase tracking-tight">{r.bdNombre}</div>
+                    <div className="font-mono text-[11px] text-slate-500 mt-0.5">CI: {r.bdCi}</div>
+                  </td>
+
+                  <td className="p-3.5 text-center border-r border-slate-200/60">
+                    {r.estadoValidacion === 'EDITADO_MANUALMENTE' ? (
+                      <span className="px-3.5 py-1.5 bg-blue-100 text-blue-900 border border-blue-300 rounded-full font-extrabold text-[11px] inline-flex items-center gap-1 shadow-2xs">
+                        <span className="material-symbols-outlined text-xs">edit_note</span>
+                        Editado &amp; Validado
+                      </span>
+                    ) : r.coincidenciaExacta ? (
+                      <span className="px-4 py-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full font-extrabold text-[11px] inline-flex items-center gap-1 shadow-2xs">
+                        <span className="material-symbols-outlined text-xs">check</span>
+                        Coincidencia 100%
+                      </span>
+                    ) : (
+                      <span className="px-4 py-1.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-full font-extrabold text-[11px] inline-flex items-center gap-1 shadow-2xs animate-pulse">
+                        <span className="material-symbols-outlined text-xs">warning</span>
+                        Revisión Manual
+                      </span>
+                    )}
                   </td>
 
                   <td className="p-3.5 text-center">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold border inline-block ${
-                      r.estadoValidacion === 'EDITADO_MANUALMENTE'
-                        ? 'bg-blue-100 text-blue-900 border-blue-300'
-                        : r.coincidenciaExacta
-                        ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                        : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
-                    }`}>
-                      {r.estadoValidacion === 'EDITADO_MANUALMENTE'
-                        ? '✏️ Editado & Validado'
-                        : r.coincidenciaExacta
-                        ? '✓ Coincidencia 100%'
-                        : '⚠️ Revisión Manual'}
-                    </span>
-                  </td>
-
-                  <td className="p-3.5 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
+                    <div className="flex items-center justify-center gap-2">
                       <button
                         onClick={() => handleOpenEditModal(r)}
-                        className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
-                        title="Editar nombre/CI de este registro"
+                        className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-xs"
                       >
                         <span className="material-symbols-outlined text-xs">edit</span>
                         Editar
                       </button>
 
-                      {!r.coincidenciaExacta && (
+                      {!r.coincidenciaExacta ? (
                         <button
                           onClick={() => handleManualApprove(r.id)}
-                          className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
-                          title="Aprobar dato detectado"
+                          className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-xs"
                         >
                           <span className="material-symbols-outlined text-xs">check_circle</span>
                           Aprobar
                         </button>
-                      )}
-
-                      {r.coincidenciaExacta && (
-                        <span className="text-[11px] text-emerald-700 font-bold flex items-center gap-0.5">
-                          <span className="material-symbols-outlined text-sm">verified</span>
+                      ) : (
+                        <span className="text-[11px] text-slate-800 font-bold inline-flex items-center gap-0.5 ml-1">
+                          <span className="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
                           OK
                         </span>
                       )}
@@ -337,73 +312,73 @@ export function CargaExcelLibrosHistoricos() {
       {/* MODAL DE EDICIÓN DIRECTA DE CELDAS */}
       {editingRow && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <h3 className="text-sm font-extrabold text-[#003366] flex items-center gap-2">
                 <span className="material-symbols-outlined text-amber-500">edit_square</span>
-                Editar Registro Correlativo #{editingRow.nroCorrelativo}
+                Editar Registro Correlativo {editingRow.nroCorrelativo}
               </h3>
               <button
                 onClick={() => setEditingRow(null)}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer"
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer transition-colors"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
 
             <div className="space-y-3">
-              <div className="p-3 bg-blue-50/60 border border-blue-200 rounded-xl space-y-2">
-                <h4 className="text-xs font-bold text-blue-900 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-sm">description</span>
+              <div className="p-3.5 bg-blue-50/50 border border-blue-200/80 rounded-xl space-y-2.5">
+                <h4 className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-sm text-blue-600">description</span>
                   COLUMNA A: Dato Detectado (Excel / Foto OCR)
                 </h4>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 mb-0.5">Nombre Completo:</label>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Nombre Completo:</label>
                   <input
                     type="text"
                     value={editingRow.detectadoNombre}
                     onChange={(e) => setEditingRow({ ...editingRow, detectadoNombre: e.target.value.toUpperCase() })}
-                    className="w-full px-3 py-1.5 border border-blue-300 rounded-lg text-xs font-bold uppercase bg-white"
+                    className="w-full px-3 py-1.5 border border-blue-300 rounded-lg text-xs font-bold uppercase bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 mb-0.5">Cédula de Identidad:</label>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Cédula de Identidad:</label>
                   <input
                     type="text"
                     value={editingRow.detectadoCi}
                     onChange={(e) => setEditingRow({ ...editingRow, detectadoCi: e.target.value })}
-                    className="w-full px-3 py-1.5 border border-blue-300 rounded-lg text-xs font-mono font-bold bg-white"
+                    className="w-full px-3 py-1.5 border border-blue-300 rounded-lg text-xs font-mono font-bold bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-emerald-50/60 border border-emerald-200 rounded-xl space-y-2">
-                <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-sm">database</span>
+              <div className="p-3.5 bg-emerald-50/50 border border-emerald-200/80 rounded-xl space-y-2.5">
+                <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-sm text-emerald-600">database</span>
                   COLUMNA B: Dato en Base de Datos de la Gestión
                 </h4>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 mb-0.5">Nombre Registrado:</label>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Nombre Registrado:</label>
                   <input
                     type="text"
                     value={editingRow.bdNombre}
                     onChange={(e) => setEditingRow({ ...editingRow, bdNombre: e.target.value.toUpperCase() })}
-                    className="w-full px-3 py-1.5 border border-emerald-300 rounded-lg text-xs font-bold uppercase bg-white"
+                    className="w-full px-3 py-1.5 border border-emerald-300 rounded-lg text-xs font-bold uppercase bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-600 mb-0.5">Cédula de Identidad:</label>
+                  <label className="block text-[10px] font-bold text-slate-600 mb-1">Cédula de Identidad:</label>
                   <input
                     type="text"
                     value={editingRow.bdCi}
                     onChange={(e) => setEditingRow({ ...editingRow, bdCi: e.target.value })}
-                    className="w-full px-3 py-1.5 border border-emerald-300 rounded-lg text-xs font-mono font-bold bg-white"
+                    className="w-full px-3 py-1.5 border border-emerald-300 rounded-lg text-xs font-mono font-bold bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
               <button
                 onClick={() => setEditingRow(null)}
                 className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all cursor-pointer"
@@ -412,7 +387,7 @@ export function CargaExcelLibrosHistoricos() {
               </button>
               <button
                 onClick={handleSaveEditedRow}
-                className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-extrabold text-xs rounded-xl shadow transition-all uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                className="px-5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-extrabold text-xs rounded-xl shadow-sm transition-all uppercase tracking-wider flex items-center gap-1 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-sm">save</span>
                 Guardar Cambio
@@ -422,5 +397,5 @@ export function CargaExcelLibrosHistoricos() {
         </div>
       )}
     </div>
-);
+  );
 }
