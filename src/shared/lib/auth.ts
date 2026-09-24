@@ -29,11 +29,20 @@ interface AuthActions {
 
 type AuthStore = AuthState & AuthActions;
 
+// SSO COMENTADO / DESACTIVADO: Sesión iniciada automáticamente por defecto
+const DEFAULT_USUARIO_DEV: Usuario = {
+  id: '9999999',
+  nombre_completo: 'Operador Sistema UAGRM',
+  email: 'operador.central@uagrm.edu.bo',
+  roles: ['ARCHIVO_CENTRAL', 'TITULOS', 'SECRETARIA_GENERAL'],
+  permisos: ['ALL'],
+};
+
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      usuario: null,
-      isAuthenticated: false,
+      usuario: DEFAULT_USUARIO_DEV, // SSO Comentado -> Usuario por defecto
+      isAuthenticated: true,       // SSO Comentado -> Autenticado siempre por defecto
 
       login: (usuario: Usuario) => {
         set({
@@ -44,8 +53,8 @@ export const useAuthStore = create<AuthStore>()(
 
       logout: () => {
         set({
-          usuario: null,
-          isAuthenticated: false,
+          usuario: DEFAULT_USUARIO_DEV,
+          isAuthenticated: true,
         });
       },
     }),

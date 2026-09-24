@@ -11,33 +11,35 @@ export function SSOCallbackPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // El IdP puede devolver `ticket` o `code` dependiendo de la implementación.
     const token = searchParams.get('ticket') || searchParams.get('code');
 
     if (!token) {
-      setError('No se recibió un ticket de autorización del Admin Central.');
+      setError('No se recibió un ticket de autorización del SSO UAGRM.');
       return;
     }
 
     const authenticate = async () => {
       try {
-        // 1. Canjear el ticket. El backend establecerá las cookies HttpOnly.
-        const { data: ssoResponse } = await restClient.post<{ ok: boolean }>('/sso/callback', { ticket: token });
+        // 1. Canjear el ticket en el backend
+        await restClient.post<{ ok: boolean; status?: string }>('/auth/sso/callback/', { ticket: token });
         
-        if (!ssoResponse.ok) {
-          throw new Error('Error al canjear ticket.');
-        }
+        // 2. Obtener el perfil del usuario utilizando la sesión activa
+        const { data: userData } = await restClient.get<any>('/auth/me/');
+        
+        // 3. Mapear datos y guardar en store de autenticación
+        login({
+          id: String(userData.id || '1'),
+          nombre_completo: userData.nombre || userData.nombre_completo || 'Usuario Autenticado',
+          email: userData.email || '',
+          roles: userData.rol ? [userData.rol] : ['ARCHIVO_CENTRAL'],
+          permisos: userData.permisos || ['ALL'],
+        });
 
-        // 2. Obtener el perfil del usuario utilizando las cookies establecidas.
-        const { data: userData } = await restClient.get<Usuario>('/v1/auth/me/');
-        
-        // 3. Guardar en el store y redirigir
-        login(userData);
-        navigate('/tramites', { replace: true });
+        navigate('/archivo', { replace: true });
 
       } catch (err) {
         console.error('Error en SSO Callback:', err);
-        setError('Error al iniciar sesión. Por favor, intenta nuevamente.');
+        setError('Error al conectar con el SSO UAGRM. Asegúrate de tener el Backend activo en localhost:8000.');
       }
     };
 
@@ -46,10 +48,10 @@ export function SSOCallbackPage() {
 
   return (
     <div className="login-page">
-      <div className="login-card" style={{ maxWidth: '400px', textAlign: 'center' }}>
+      <div className="login-card" style={{ maxWidth: '440px', textAlign: 'center' }}>
         <div className="login-card__brand">
-          <div className="login-card__logo" aria-hidden="true">TS</div>
-          <h1 className="login-card__title">Autenticando...</h1>
+          <div className="login-card__logo" aria-hidden="true">UAGRM</div>
+          <h1 className="login-card__title">Autenticando con SSO UAGRM...</h1>
         </div>
 
         <div style={{ marginTop: '2rem' }}>
@@ -59,7 +61,7 @@ export function SSOCallbackPage() {
               <div style={{ marginTop: '1rem' }}>
                 <button 
                   onClick={() => navigate('/login')} 
-                  style={{ textDecoration: 'underline', background: 'none', border: 'none', color: 'inherit', cursor: 'pointer' }}
+                  style={{ textDecoration: 'underline', background: 'none', border: 'none', color: '#3b82f6', cursor: 'pointer', fontWeight: 'bold' }}
                 >
                   Volver al inicio de sesión
                 </button>
@@ -67,11 +69,11 @@ export function SSOCallbackPage() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: '#64748b' }}>
-              <svg className="animate-spin" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg className="animate-spin" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round">
                 <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                 <path d="M12 2a10 10 0 0 1 10 10" />
               </svg>
-              <p>Conectando de forma segura con UAGRM...</p>
+              <p>Verificando credenciales con la Universidad Autónoma Gabriel René Moreno...</p>
             </div>
           )}
         </div>

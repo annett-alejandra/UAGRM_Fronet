@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { type ReactNode } from 'react';
 import { LoginPage } from '../../pages/login/LoginPage';
+import { SSOCallbackPage } from '../../pages/login/SSOCallbackPage';
 import { ArchivoCentralLayout } from '../../pages/archivo-central/ArchivoCentralLayout';
 import { TitulosLayout } from '../../pages/titulos/TitulosLayout';
 import { SecretariaLayout } from '../../pages/secretaria/SecretariaLayout';
@@ -12,9 +12,11 @@ export function RouterProvider() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login Portal Page (Portal de Acceso de los 3 Módulos) */}
+        {/* Login Portal & SSO Callback */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<LoginPage />} />
+        <Route path="/sso/callback" element={<SSOCallbackPage />} />
+        <Route path="/login/sso/callback" element={<SSOCallbackPage />} />
 
         {/* Flujo OCR */}
         <Route path="/archivo/subir-ocr" element={<SidebarNavWidget pageTitle="Subir Expediente"><CargadorOcrWizard /></SidebarNavWidget>} />
