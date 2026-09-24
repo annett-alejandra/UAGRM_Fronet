@@ -17,8 +17,8 @@ function getEnvVar(key: string, fallback?: string): string {
 }
 
 export const env: EnvConfig = {
-  API_BASE_URL: getEnvVar('VITE_API_BASE_URL', 'http://localhost:10005/api'),
-  GRAPHQL_URL: getEnvVar('VITE_GRAPHQL_URL', 'http://localhost:10005/graphql'),
-  MINIO_PUBLIC_URL: getEnvVar('VITE_MINIO_PUBLIC_URL', 'http://localhost:10001'),
+  API_BASE_URL: getEnvVar('VITE_API_BASE_URL', 'http://localhost:8000/api'),
+  GRAPHQL_URL: getEnvVar('VITE_GRAPHQL_URL', 'http://localhost:8000/graphql'),
+  MINIO_PUBLIC_URL: getEnvVar('VITE_MINIO_PUBLIC_URL', 'http://localhost:9000'),
   APP_ENV: getEnvVar('VITE_APP_ENV', 'development') as EnvConfig['APP_ENV'],
 } as const;
