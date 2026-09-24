@@ -132,7 +132,7 @@ export function CargaExcelLibrosHistoricos() {
   return (
     <div className="p-6 space-y-6 animate-in fade-in duration-300 max-w-7xl mx-auto bg-white min-h-screen font-sans">
       
-      {/* CARD 1: ASIGNACIÓN A GESTIÓN ANUAL & TOMO / LIBRO MATRIZ */}
+      {/* SECCIÓN 1: ASIGNACIÓN A GESTIÓN ANUAL & TOMO / LIBRO MATRIZ */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
         <div className="flex items-center gap-2.5 text-[#003366] font-extrabold text-base border-b border-slate-100 pb-3">
           <span className="p-1.5 bg-amber-50 text-amber-600 rounded-lg border border-amber-200/60 flex items-center justify-center shadow-2xs">
@@ -193,7 +193,7 @@ export function CargaExcelLibrosHistoricos() {
         </div>
       </div>
 
-      {/* CARD 2: VISOR ESPEJO TABLA DE CONVALIDACIÓN */}
+      {/* SECCIÓN 2: VISOR ESPEJO TABLA DE CONVALIDACIÓN */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-3.5">
           <div>
@@ -237,7 +237,7 @@ export function CargaExcelLibrosHistoricos() {
                 <th className="p-3.5 border-r border-slate-200/60 bg-blue-50/40 text-blue-950">COLUMNA A: DATO DETECTADO (EXCEL / FOTO OCR)</th>
                 <th className="p-3.5 border-r border-slate-200/60 bg-emerald-50/30 text-emerald-950">COLUMNA B: DATO REGISTRADO (BASE DE DATOS GESTIÓN)</th>
                 <th className="p-3.5 text-center w-48 border-r border-slate-200/60">ESTADO CONVALIDACIÓN</th>
-                <th className="p-3.5 text-center w-36">ACCIONES</th>
+                <th className="p-3.5 text-center w-44">ACCIONES</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200/70 bg-white font-medium">
@@ -278,27 +278,40 @@ export function CargaExcelLibrosHistoricos() {
 
                   <td className="p-3.5 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <button
-                        onClick={() => handleOpenEditModal(r)}
-                        className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-xs"
-                      >
-                        <span className="material-symbols-outlined text-xs">edit</span>
-                        Editar
-                      </button>
-
                       {!r.coincidenciaExacta ? (
-                        <button
-                          onClick={() => handleManualApprove(r.id)}
-                          className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold rounded-lg text-[11px] transition-all flex items-center gap-1 cursor-pointer shadow-xs"
-                        >
-                          <span className="material-symbols-outlined text-xs">check_circle</span>
-                          Aprobar
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleManualApprove(r.id)}
+                            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold rounded-xl text-[11px] transition-all inline-flex items-center gap-1 cursor-pointer shadow-xs"
+                            title="Aprobar dato detectado"
+                          >
+                            <span className="material-symbols-outlined text-xs">check_circle</span>
+                            Aprobar
+                          </button>
+                          <button
+                            onClick={() => handleOpenEditModal(r)}
+                            className="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 active:scale-95 font-extrabold rounded-xl text-[11px] transition-all inline-flex items-center gap-1 cursor-pointer shadow-2xs"
+                            title="Editar nombre / CI"
+                          >
+                            <span className="material-symbols-outlined text-xs">edit</span>
+                            Editar
+                          </button>
+                        </>
                       ) : (
-                        <span className="text-[11px] text-slate-800 font-bold inline-flex items-center gap-0.5 ml-1">
-                          <span className="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
-                          OK
-                        </span>
+                        <>
+                          <span className="px-3 py-1.5 bg-slate-100 text-emerald-700 font-extrabold text-[11px] rounded-xl border border-slate-200 inline-flex items-center gap-1">
+                            <span className="material-symbols-outlined text-xs text-emerald-600">check_circle</span>
+                            OK
+                          </span>
+                          <button
+                            onClick={() => handleOpenEditModal(r)}
+                            className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 active:scale-95 font-bold rounded-xl text-[11px] transition-all inline-flex items-center gap-1 cursor-pointer"
+                            title="Editar o corregir de nuevo"
+                          >
+                            <span className="material-symbols-outlined text-xs">edit</span>
+                            Editar
+                          </button>
+                        </>
                       )}
                     </div>
                   </td>
