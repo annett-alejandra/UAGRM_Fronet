@@ -1,58 +1,71 @@
-import { type ButtonHTMLAttributes, type ReactNode } from 'react';
-import './Button.css';
+﻿import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { buttonVariants, type ButtonVariantProps } from "./button.variants";
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'accent';
-type ButtonSize = 'sm' | 'md' | 'lg';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  readonly variant?: ButtonVariant;
-  readonly size?: ButtonSize;
-  readonly isFullWidth?: boolean;
-  readonly isLoading?: boolean;
-  readonly isIconOnly?: boolean;
-  readonly children: ReactNode;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    ButtonVariantProps {
+  asChild?: boolean;
+  isLoading?: boolean;
+  loading?: boolean;
 }
 
-export function Button({
-  variant = 'primary',
-  size = 'md',
-  isFullWidth = false,
-  isLoading = false,
-  isIconOnly = false,
-  disabled,
-  className = '',
-  children,
-  ...rest
-}: ButtonProps) {
-  const classes = [
-    'btn',
-    `btn--${variant}`,
-    size !== 'md' ? `btn--${size}` : '',
-    isFullWidth ? 'btn--full' : '',
-    isIconOnly ? 'btn--icon' : '',
-    isLoading ? 'btn--loading' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      isLoading = false,
+      loading = false,
+      disabled,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const isBusy = isLoading || loading;
+    const Comp = asChild ? Slot : "button";
 
-  return (
-    <button
-      className={classes}
-      disabled={disabled || isLoading}
-      aria-disabled={disabled || isLoading}
-      aria-busy={isLoading}
-      {...rest}
-    >
-      {children}
-      {isLoading && (
-        <span className="btn__spinner" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
-            <path d="M12 2a10 10 0 0 1 10 10" />
-          </svg>
-        </span>
-      )}
-    </button>
-  );
-}
+    return (
+      <Comp
+        ref={ref}
+        disabled={disabled || isBusy}
+        aria-busy={isBusy}
+        className={buttonVariants({ variant, size, className })}
+        {...props}
+      >
+        {isBusy ? (
+          <>
+            <svg
+              className="animate-spin -ml-1 mr-2 h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              />
+            </svg>
+            <span>Cargando...</span>
+          </>
+        ) : (
+          children
+        )}
+      </Comp>
+    );
+  }
+);
+Button.displayName = "Button";

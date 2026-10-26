@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
@@ -27,14 +27,18 @@
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@app/*": ["src/app/*"],
       "@shared/*": ["src/shared/*"],
       "@entities/*": ["src/entities/*"],
       "@features/*": ["src/features/*"],
       "@widgets/*": ["src/widgets/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@/shared/ui/button": ["src/shared/ui/Button"],
+      "@/shared/ui/input": ["src/shared/ui/Input"],
+      "@/shared/ui/card": ["src/shared/ui/Card"],
+      "@/shared/ui/badge": ["src/shared/ui/Badge"]
     }
   },
   "include": ["src"]
 }
-

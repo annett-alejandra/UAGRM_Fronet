@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardBody } from '../../../shared/ui/Card/Card';
 import { Button } from '../../../shared/ui/Button/Button';
@@ -83,7 +83,7 @@ export function CargadorOcrWizard() {
             />
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Archivo PDF</label>
-              <input type="file" accept="application/pdf" onChange={handleFileChange} style={{ padding: '0.5rem', border: '1px dashed var(--border-color)', width: '100%', borderRadius: 'var(--radius-md)' }} />
+              <Input type="file" accept="application/pdf" onChange={handleFileChange} />
             </div>
             
             {error && <div style={{ color: 'var(--error)', fontSize: '0.875rem' }}>{error}</div>}
@@ -106,3 +106,4 @@ export function CargadorOcrWizard() {
     </Card>
   );
 }
+

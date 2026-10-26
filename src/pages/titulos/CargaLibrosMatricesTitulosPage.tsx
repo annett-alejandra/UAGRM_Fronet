@@ -69,12 +69,12 @@ export function CargaLibrosMatricesTitulosPage() {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="p-3.5 bg-gradient-to-br from-[#003366] to-[#002244] text-[#E5A823] rounded-2xl shadow-md">
+          <div className="p-3.5 bg-gradient-to-br from-[#191A7D] to-[#2B6CB0] text-[#E5A823] rounded-2xl shadow-md">
             <BookOpen className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-50 text-[#003366] border border-blue-200">
+              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-50 text-[#191A7D] border border-blue-200">
                 Títulos y Grados • Opción 5
               </span>
             </div>
@@ -97,13 +97,13 @@ export function CargaLibrosMatricesTitulosPage() {
       <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
         <div className="flex justify-between items-center border-b border-slate-100 pb-3">
           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <UploadCloud className="w-4 h-4 text-[#003366]" />
+            <UploadCloud className="w-4 h-4 text-[#191A7D]" />
             Cargar Nuevo Libro Matriz Escaneado (PDF / Excel ZIP)
           </h3>
         </div>
 
-        <div className="border-2 border-dashed border-slate-300 hover:border-[#003366] rounded-2xl p-8 text-center bg-slate-50/50 hover:bg-blue-50/20 transition-all cursor-pointer space-y-3">
-          <div className="w-14 h-14 bg-blue-100/80 text-[#003366] rounded-2xl flex items-center justify-center mx-auto shadow-xs">
+        <div className="border-2 border-dashed border-slate-300 hover:border-[#191A7D] rounded-2xl p-8 text-center bg-slate-50/50 hover:bg-blue-50/20 transition-all cursor-pointer space-y-3">
+          <div className="w-14 h-14 bg-blue-100/80 text-[#191A7D] rounded-2xl flex items-center justify-center mx-auto shadow-xs">
             <UploadCloud className="w-8 h-8" />
           </div>
           <div>
@@ -122,13 +122,13 @@ export function CargaLibrosMatricesTitulosPage() {
                 <span>{uploadProgress}%</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-[#003366] h-[#003366] h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                <div className="bg-[#191A7D] h-[#191A7D] h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
               </div>
             </div>
           ) : (
             <button
               onClick={handleSimularCarga}
-              className="px-5 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-xs transition-all inline-flex items-center gap-2 cursor-pointer active:scale-95"
+              className="px-5 py-2.5 bg-[#191A7D] hover:bg-[#2B6CB0] text-white font-bold text-xs rounded-xl shadow-xs transition-all inline-flex items-center gap-2 cursor-pointer active:scale-95"
             >
               <Plus className="w-4 h-4" />
               <span>Simular Carga de Libro Matriz</span>
@@ -142,7 +142,7 @@ export function CargaLibrosMatricesTitulosPage() {
         <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2.5">
-              <Layers className="w-5 h-5 text-[#003366]" />
+              <Layers className="w-5 h-5 text-[#191A7D]" />
               Libros Matrices Registrados en el Sistema ({libros.length})
             </h3>
             <p className="text-xs text-slate-500 mt-1">
@@ -168,7 +168,7 @@ export function CargaLibrosMatricesTitulosPage() {
             <tbody className="divide-y divide-slate-100 font-sans">
               {libros.map((l) => (
                 <tr key={l.id} className="hover:bg-blue-50/40 transition-colors">
-                  <td className="py-3.5 px-4 font-mono font-bold text-[#003366]">{l.codigoMatriz}</td>
+                  <td className="py-3.5 px-4 font-mono font-bold text-[#191A7D]">{l.codigoMatriz}</td>
                   <td className="py-3.5 px-4 font-bold text-slate-800">{l.tomoNombre}</td>
                   <td className="py-3.5 px-4 text-slate-700 font-medium">{l.carrera}</td>
                   <td className="py-3.5 px-4 font-mono text-slate-500">{l.gestion}</td>

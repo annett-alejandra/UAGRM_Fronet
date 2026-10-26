@@ -1,3 +1,4 @@
+﻿import { Button } from '@/shared/ui/button';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { restClient } from '../../shared/api/rest-client';
@@ -14,7 +15,7 @@ export function SSOCallbackPage() {
     const token = searchParams.get('ticket') || searchParams.get('code');
 
     if (!token) {
-      setError('No se recibió un ticket de autorización del SSO UAGRM.');
+      setError('No se recibiÃ³ un ticket de autorizaciÃ³n del SSO UAGRM.');
       return;
     }
 
@@ -23,10 +24,10 @@ export function SSOCallbackPage() {
         // 1. Canjear el ticket en el backend
         await restClient.post<{ ok: boolean; status?: string }>('/auth/sso/callback/', { ticket: token });
         
-        // 2. Obtener el perfil del usuario utilizando la sesión activa
+        // 2. Obtener el perfil del usuario utilizando la sesiÃ³n activa
         const { data: userData } = await restClient.get<any>('/auth/me/');
         
-        // 3. Mapear datos y guardar en store de autenticación
+        // 3. Mapear datos y guardar en store de autenticaciÃ³n
         login({
           id: String(userData.id || '1'),
           nombre_completo: userData.nombre || userData.nombre_completo || 'Usuario Autenticado',
@@ -39,7 +40,7 @@ export function SSOCallbackPage() {
 
       } catch (err) {
         console.error('Error en SSO Callback:', err);
-        setError('Error al conectar con el SSO UAGRM. Asegúrate de tener el Backend activo en localhost:8000.');
+        setError('Error al conectar con el SSO UAGRM. AsegÃºrate de tener el Backend activo en localhost:8000.');
       }
     };
 
@@ -59,12 +60,7 @@ export function SSOCallbackPage() {
             <div className="login-card__error" role="alert">
               {error}
               <div style={{ marginTop: '1rem' }}>
-                <button 
-                  onClick={() => navigate('/login')} 
-                  style={{ textDecoration: 'underline', background: 'none', border: 'none', color: '#3b82f6', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                  Volver al inicio de sesión
-                </button>
+                <Button variant="outline" size="sm" onClick={() => navigate("/login")}>Volver al inicio de sesión</Button>
               </div>
             </div>
           ) : (
@@ -73,7 +69,7 @@ export function SSOCallbackPage() {
                 <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                 <path d="M12 2a10 10 0 0 1 10 10" />
               </svg>
-              <p>Verificando credenciales con la Universidad Autónoma Gabriel René Moreno...</p>
+              <p>Verificando credenciales con la Universidad AutÃ³noma Gabriel RenÃ© Moreno...</p>
             </div>
           )}
         </div>
@@ -81,3 +77,6 @@ export function SSOCallbackPage() {
     </div>
   );
 }
+
+
+

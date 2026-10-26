@@ -1,5 +1,7 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
-@import '../design/theme.css';
+@import './shared/ui/tokens/colors.css';
+@import './shared/ui/tokens/typography.css';
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import './shared/ui/tokens/theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -12,32 +14,32 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #F8FAFC;
-  color: #1E293B;
+  background-color: var(--uagrm-blanco-hueso);
+  color: var(--uagrm-gris-profundo);
   min-height: 100vh;
   margin: 0;
 }
 
-/* â”€â”€ BOTONES GLOBALES INSTITUCIONALES â”€â”€ */
+/* ── BOTONES GLOBALES INSTITUCIONALES (UAGRM BLUE & RED) ── */
 .boton-crear {
-  @apply bg-[#003366] text-sm text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
+  @apply bg-[#191A7D] text-sm text-white px-4 py-2.5 rounded-lg hover:bg-[#2B6CB0] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
 
 .boton-editar {
-  @apply bg-[#003366] text-white px-4 py-2.5 rounded-lg hover:bg-[#002244] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
+  @apply bg-[#191A7D] text-white px-4 py-2.5 rounded-lg hover:bg-[#2B6CB0] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
 
 .boton-eliminar {
-  @apply bg-[#C51D24] text-white px-4 py-2.5 rounded-lg hover:bg-[#a3151b] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
+  @apply bg-[#D31338] text-white px-4 py-2.5 rounded-lg hover:bg-[#B70F2F] transition-colors flex items-center gap-2 shadow-sm font-medium cursor-pointer;
 }
 
 .btn-secundario-curvo {
-  @apply text-white bg-[#C51D24] rounded-xl border border-[#C51D24] hover:bg-[#a3151b] leading-5 text-[11px] sm:text-[13px] font-bold px-4 py-2.5 transition-all cursor-pointer uppercase shadow-sm;
+  @apply text-white bg-[#D31338] rounded-xl border border-[#D31338] hover:bg-[#B70F2F] leading-5 text-[11px] sm:text-[13px] font-bold px-4 py-2.5 transition-all cursor-pointer uppercase shadow-sm;
 }
 
-/* â”€â”€ TARJETAS Y PANELS LIMPIOS (SIN FONDOS NEGROS PESADOS) â”€â”€ */
+/* ── TARJETAS Y PANELES LIMPIOS ── */
 .card-uagrm, .card {
-  @apply bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-5 md:p-6 text-[#1E293B];
+  @apply bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-5 md:p-6 text-[#191A2D];
 }
 
 .div-tabla {
@@ -49,11 +51,11 @@ body {
 }
 
 .tabla-cms thead {
-  @apply bg-slate-50 text-[#1E293B] border-b border-[#E2E8F0];
+  @apply bg-[#F9F9F6] text-[#191A2D] border-b border-[#E2E8F0];
 }
 
 .tabla-cms thead tr th {
-  @apply px-4 py-3.5 font-bold text-[10px] text-[#1E293B] uppercase tracking-wider text-left select-none;
+  @apply px-4 py-3.5 font-bold text-[10px] text-[#191A2D] uppercase tracking-wider text-left select-none;
 }
 
 .tabla-cms tbody {
@@ -61,44 +63,41 @@ body {
 }
 
 .tabla-cms tbody tr {
-  @apply hover:bg-slate-50 transition-colors duration-150;
+  @apply hover:bg-[#F9F9F6] transition-colors duration-150;
 }
 
 .tabla-cms tbody tr td {
-  @apply px-4 py-3.5 text-[11px] text-[#1E293B] align-middle;
+  @apply px-4 py-3.5 text-[11px] text-[#191A2D] align-middle;
 }
 
 .badge-status-publicado {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#1B7A43]/10 text-[#1B7A43] border border-[#1B7A43]/30 whitespace-nowrap transition-colors select-none;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#DAEFFE] text-[#191A7D] border border-[#85BDEF]/50 whitespace-nowrap transition-colors select-none;
 }
 
 .select-estilo {
-  @apply w-full rounded-xl border-[#E2E8F0] bg-white shadow-sm focus:border-[#003366] focus:ring-2 focus:ring-[#003366]/20 text-[11px] md:text-[12px] py-2 px-3 cursor-pointer transition-all font-medium text-[#1E293B] h-[42px];
+  @apply w-full rounded-xl border-[#E2E8F0] bg-white shadow-sm focus:border-[#191A7D] focus:ring-2 focus:ring-[#191A7D]/20 text-[11px] md:text-[12px] py-2 px-3 cursor-pointer transition-all font-medium text-[#191A2D] h-[42px];
 }
-
 
 @layer base {
   :root {
-    --primary: 210 100% 20%;       /* #003366 - Azul UAGRM */
+    --primary: 239 67% 29%;        /* #191A7D - UAGRM Blue */
     --primary-foreground: 0 0% 100%;
-    --destructive: 357 74% 44%;     /* #C51D24 - Rojo Cardenal */
-    --background: 210 40% 98%;      /* #F8FAFC - Gris Hielo */
-    --card: 0 0% 100%;              /* #FFFFFF - Tarjetas limpias */
-    --border: 214 32% 91%;          /* #E2E8F0 - Separadores tenues */
+    --destructive: 348 83% 45%;    /* #D31338 - Rojo UAGRM */
+    --background: 60 14% 97%;       /* #F9F9F6 - Blanco hueso */
+    --card: 0 0% 100%;             /* #FFFFFF - Tarjetas limpias */
+    --border: 214 32% 91%;         /* #E2E8F0 - Separadores tenues */
   }
 }
 
 /* ============================================================
-   @media print â€” Solo imprimir el documento, nada mas
+   @media print — Solo imprimir el documento, nada mas
    ============================================================ */
 @media print {
-  /* Ocultar TODA la UI excepto el documento */
   @page {
     size: letter portrait;
     margin: 0;
   }
 
-  /* Quitar header/footer del navegador (fecha, URL, titulo) */
   html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -107,7 +106,6 @@ body {
     print-color-adjust: exact !important;
   }
 
-  /* Ocultar sidebar, barra inferior, panel word, botones — pero NO el header del documento */
   aside,
   nav,
   .print\:hidden,
@@ -118,12 +116,10 @@ body {
     visibility: hidden !important;
   }
 
-  /* Ocultar SOLO el header del layout (SidebarNavWidget), no el header del informe */
   .sticky.top-0.z-40 {
     display: none !important;
   }
 
-  /* El contenedor principal pierde su margin-left del sidebar */
   body > div,
   #root,
   #root > div,
@@ -135,7 +131,6 @@ body {
     width: 100% !important;
   }
 
-  /* La hoja carta: quitar sombra, expandir al ancho completo de la pagina impresa */
   div[style*="width: 816px"] {
     width: 100% !important;
     max-width: 100% !important;
@@ -146,7 +141,6 @@ body {
     border: none !important;
   }
 
-  /* Asegurar que el flex wrapper no recorte nada */
   .flex-1.flex.justify-center {
     display: block !important;
     padding: 0 !important;
@@ -154,7 +148,6 @@ body {
     overflow: visible !important;
   }
 
-  /* Forzar colores en tablas e imagenes */
   img {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -165,16 +158,13 @@ body {
     print-color-adjust: exact !important;
   }
 
-  /* No cortar contenido entre paginas dentro de la tabla */
   table { page-break-inside: auto; }
   tr { page-break-inside: avoid; page-break-after: auto; }
 
-  /* El template del informe necesita su propio padding interno al imprimir */
   .font-serif[class*="print:p-0"] {
     padding: 15mm 18mm !important;
   }
 
-  /* Asegurar que el escudo UAGRM se imprima siempre */
   img[alt="Escudo UAGRM"] {
     display: block !important;
     visibility: visible !important;

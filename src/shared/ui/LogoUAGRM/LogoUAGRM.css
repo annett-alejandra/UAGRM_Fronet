@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Design System Primitivo: Escudo Oficial UAGRM (Vanilla CSS)
+   Consume el activo oficial institucional WebP (/UAGRM-Bolivia.webp)
+   ========================================================================== */
+
+.logo-uagrm-img {
+  display: block;
+  object-fit: contain;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.logo-uagrm--sm {
+  width: 44px;
+  max-height: 56px;
+}
+
+.logo-uagrm--md {
+  width: 64px;
+  max-height: 80px;
+}
+
+.logo-uagrm--lg {
+  width: 84px;
+  max-height: 106px;
+}
+
+.logo-uagrm--xl {
+  width: 104px;
+  max-height: 130px;
+}

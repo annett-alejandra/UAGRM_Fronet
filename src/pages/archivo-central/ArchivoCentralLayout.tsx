@@ -8,16 +8,22 @@ import { CargaExcelLibrosHistoricos } from './CargaExcelLibrosHistoricos';
 import { DashboardNotificacionesPage } from './DashboardNotificacionesPage';
 import { VerLibrosPorTomoPage } from './VerLibrosPorTomoPage';
 import { SubidaDocumentos } from '../../features/subida-documentos/SubidaDocumentos';
+import BandejaEntrada from '@/pages/titulos/views/BandejaEntrada';
+import ConvalidacionEspejo from '@/pages/titulos/views/ConvalidacionEspejo';
+import BovedaHistorica from '@/pages/titulos/views/BovedaHistorica';
 
 export function ArchivoCentralLayout() {
   return (
     <SidebarNavWidget pageTitle="Archivo Central & Digitalización - UAGRM">
-      <div className="flex flex-col h-full bg-[#F8FAFC]">
+      <div className="flex flex-col h-full bg-[#F9F9F6]">
         <main className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<Navigate to="dashboard-notificaciones" replace />} />
             <Route path="dashboard-notificaciones" element={<DashboardNotificacionesPage />} />
             <Route path="triaje" element={<BandejaPendientesPage />} />
+            <Route path="bandeja" element={<div className="p-6"><BandejaEntrada /></div>} />
+            <Route path="convalidacion" element={<div className="p-6"><ConvalidacionEspejo /></div>} />
+            <Route path="boveda" element={<div className="p-6"><BovedaHistorica /></div>} />
             <Route path="autenticidad" element={<CertificadoAutenticidadPage />} />
             <Route path="subida" element={<SubidaDocumentos />} />
             <Route path="busqueda-expedientes" element={<BusquedaExpedientesArchivoPage />} />

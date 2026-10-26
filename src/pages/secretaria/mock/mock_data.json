@@ -1,0 +1,272 @@
+{
+  "solicitudesAdmision": [
+    {
+      "id": "SOL-2026-00101",
+      "fechaHora": "2026-03-24T08:30:00-04:00",
+      "tipo": "Personal",
+      "solicitanteEntidad": "Lic. Carlos Mauricio Mendoza Arteaga",
+      "ci": "5839211 SCZ",
+      "documentoAdjunto": {
+        "nombre": "carta_solicitud_titulo_supletorio_mendoza.pdf",
+        "tipo": "pdf",
+        "paginas": 1,
+        "titulo": "Carta de Solicitud de Título Supletorio por Extravío",
+        "contenidoTexto": "Santa Cruz de la Sierra, 20 de marzo de 2026\n\nSeñor Rector de la U.A.G.R.M. / Despacho de Secretaría General:\n\nPor medio de la presente, yo Carlos Mauricio Mendoza Arteaga, egresado de la carrera de Ingeniería Comercial en la gestión 2021, solicito a su digna autoridad la emisión de TÍTULO SUPLETORIO en provisión nacional, debido al extravío involuntario del cartón original, habiendo cumplido con la publicación de extravío de ley.\n\nAtentamente,\nLic. Carlos Mauricio Mendoza Arteaga\nC.I. 5839211 SCZ",
+        "selloFisico": "Vigente - Recepción Central UAGRM"
+      },
+      "estado": "PENDIENTE",
+      "observacion": null
+    },
+    {
+      "id": "SOL-2026-00102",
+      "fechaHora": "2026-03-24T09:15:00-04:00",
+      "tipo": "Institución",
+      "solicitanteEntidad": "Yacimientos Petrolíferos Fiscales Bolivianos (YPFB)",
+      "ci": "NIT: 1020304028",
+      "documentoAdjunto": {
+        "nombre": "oficio_ypfb_verificacion_nomina_2026.pdf",
+        "tipo": "pdf",
+        "paginas": 1,
+        "titulo": "Oficio N° YPFB-RH-049/2026 - Certificación Masiva de Títulos",
+        "contenidoTexto": "La Paz / Santa Cruz, 22 de marzo de 2026\n\nAl Despacho de Secretaría General UAGRM:\n\nEn el marco del Convenio Interinstitucional Vigente CONV-UAGRM-2025-081, solicitamos la convalidación y emisión de títulos supletorios para la nómina de 14 profesionales ingenieros adscritos a la Gerencia de Exploración.\n\nFirma:\nIng. Roberto Vargas Soliz\nGerente Nacional de RRHH - YPFB",
+        "selloFisico": "Sello Notarial y Firma Electrónica Verificada"
+      },
+      "estado": "PENDIENTE",
+      "observacion": null
+    },
+    {
+      "id": "SOL-2026-00103",
+      "fechaHora": "2026-03-24T10:05:00-04:00",
+      "tipo": "Personal",
+      "solicitanteEntidad": "Dra. Silvana Andrea Justiniano Paz",
+      "ci": "6940122 SCZ",
+      "documentoAdjunto": {
+        "nombre": "solicitud_supletorio_justiniano.pdf",
+        "tipo": "pdf",
+        "paginas": 1,
+        "titulo": "Solicitud de Duplicado de Título en Provisión Nacional",
+        "contenidoTexto": "Santa Cruz de la Sierra, 21 de marzo de 2026\n\nSecretaría General UAGRM:\n\nSolicito se admita el trámite de Título Supletorio de la carrera de Medicina Veterinaria y Zootecnia, egreso 2019, adjuntando denuncia ante la FELCC por robo de documentos.\n\nDra. Silvana Andrea Justiniano Paz\nC.I. 6940122 SCZ",
+        "selloFisico": "Sello Ventanilla Única"
+      },
+      "estado": "PENDIENTE",
+      "observacion": null
+    },
+    {
+      "id": "SOL-2026-00104",
+      "fechaHora": "2026-03-23T16:45:00-04:00",
+      "tipo": "Institución",
+      "solicitanteEntidad": "Banco Unión S.A. - Regional Santa Cruz",
+      "ci": "NIT: 1015698021",
+      "documentoAdjunto": {
+        "nombre": "oficio_banco_union_nomina.pdf",
+        "tipo": "pdf",
+        "paginas": 1,
+        "titulo": "Oficio N° BU-SCZ-122/2026 - Acreditación de Legajos",
+        "contenidoTexto": "Santa Cruz de la Sierra, 23 de marzo de 2026\n\nAl Despacho Legal de Secretaría General:\n\nPresentamos la solicitud formal para acreditación institucional de 5 funcionarios en cargos de auditoría interna bajo convenio UAGRM.",
+        "selloFisico": "Sello Oficial Banco Unión"
+      },
+      "estado": "PENDIENTE",
+      "observacion": null
+    },
+    {
+      "id": "SOL-2026-00098",
+      "fechaHora": "2026-03-22T11:20:00-04:00",
+      "tipo": "Personal",
+      "solicitanteEntidad": "Ing. Mario Fernando Suárez Roca",
+      "ci": "4810293 BEN",
+      "documentoAdjunto": {
+        "nombre": "carta_suarez_aprobada.pdf",
+        "tipo": "pdf",
+        "paginas": 1,
+        "titulo": "Solicitud Admitida de Título Supletorio",
+        "contenidoTexto": "Solicitud previa de trámite supletorio para Ingeniería en Informática.",
+        "selloFisico": "Visto Bueno Secretaría General"
+      },
+      "estado": "APROBADO",
+      "observacion": null
+    }
+  ],
+  "certificacionesApostilla": [
+    {
+      "id": "APOST-2026-041",
+      "numeroTituloProvisionNacional": "TPN-SCZ-2023-014582",
+      "graduado": "Ing. Mariela Céspedes Ribera",
+      "ci": "6241902 SCZ",
+      "facultad": "Facultad de Ciencias Exactas y Tecnología",
+      "carrera": "Ingeniería en Sistemas",
+      "gestionEgreso": 2023,
+      "informeTecnico": {
+        "libroMatriz": "LIB-EXA-2023-B",
+        "foja": "Folio 148, Partida 92",
+        "resolucionRectoral": "R.R. N° 412/2023",
+        "fechaConvalidacion": "2026-03-15",
+        "dictamen": "Expediente convalidado conforme a matriz física original por Títulos y Archivo Central. Apto para certificación internacional."
+      },
+      "estadoApostilla": "LISTO_PARA_APOSTILLA",
+      "paisDestino": null,
+      "regimen": null,
+      "fechaCertificacion": null
+    },
+    {
+      "id": "APOST-2026-042",
+      "numeroTituloProvisionNacional": "TPN-SCZ-2021-008921",
+      "graduado": "Lic. Rodrigo Hernán Barba Salvatierra",
+      "ci": "5921843 SCZ",
+      "facultad": "Facultad de Ciencias Económicas y Financieras",
+      "carrera": "Contaduría Pública",
+      "gestionEgreso": 2021,
+      "informeTecnico": {
+        "libroMatriz": "LIB-ECO-2021-A",
+        "foja": "Folio 89, Partida 45",
+        "resolucionRectoral": "R.R. N° 218/2021",
+        "fechaConvalidacion": "2026-03-18",
+        "dictamen": "Matriz física verificada. Título en provisión nacional legítimo y sin tachas ni enmiendas."
+      },
+      "estadoApostilla": "LISTO_PARA_APOSTILLA",
+      "paisDestino": null,
+      "regimen": null,
+      "fechaCertificacion": null
+    },
+    {
+      "id": "APOST-2026-043",
+      "numeroTituloProvisionNacional": "TPN-SCZ-2022-005619",
+      "graduado": "Dra. Natalia Belén Antelo Justiniano",
+      "ci": "7032115 SCZ",
+      "facultad": "Facultad de Ciencias de la Salud Humana",
+      "carrera": "Medicina",
+      "gestionEgreso": 2022,
+      "informeTecnico": {
+        "libroMatriz": "LIB-MED-2022-C",
+        "foja": "Folio 210, Partida 112",
+        "resolucionRectoral": "R.R. N° 630/2022",
+        "fechaConvalidacion": "2026-03-20",
+        "dictamen": "Antecedentes de internado rotatorio y acta de grado validados en Archivo Central."
+      },
+      "estadoApostilla": "LISTO_PARA_APOSTILLA",
+      "paisDestino": null,
+      "regimen": null,
+      "fechaCertificacion": null
+    },
+    {
+      "id": "APOST-2026-039",
+      "numeroTituloProvisionNacional": "TPN-SCZ-2020-003310",
+      "graduado": "Abg. José Luis Aguilera Peña",
+      "ci": "4812390 SCZ",
+      "facultad": "Facultad de Ciencias Jurídicas, Políticas y Sociales",
+      "carrera": "Derecho",
+      "gestionEgreso": 2020,
+      "informeTecnico": {
+        "libroMatriz": "LIB-JUR-2020-A",
+        "foja": "Folio 77, Partida 33",
+        "resolucionRectoral": "R.R. N° 105/2020",
+        "fechaConvalidacion": "2026-03-10",
+        "dictamen": "Expediente apto con legalización previa de firma consular."
+      },
+      "estadoApostilla": "CERTIFICADO_GENERADO",
+      "paisDestino": "España",
+      "regimen": "Convenio de La Haya",
+      "fechaCertificacion": "2026-03-12"
+    }
+  ],
+  "cartonesDespacho": [
+    {
+      "id": "CART-2026-8801",
+      "graduado": "Lic. Carlos Mauricio Mendoza Arteaga",
+      "carrera": "Ingeniería Comercial",
+      "facultad": "Facultad de Ciencias Económicas y Financieras",
+      "tipoCarton": "Título Supletorio en Provisión Nacional",
+      "seriePapel": "VAL-SCZ-2026-098124",
+      "estado": "EN_CUSTODIA",
+      "resolucionEmision": "R.R. N° 088/2026",
+      "fechaAprobacion": "2026-03-24"
+    },
+    {
+      "id": "CART-2026-8802",
+      "graduado": "Ing. Mariela Céspedes Ribera",
+      "carrera": "Ingeniería en Sistemas",
+      "facultad": "Facultad de Ciencias Exactas y Tecnología",
+      "tipoCarton": "Título en Provisión Nacional (Duplicado)",
+      "seriePapel": "VAL-SCZ-2026-098125",
+      "estado": "EN_CUSTODIA",
+      "resolucionEmision": "R.R. N° 092/2026",
+      "fechaAprobacion": "2026-03-24"
+    },
+    {
+      "id": "CART-2026-8803",
+      "graduado": "Lic. Rodrigo Hernán Barba Salvatierra",
+      "carrera": "Contaduría Pública",
+      "facultad": "Facultad de Ciencias Económicas y Financieras",
+      "tipoCarton": "Diploma Académico Supletorio",
+      "seriePapel": "VAL-SCZ-2026-098126",
+      "estado": "EN_CUSTODIA",
+      "resolucionEmision": "R.R. N° 095/2026",
+      "fechaAprobacion": "2026-03-23"
+    }
+  ],
+  "conveniosInstitucionales": [
+    {
+      "id": "CONV-001",
+      "razonSocial": "Yacimientos Petrolíferos Fiscales Bolivianos (YPFB)",
+      "numeroConvenio": "CONV-UAGRM-2025-081",
+      "fechaInicio": "2025-01-15",
+      "fechaFin": "2027-01-14",
+      "funcionario": {
+        "nombreCompleto": "Ing. Roberto Vargas Soliz",
+        "ci": "3829104",
+        "expedido": "SCZ",
+        "cargo": "Gerente Nacional de Recursos Humanos",
+        "correo": "roberto.vargas@ypfb.gob.bo"
+      },
+      "codigoSecreto": "YPFB-SEC-773192",
+      "estado": "VIGENTE"
+    },
+    {
+      "id": "CONV-002",
+      "razonSocial": "Banco Unión S.A.",
+      "numeroConvenio": "CONV-UAGRM-2024-032",
+      "fechaInicio": "2024-06-01",
+      "fechaFin": "2026-05-31",
+      "funcionario": {
+        "nombreCompleto": "Lic. Paola Daniela Méndez Ortiz",
+        "ci": "4912048",
+        "expedido": "LPZ",
+        "cargo": "Jefa Regional de Selección y Legajos",
+        "correo": "paola.mendez@bancounion.com.bo"
+      },
+      "codigoSecreto": "BUNION-SEC-882014",
+      "estado": "VIGENTE"
+    },
+    {
+      "id": "CONV-003",
+      "razonSocial": "Ministerio de Educación del Estado Plurinacional",
+      "numeroConvenio": "CONV-UAGRM-2023-010",
+      "fechaInicio": "2023-03-01",
+      "fechaFin": "2025-02-28",
+      "funcionario": {
+        "nombreCompleto": "Dr. Fernando Mamani Quispe",
+        "ci": "2841920",
+        "expedido": "LPZ",
+        "cargo": "Director General de Asuntos Jurídicos",
+        "correo": "fernando.mamani@minedu.gob.bo"
+      },
+      "codigoSecreto": "MINEDU-SEC-110294",
+      "estado": "EXPIRADO"
+    }
+  ],
+  "auditoriasDespachoSeguro": [
+    {
+      "id": "AUD-2026-0001",
+      "fechaHora": "2026-03-23T15:10:00-04:00",
+      "ipTerminal": "192.168.10.45",
+      "usuarioLogueado": {
+        "nombre": "Abg. Mario Valverde Justiniano",
+        "cargo": "Secretario General UAGRM",
+        "rol": "SECRETARIA_GENERAL"
+      },
+      "documentoId": "CART-2026-8799",
+      "seriePapel": "VAL-SCZ-2026-098120",
+      "tipoCarton": "Título en Provisión Nacional",
+      "graduado": "Abg. Gabriela Torrico Rojas"
+    }
+  ]
+}

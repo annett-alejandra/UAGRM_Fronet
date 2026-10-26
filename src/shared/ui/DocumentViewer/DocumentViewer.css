@@ -1,0 +1,130 @@
+/* src/shared/ui/DocumentViewer/DocumentViewer.css */
+/**
+ * Estilos institucionales para DocumentViewer UAGRM
+ * Cumple con formato estándar A4 (210mm x 297mm) y Carta (215.9mm x 279.4mm)
+ * Margen de encuadernación/legajado obligatorio de 4.0 cm en el borde izquierdo.
+ */
+
+.uagrm-document-workspace {
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.25) 0%, transparent 60%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+}
+
+/* Hoja A4 */
+.uagrm-sheet-a4 {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 35mm 20mm 25mm 40mm; /* Top, Right, Bottom, Left (4.0cm margen de encuadernación) */
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111827;
+  font-family: 'Times New Roman', Times, 'Nimbus Roman No9 L', serif;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top center;
+}
+
+/* Hoja Carta */
+.uagrm-sheet-letter {
+  width: 215.9mm;
+  min-height: 279.4mm;
+  padding: 35mm 20mm 25mm 40mm;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111827;
+  font-family: 'Times New Roman', Times, 'Nimbus Roman No9 L', serif;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top center;
+}
+
+/* Guía visual del margen de encuadernación (4cm) */
+.uagrm-binding-guide::before {
+  content: "Margen de Encuadernación (4.0 cm)";
+  position: absolute;
+  top: 15mm;
+  left: 5mm;
+  width: 30mm;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.uagrm-binding-guide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40mm;
+  width: 1px;
+  border-left: 1px dashed rgba(239, 68, 68, 0.45);
+  pointer-events: none;
+}
+
+/* Marca de agua institucional sutil */
+.uagrm-watermark {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  opacity: 0.035;
+  pointer-events: none;
+  width: 130mm;
+  height: 130mm;
+  z-index: 0;
+}
+
+/* Reglas de impresión limpias */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .uagrm-printable-document,
+  .uagrm-printable-document * {
+    visibility: visible;
+  }
+
+  .uagrm-printable-document {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    padding: 35mm 20mm 25mm 40mm !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    background: #ffffff !important;
+  }
+
+  /* Ocultar guías visuales en impresión */
+  .uagrm-binding-guide::before,
+  .uagrm-binding-guide::after,
+  .uagrm-no-print {
+    display: none !important;
+  }
+}

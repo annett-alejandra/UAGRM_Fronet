@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAGRM — Sistema Oficial de Titulación y Certificaciones</title>
+    
+    <!-- Fuentes de Google Fonts: DM Sans & Instrument Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 1. Variables de Color y Tipografía Oficial */
+        :root {
+            --paper: #f3f0e9;
+            --ink: #262825;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --cinzel: 'Cinzel', Georgia, serif;
+            --az-crystal-bronze: #ccb494;
+        }
+
+        /* 2. Selección de Texto Elegante */
+        ::selection {
+            background: #c4a386;
+            color: #211f1c;
+        }
+
+        /* Reseteo Global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: var(--sans);
+            background-color: var(--ink);
+            color: #fff7ec;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* 3. Estructura del Hero Inmersivo */
+        .hero__sticky {
+            height: 100svh;
+            min-height: 620px;
+            position: sticky;
+            top: 0;
+            overflow: hidden;
+            color: #fff7ec;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 4. Fondo de Imagen 4K Limpio (Sin Letras) con Zoom Suave */
+        .hero__bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('public/image_d78c06.jpg'), url('/image_d78c06.jpg'), url('image_d78c06.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+            transform: scale(1);
+            animation: slowZoom 24s ease-in-out infinite alternate;
+        }
+
+        /* 5. Capa de Oscurecimiento (Overlay de Gradiente Cinematográfico Exacto) */
+        .hero__shade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(23, 24, 23, 0.58) 0%, rgba(23, 24, 23, 0.28) 45%, transparent 68%), 
+                        linear-gradient(0deg, rgba(24, 28, 34, 0.85) 0%, transparent 58%, rgba(22, 24, 20, 0.35) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Contenedor del Contenido (Z-Index Superior) */
+        .hero__content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2.5rem 5vw;
+        }
+
+        /* --- Header Superior --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            text-decoration: none;
+            color: #fff7ec;
+        }
+
+        .seal-img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.45));
+        }
+
+        .logo {
+            font-family: var(--cinzel);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+        }
+
+        .logo-sub {
+            font-family: var(--sans);
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            line-height: 1.25;
+            color: rgba(255, 247, 236, 0.85);
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: none;
+        }
+
+        @media (min-width: 860px) {
+            nav {
+                display: flex;
+                gap: 2.8rem;
+                align-items: center;
+            }
+        }
+
+        nav a {
+            color: #fff7ec;
+            text-decoration: none;
+            font-family: var(--sans);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.72rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--az-crystal-bronze);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--az-crystal-bronze);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-right {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            text-align: right;
+            color: rgba(255, 247, 236, 0.9);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right .star-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 247, 236, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        /* --- Main Content (Títulos) --- */
+        .hero__main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: auto;
+            margin-bottom: 2vh;
+            max-width: 1200px;
+        }
+
+        .subtitle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--sans);
+            text-transform: uppercase;
+            letter-spacing: 0.28em;
+            font-size: 0.78rem;
+            margin-bottom: 1.4rem;
+            color: #fff7ec;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        .subtitle .line {
+            width: 40px;
+            height: 1px;
+            background-color: #fff7ec;
+            opacity: 0.75;
+        }
+
+        .title-sans {
+            font-family: var(--sans);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+            font-weight: 700;
+            line-height: 0.95;
+            display: block;
+            color: #ffffff;
+            text-shadow: 0 4px 25px rgba(0,0,0,0.65);
+        }
+
+        .title-serif {
+            font-family: var(--serif);
+            font-size: clamp(6.2rem, 16vw, 13.5rem);
+            font-style: italic;
+            font-weight: 400;
+            line-height: 0.85;
+            display: block;
+            margin-top: -0.6rem;
+            margin-left: 0.2rem;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 6px 30px rgba(0,0,0,0.7);
+        }
+
+        /* --- Footer Inferior --- */
+        .hero__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 1.5rem;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .desc-group {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+        }
+
+        .desc {
+            font-size: 1rem;
+            max-width: 440px;
+            color: rgba(255, 247, 236, 0.95);
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.65);
+        }
+
+        .explore-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            color: #fff7ec;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .explore-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(255, 247, 236, 0.45);
+            background-color: rgba(255, 247, 236, 0.08);
+            border-radius: 50%;
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .explore-icon svg {
+            stroke: #fff7ec;
+            transition: transform 0.3s ease;
+        }
+
+        .explore-btn:hover .explore-icon {
+            background-color: var(--az-crystal-bronze);
+            border-color: var(--az-crystal-bronze);
+            transform: translateY(3px);
+        }
+
+        .explore-btn:hover .explore-icon svg {
+            stroke: var(--ink);
+            transform: translateY(2px);
+        }
+
+        .explore-text {
+            font-family: var(--sans);
+            text-transform: uppercase;
+            letter-spacing: 0.32em;
+            font-size: 0.68rem;
+            color: rgba(255, 247, 236, 0.75);
+            font-weight: 600;
+        }
+        
+        .footer-right {
+            font-family: var(--sans);
+            font-size: 0.78rem;
+            color: rgba(255, 247, 236, 0.85);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.045); }
+        }
+
+        @media (max-width: 768px) {
+            .hero__content {
+                padding: 2rem 6vw;
+            }
+            .header-right {
+                display: none;
+            }
+            .hero__footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .desc {
+                font-size: 0.88rem;
+            }
+            .title-serif {
+                font-size: 5.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero__sticky">
+        <!-- 4. Fondo de Imagen 4K Limpio de la UAGRM -->
+        <div class="hero__bg"></div>
+        
+        <!-- 5. Capa de Oscurecimiento Gradiente Cinematográfico -->
+        <div class="hero__shade"></div>
+
+        <!-- Contenedor Frontal -->
+        <div class="hero__content">
+            
+            <!-- Header Superior -->
+            <header>
+                <a href="#" class="logo-container">
+                    <img src="/UAGRM-Bolivia.webp" alt="Escudo UAGRM" class="seal-img" onerror="if(!this.src.includes('public/')){this.src='public/UAGRM-Bolivia.webp'}else{this.style.display='none'}" />
+                    <div>
+                        <div class="logo">UAGRM</div>
+                        <div class="logo-sub">UNIVERSIDAD AUTÓNOMA<br>GABRIEL RENÉ MORENO</div>
+                    </div>
+                </a>
+                <nav>
+                    <a href="/login">Inicio</a>
+                    <a href="/verificar">Verificar Título</a>
+                    <a href="/solicitante">Portal Solicitante</a>
+                    <a href="/colores">Caja de Herramientas</a>
+                    <a href="#contacto">Contacto</a>
+                </nav>
+                <div class="header-right">
+                    <div class="star-badge">&starf;</div>
+                    <div>
+                        UAGRM - Excelencia<br>Académica
+                    </div>
+                </div>
+            </header>
+
+            <!-- Título Principal -->
+            <div class="hero__main">
+                <div class="subtitle">
+                    <span class="line"></span>
+                    SISTEMA DE VERIFICACIÓN Y TITULACIÓN &bull; SANTA CRUZ
+                </div>
+                <h1 style="margin:0;">
+                    <span class="title-sans">Tu logro</span>
+                    <span class="title-serif">certificado.</span>
+                </h1>
+            </div>
+
+            <!-- Footer con Botón -->
+            <div class="hero__footer">
+                <div class="footer-left">
+                    <div class="desc-group">
+                        <div class="desc">
+                            Agilizamos la emisión de tus documentos académicos<br>y validamos tu excelencia profesional de forma segura.
+                        </div>
+                        <a href="/login" class="explore-btn" aria-label="Explorar Sistema">
+                            <div class="explore-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <polyline points="19 12 12 19 5 12"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="explore-text">EXPLORE</div>
+                </div>
+                
+                <div class="footer-right">
+                    Plataforma Oficial de Títulos UAGRM
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

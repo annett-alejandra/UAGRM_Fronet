@@ -79,12 +79,12 @@ export function VerLibrosPorTomoPage() {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="p-3.5 bg-gradient-to-br from-[#003366] to-[#002244] text-[#E5A823] rounded-2xl shadow-md">
+          <div className="p-3.5 bg-gradient-to-br from-[#191A7D] to-[#2B6CB0] text-[#E5A823] rounded-2xl shadow-md">
             <BookOpen className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-50 text-[#003366] border border-blue-200">
+              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-50 text-[#191A7D] border border-blue-200">
                 Opción 7 • Archivo Central
               </span>
             </div>
@@ -110,7 +110,7 @@ export function VerLibrosPorTomoPage() {
         <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#003366]" />
+              <Layers className="w-4 h-4 text-[#191A7D]" />
               Catálogo de Tomos Digitales
             </h3>
             <span className="text-xs text-slate-400 font-mono">
@@ -137,7 +137,7 @@ export function VerLibrosPorTomoPage() {
                   key={g}
                   onClick={() => setFiltroGestion(g)}
                   className={`px-2.5 py-1 rounded-lg font-mono text-[11px] transition-all cursor-pointer whitespace-nowrap ${
-                    filtroGestion === g ? 'bg-[#003366] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    filtroGestion === g ? 'bg-[#191A7D] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
                   {g}
@@ -158,14 +158,14 @@ export function VerLibrosPorTomoPage() {
                   }}
                   className={`p-4 rounded-xl border transition-all cursor-pointer relative overflow-hidden ${
                     selected
-                      ? 'bg-blue-50/80 border-[#003366] shadow-sm'
+                      ? 'bg-blue-50/80 border-[#191A7D] shadow-sm'
                       : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50'
                   }`}
                 >
-                  {selected && <div className="w-1.5 h-full bg-[#003366] absolute left-0 top-0" />}
+                  {selected && <div className="w-1.5 h-full bg-[#191A7D] absolute left-0 top-0" />}
 
                   <div className="flex justify-between items-start">
-                    <span className="text-xs font-mono font-bold text-[#003366] bg-blue-100/80 px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-mono font-bold text-[#191A7D] bg-blue-100/80 px-2 py-0.5 rounded-md">
                       {t.codigoTomo}
                     </span>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
@@ -249,7 +249,7 @@ export function VerLibrosPorTomoPage() {
                 <div className="space-y-2 text-xs leading-relaxed font-mono">
                   <div className="flex justify-between border-b border-dashed border-slate-300 pb-1">
                     <span className="text-slate-500">Folio Registro Nro:</span>
-                    <span className="font-bold text-[#003366]">{folioActual.numeroFolio}</span>
+                    <span className="font-bold text-[#191A7D]">{folioActual.numeroFolio}</span>
                   </div>
 
                   <div className="flex justify-between border-b border-dashed border-slate-300 pb-1">
@@ -308,7 +308,7 @@ export function VerLibrosPorTomoPage() {
 
             <button
               onClick={() => setFolioActualIndex(prev => (prev + 1) % FOLIOS_MOCK.length)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#191A7D] hover:bg-[#2B6CB0] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
             >
               <span>Siguiente Folio</span>
               <ChevronRight className="w-4 h-4" />

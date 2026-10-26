@@ -1,34 +1,14 @@
-import { type ReactNode } from 'react';
-import './Badge.css';
+﻿import * as React from "react";
+import { type VariantProps } from "class-variance-authority";
+import { badgeVariants } from "./badge.variants";
 
-type BadgeVariant = 'neutral' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'accent';
-type BadgeSize = 'sm' | 'lg';
-
-interface BadgeProps {
-  readonly variant?: BadgeVariant;
-  readonly size?: BadgeSize;
-  readonly showDot?: boolean;
-  readonly children: ReactNode;
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {
+  variant?: "neutral" | "success" | "warning" | "danger";
 }
 
-export function Badge({
-  variant = 'neutral',
-  size = 'sm',
-  showDot = false,
-  children,
-}: BadgeProps) {
-  const classes = [
-    'badge',
-    `badge--${variant}`,
-    size === 'lg' ? 'badge--lg' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  return (
-    <span className={classes}>
-      {showDot && <span className="badge__dot" />}
-      {children}
-    </span>
-  );
+export function Badge({ className, status, variant, ...props }: BadgeProps) {
+  const activeStatus = status || variant || "neutral";
+  return <div className={badgeVariants({ status: activeStatus, className })} {...props} />;
 }

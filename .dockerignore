@@ -1,7 +1,24 @@
+# Dependencias y builds
 node_modules
+dist
+dist-ssr
+
+# Control de versiones y agentes
 .git
 .agents
-dist
-.tempmediaStorage
 .vscode
+.idea
+
+# Repositorios externos de desarrolladores
+codigo_desarrolladores_logro
+
+# Archivos de entorno y logs
+.env*
 *.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Documentación y temporales
+*.md
+.tempmediaStorage

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { SidebarNavWidget } from '../../../widgets/SidebarNavWidget';
 import { Card, CardBody } from '../../../shared/ui/Card/Card';
 import { Spinner } from '../../../shared/ui/Spinner/Spinner';
 import { Badge } from '../../../shared/ui/Badge/Badge';
@@ -35,7 +34,7 @@ export function PantallaVerificacionOcr() {
   }, [docId]);
 
   return (
-    <SidebarNavWidget pageTitle="Verificacin OCR">
+    <div className="p-6">
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
         
         {/* Lado Izquierdo: PDF Viewer */}
@@ -66,6 +65,6 @@ export function PantallaVerificacionOcr() {
         </Card>
 
       </div>
-    </SidebarNavWidget>
+    </div>
   );
 }

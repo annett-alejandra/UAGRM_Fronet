@@ -1,85 +1,33 @@
-import { type ReactNode, type HTMLAttributes } from 'react';
-import './Card.css';
+﻿import * as React from "react";
 
-type CardPadding = 'compact' | 'normal' | 'spacious';
-
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  readonly isGlass?: boolean;
-  readonly isInteractive?: boolean;
-  readonly isSelected?: boolean;
-  readonly isLoading?: boolean;
-  readonly padding?: CardPadding;
-  readonly children: ReactNode;
-}
-
-interface CardSectionProps {
-  readonly children: ReactNode;
-  readonly className?: string;
-}
-
-export function Card({
-  isGlass = false,
-  isInteractive = false,
-  isSelected = false,
-  isLoading = false,
-  padding = 'normal',
-  children,
-  className = '',
-  ...rest
-}: CardProps) {
-  const classes = [
-    'card',
-    `card--${padding}`,
-    isGlass ? 'card--glass' : '',
-    isInteractive ? 'card--interactive' : '',
-    isSelected ? 'card--selected' : '',
-    isLoading ? 'card--skeleton' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  if (isLoading) {
-    return (
-      <div className={classes} aria-busy="true" {...rest}>
-        <div className="card__skeleton-line" />
-        <div className="card__skeleton-line" />
-        <div className="card__skeleton-line" />
-      </div>
-    );
-  }
-
+export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={classes} {...rest}>
-      {children}
-    </div>
+    <div
+      className={`rounded-lg border border-[hsl(var(--color-border))] bg-[hsl(var(--color-surface))] text-[hsl(var(--color-surface-foreground))] shadow-sm ${className || ""}`}
+      {...props}
+    />
   );
 }
 
-export function CardHeader({ children, className = '' }: CardSectionProps) {
-  return (
-    <div className={`card__header ${className}`}>
-      {children}
-    </div>
-  );
+export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={`flex flex-col space-y-1.5 p-6 ${className || ""}`} {...props} />;
 }
 
-export function CardHeaderTitle({ children }: { readonly children: ReactNode }) {
-  return <h3 className="card__header-title">{children}</h3>;
+export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
+  return <h3 className={`font-semibold leading-none tracking-tight text-lg ${className || ""}`} {...props} />;
 }
 
-export function CardBody({ children, className = '' }: CardSectionProps) {
-  return (
-    <div className={`card__body ${className}`}>
-      {children}
-    </div>
-  );
+export function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
+  return <p className={`text-sm text-slate-500 ${className || ""}`} {...props} />;
 }
 
-export function CardFooter({ children, className = '' }: CardSectionProps) {
-  return (
-    <div className={`card__footer ${className}`}>
-      {children}
-    </div>
-  );
+export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={`p-6 pt-0 ${className || ""}`} {...props} />;
 }
+
+export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={`flex items-center p-6 pt-0 ${className || ""}`} {...props} />;
+}
+
+// Backward compatibility alias for existing modules
+export const CardBody = CardContent;

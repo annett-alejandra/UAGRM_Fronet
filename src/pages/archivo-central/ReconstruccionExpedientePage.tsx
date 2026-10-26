@@ -1,3 +1,5 @@
+﻿import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
 import { BookOpen, Search, FileCheck, Clock, AlertTriangle, CheckCircle2, Plus, Sparkles, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -35,16 +37,16 @@ export function ReconstruccionExpedientePage() {
         <div className="card p-6 bg-white border border-[#E2E8F0] shadow-sm rounded-2xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-xl font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
-                <BookOpen className="w-6 h-6 text-[#003366] inline-block mr-1" /> Reconstrucción y Validación de Legajos Históricos
+              <h1 className="text-xl font-extrabold text-[#191A7D] tracking-tight font-heading flex items-center gap-2">
+                <BookOpen className="w-6 h-6 text-[#191A7D] inline-block mr-1" /> ReconstrucciÃ³n y ValidaciÃ³n de Legajos HistÃ³ricos
               </h1>
               <p className="text-[#64748B] text-xs mt-1">
-                Ingrese el número de expediente, C.I. o R.U. para cargar la vista previa del documento y su matriz de archivo
+                Ingrese el nÃºmero de expediente, C.I. o R.U. para cargar la vista previa del documento y su matriz de archivo
               </p>
             </div>
 
             <span className="badge-status-publicado font-mono text-xs">
-              🏛️ Archivo Central UAGRM
+              ðŸ›ï¸ Archivo Central UAGRM
             </span>
           </div>
 
@@ -54,40 +56,31 @@ export function ReconstruccionExpedientePage() {
               <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#64748B] pointer-events-none" />
               <input
                 type="text"
-                placeholder="Ingrese C.I., R.U. o Código de Legajo (Ej. EXP-2026, 3250858-SCZ)"
+                placeholder="Ingrese C.I., R.U. o CÃ³digo de Legajo (Ej. EXP-2026, )"
                 value={searchId}
                 onChange={e => setSearchId(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-[#E2E8F0] rounded-xl text-sm font-medium text-[#1E293B] focus:outline-none focus:border-[#003366] focus:bg-white transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-[#E2E8F0] rounded-xl text-sm font-medium text-[#191A2D] focus:outline-none focus:border-[#191A7D] focus:bg-white transition-all"
               />
             </div>
             
-            <button
-              type="submit"
-              className="boton-crear py-2.5 px-6 text-xs font-bold shrink-0 shadow-sm"
-            >
-              Cargar Legajo
-            </button>
+            <Button type="submit" variant="primary" className="py-2.5 px-6 text-xs font-bold shrink-0">Cargar Legajo</Button>
           </form>
 
-          {/* Accesos Rápidos Presets */}
+          {/* Accesos RÃ¡pidos Presets */}
           <div className="mt-5 pt-4 border-t border-[#E2E8F0]">
             <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider block mb-2">
-              Expedientes Disponibles para Revisión:
+              Expedientes Disponibles para RevisiÃ³n:
             </span>
             <div className="flex flex-wrap gap-2">
               {[
-                { id: 'EXP-2026', title: 'Legajo Jenny Flores Peña (Bachiller 1998)' },
-                { id: 'TIT-9901', title: 'Diploma Académico Carlos Gutierrez' },
-                { id: 'LEG-1048', title: 'Título Supletorio Derecho 2004' },
+                { id: 'EXP-2026', title: 'Legajo  (Bachiller 1998)' },
+                { id: 'TIT-9901', title: 'Diploma AcadÃ©mico Carlos Gutierrez' },
+                { id: 'LEG-1048', title: 'TÃ­tulo Supletorio Derecho 2004' },
               ].map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => handleSelectPreset(item.id)}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-[#003366] hover:text-white border border-[#E2E8F0] rounded-xl text-xs font-medium text-[#1E293B] transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="font-mono font-bold text-[#003366] group-hover:text-white">{item.id}</span>
-                  <span className="text-[11px] opacity-75">— {item.title}</span>
-                </button>
+                <Button key={item.id} variant="outline" size="sm" onClick={() => handleSelectPreset(item.id)} className="h-auto py-1.5 px-3">
+                  <span className="font-mono font-bold text-[#191A7D] group-hover:text-white">{item.id}</span>
+                  <span className="text-[11px] opacity-75">â€” {item.title}</span>
+                </Button>
               ))}
             </div>
           </div>
@@ -99,22 +92,19 @@ export function ReconstruccionExpedientePage() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[#F8FAFC]">
+    <div className="h-full flex flex-col bg-[#F9F9F6]">
       <header className="px-6 py-3 bg-white border-b border-[#E2E8F0] flex items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setActiveId(null)}
-            className="px-3 py-1.5 border border-[#E2E8F0] hover:bg-slate-100 rounded-xl text-xs font-bold text-[#64748B] transition-colors flex items-center gap-1 cursor-pointer"
-          >
-            ← Volver a Búsqueda
-          </button>
-          <h1 className="text-sm font-extrabold text-[#003366]">
-            Validación de Legajo Histórico: <span className="font-mono text-[#C51D24]">{currentDocId}</span>
+          <Button variant="outline" size="sm" onClick={() => setActiveId(null)} className="h-auto py-1.5 px-3">
+            â† Volver a BÃºsqueda
+          </Button>
+          <h1 className="text-sm font-extrabold text-[#191A7D]">
+            ValidaciÃ³n de Legajo HistÃ³rico: <span className="font-mono text-[#D31338]">{currentDocId}</span>
           </h1>
         </div>
 
         <span className="text-xs text-[#1B7A43] font-mono font-bold bg-[#1B7A43]/10 px-3 py-1 rounded-full">
-          ✓ Cotejo Visual Activo
+          âœ“ Cotejo Visual Activo
         </span>
       </header>
 
@@ -128,3 +118,4 @@ export function ReconstruccionExpedientePage() {
     </div>
   );
 }
+

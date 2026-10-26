@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../shared/lib/auth';
+import { useAuthStore } from '@/shared/lib/auth';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import { Badge } from '@/shared/ui/badge';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/shared/ui/card';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -12,7 +16,7 @@ export function LoginPage() {
   const [loadingSSO, setLoadingSSO] = useState(false);
   const [ssoError, setSsoError] = useState<string | null>(null);
 
-  const handleModuleClick = (targetPath: string, rolRequerido: string) => {
+  const handleModuleClick = (targetPath: string) => {
     navigate(targetPath);
   };
 
@@ -76,23 +80,27 @@ export function LoginPage() {
                 <p className="font-bold text-white">{usuario.nombre_completo}</p>
                 <p className="text-[10px] text-slate-400">{usuario.email || 'Sesión SSO Activa'}</p>
               </div>
-              <button
+              <Button
+                variant="destructive"
+                size="sm"
                 onClick={logout}
-                className="ml-2 px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 rounded-lg text-[11px] font-semibold transition-colors"
+                className="ml-2 h-7 px-2.5 text-[11px]"
               >
                 Cerrar Sesión
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
+            <Button
+              variant="primary"
+              size="md"
               onClick={handleSSOLoginRedirect}
-              className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-500/20 border border-blue-400/30 transition-all flex items-center gap-2 transform active:scale-95 cursor-pointer"
+              className="gap-2 shadow-lg"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
               </svg>
               Iniciar Sesión con SSO UAGRM
-            </button>
+            </Button>
           )}
         </div>
       </header>
@@ -100,27 +108,45 @@ export function LoginPage() {
       {/* Main Grid: 4 Categorías/Vistas */}
       <main className="max-w-7xl mx-auto w-full py-8 z-10 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 border border-amber-500/20 text-amber-400 inline-block">
+          <Badge status="warning">
             Portal Institucional de Selección de Módulo
-          </span>
+          </Badge>
           <h2 className="text-3xl sm:text-4xl font-black text-white font-outfit tracking-tight">
             Seleccione la Vista o Módulo
           </h2>
           <p className="text-sm text-slate-400">
             Escoja la categoría o sistema según la gestión que desee realizar en la plataforma.
           </p>
+          <div className="flex items-center justify-center gap-3 flex-wrap pt-2">
+            <button
+              type="button"
+              onClick={() => navigate('/hero')}
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm hover:scale-105"
+            >
+              <span>🏛️ Portada Inmersiva Campus</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#E5A823] text-slate-950 font-bold uppercase">NUEVO</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/colores')}
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm hover:scale-105"
+            >
+              <span>🎨 Paleta Oficial UAGRM</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#DAEFFE] text-[#191A7D] font-bold uppercase">Caja de Herramientas</span>
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {/* Módulo 01: Archivo Central */}
-          <div 
-            onClick={() => handleModuleClick('/archivo', 'ARCHIVO_CENTRAL')}
-            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-700/80 hover:border-amber-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between space-y-6 relative overflow-hidden"
+          <Card 
+            onClick={() => handleModuleClick('/archivo')}
+            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl border-slate-700/80 hover:border-amber-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
 
-            <div className="space-y-4 relative z-10">
+            <CardHeader className="space-y-4 relative z-10 p-6 pb-2">
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl text-amber-400 group-hover:scale-110 transition-transform shadow-lg">
                 📁
               </div>
@@ -128,40 +154,44 @@ export function LoginPage() {
                 <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block mb-1">
                   MÓDULO 01
                 </span>
-                <h3 className="text-lg font-extrabold text-white group-hover:text-amber-300 transition-colors font-outfit">
+                <CardTitle className="text-lg font-extrabold text-white group-hover:text-amber-300 transition-colors font-outfit">
                   Archivo Central
-                </h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Informe de Autenticidad, digitalización, escaneo OCR asistido y consulta catalográfica de Libros y Folios.
-                </p>
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Búsqueda con OCR y Reconstrucción de Libros Matrices históricos de actas y títulos.
+                </CardDescription>
               </div>
+            </CardHeader>
 
+            <CardContent className="space-y-4 relative z-10 p-6 pt-2">
               <ul className="space-y-1.5 pt-2 border-t border-slate-700/80 text-xs text-slate-200">
                 <li className="flex items-center gap-2">
-                  <span className="text-amber-400 font-bold">✓</span> Plantilla Oficial de Autenticidad
+                  <span className="text-amber-400 font-bold">✓</span> Reconstrucción OCR con Split View
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-amber-400 font-bold">✓</span> Escaneo & OCR de Archivo Histórico
+                  <span className="text-amber-400 font-bold">✓</span> Búsqueda por similitud semántica
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-amber-400 font-bold">✓</span> Carga de Excel & Catalogación
+                  <span className="text-amber-400 font-bold">✓</span> Certificados de Autenticidad QR
                 </li>
               </ul>
-            </div>
-            
-            <button className="w-full py-3 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-extrabold text-xs rounded-xl border border-amber-500/30 transition-all flex items-center justify-center gap-2 shadow-md relative z-10 cursor-pointer">
-              <span>Ingresar a Archivo Central →</span>
-            </button>
-          </div>
+            </CardContent>
+
+            <CardFooter className="p-6 pt-0 relative z-10">
+              <Button variant="outline" className="w-full text-amber-300 border-amber-500/30 hover:bg-amber-500/20">
+                Ingresar a Archivo →
+              </Button>
+            </CardFooter>
+          </Card>
 
           {/* Módulo 02: Títulos y Grados */}
-          <div 
-            onClick={() => handleModuleClick('/titulos', 'TITULOS')}
-            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-700/80 hover:border-blue-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between space-y-6 relative overflow-hidden"
+          <Card 
+            onClick={() => handleModuleClick('/titulos')}
+            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl border-slate-700/80 hover:border-blue-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
 
-            <div className="space-y-4 relative z-10">
+            <CardHeader className="space-y-4 relative z-10 p-6 pb-2">
               <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl text-blue-400 group-hover:scale-110 transition-transform shadow-lg">
                 🎓
               </div>
@@ -169,96 +199,106 @@ export function LoginPage() {
                 <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest block mb-1">
                   MÓDULO 02
                 </span>
-                <h3 className="text-lg font-extrabold text-white group-hover:text-blue-300 transition-colors font-outfit">
+                <CardTitle className="text-lg font-extrabold text-white group-hover:text-blue-300 transition-colors font-outfit">
                   Títulos y Grados
-                </h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Dashboard de Notificaciones, consulta Informix, Visor de Expedientes, Emisión de Plantillas A4 y Libros Matrices.
-                </p>
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Emisión de Títulos Supletorios, plantillas institucionales y visor de expedientes.
+                </CardDescription>
               </div>
+            </CardHeader>
 
+            <CardContent className="space-y-4 relative z-10 p-6 pt-2">
               <ul className="space-y-1.5 pt-2 border-t border-slate-700/80 text-xs text-slate-200">
                 <li className="flex items-center gap-2">
-                  <span className="text-blue-400 font-bold">✓</span> Dashboard & Notificaciones
+                  <span className="text-blue-400 font-bold">✓</span> Plantillas de Certificación Oficial
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-blue-400 font-bold">✓</span> Búsqueda Informix (CUI/Título)
+                  <span className="text-blue-400 font-bold">✓</span> Búsqueda en Sistema Informix
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-blue-400 font-bold">✓</span> Emisión Plantillas (4 Tipos)
+                  <span className="text-blue-400 font-bold">✓</span> Auditoría inmutable de firmas
                 </li>
               </ul>
-            </div>
-            
-            <button className="w-full py-3 bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 font-extrabold text-xs rounded-xl border border-blue-500/30 transition-all flex items-center justify-center gap-2 shadow-md relative z-10 cursor-pointer">
-              <span>Ingresar a Títulos y Grados →</span>
-            </button>
-          </div>
+            </CardContent>
+
+            <CardFooter className="p-6 pt-0 relative z-10">
+              <Button variant="primary" className="w-full">
+                Ingresar a Títulos →
+              </Button>
+            </CardFooter>
+          </Card>
 
           {/* Módulo 03: Secretaría General */}
-          <div 
-            onClick={() => handleModuleClick('/secretaria', 'SECRETARIA_GENERAL')}
-            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-700/80 hover:border-emerald-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between space-y-6 relative overflow-hidden"
+          <Card 
+            onClick={() => handleModuleClick('/secretaria')}
+            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl border-slate-700/80 hover:border-emerald-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
 
-            <div className="space-y-4 relative z-10">
+            <CardHeader className="space-y-4 relative z-10 p-6 pb-2">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-2xl text-emerald-400 group-hover:scale-110 transition-transform shadow-lg">
-                ⚖️
+                📜
               </div>
               <div>
                 <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block mb-1">
                   MÓDULO 03
                 </span>
-                <h3 className="text-lg font-extrabold text-white group-hover:text-emerald-300 transition-colors font-outfit">
+                <CardTitle className="text-lg font-extrabold text-white group-hover:text-emerald-300 transition-colors font-outfit">
                   Secretaría General
-                </h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Validación legal de dictámenes, Vo.Bo. de autoridades, firma digital certificada y auditoría final.
-                </p>
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Resoluciones rectorales, firma electrónica y libro de resoluciones oficial.
+                </CardDescription>
               </div>
+            </CardHeader>
 
+            <CardContent className="space-y-4 relative z-10 p-6 pt-2">
               <ul className="space-y-1.5 pt-2 border-t border-slate-700/80 text-xs text-slate-200">
                 <li className="flex items-center gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span> Control de Legalidad & Dictámenes
+                  <span className="text-emerald-400 font-bold">✓</span> Resoluciones Rectorales
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span> Firma Digital Certificada (PKI)
+                  <span className="text-emerald-400 font-bold">✓</span> Firma Digital y Notificación
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span> Auditoría e Histórico de Actas
+                  <span className="text-emerald-400 font-bold">✓</span> Registro de Títulos Supletorios
                 </li>
               </ul>
-            </div>
-            
-            <button className="w-full py-3 bg-emerald-700/30 hover:bg-emerald-700/50 text-emerald-300 font-extrabold text-xs rounded-xl border border-emerald-500/30 transition-all flex items-center justify-center gap-2 shadow-md relative z-10 cursor-pointer">
-              <span>Ingresar a Secretaría →</span>
-            </button>
-          </div>
+            </CardContent>
+
+            <CardFooter className="p-6 pt-0 relative z-10">
+              <Button variant="outline" className="w-full text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20">
+                Ingresar a Secretaría →
+              </Button>
+            </CardFooter>
+          </Card>
 
           {/* Módulo 04: Portal del Solicitante */}
-          <div 
-            onClick={() => handleModuleClick('/solicitante', 'SOLICITANTE')}
-            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-700/80 hover:border-purple-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between space-y-6 relative overflow-hidden"
+          <Card 
+            onClick={() => handleModuleClick('/solicitante')}
+            className="group cursor-pointer bg-[#222845]/90 hover:bg-[#2A3964]/80 backdrop-blur-xl border-slate-700/80 hover:border-purple-500/50 shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
 
-            <div className="space-y-4 relative z-10">
+            <CardHeader className="space-y-4 relative z-10 p-6 pb-2">
               <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-2xl text-purple-400 group-hover:scale-110 transition-transform shadow-lg">
-                🌐
+                👥
               </div>
               <div>
                 <span className="text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest block mb-1">
                   PÚBLICO & ENTIDADES
                 </span>
-                <h3 className="text-lg font-extrabold text-white group-hover:text-purple-300 transition-colors font-outfit">
+                <CardTitle className="text-lg font-extrabold text-white group-hover:text-purple-300 transition-colors font-outfit">
                   Portal del Solicitante
-                </h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-300 mt-2 leading-relaxed">
                   Solicitudes individuales (OCR + Pago QR Gaby Bs. 30) y carpetas por lotes para Entidades Públicas.
-                </p>
+                </CardDescription>
               </div>
+            </CardHeader>
 
+            <CardContent className="space-y-4 relative z-10 p-6 pt-2">
               <ul className="space-y-1.5 pt-2 border-t border-slate-700/80 text-xs text-slate-200">
                 <li className="flex items-center gap-2">
                   <span className="text-purple-400 font-bold">✓</span> Solicitud Individual + QR Gaby
@@ -270,12 +310,14 @@ export function LoginPage() {
                   <span className="text-purple-400 font-bold">✓</span> Seguimiento por Nro. Solicitud
                 </li>
               </ul>
-            </div>
-            
-            <button className="w-full py-3 bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 font-extrabold text-xs rounded-xl border border-purple-500/30 transition-all flex items-center justify-center gap-2 shadow-md relative z-10 cursor-pointer">
-              <span>Ingresar al Portal →</span>
-            </button>
-          </div>
+            </CardContent>
+
+            <CardFooter className="p-6 pt-0 relative z-10">
+              <Button variant="outline" className="w-full text-purple-300 border-purple-500/30 hover:bg-purple-500/20">
+                Ingresar al Portal →
+              </Button>
+            </CardFooter>
+          </Card>
 
         </div>
       </main>
@@ -283,7 +325,7 @@ export function LoginPage() {
       {/* Modal SSO Institucional Interactivo */}
       {showSSOModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#1A2238] border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+          <Card className="bg-[#1A2238] border-slate-700 w-full max-w-md p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200 text-white">
             <div className="flex justify-between items-start border-b border-slate-700/80 pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-sm">
@@ -294,12 +336,14 @@ export function LoginPage() {
                   <p className="text-xs text-slate-400">Servicio de Identidad Centralizada</p>
                 </div>
               </div>
-              <button 
+              <Button 
+                variant="ghost"
+                size="sm"
                 onClick={() => setShowSSOModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
+                className="text-slate-400 hover:text-white text-lg font-bold p-1 h-auto"
               >
                 ✕
-              </button>
+              </Button>
             </div>
 
             <form onSubmit={handleModalSubmit} className="space-y-4">
@@ -313,12 +357,12 @@ export function LoginPage() {
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Registro Universitario / C.I.
                 </label>
-                <input
+                <Input
                   type="text"
                   placeholder="Ej: 219084712 o 1234567"
                   value={ru}
                   onChange={(e) => setRu(e.target.value)}
-                  className="w-full bg-[#111625] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="bg-[#111625] border-slate-700 text-white focus-visible:ring-blue-500"
                 />
               </div>
 
@@ -326,12 +370,12 @@ export function LoginPage() {
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Contraseña Institucional
                 </label>
-                <input
+                <Input
                   type="password"
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#111625] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="bg-[#111625] border-slate-700 text-white focus-visible:ring-blue-500"
                 />
               </div>
 
@@ -342,7 +386,7 @@ export function LoginPage() {
                 <select
                   value={rolSeleccionado}
                   onChange={(e) => setRolSeleccionado(e.target.value as any)}
-                  className="w-full bg-[#111625] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-[#111625] border border-slate-700 rounded-[var(--radius-base)] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-ring))] transition-colors"
                 >
                   <option value="ARCHIVO_CENTRAL">Módulo 01 - Archivo Central</option>
                   <option value="TITULOS">Módulo 02 - Títulos y Grados</option>
@@ -351,33 +395,31 @@ export function LoginPage() {
               </div>
 
               <div className="pt-2 flex gap-3">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => setShowSSOModal(false)}
-                  className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                  className="flex-1"
                 >
                   Cancelar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
-                  disabled={loadingSSO}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  variant="primary"
+                  isLoading={loadingSSO}
+                  className="flex-1"
                 >
-                  {loadingSSO ? (
-                    <span>Verificando...</span>
-                  ) : (
-                    <span>Ingresar con SSO</span>
-                  )}
-                </button>
+                  Ingresar con SSO
+                </Button>
               </div>
             </form>
-          </div>
+          </Card>
         </div>
       )}
 
       {/* Footer */}
       <footer className="max-w-7xl mx-auto w-full z-10 border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-3">
-        <p>© {new Date().getFullYear()} DTIC • Universidad Autónoma Gabriel René Moreno</p>
+        <p>© {new Date().getFullYear()} DTIC — Universidad Autónoma Gabriel René Moreno</p>
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>

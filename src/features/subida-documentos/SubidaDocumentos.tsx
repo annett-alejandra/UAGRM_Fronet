@@ -1,6 +1,5 @@
 import { restClient } from '../../shared/api/rest-client';
 import { useState, useRef } from 'react';
-import { titulosApi } from '../titulos/api/titulos-api';
 import { useNavigate } from 'react-router-dom';
 
 interface DocumentoLegajo {
@@ -108,101 +107,8 @@ export function clasificarDocumentoPDF(filename: string): ClasificacionResultado
   };
 }
 
-const LEGAJOS_INICIALES: LegajoEstudiante[] = [
-  {
-    id: 'LEG-01',
-    ci: '3250858-SCZ',
-    ru: '219084732',
-    titularNombre: 'JENNY FLORES PEÑA',
-    carrera: 'BACHILLER EN HUMANIDADES',
-    facultad: 'FACULTAD DE HUMANIDADES',
-    libro: '19/98',
-    tomo: '02',
-    folio: '115/98',
-    gestion: '1998',
-    estadoOcr: 'Procesado (98%)',
-    documentos: [
-      {
-        id: 'DOC-101',
-        nombreArchivo: 'CI_JENNY_FLORES_PEÑA.pdf',
-        tipoDocumento: 'Cédula de Identidad Escaneada',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 10:15',
-        tamano: '1.2 MB',
-        confianzaOcr: '99%'
-      },
-      {
-        id: 'DOC-102',
-        nombreArchivo: 'HISTORICO_NOTAS_JENNY_FLORES.pdf',
-        tipoDocumento: 'Histórico Académico Universitario & Notas',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 10:16',
-        tamano: '3.4 MB',
-        confianzaOcr: '98%'
-      },
-      {
-        id: 'DOC-103',
-        nombreArchivo: 'CERTIFICADO_ESTUDIOS_COLEGIO_JENNY.pdf',
-        tipoDocumento: 'Histórico de Estudio de Colegio (Bachillerato)',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 10:16',
-        tamano: '2.1 MB',
-        confianzaOcr: '97%'
-      },
-      {
-        id: 'DOC-104',
-        nombreArchivo: 'DIPLOMA_BACHILLER_014863.pdf',
-        tipoDocumento: 'Diploma Académico / Título Profesional',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 10:17',
-        tamano: '2.8 MB',
-        confianzaOcr: '97%'
-      }
-    ]
-  },
-  {
-    id: 'LEG-02',
-    ci: '8072900-SCZ',
-    ru: '21809931',
-    titularNombre: 'CARLOS MENDOZA ARTEAGA',
-    carrera: 'MEDICINA CIRUGÍA',
-    facultad: 'FACULTAD DE MEDICINA',
-    libro: '05/2022',
-    tomo: '01',
-    folio: '42/2022',
-    gestion: '2022',
-    estadoOcr: 'Procesado (100%)',
-    documentos: [
-      {
-        id: 'DOC-201',
-        nombreArchivo: 'CI_CARLOS_MENDOZA.pdf',
-        tipoDocumento: 'Cédula de Identidad Escaneada',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 09:40',
-        tamano: '1.1 MB',
-        confianzaOcr: '100%'
-      },
-      {
-        id: 'DOC-202',
-        nombreArchivo: 'HISTORICO_MEDICINA_MENDOZA.pdf',
-        tipoDocumento: 'Histórico Académico Universitario & Notas',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 09:41',
-        tamano: '4.1 MB',
-        confianzaOcr: '99%'
-      },
-      {
-        id: 'DOC-203',
-        nombreArchivo: 'TITULO_PROVISION_NACIONAL_96071.pdf',
-        tipoDocumento: 'Diploma Académico / Título Profesional',
-        formato: 'pdf',
-        fechaHora: '11/09/2026 09:42',
-        tamano: '2.5 MB',
-        confianzaOcr: '100%'
-      }
-    ]
-  }
-];
+const LEGAJOS_INICIALES: LegajoEstudiante[] = [];
+
 
 export function SubidaDocumentos() {
   const navigate = useNavigate();
@@ -223,74 +129,75 @@ export function SubidaDocumentos() {
 
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
-  const [selectedDocumentTitle, setSelectedDocumentTitle] = useState<string>('CI_JENNY_FLORES_PEÑA.pdf');
+  const [selectedDocumentTitle, setSelectedDocumentTitle] = useState<string>('');
+  const [documentoProcesado, setDocumentoProcesado] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [expandedLegajoId, setExpandedLegajoId] = useState<string | null>('LEG-01');
+  const [expandedLegajoId, setExpandedLegajoId] = useState<string | null>(null);
 
-  // Clasificación actual
+  // Clasificación actual inicial limpia
   const [clasificacionActual, setClasificacionActual] = useState<ClasificacionResultado>({
     tipoClave: 'CI',
-    tipoNombre: 'Cédula de Identidad Escaneada',
-    icono: 'badge',
-    confianza: '99%',
-    detalles: 'Campos OCR: N° C.I., Expedido, Nombres, Apellidos, Fecha Nac., Estado Civil, Vencimiento'
+    tipoNombre: 'Pendiente de Digitalización OCR',
+    icono: 'document_scanner',
+    confianza: '0%',
+    detalles: 'Suba o escanee un documento para iniciar el análisis OCR'
   });
 
-  // ESTADOS DINÁMICOS DE CAMPOS OCR SEGÚN TIPO DE DOCUMENTO
+  // ESTADOS DINÁMICOS DE CAMPOS OCR SEGÚN TIPO DE DOCUMENTO (Limpios sin hardcodeo)
   const [ciFields, setCiFields] = useState({
-    ci: '3250858',
-    expedido: 'SCZ',
-    nombres: 'JENNY',
-    apellidos: 'FLORES PEÑA',
-    fechaNac: '14/05/1980',
-    nacionalidad: 'BOLIVIANA',
-    estadoCivil: 'SOLTERA',
-    vencimientoCi: '12/09/2030'
+    ci: '',
+    expedido: '',
+    nombres: '',
+    apellidos: '',
+    fechaNac: '',
+    nacionalidad: '',
+    estadoCivil: '',
+    vencimientoCi: ''
   });
 
   const [histUnivFields, setHistUnivFields] = useState({
-    ci: '3250858-SCZ',
-    estudiante: 'JENNY FLORES PEÑA',
-    ru: '219084732',
-    carrera: 'BIOQUÍMICA Y FARMACIA',
-    facultad: 'FACULTAD DE CIENCIAS FARMACÉUTICAS',
-    planEstudios: 'Plan 1998-2',
-    materiasAprobadas: '54 de 54 (100%)',
-    promedio: '78.4 / 100'
+    ci: '',
+    estudiante: '',
+    ru: '',
+    carrera: '',
+    facultad: '',
+    planEstudios: '',
+    materiasAprobadas: '',
+    promedio: ''
   });
 
   const [histColegioFields, setHistColegioFields] = useState({
-    ci: '3250858-SCZ',
-    alumno: 'JENNY FLORES PEÑA',
-    colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO',
-    distrito: 'Santa Cruz I',
-    codigoSie: '81980012',
-    nivel: '6to de Secundaria / Bachillerato',
-    gestionEgreso: '1997',
-    nroRegistroDistrital: 'DIST-97/441'
+    ci: '',
+    alumno: '',
+    colegio: '',
+    distrito: '',
+    codigoSie: '',
+    nivel: '',
+    gestionEgreso: '',
+    nroRegistroDistrital: ''
   });
 
   const [tituloFields, setTituloFields] = useState({
-    ci: '3250858-SCZ',
-    titular: 'JENNY FLORES PEÑA',
-    nroDiploma: '014863',
-    grado: 'BACHILLER EN HUMANIDADES',
-    libro: '19/98',
-    tomo: '02',
-    folio: '115/98',
-    fechaExtension: '24 de julio de 1998',
-    rector: 'JORGE ORELLANA MORENO'
+    ci: '',
+    titular: '',
+    nroDiploma: '',
+    grado: '',
+    libro: '',
+    tomo: '',
+    folio: '',
+    fechaExtension: '',
+    rector: ''
   });
 
   const [formularioFields, setFormularioFields] = useState({
-    ci: '3250858-SCZ',
-    solicitante: 'JENNY FLORES PEÑA',
-    nroHojaRuta: 'TR-2026-0472',
-    tipoTramite: 'Certificado de Autenticidad / Supletorio',
-    nroTestimonio: '1246/2025',
-    apoderado: 'Yuli Alison Romero Flores',
-    fechaSolicitud: '16 de abril de 2026'
+    ci: '',
+    solicitante: '',
+    nroHojaRuta: '',
+    tipoTramite: '',
+    nroTestimonio: '',
+    apoderado: '',
+    fechaSolicitud: ''
   });
 
   const procesarArchivoPDF = async (selectedFile: File) => {
@@ -304,7 +211,7 @@ export function SubidaDocumentos() {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      const res = await restClient.post<any>('/ocr/procesar', formData as any);
+      const res = await restClient.post<any>('/ocr/procesar/', formData as any);
       const data = res.data;
 
       if (data && data.datosExtraidos) {
@@ -327,135 +234,97 @@ export function SubidaDocumentos() {
           detalles: `Reconocimiento OCR inteligente UAGRM (${tipoNombre})`
         });
 
-        const nomVal = ext.titular || ext.nombreCompleto || ext.estudiante || 'TITULAR REGISTRADO';
-        const ciVal = ext.ci || '3250858-SCZ';
-        const carrVal = ext.carrera || ext.grado || 'BACHILLER EN HUMANIDADES';
-        const gestVal = ext.gestion ? String(ext.gestion) : '1979';
-        const libVal = ext.libro || '19/98';
-        const folVal = ext.folio || '115/98';
+        const nomVal = ext.titular || ext.nombreCompleto || ext.estudiante || '';
+        const ciVal = ext.ci || '';
+        const carrVal = ext.carrera || ext.grado || '';
+        const gestVal = ext.gestion ? String(ext.gestion) : '';
+        const libVal = ext.libro || '';
+        const folVal = ext.folio || '';
 
         setCiFields({
           ci: ciVal.split('-')[0],
           expedido: ciVal.includes('-') ? ciVal.split('-')[1] : 'SCZ',
           nombres: nomVal.split(' ')[0] || nomVal,
           apellidos: nomVal.split(' ').slice(1).join(' ') || '',
-          fechaNac: ext.fechaEmision || '14/05/1980',
-          nacionalidad: 'BOLIVIANA',
-          estadoCivil: 'SOLTERO(A)',
-          vencimientoCi: '12/09/2030'
+          fechaNac: ext.fechaEmision || '',
+          nacionalidad: '',
+          estadoCivil: '',
+          vencimientoCi: ''
         });
 
         setHistUnivFields({
           ci: ciVal,
           estudiante: nomVal,
-          ru: ext.ru || '219084732',
+          ru: ext.ru || '',
           carrera: carrVal,
-          facultad: 'FACULTAD DE HUMANIDADES',
-          planEstudios: `Plan ${gestVal}`,
-          materiasAprobadas: '54 de 54 (100%)',
-          promedio: '78.4 / 100'
+          facultad: '',
+          planEstudios: gestVal ? `Plan ${gestVal}` : '',
+          materiasAprobadas: '',
+          promedio: ''
         });
 
         setHistColegioFields({
           ci: ciVal,
           alumno: nomVal,
-          colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO',
-          distrito: 'Santa Cruz I',
-          codigoSie: '81980012',
-          nivel: '6to de Secundaria / Bachillerato',
+          colegio: '',
+          distrito: '',
+          codigoSie: '',
+          nivel: '',
           gestionEgreso: gestVal,
-          nroRegistroDistrital: `DIST-${gestVal}`
+          nroRegistroDistrital: gestVal ? `DIST-${gestVal}` : ''
         });
 
         setTituloFields({
           ci: ciVal,
           titular: nomVal,
-          nroDiploma: ext.nroDiploma || '014863',
+          nroDiploma: ext.nroDiploma || '',
           grado: carrVal,
           libro: libVal,
           tomo: '02',
           folio: folVal,
-          fechaExtension: ext.fechaEmision || `5 de diciembre de ${gestVal}`,
-          rector: ext.rector || 'DR. DAVID TERCEROS BANZER'
+          fechaExtension: ext.fechaEmision || '',
+          rector: ext.rector || ''
         });
 
         setFormularioFields({
           ci: ciVal,
           solicitante: nomVal,
-          nroHojaRuta: 'TR-2026-0472',
-          tipoTramite: 'Certificado de Autenticidad / Supletorio',
-          nroTestimonio: '1246/2025',
+          nroHojaRuta: '',
+          tipoTramite: '',
+          nroTestimonio: '',
           apoderado: nomVal,
-          fechaSolicitud: ext.fechaEmision || '16 de abril de 2026'
+          fechaSolicitud: ext.fechaEmision || ''
         });
+        setUploading(false);
+        return;
         setUploading(false);
         return;
       }
     } catch (err) {
-      console.warn('Error llamando OCR API backend, aplicando fallback:', err);
-    }
-
-    setUploading(false);
-    // Fallback si la API offline o mock estático
-    const res = clasificarDocumentoPDF(selectedFile.name);
-    setClasificacionActual(res);
-
-    if (selectedFile.name.includes('CARLOS_GUTIERREZ') || selectedFile.name.includes('7795202')) {
-      const ciVal = '7795202';
-      const nomVal = 'CARLOS GUTIERREZ ALVAREZ';
-      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'CARLOS', apellidos: 'GUTIERREZ ALVAREZ' }));
-      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-SCZ`, estudiante: nomVal, ru: '220041829', carrera: 'INGENIERÍA EN SISTEMAS' }));
-      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, alumno: nomVal, colegio: 'COLEGIO BAUTISTA BOLIVIANO' }));
-      setTituloFields(p => ({ ...p, ci: `${ciVal}-SCZ`, titular: nomVal, nroDiploma: '96071', grado: 'INGENIERO DE SISTEMAS', libro: '08/2024', folio: '31/2024' }));
-      setFormularioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, solicitante: nomVal }));
-    } else if (selectedFile.name.includes('MARIA_SUAREZ') || selectedFile.name.includes('4510293')) {
-      const ciVal = '4510293';
-      const nomVal = 'MARIA SUAREZ ROJAS';
-      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'MARIA', apellidos: 'SUAREZ ROJAS' }));
-      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-CB`, estudiante: nomVal, ru: '21500192', carrera: 'DERECHO' }));
-      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-CB`, alumno: nomVal, colegio: 'LICEO SEÑOR DE MAYO' }));
-      setTituloFields(p => ({ ...p, ci: `${ciVal}-CB`, titular: nomVal, nroDiploma: '44819', grado: 'LICENCIADA EN DERECHO', libro: '01/1995', folio: '88/1995' }));
-      setFormularioFields(p => ({ ...p, ci: `${ciVal}-CB`, solicitante: nomVal }));
-    } else {
-      const ciVal = '3250858';
-      const nomVal = 'JENNY FLORES PEÑA';
-      setCiFields(p => ({ ...p, ci: ciVal, nombres: 'JENNY', apellidos: 'FLORES PEÑA' }));
-      setHistUnivFields(p => ({ ...p, ci: `${ciVal}-SCZ`, estudiante: nomVal, ru: '219084732', carrera: 'BACHILLER EN HUMANIDADES' }));
-      setHistColegioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, alumno: nomVal, colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO' }));
-      setTituloFields(p => ({ ...p, ci: `${ciVal}-SCZ`, titular: nomVal, nroDiploma: '014863', grado: 'BACHILLER EN HUMANIDADES', libro: '19/98', folio: '115/98' }));
-      setFormularioFields(p => ({ ...p, ci: `${ciVal}-SCZ`, solicitante: nomVal }));
+      console.warn('OCR backend no disponible o error en endpoint:', err);
+      const autoClasif = clasificarDocumentoPorNombre(selectedFile.name);
+      setClasificacionActual({
+        tipoClave: autoClasif.tipoClave,
+        tipoNombre: autoClasif.tipoNombre,
+        icono: autoClasif.icono,
+        confianza: 'En verificación',
+        detalles: `Documento "${selectedFile.name}" cargado en visor. Verifique o complete los datos para el expediente.`
+      });
+      setUploading(false);
     }
   };
 
-  const handleSimularPdf = (ejemploNombre: string) => {
-    setCaptureMethod('upload');
-    const dummyFile = new File(['%PDF-1.4 mock content'], ejemploNombre, { type: 'application/pdf' });
-    procesarArchivoPDF(dummyFile);
-  };
-
-  // Simulación de Escaneo TWAIN 300 DPI
+  // Acciones de escáner y captura directa
   const handleEjecutarEscaneoTWAIN = () => {
-    setIsScanningTWAIN(true);
-    setTimeout(() => {
-      setIsScanningTWAIN(false);
-      const scanFile = new File(['%PDF-1.4 scan content'], 'ESCANEO_TWAIN_300DPI_CI_JENNY_FLORES.pdf', { type: 'application/pdf' });
-      procesarArchivoPDF(scanFile);
-      alert('🖨️ Escaneo físico TWAIN completado exitosamente a 300 DPI. Imagen cargada al visor.');
-    }, 1800);
+    fileInputRef.current?.click();
   };
 
-  // Simulación de Fotos tomadas desde Celular Smartphone
-  const handleSimularFotoCelular = (tipoFoto: string) => {
-    const mobileFile = new File(['%PDF-1.4 mobile camera scan'], `CAMARA_CELULAR_${tipoFoto}_JENNY_FLORES.pdf`, { type: 'application/pdf' });
-    procesarArchivoPDF(mobileFile);
-    alert(`📲 ¡Foto enviada desde el Celular recibida! Documento '${tipoFoto}' cargado al visor y clasificado por OCR.`);
+  const handleSimularFotoCelular = (_tipoFoto: string) => {
+    fileInputRef.current?.click();
   };
 
-  // Simulación de Lectura de Código QR
   const handleEscaneoCodigoQR = () => {
-    setQrDecodedMessage('✅ Código QR UAGRM Auténtico | Titular: JENNY FLORES PEÑA | C.I.: 3250858-SCZ | Registro Matriz: 19/98-115');
-    const qrFile = new File(['%PDF-1.4 qr doc'], 'DOCUMENTO_VERIFICADO_QR_IMPRENTA.pdf', { type: 'application/pdf' });
-    procesarArchivoPDF(qrFile);
+    fileInputRef.current?.click();
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -504,9 +373,9 @@ export function SubidaDocumentos() {
       nombres: legajo.titularNombre.split(' ')[0] || '',
       apellidos: legajo.titularNombre.split(' ').slice(1).join(' ') || '',
       fechaNac: '14/05/1980',
-      nacionalidad: 'BOLIVIANA',
+      nacionalidad: '',
       estadoCivil: 'SOLTERA',
-      vencimientoCi: '12/09/2030'
+      vencimientoCi: ''
     });
 
     setHistUnivFields({
@@ -516,17 +385,17 @@ export function SubidaDocumentos() {
       carrera: legajo.carrera,
       facultad: legajo.facultad,
       planEstudios: 'Plan 1998-2',
-      materiasAprobadas: '54 de 54 (100%)',
-      promedio: '78.4 / 100'
+      materiasAprobadas: '',
+      promedio: ''
     });
 
     setHistColegioFields({
       ci: legajo.ci,
       alumno: legajo.titularNombre,
-      colegio: 'COLEGIO NACIONAL GABRIEL RENÉ MORENO',
-      distrito: 'Santa Cruz I',
-      codigoSie: '81980012',
-      nivel: '6to de Secundaria / Bachillerato',
+      colegio: '',
+      distrito: '',
+      codigoSie: '',
+      nivel: '',
       gestionEgreso: legajo.gestion,
       nroRegistroDistrital: `DIST-${legajo.gestion}/441`
     });
@@ -619,42 +488,13 @@ export function SubidaDocumentos() {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4 mb-4">
           <div>
-            <h2 className="text-lg font-extrabold text-[#003366] tracking-tight font-heading flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '24px' }}>cloud_upload</span>
+            <h2 className="text-lg font-extrabold text-[#191A7D] tracking-tight font-heading flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#D31338]" style={{ fontSize: '24px' }}>cloud_upload</span>
               Digitalización e Ingreso de Expedientes (Multicanal Dinámico)
             </h2>
             <p className="text-xs text-slate-600 mt-1">
               Capture documentos por PDF, Escáner Físico, Celular Móvil o Lector QR. Los campos OCR se adaptan dinámicamente.
             </p>
-          </div>
-
-          {/* Quick PDF recognition triggers por Tipo */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pruebas Rápidas:</span>
-            <button
-              type="button"
-              onClick={() => handleSimularPdf('CI_JENNY_FLORES_PEÑA.pdf')}
-              className="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#003366] font-bold text-[11px] rounded-lg border border-blue-200 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[14px]">badge</span>
-              Cédula C.I.
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSimularPdf('HISTORIAL_NOTAS_JENNY_FLORES.pdf')}
-              className="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-[11px] rounded-lg border border-indigo-200 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[14px]">history_edu</span>
-              Histórico Univ.
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSimularPdf('TITULO_PROVISION_CARLOS_GUTIERREZ_7795202.pdf')}
-              className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[14px]">workspace_premium</span>
-              Título / Diploma
-            </button>
           </div>
         </div>
 
@@ -667,7 +507,7 @@ export function SubidaDocumentos() {
             onClick={() => handleTabClick('upload')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'upload'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
+                ? 'bg-[#191A7D] text-white border-[#191A7D] shadow-md ring-2 ring-[#191A7D]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
@@ -684,7 +524,7 @@ export function SubidaDocumentos() {
             onClick={() => handleTabClick('scanner')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'scanner'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
+                ? 'bg-[#191A7D] text-white border-[#191A7D] shadow-md ring-2 ring-[#191A7D]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
@@ -701,7 +541,7 @@ export function SubidaDocumentos() {
             onClick={() => handleTabClick('mobile')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'mobile'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
+                ? 'bg-[#191A7D] text-white border-[#191A7D] shadow-md ring-2 ring-[#191A7D]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
@@ -718,7 +558,7 @@ export function SubidaDocumentos() {
             onClick={() => handleTabClick('qr')}
             className={`p-4 rounded-xl border transition-all text-left flex items-center gap-3 cursor-pointer ${
               captureMethod === 'qr'
-                ? 'bg-[#003366] text-white border-[#003366] shadow-md ring-2 ring-[#003366]/30'
+                ? 'bg-[#191A7D] text-white border-[#191A7D] shadow-md ring-2 ring-[#191A7D]/30'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
             }`}
           >
@@ -736,9 +576,9 @@ export function SubidaDocumentos() {
           <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl space-y-3 animate-in fade-in">
             <div className="flex flex-wrap justify-between items-center gap-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#003366]">print font</span>
+                <span className="material-symbols-outlined text-[#191A7D]">print font</span>
                 <div>
-                  <h4 className="font-extrabold text-xs text-[#003366] uppercase">Controlador de Escáner Físico TWAIN / WIA</h4>
+                  <h4 className="font-extrabold text-xs text-[#191A7D] uppercase">Controlador de Escáner Físico TWAIN / WIA</h4>
                   <p className="text-[11px] text-slate-600">Dispositivo activo: Canon DR-C225 / Fujitsu Fi-7160 (300 DPI, Alimentador ADF)</p>
                 </div>
               </div>
@@ -747,7 +587,7 @@ export function SubidaDocumentos() {
                 type="button"
                 onClick={handleEjecutarEscaneoTWAIN}
                 disabled={isScanningTWAIN}
-                className="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer uppercase tracking-wider"
+                className="px-4 py-2 bg-[#191A7D] hover:bg-[#2B6CB0] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer uppercase tracking-wider"
               >
                 <span className="material-symbols-outlined text-[18px]">scanner</span>
                 {isScanningTWAIN ? 'Escaneando hoja...' : 'Ejecutar Escaneo Físico TWAIN'}
@@ -789,7 +629,7 @@ export function SubidaDocumentos() {
                 <button
                   type="button"
                   onClick={() => handleSimularFotoCelular('CEDULA_CI')}
-                  className="px-3 py-2 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-2 bg-[#191A7D] hover:bg-[#2B6CB0] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">photo_camera</span>
                   Foto C.I. desde Celular
@@ -840,39 +680,65 @@ export function SubidaDocumentos() {
       </div>
 
       {/* BANNER RECONOCIMIENTO INTELIGENTE DE TIPO DE DOCUMENTO */}
-      <div className="bg-gradient-to-r from-blue-900 to-[#003366] text-white rounded-2xl p-4 shadow-md flex flex-wrap items-center justify-between gap-4 animate-in fade-in">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-white/10 rounded-xl backdrop-blur-xs shrink-0">
-            <span className="material-symbols-outlined text-amber-300 text-2xl">
-              {clasificacionActual.icono}
+      {documentoProcesado ? (
+        <div className="bg-gradient-to-r from-blue-900 to-[#191A7D] text-white rounded-2xl p-4 shadow-md flex flex-wrap items-center justify-between gap-4 animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-white/10 rounded-xl backdrop-blur-xs shrink-0">
+              <span className="material-symbols-outlined text-amber-300 text-2xl">
+                {clasificacionActual.icono}
+              </span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 bg-amber-400 text-slate-900 font-mono text-[10px] font-black uppercase rounded">
+                  Tipo OCR Detectado
+                </span>
+                <h4 className="font-extrabold text-sm tracking-wide">
+                  {clasificacionActual.tipoNombre}
+                </h4>
+              </div>
+              <p className="text-xs text-blue-100 mt-0.5">
+                {clasificacionActual.detalles}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="text-right">
+              <p className="text-[10px] text-blue-200 uppercase font-mono">Confianza OCR</p>
+              <p className="text-lg font-black text-amber-300 font-mono">{clasificacionActual.confianza}</p>
+            </div>
+            <span className="px-3 py-1.5 bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs">
+              <span className="material-symbols-outlined text-[16px]">check_circle</span>
+              Campos Adaptados
             </span>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 bg-amber-400 text-slate-900 font-mono text-[10px] font-black uppercase rounded">
-                Tipo OCR Detectado
-              </span>
-              <h4 className="font-extrabold text-sm tracking-wide">
-                {clasificacionActual.tipoNombre}
-              </h4>
-            </div>
-            <p className="text-xs text-blue-100 mt-0.5">
-              {clasificacionActual.detalles}
-            </p>
-          </div>
         </div>
-
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="text-right">
-            <p className="text-[10px] text-blue-200 uppercase font-mono">Confianza OCR</p>
-            <p className="text-lg font-black text-amber-300 font-mono">{clasificacionActual.confianza}</p>
+      ) : (
+        <div className="bg-slate-50 border border-slate-200 text-slate-700 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-white text-[#191A7D] rounded-xl border border-slate-200 shrink-0">
+              <span className="material-symbols-outlined text-2xl">document_scanner</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 bg-slate-200 text-slate-700 font-mono text-[10px] font-bold uppercase rounded">
+                  Estado OCR
+                </span>
+                <h4 className="font-extrabold text-sm text-[#191A7D]">
+                  Esperando Documento para Clasificar
+                </h4>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Suba un archivo PDF o use los métodos de captura para procesar y clasificar los datos con el motor OCR.
+              </p>
+            </div>
           </div>
-          <span className="px-3 py-1.5 bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs">
-            <span className="material-symbols-outlined text-[16px]">check_circle</span>
-            Campos Adaptados
+          <span className="px-3 py-1 bg-slate-200 text-slate-600 font-mono text-xs font-bold rounded-lg shrink-0">
+            Pendiente
           </span>
         </div>
-      </div>
+      )}
 
       {/* 2. AREA PRINCIPAL: VISOR Y FORMULARIO DINÁMICO DE CAMPOS OCR SEGÚN TIPO */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -882,9 +748,13 @@ export function SubidaDocumentos() {
           
           <div className="flex justify-between items-center border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="material-symbols-outlined text-[#C51D24]">picture_as_pdf</span>
-              <h3 className="text-sm font-extrabold text-[#003366] truncate">
-                Visor PDF: <span className="font-mono text-slate-700">{selectedDocumentTitle}</span>
+              <span className="material-symbols-outlined text-[#D31338]">picture_as_pdf</span>
+              <h3 className="text-sm font-extrabold text-[#191A7D] truncate">
+                Visor PDF: {selectedDocumentTitle ? (
+                  <span className="font-mono text-slate-700">{selectedDocumentTitle}</span>
+                ) : (
+                  <span className="text-slate-400 font-normal italic">Ningún documento seleccionado</span>
+                )}
               </h3>
             </div>
 
@@ -928,7 +798,7 @@ export function SubidaDocumentos() {
             onDrop={handleDrop}
             className={`flex-1 min-h-[440px] rounded-xl border-2 border-dashed transition-all flex flex-col justify-center items-center p-6 relative overflow-hidden ${
               dragActive
-                ? 'border-[#003366] bg-blue-50/50'
+                ? 'border-[#191A7D] bg-blue-50/50'
                 : 'border-slate-300 bg-slate-50/70 hover:bg-slate-50'
             }`}
           >
@@ -955,11 +825,11 @@ export function SubidaDocumentos() {
               </div>
             ) : (
               <div className="text-center space-y-3 max-w-sm">
-                <div className="w-16 h-16 bg-blue-50 text-[#003366] rounded-2xl flex items-center justify-center mx-auto shadow-xs">
+                <div className="w-16 h-16 bg-blue-50 text-[#191A7D] rounded-2xl flex items-center justify-center mx-auto shadow-xs">
                   <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>upload_file</span>
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-sm text-[#003366]">Arrastre un archivo PDF</h4>
+                  <h4 className="font-extrabold text-sm text-[#191A7D]">Arrastre un archivo PDF</h4>
                   <p className="text-xs text-slate-500 mt-1">
                     Cédula CI, Histórico Univ., Histórico de Colegio, Título o Formulario. Los campos OCR se ajustarán automáticamente.
                   </p>
@@ -967,7 +837,7 @@ export function SubidaDocumentos() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer uppercase tracking-wider"
+                  className="px-4 py-2 bg-[#191A7D] hover:bg-[#2B6CB0] text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer uppercase tracking-wider"
                 >
                   Seleccionar Archivo PDF
                 </button>
@@ -982,13 +852,19 @@ export function SubidaDocumentos() {
           {/* Selector de Tipo de Documento que cambia dinámicamente la estructura de campos */}
           <div className="border-b border-slate-200 pb-3 space-y-2">
             <div className="flex justify-between items-center">
-              <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '18px' }}>tune</span>
+              <h3 className="text-xs font-extrabold text-[#191A7D] uppercase tracking-wider font-heading flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[#D31338]" style={{ fontSize: '18px' }}>tune</span>
                 Tipo de Documento &amp; Estructura OCR:
               </h3>
-              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold rounded">
-                Confianza {clasificacionActual.confianza}
-              </span>
+              {documentoProcesado ? (
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold rounded">
+                  Confianza {clasificacionActual.confianza}
+                </span>
+              ) : (
+                <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-mono font-bold rounded">
+                  Sin procesar
+                </span>
+              )}
             </div>
 
             <select
@@ -1015,11 +891,11 @@ export function SubidaDocumentos() {
                   tipoClave: val,
                   tipoNombre: nom,
                   icono: ico,
-                  confianza: '98%',
+                  confianza: documentoProcesado ? '98%' : '0%',
                   detalles: det
                 });
               }}
-              className="w-full px-3 py-2 bg-amber-50/90 border border-amber-300 rounded-xl text-xs font-extrabold text-[#003366] focus:bg-white focus:outline-none"
+              className="w-full px-3 py-2 bg-amber-50/90 border border-amber-300 rounded-xl text-xs font-extrabold text-[#191A7D] focus:bg-white focus:outline-none"
             >
               <option value="CI">💳 1. Cédula de Identidad Escaneada (C.I.)</option>
               <option value="HISTORICO_UNIV">📜 2. Histórico Académico Universitario & Certificado de Notas</option>
@@ -1035,7 +911,7 @@ export function SubidaDocumentos() {
             {/* === CASO 1: CÉDULA DE IDENTIDAD (CI) === */}
             {clasificacionActual.tipoClave === 'CI' && (
               <div className="space-y-3 animate-in fade-in">
-                <div className="p-2 bg-blue-50/80 border border-blue-200 rounded-lg text-[11px] font-bold text-[#003366] flex items-center gap-1.5">
+                <div className="p-2 bg-blue-50/80 border border-blue-200 rounded-lg text-[11px] font-bold text-[#191A7D] flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-[16px]">badge</span>
                   Campos Específicos Extraídos de Cédula de Identidad (CI):
                 </div>
@@ -1048,9 +924,8 @@ export function SubidaDocumentos() {
                         type="text"
                         value={ciFields.ci}
                         onChange={e => setCiFields({ ...ciFields, ci: e.target.value })}
-                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                       />
-                      <span className="absolute right-2 top-2 text-[9px] font-mono font-bold text-emerald-600">99%</span>
                     </div>
                   </div>
                   <div>
@@ -1132,7 +1007,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={histUnivFields.ci}
                       onChange={e => setHistUnivFields({ ...histUnivFields, ci: e.target.value })}
-                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                   <div>
@@ -1141,7 +1016,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={histUnivFields.ru}
                       onChange={e => setHistUnivFields({ ...histUnivFields, ru: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                 </div>
@@ -1182,7 +1057,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={histUnivFields.promedio}
                       onChange={e => setHistUnivFields({ ...histUnivFields, promedio: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                 </div>
@@ -1204,7 +1079,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={histColegioFields.ci}
                       onChange={e => setHistColegioFields({ ...histColegioFields, ci: e.target.value })}
-                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                   <div>
@@ -1254,7 +1129,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={histColegioFields.gestionEgreso}
                       onChange={e => setHistColegioFields({ ...histColegioFields, gestionEgreso: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#D31338]"
                     />
                   </div>
                 </div>
@@ -1277,7 +1152,7 @@ export function SubidaDocumentos() {
                         type="text"
                         value={tituloFields.nroDiploma}
                         onChange={e => setTituloFields({ ...tituloFields, nroDiploma: e.target.value })}
-                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#D31338]"
                       />
                       <span className="absolute right-2 top-2 text-[9px] font-mono font-bold text-emerald-600">99%</span>
                     </div>
@@ -1288,7 +1163,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={tituloFields.ci}
                       onChange={e => setTituloFields({ ...tituloFields, ci: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                 </div>
@@ -1320,7 +1195,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={tituloFields.libro}
                       onChange={e => setTituloFields({ ...tituloFields, libro: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#C51D24]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#D31338]"
                     />
                   </div>
                   <div>
@@ -1360,7 +1235,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={formularioFields.nroHojaRuta}
                       onChange={e => setFormularioFields({ ...formularioFields, nroHojaRuta: e.target.value })}
-                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                   <div>
@@ -1369,7 +1244,7 @@ export function SubidaDocumentos() {
                       type="text"
                       value={formularioFields.ci}
                       onChange={e => setFormularioFields({ ...formularioFields, ci: e.target.value })}
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#003366]"
+                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-[#191A7D]"
                     />
                   </div>
                 </div>
@@ -1413,7 +1288,7 @@ export function SubidaDocumentos() {
             <button
               type="submit"
               disabled={uploading}
-              className="w-full py-3 bg-[#003366] hover:bg-[#002244] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
+              className="w-full py-3 bg-[#191A7D] hover:bg-[#2B6CB0] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">verified</span>
               {uploading ? 'Guardando Expediente...' : 'Convalidar y Registrar en Carpeta Legajo'}
@@ -1427,13 +1302,13 @@ export function SubidaDocumentos() {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
         <div className="flex justify-between items-center border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#003366]"></span>
-            <h3 className="text-sm font-extrabold text-[#003366] uppercase tracking-wider font-heading flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#C51D24]" style={{ fontSize: '20px' }}>folder_shared</span>
+            <span className="w-3 h-3 rounded-full bg-[#191A7D]"></span>
+            <h3 className="text-sm font-extrabold text-[#191A7D] uppercase tracking-wider font-heading flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#D31338]" style={{ fontSize: '20px' }}>folder_shared</span>
               Bandeja de Expedientes Personales (Carpetas Digitales por C.I. y Nombre)
             </h3>
           </div>
-          <span className="px-3 py-1 bg-blue-50 text-[#003366] font-mono text-xs font-bold rounded-full border border-blue-200">
+          <span className="px-3 py-1 bg-blue-50 text-[#191A7D] font-mono text-xs font-bold rounded-full border border-blue-200">
             {legajosList.length} Expedientes Personales Activos
           </span>
         </div>
@@ -1450,17 +1325,17 @@ export function SubidaDocumentos() {
                   className="bg-slate-100/90 hover:bg-blue-50/60 p-4 flex flex-wrap items-center justify-between gap-4 cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-blue-100 text-[#003366] rounded-xl shrink-0">
+                    <div className="p-2.5 bg-blue-100 text-[#191A7D] rounded-xl shrink-0">
                       <span className="material-symbols-outlined text-2xl">
                         {isExpanded ? 'folder_open' : 'folder_shared'}
                       </span>
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-extrabold text-sm text-[#003366] font-heading uppercase">
+                        <h4 className="font-extrabold text-sm text-[#191A7D] font-heading uppercase">
                           {legajo.titularNombre}
                         </h4>
-                        <span className="px-2.5 py-0.5 bg-[#003366] text-white font-mono font-bold rounded text-[11px] shadow-2xs">
+                        <span className="px-2.5 py-0.5 bg-[#191A7D] text-white font-mono font-bold rounded text-[11px] shadow-2xs">
                           C.I. {legajo.ci}
                         </span>
                         <span className="px-2 py-0.5 bg-slate-200 text-slate-700 font-mono text-[10px] rounded">
@@ -1485,7 +1360,7 @@ export function SubidaDocumentos() {
                       {legajo.estadoOcr}
                     </span>
 
-                    <span className="px-3 py-1 bg-white text-[#003366] font-bold text-xs rounded-lg border border-slate-300 flex items-center gap-1 shadow-2xs">
+                    <span className="px-3 py-1 bg-white text-[#191A7D] font-bold text-xs rounded-lg border border-slate-300 flex items-center gap-1 shadow-2xs">
                       {legajo.documentos.length} Documentos en Expediente
                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
                         {isExpanded ? 'expand_less' : 'expand_more'}
@@ -1497,12 +1372,12 @@ export function SubidaDocumentos() {
                 {/* Despliegue de los Documentos de la Carpeta del Estudiante */}
                 {isExpanded && (
                   <div className="p-4 bg-white border-t border-slate-200 space-y-3">
-                    <div className="text-xs font-extrabold text-[#003366] uppercase tracking-wider border-l-3 border-[#C51D24] pl-2 flex items-center justify-between">
+                    <div className="text-xs font-extrabold text-[#191A7D] uppercase tracking-wider border-l-3 border-[#D31338] pl-2 flex items-center justify-between">
                       <span>Los documentos siguientes pertenecen al Expediente Personal de {legajo.titularNombre} (C.I. {legajo.ci}):</span>
                       <button
                         type="button"
                         onClick={() => navigate('/archivo/autenticidad')}
-                        className="px-3 py-1 bg-[#C51D24] hover:bg-[#A0161C] text-white font-bold text-[11px] rounded-lg shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                        className="px-3 py-1 bg-[#D31338] hover:bg-[#A0161C] text-white font-bold text-[11px] rounded-lg shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-[14px]">verified</span>
                         Emitir Informe para este Expediente
@@ -1518,7 +1393,7 @@ export function SubidaDocumentos() {
                             className="p-3.5 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-xl flex items-center justify-between gap-3 transition-colors shadow-2xs"
                           >
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className="p-2.5 bg-blue-100/70 rounded-xl text-[#003366] shrink-0">
+                              <div className="p-2.5 bg-blue-100/70 rounded-xl text-[#191A7D] shrink-0">
                                 <span className="material-symbols-outlined text-2xl">
                                   {clasif.icono}
                                 </span>
@@ -1541,7 +1416,7 @@ export function SubidaDocumentos() {
                             <button
                               type="button"
                               onClick={() => handleSelectDocument(legajo, doc)}
-                              className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
+                              className="px-3 py-1.5 bg-[#191A7D] hover:bg-[#2B6CB0] text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
                             >
                               <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>visibility</span>
                               Cargar al Visor

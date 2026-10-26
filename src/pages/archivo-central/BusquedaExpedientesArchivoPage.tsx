@@ -118,7 +118,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
         nombreCarrera: 'MÉDICO CIRUJANO',
         tomos: [
           {
-            id: 'tomo-2001-[#C51D24]-01',
+            id: 'tomo-2001-[#D31338]-01',
             numeroTomo: 'Legajo #01',
             rangoInicial: '96071',
             rangoFinal: '96001',
@@ -174,15 +174,15 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
               },
               {
                 id: 'grad-b2',
-                nroDiploma: '014863',
-                nombreTitular: 'JENNY FLORES PEÑA',
-                ci: '3250858-SCZ',
+                nroDiploma: '',
+                nombreTitular: '',
+                ci: '',
                 fojas: '115/98',
                 estado: 'Digitalizado',
                 esCarpetaCompleta: true,
                 documentos: [
-                  { nombre: 'CI_JENNY_FLORES.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
-                  { nombre: 'DIPLOMA_014863.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
+                  { nombre: '', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'DIPLOMA_.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
                 ]
               }
             ]
@@ -263,11 +263,11 @@ export function BusquedaExpedientesArchivoPage() {
       {/* Encabezado Principal Archivo Central */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C51D24] mb-1">
-            <BookOpen className="w-4 h-4 text-[#C51D24]" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#D31338] mb-1">
+            <BookOpen className="w-4 h-4 text-[#D31338]" />
             Módulo de Archivo Central • Estructura por Tomos y Legajos
           </div>
-          <h1 className="text-2xl font-extrabold text-[#003366] tracking-tight font-heading">
+          <h1 className="text-2xl font-extrabold text-[#191A7D] tracking-tight font-heading">
             Búsqueda por Jerarquía de Libros, Tomos y Legajos
           </h1>
           <p className="text-xs text-slate-600 mt-1">
@@ -276,7 +276,7 @@ export function BusquedaExpedientesArchivoPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1.5 bg-blue-50 text-[#003366] text-xs font-extrabold rounded-full border border-blue-200 flex items-center gap-1.5">
+          <span className="px-3.5 py-1.5 bg-blue-50 text-[#191A7D] text-xs font-extrabold rounded-full border border-blue-200 flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             Gestión Activa: {selectedGestion}
           </span>
@@ -286,8 +286,8 @@ export function BusquedaExpedientesArchivoPage() {
       {/* FILTROS EN CASCADA (ÁRBOL DE NAVEGACIÓN: GESTIÓN ➔ CARRERA ➔ TOMO/LEGAJO) */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2 text-[#003366] font-extrabold text-xs uppercase tracking-wider">
-            <span className="material-symbols-outlined text-[#C51D24] text-lg">filter_alt</span>
+          <div className="flex items-center gap-2 text-[#191A7D] font-extrabold text-xs uppercase tracking-wider">
+            <span className="material-symbols-outlined text-[#D31338] text-lg">filter_alt</span>
             Navegación Jerárquica en Cascada
           </div>
           <span className="text-[11px] text-slate-400 font-mono">ESTÁNDAR DOCUMENTAL UAGRM</span>
@@ -303,7 +303,7 @@ export function BusquedaExpedientesArchivoPage() {
             <select
               value={selectedGestion}
               onChange={(e) => handleGestionChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-extrabold text-[#003366] focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-extrabold text-[#191A7D] focus:ring-2 focus:ring-[#191A7D] focus:bg-white outline-none cursor-pointer"
             >
               {JERARQUIA_ARCHIVO_MOCK.map((g) => (
                 <option key={g.gestion} value={g.gestion}>
@@ -321,7 +321,7 @@ export function BusquedaExpedientesArchivoPage() {
             <select
               value={selectedCarreraId}
               onChange={(e) => handleCarreraChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-[#191A7D] focus:bg-white outline-none cursor-pointer"
             >
               {carrerasDisponibles.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -339,7 +339,7 @@ export function BusquedaExpedientesArchivoPage() {
             <select
               value={selectedTomoId}
               onChange={(e) => setSelectedTomoId(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-extrabold text-[#C51D24] focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none cursor-pointer"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-extrabold text-[#D31338] focus:ring-2 focus:ring-[#191A7D] focus:bg-white outline-none cursor-pointer"
             >
               {tomosDisponibles.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -359,13 +359,13 @@ export function BusquedaExpedientesArchivoPage() {
               placeholder="Filtrar por C.I. o Nombre dentro del legajo seleccionado..."
               value={queryTexto}
               onChange={(e) => setQueryTexto(e.target.value)}
-              className="w-full px-3.5 py-2 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none"
+              className="w-full px-3.5 py-2 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#191A7D] focus:bg-white outline-none"
             />
             <span className="material-symbols-outlined absolute left-2.5 top-2 text-slate-400 text-sm">search</span>
           </div>
 
           {tomoActivo && (
-            <div className="text-xs font-mono bg-blue-50 px-3.5 py-2 rounded-xl border border-blue-200 shrink-0 text-[#003366]">
+            <div className="text-xs font-mono bg-blue-50 px-3.5 py-2 rounded-xl border border-blue-200 shrink-0 text-[#191A7D]">
               Rango Correlativo: <strong>Del {tomoActivo.rangoInicial} al {tomoActivo.rangoFinal}</strong> ({tomoActivo.estadoTomo})
             </div>
           )}
@@ -375,8 +375,8 @@ export function BusquedaExpedientesArchivoPage() {
       {/* TABLA INDEXADA DEL TOMO SELECCIONADO */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="p-4 bg-slate-100/70 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
-          <h2 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#C51D24] text-lg">menu_book</span>
+          <h2 className="text-xs font-extrabold text-[#191A7D] uppercase tracking-wider flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#D31338] text-lg">menu_book</span>
             Índice de Graduados — {tomoActivo?.numeroTomo} ({carrerasDisponibles.find(c => c.id === selectedCarreraId)?.nombreCarrera})
           </h2>
           <span className="text-[11px] text-slate-500 font-medium">
@@ -387,7 +387,7 @@ export function BusquedaExpedientesArchivoPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50 text-[#003366] font-bold uppercase text-[10px] tracking-wider select-none">
+              <tr className="border-b border-slate-200 bg-slate-50 text-[#191A7D] font-bold uppercase text-[10px] tracking-wider select-none">
                 <th className="px-5 py-3.5">Nº Título / Correlativo</th>
                 <th className="px-5 py-3.5">Nombre del Graduado</th>
                 <th className="px-5 py-3.5">Cédula de Identidad</th>
@@ -399,7 +399,7 @@ export function BusquedaExpedientesArchivoPage() {
             <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
               {graduadosFiltrados.length > 0 ? graduadosFiltrados.map((grad) => (
                 <tr key={grad.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-4 font-mono font-extrabold text-[#C51D24]">
+                  <td className="px-5 py-4 font-mono font-extrabold text-[#D31338]">
                     Nº {grad.nroDiploma}
                   </td>
                   <td className="px-5 py-4 font-bold text-slate-900 uppercase">
@@ -435,7 +435,7 @@ export function BusquedaExpedientesArchivoPage() {
                       <button
                         type="button"
                         onClick={() => navigate('/archivo/autenticidad')}
-                        className="px-3.5 py-1.5 bg-[#C51D24] hover:bg-[#a3151b] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="px-3.5 py-1.5 bg-[#D31338] hover:bg-[#B70F2F] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-base">description</span>
                         Generar Informe (Tipo 1)
@@ -460,8 +460,8 @@ export function BusquedaExpedientesArchivoPage() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-              <h3 className="text-base font-extrabold text-[#003366] font-heading flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#C51D24]">folder_open</span>
+              <h3 className="text-base font-extrabold text-[#191A7D] font-heading flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#D31338]">folder_open</span>
                 Legajo: {selectedGraduadoModal.nombreTitular} (C.I. {selectedGraduadoModal.ci})
               </h3>
               <button
@@ -476,7 +476,7 @@ export function BusquedaExpedientesArchivoPage() {
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                 <p className="text-slate-500 font-medium">Nº Título / Diploma:</p>
-                <p className="font-mono font-bold text-[#C51D24]">{selectedGraduadoModal.nroDiploma}</p>
+                <p className="font-mono font-bold text-[#D31338]">{selectedGraduadoModal.nroDiploma}</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                 <p className="text-slate-500 font-medium">Ubicación Física:</p>
@@ -485,12 +485,12 @@ export function BusquedaExpedientesArchivoPage() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs font-bold text-[#003366] uppercase">Archivos Digitalizados del Legajo:</p>
+              <p className="text-xs font-bold text-[#191A7D] uppercase">Archivos Digitalizados del Legajo:</p>
               <div className="space-y-2">
                 {selectedGraduadoModal.documentos?.map((doc, idx) => (
                   <div key={idx} className="p-3 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-200 text-xs">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-xl text-[#003366]">{doc.icono}</span>
+                      <span className="material-symbols-outlined text-xl text-[#191A7D]">{doc.icono}</span>
                       <div>
                         <p className="font-bold text-slate-900">{doc.tipo}</p>
                         <p className="text-[10px] text-slate-500 font-mono">📄 {doc.nombre}</p>
@@ -516,7 +516,7 @@ export function BusquedaExpedientesArchivoPage() {
                   setSelectedGraduadoModal(null);
                   navigate('/archivo/autenticidad');
                 }}
-                className="px-4 py-2 bg-[#003366] hover:bg-blue-900 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
+                className="px-4 py-2 bg-[#191A7D] hover:bg-blue-900 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
               >
                 Generar Informe Oficial (Tipo 1)
               </button>

@@ -25,6 +25,11 @@ class RestClientError extends Error {
   }
 }
 
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
 function getAuthToken(): string | null {
   try {
     const raw = localStorage.getItem('auth-storage');
@@ -50,6 +55,19 @@ async function request<T>(
     ...headers,
   };
 
+  const token = getAuthToken();
+  if (token && !requestHeaders['Authorization']) {
+    requestHeaders['Authorization'] = `Bearer ${token}`;
+  }
+
+  // Soporte Django CSRF Token para peticiones mutables
+  if (method !== 'GET') {
+    const csrfToken = getCookie('csrftoken');
+    if (csrfToken && !requestHeaders['X-CSRFToken']) {
+      requestHeaders['X-CSRFToken'] = csrfToken;
+    }
+  }
+
   if (body && !(body instanceof FormData)) {
     requestHeaders['Content-Type'] = 'application/json';
   }
@@ -59,7 +77,7 @@ async function request<T>(
     headers: requestHeaders,
     body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined,
     signal,
-    credentials: 'include', // <--- Envía las cookies HttpOnly al backend
+    credentials: 'include', // Envía cookies HttpOnly y de sesión al backend
   });
 
   let data: T;

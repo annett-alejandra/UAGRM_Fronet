@@ -1,1 +1,0 @@
-export { BusquedaPage } from './BusquedaPage';

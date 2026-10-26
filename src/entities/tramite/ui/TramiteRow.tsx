@@ -1,6 +1,6 @@
 import { Badge } from '../../../shared/ui/Badge/Badge';
 import { formatRelativeTime } from '../../../shared/lib/format';
-import { type TramiteEntity, TramiteEstado, TipoTitulo } from './types';
+import { type TramiteEntity, TramiteEstado, TipoTitulo } from '../model/types';
 import './TramiteRow.css';
 
 interface TramiteRowProps {
@@ -13,13 +13,13 @@ type BadgeVariant = 'neutral' | 'primary' | 'success' | 'warning' | 'error' | 'i
 export function getEstadoBadge(estado: TramiteEstado): { label: string; variant: BadgeVariant } {
   switch (estado) {
     case TramiteEstado.RECEPCION_VENTANILLA:
-      return { label: 'Recepción', variant: 'info' };
+      return { label: 'RecepciÃ³n', variant: 'info' };
     case TramiteEstado.REVISION_ARCHIVO:
       return { label: 'Rev. Archivo', variant: 'warning' };
     case TramiteEstado.VERIFICADO_OCR:
       return { label: 'Verificado OCR', variant: 'primary' };
     case TramiteEstado.APROBACION_TITULOS:
-      return { label: 'Aprobación Títulos', variant: 'primary' };
+      return { label: 'AprobaciÃ³n TÃ­tulos', variant: 'primary' };
     case TramiteEstado.CERTIFICACION_EMITIDA:
       return { label: 'Cert. Emitida', variant: 'success' };
     case TramiteEstado.ENTREGADO:
@@ -32,13 +32,13 @@ export function getEstadoBadge(estado: TramiteEstado): { label: string; variant:
 export function getTipoLabel(tipo: TipoTitulo): string {
   switch (tipo) {
     case TipoTitulo.BIENHECHURIA:
-      return 'Bienhechuría';
+      return 'BienhechurÃ­a';
     case TipoTitulo.PROPIEDAD:
       return 'Propiedad';
     case TipoTitulo.EJIDO:
       return 'Ejido';
     case TipoTitulo.POSESION:
-      return 'Posesión';
+      return 'PosesiÃ³n';
     case TipoTitulo.SUPLETORIO:
       return 'Supletorio';
   }

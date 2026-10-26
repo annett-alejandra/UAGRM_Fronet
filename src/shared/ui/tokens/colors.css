@@ -1,0 +1,60 @@
+:root {
+  /* ==========================================================================
+     PALETA OFICIAL UAGRM — TONOS Y VARIACIONES (CAJA DE HERRAMIENTAS)
+     ========================================================================== */
+
+  /* A. Variaciones de Azul */
+  --uagrm-blue: #191A7D;              /* UAGRM Blue Oficial - C:100 M:95 K:5 */
+  --uagrm-blue-medio: #2B6CB0;        /* Medio - C:85 M:50 K:0 */
+  --uagrm-blue-suave: #556DEF;        /* Suave - Acento */
+  --uagrm-blue-suave-alt: #85BDEF;    /* Suave Claro - Borde informativo */
+  --uagrm-blue-muy-suave: #DAEFFE;    /* Muy Suave - C:10 M:7 K:1 Fondos de chips */
+
+  /* B. Variaciones de Rojo */
+  --uagrm-red: #D31338;               /* Rojo UAGRM Primario Secundario */
+  --uagrm-red-melocoton: #F08C6E;     /* Melocotón - Alerta intermedia */
+  --uagrm-red-salmon: #F39E8E;        /* Salmón (PaleRED) - Borde y badges */
+  --uagrm-red-rosado: #FCECEF;        /* Rosado - Fondo de avisos críticos */
+  --uagrm-red-rosado-alt: #EFFAFE;    /* Rosado Hielo tenue */
+
+  /* C. Escala de Grises */
+  --uagrm-gris-profundo: #191A2D;     /* Un gris profundo - Texto y contrastes fuertes */
+  --uagrm-gris: #6B7280;              /* Gris equilibrado - Texto secundario */
+  --uagrm-gris-suave: #E2E8F0;        /* Gris suave - Bordes y separadores */
+  --uagrm-blanco-hueso: #F9F9F6;      /* Blanco hueso - Fondo de superficies */
+  --uagrm-blanco: #FFFFFF;            /* Blanco puro - Background principal */
+
+  /* D. Tokens HSL Semánticos para Tailwind & Radix UI (Modo Claro) */
+  --color-primary: 239 67% 29%;                 /* #191A7D */
+  --color-primary-foreground: 0 0% 100%;        /* #FFFFFF */
+  --color-primary-medio: 211 61% 43%;           /* #2B6CB0 */
+  --color-primary-soft: 205 94% 93%;            /* #DAEFFE */
+
+  --color-secondary: 348 83% 45%;               /* #D31338 */
+  --color-secondary-foreground: 0 0% 100%;      /* #FFFFFF */
+  --color-secondary-soft: 349 67% 96%;          /* #FCECEF */
+  --color-secondary-melocoton: 14 81% 69%;      /* #F08C6E */
+  --color-secondary-salmon: 10 79% 75%;         /* #F39E8E */
+
+  --color-destructive: 348 83% 45%;             /* #D31338 */
+  --color-destructive-foreground: 0 0% 100%;
+  --color-destructive-soft: 349 67% 96%;
+
+  --color-surface: 0 0% 100%;                   /* Blanco puro */
+  --color-surface-bone: 60 14% 97%;             /* #F9F9F6 Blanco hueso */
+  --color-surface-foreground: 237 29% 14%;      /* #191A2D */
+
+  --color-border: 214.3 31.8% 91.4%;            /* #E2E8F0 */
+  --color-ring: 239 67% 29%;                    /* #191A7D */
+  --radius-base: 0.5rem;
+}
+
+[data-theme="dark"] {
+  /* Mapeo Automático para Modo Oscuro respetando la jerarquía UAGRM */
+  --color-primary: 231 82% 64%;                 /* #556DEF */
+  --color-primary-foreground: 0 0% 100%;
+  --color-surface: 237 29% 14%;                 /* #191A2D */
+  --color-surface-foreground: 60 14% 97%;       /* #F9F9F6 */
+  --color-border: 237 20% 25%;
+  --color-ring: 205 94% 93%;
+}

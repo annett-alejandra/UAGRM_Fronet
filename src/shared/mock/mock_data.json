@@ -1,0 +1,211 @@
+{
+  "institucionesConvenio": [
+    {
+      "id": "inst-001",
+      "razonSocial": "Fiscalía Departamental de Santa Cruz",
+      "codigoSecreto": "FISC-SCZ-2026",
+      "nit": "1028374021",
+      "convenio": "CONV-UAGRM-FISC-2024/09"
+    },
+    {
+      "id": "inst-002",
+      "razonSocial": "Gobierno Autónomo Departamental de Santa Cruz (Gobernación)",
+      "codigoSecreto": "GOB-SCZ-CONV",
+      "nit": "1020491029",
+      "convenio": "CONV-UAGRM-GOB-2023/14"
+    },
+    {
+      "id": "inst-003",
+      "razonSocial": "Tribunal Departamental de Justicia (Órgano Judicial)",
+      "codigoSecreto": "OJ-SCZ-AUT",
+      "nit": "1039482012",
+      "convenio": "CONV-UAGRM-TDJ-2025/02"
+    },
+    {
+      "id": "inst-004",
+      "razonSocial": "Ministerio de Educación del Estado Plurinacional",
+      "codigoSecreto": "MIN-EDU-LPZ",
+      "nit": "1009384729",
+      "convenio": "CONV-MINEDU-UAGRM-2022/88"
+    },
+    {
+      "id": "inst-005",
+      "razonSocial": "Autoridad de Supervisión del Sistema Financiero (ASFI)",
+      "codigoSecreto": "ASFI-VERIF-99",
+      "nit": "1019283746",
+      "convenio": "CONV-ASFI-UAGRM-2024/05"
+    }
+  ],
+  "postulantesLoteInicial": [
+    {
+      "id": "post-001",
+      "ci": "8934521 SCZ",
+      "nombre": "Carlos Alejandro Rivera Morales",
+      "carrera": "Ingeniería Informática",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": []
+    },
+    {
+      "id": "post-002",
+      "ci": "7612349 SCZ",
+      "nombre": "Mariana Rocío Aguilera Suárez",
+      "carrera": "Licenciatura en Derecho",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": []
+    },
+    {
+      "id": "post-003",
+      "ci": "6541290 SCZ",
+      "nombre": "José Fernando Céspedes Antelo",
+      "carrera": "Auditoría Financiera",
+      "requisitos": {
+        "ci": true,
+        "titulo": false,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": ["Falta anverso/reverso del Título Académico"]
+    },
+    {
+      "id": "post-004",
+      "ci": "9123847 CBA",
+      "nombre": "Valeria Sofía Justiniano Prado",
+      "carrera": "Medicina",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": []
+    },
+    {
+      "id": "post-005",
+      "ci": "5849201 LPZ",
+      "nombre": "Rodrigo Andrés Torrico Vaca",
+      "carrera": "Ingeniería Civil",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": false,
+        "arancel": true
+      },
+      "detalleFaltantes": ["Falta Solicitud digital aprobada"]
+    },
+    {
+      "id": "post-006",
+      "ci": "4892018 SCZ",
+      "nombre": "Luciana Belén Hurtado Mendoza",
+      "carrera": "Licenciatura en Bioquímica",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": []
+    },
+    {
+      "id": "post-007",
+      "ci": "7329104 BEN",
+      "nombre": "Jorge Gabriel Saucedo Pinto",
+      "carrera": "Ingeniería Comercial",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": false
+      },
+      "detalleFaltantes": ["Falta comprobante de Arancel (Bs. 30)"]
+    },
+    {
+      "id": "post-008",
+      "ci": "6928301 SCZ",
+      "nombre": "Andrea Carolina Méndez Ortiz",
+      "carrera": "Ingeniería en Redes y Telecomunicaciones",
+      "requisitos": {
+        "ci": true,
+        "titulo": true,
+        "solicitud": true,
+        "arancel": true
+      },
+      "detalleFaltantes": []
+    }
+  ],
+  "tramitesSeguimiento": [
+    {
+      "codigoRut": "UAGRM-2024-00101",
+      "tipoTramite": "Personal (Titular)",
+      "titularNombre": "Carlos Alejandro Rivera Morales",
+      "ci": "8934521 SCZ",
+      "documento": "Título en Provisión Nacional",
+      "carrera": "Ingeniería Informática",
+      "gestionEmision": 2024,
+      "unidadFisica": "Departamento de Títulos y Grados (Sistema ANZIO)",
+      "faseActual": 3,
+      "faseNombre": "Validación Títulos / Archivo Central",
+      "estadoArancel": "PENDIENTE",
+      "arancelMonto": 30,
+      "codigoCpt": "CPT-491823",
+      "fechaRegistro": "2024-09-15"
+    },
+    {
+      "codigoRut": "UAGRM-2022-00452",
+      "tipoTramite": "Personal (Apoderado)",
+      "titularNombre": "María Elena Banegas Céspedes",
+      "ci": "4716343 SCZ",
+      "documento": "Título Académico",
+      "carrera": "Licenciatura en Derecho",
+      "gestionEmision": 2021,
+      "unidadFisica": "Sección Archivo Central (Libros Matrices)",
+      "faseActual": 2,
+      "faseNombre": "Revisión Secretaría General",
+      "estadoArancel": "PAGADO",
+      "arancelMonto": 30,
+      "codigoCpt": "CPT-182940",
+      "fechaRegistro": "2024-09-18"
+    },
+    {
+      "codigoRut": "UAGRM-2026-00012",
+      "tipoTramite": "Personal (Titular)",
+      "titularNombre": "Carlos Mendoza Justiniano",
+      "ci": "5829103 SCZ",
+      "documento": "Diploma de Bachiller",
+      "carrera": "Medicina",
+      "gestionEmision": 2025,
+      "unidadFisica": "Departamento de Títulos y Grados",
+      "faseActual": 5,
+      "faseNombre": "Listo para Descarga / Retiro",
+      "estadoArancel": "PAGADO",
+      "arancelMonto": 30,
+      "codigoCpt": "CPT-902812",
+      "fechaRegistro": "2024-09-02"
+    },
+    {
+      "codigoRut": "UAGRM-INST-2024-88",
+      "tipoTramite": "Institucional por Lote",
+      "titularNombre": "Fiscalía Departamental de Santa Cruz (Nómina 15 funcionarios)",
+      "ci": "NIT 1028374021",
+      "documento": "Verificación Masiva de Grados",
+      "carrera": "Varias Carreras",
+      "gestionEmision": 2024,
+      "unidadFisica": "Secretaría General (Refrendo Legal)",
+      "faseActual": 4,
+      "faseNombre": "Refrendo Legal y Firma",
+      "estadoArancel": "GRATUITO_CONVENIO",
+      "arancelMonto": 0,
+      "codigoCpt": "CONVENIO-EXENTO",
+      "fechaRegistro": "2024-09-10"
+    }
+  ]
+}

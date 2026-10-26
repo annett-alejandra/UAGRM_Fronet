@@ -33,10 +33,10 @@ const INITIAL_PENDIENTES: SolicitudPendiente[] = [
   {
     id: 'SOL-2026-001',
     codigoTramite: 'TR-88421',
-    solicitanteNombre: 'JENNY FLORES PEÑA',
-    solicitanteCi: '3250858-SCZ',
+    solicitanteNombre: '',
+    solicitanteCi: '',
     telefono: '77348912',
-    email: 'jenny.flores@uagrm.edu.bo',
+    email: '',
     tramiteTipo: 'Certificación de Autenticidad',
     fechaIngreso: '14/09/2026 08:30 AM',
     nroReciboPago: 'REC-994812',
@@ -50,7 +50,7 @@ const INITIAL_PENDIENTES: SolicitudPendiente[] = [
         icono: 'badge',
         verificado: true,
         obligatorio: true,
-        nombreArchivo: 'CI_3250858_JENNY_FLORES_3COPIAS.pdf',
+        nombreArchivo: 'CI_SOLICITANTE_3COPIAS.pdf',
         paginas: 3
       },
       {
@@ -60,7 +60,7 @@ const INITIAL_PENDIENTES: SolicitudPendiente[] = [
         icono: 'mail',
         verificado: true,
         obligatorio: true,
-        nombreArchivo: 'CARTA_SOLICITUD_RECTOR_JENNY.pdf',
+        nombreArchivo: '',
         paginas: 1
       },
       {
@@ -80,7 +80,7 @@ const INITIAL_PENDIENTES: SolicitudPendiente[] = [
         icono: 'workspace_premium',
         verificado: true,
         obligatorio: true,
-        nombreArchivo: 'TITULO_BACHILLER_014863_ANVERSO_REVERSO.pdf',
+        nombreArchivo: 'TITULO_BACHILLER__ANVERSO_REVERSO.pdf',
         paginas: 2
       },
       {
@@ -280,11 +280,11 @@ export function BandejaPendientesPage() {
       {/* Encabezado Principal */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 bg-white/95 backdrop-blur-sm">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C51D24] mb-1">
-            <ListOrdered className="w-4 h-4 text-[#C51D24]" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#D31338] mb-1">
+            <ListOrdered className="w-4 h-4 text-[#D31338]" />
             Módulo de Archivo Central • Triaje de Recepción
           </div>
-          <h1 className="text-2xl font-extrabold text-[#003366] tracking-tight font-heading">
+          <h1 className="text-2xl font-extrabold text-[#191A7D] tracking-tight font-heading">
             Bandeja de Pendientes & Triaje de Requisitos Documentales
           </h1>
           <p className="text-xs text-slate-600 mt-1">
@@ -293,7 +293,7 @@ export function BandejaPendientesPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1.5 bg-blue-50 text-[#003366] text-xs font-extrabold rounded-full border border-blue-200">
+          <span className="px-3.5 py-1.5 bg-blue-50 text-[#191A7D] text-xs font-extrabold rounded-full border border-blue-200">
             Pendientes en Cola: {solicitudes.filter(s => s.estadoTriaje !== 'Completo').length}
           </span>
         </div>
@@ -313,7 +313,7 @@ export function BandejaPendientesPage() {
                 placeholder="Buscar por Nombre, C.I. o Trámite..."
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-                className="w-full px-3.5 py-2 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#003366] focus:bg-white outline-none"
+                className="w-full px-3.5 py-2 pl-9 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#191A7D] focus:bg-white outline-none"
               />
               <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-slate-400 text-sm">search</span>
             </div>
@@ -326,7 +326,7 @@ export function BandejaPendientesPage() {
                   onClick={() => setFiltroEstado(est)}
                   className={`px-3 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer ${
                     filtroEstado === est
-                      ? 'bg-[#003366] text-white shadow-xs'
+                      ? 'bg-[#191A7D] text-white shadow-xs'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
@@ -349,7 +349,7 @@ export function BandejaPendientesPage() {
                   onClick={() => setSelectedSolicitud(sol)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-50/70 border-[#003366] ring-2 ring-[#003366]/20 shadow-md'
+                      ? 'bg-blue-50/70 border-[#191A7D] ring-2 ring-[#191A7D]/20 shadow-md'
                       : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
                   }`}
                 >
@@ -377,7 +377,7 @@ export function BandejaPendientesPage() {
 
                   <div className="mt-3 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
                     <span className="text-slate-500 text-[11px]">
-                      Requisitos: <strong className="text-[#003366] font-bold">{reqsCumplidos}/{totalReqs}</strong>
+                      Requisitos: <strong className="text-[#191A7D] font-bold">{reqsCumplidos}/{totalReqs}</strong>
                     </span>
 
                     <span className="font-mono font-bold text-slate-700 text-[11px]">
@@ -399,7 +399,7 @@ export function BandejaPendientesPage() {
               <div className="border-b border-slate-200 pb-4 flex flex-wrap justify-between items-start gap-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 bg-blue-100 text-[#003366] font-mono font-bold text-xs rounded-lg">
+                    <span className="px-2.5 py-0.5 bg-blue-100 text-[#191A7D] font-mono font-bold text-xs rounded-lg">
                       {selectedSolicitud.codigoTramite}
                     </span>
                     <span className="text-xs text-slate-500 font-medium">
@@ -407,7 +407,7 @@ export function BandejaPendientesPage() {
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-extrabold text-[#003366] mt-2 font-heading">
+                  <h2 className="text-xl font-extrabold text-[#191A7D] mt-2 font-heading">
                     {selectedSolicitud.solicitanteNombre}
                   </h2>
                   <p className="text-xs text-slate-600 font-medium mt-0.5">
@@ -420,7 +420,7 @@ export function BandejaPendientesPage() {
                   <button
                     type="button"
                     onClick={() => setShowShareModal(true)}
-                    className="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-[#003366] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-blue-200"
+                    className="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-[#191A7D] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-blue-200"
                   >
                     <span className="material-symbols-outlined text-base">share</span>
                     Compartir
@@ -428,7 +428,7 @@ export function BandejaPendientesPage() {
 
                   <div className="text-right bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                     <p className="text-[10px] text-slate-500 font-bold uppercase">Pago de Valores</p>
-                    <p className="font-mono font-extrabold text-xs text-[#003366]">{selectedSolicitud.nroReciboPago}</p>
+                    <p className="font-mono font-extrabold text-xs text-[#191A7D]">{selectedSolicitud.nroReciboPago}</p>
                     <p className="text-[11px] font-bold text-emerald-700">{selectedSolicitud.montoPago}</p>
                   </div>
                 </div>
@@ -437,8 +437,8 @@ export function BandejaPendientesPage() {
               {/* LISTA DE CHECKLIST DE REQUISITOS OBLIGATORIOS CON VISOR PDF */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-xs font-extrabold text-[#003366] uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[#C51D24] text-base">fact_check</span>
+                  <h3 className="text-xs font-extrabold text-[#191A7D] uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[#D31338] text-base">fact_check</span>
                     Lista de Verificación con Visor PDF Incorporado
                   </h3>
                   <span className="text-[11px] text-slate-500 font-medium">
@@ -494,7 +494,7 @@ export function BandejaPendientesPage() {
                         <button
                           type="button"
                           onClick={() => setPreviewPdfReq(req)}
-                          className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                          className="px-3 py-1.5 bg-[#191A7D] hover:bg-[#2B6CB0] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
                         >
                           <span className="material-symbols-outlined text-sm">visibility</span>
                           Ver PDF
@@ -505,7 +505,7 @@ export function BandejaPendientesPage() {
                           type="checkbox"
                           checked={req.verificado}
                           onChange={() => handleToggleRequisito(selectedSolicitud.id, req.id)}
-                          className="w-5 h-5 text-[#003366] rounded-md focus:ring-[#003366] cursor-pointer"
+                          className="w-5 h-5 text-[#191A7D] rounded-md focus:ring-[#191A7D] cursor-pointer"
                         />
                       </div>
                     </div>
@@ -520,7 +520,7 @@ export function BandejaPendientesPage() {
                     selectedSolicitud.estadoTriaje === 'Completo' ? 'bg-emerald-500' :
                     selectedSolicitud.estadoTriaje === 'Pendiente' ? 'bg-amber-500' : 'bg-red-500'
                   }`}></span>
-                  <span>Estado de Triaje: <strong className="text-[#003366] font-bold">{selectedSolicitud.estadoTriaje}</strong></span>
+                  <span>Estado de Triaje: <strong className="text-[#191A7D] font-bold">{selectedSolicitud.estadoTriaje}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -538,7 +538,7 @@ export function BandejaPendientesPage() {
                     onClick={() => navigate('/archivo/autenticidad')}
                     className={`px-5 py-2.5 text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-1.5 uppercase tracking-wider cursor-pointer ${
                       selectedSolicitud.estadoTriaje === 'Completo'
-                        ? 'bg-[#003366] hover:bg-[#002244] text-white'
+                        ? 'bg-[#191A7D] hover:bg-[#2B6CB0] text-white'
                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                     }`}
                   >
@@ -565,7 +565,7 @@ export function BandejaPendientesPage() {
           <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
             
             {/* Header del Visor */}
-            <div className="bg-[#003366] text-white p-4 flex justify-between items-center">
+            <div className="bg-[#191A7D] text-white p-4 flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-2xl text-amber-400">picture_as_pdf</span>
                 <div>
@@ -599,14 +599,14 @@ export function BandejaPendientesPage() {
                 
                 {/* Sello de Marca de Agua de Verificación */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-                  <span className="text-8xl font-extrabold uppercase rotate-45 text-[#003366]">
+                  <span className="text-8xl font-extrabold uppercase rotate-45 text-[#191A7D]">
                     UAGRM VERIFICADO
                   </span>
                 </div>
 
                 <div>
                   <div className="border-b border-slate-300 pb-3 flex justify-between items-center">
-                    <span className="font-extrabold text-xs text-[#003366] uppercase">
+                    <span className="font-extrabold text-xs text-[#191A7D] uppercase">
                       UNIVERSIDAD AUTÓNOMA GABRIEL RENÉ MORENO — ARCHIVO CENTRAL
                     </span>
                     <span className="text-[10px] font-mono text-slate-500">
@@ -627,7 +627,7 @@ export function BandejaPendientesPage() {
 
                     <div className="p-4 border border-dashed border-slate-300 rounded-xl space-y-2 text-slate-700 text-justify">
                       <p className="font-medium">
-                        Por la presente se certifica la visualización del archivo escaneado <strong className="text-[#003366]">{previewPdfReq.nombreArchivo}</strong>, correspondiente al trámite Nº <strong className="font-mono">{selectedSolicitud.codigoTramite}</strong> a nombre del titular <strong>{selectedSolicitud.solicitanteNombre}</strong> con C.I. <strong>{selectedSolicitud.solicitanteCi}</strong>.
+                        Por la presente se certifica la visualización del archivo escaneado <strong className="text-[#191A7D]">{previewPdfReq.nombreArchivo}</strong>, correspondiente al trámite Nº <strong className="font-mono">{selectedSolicitud.codigoTramite}</strong> a nombre del titular <strong>{selectedSolicitud.solicitanteNombre}</strong> con C.I. <strong>{selectedSolicitud.solicitanteCi}</strong>.
                       </p>
                       <p className="text-[11px] text-slate-500 italic">
                         * Este archivo cuenta con firma digital y marca de agua institucional para cotejo de legalidad en Archivo Central.
@@ -636,8 +636,8 @@ export function BandejaPendientesPage() {
 
                     <div className="grid grid-cols-2 gap-3 pt-2">
                       <div className="p-3 bg-blue-50 rounded-lg text-center border border-blue-200">
-                        <span className="material-symbols-outlined text-2xl text-[#003366]">verified</span>
-                        <p className="text-[10px] font-bold text-[#003366] mt-1">Sello Digital Valido</p>
+                        <span className="material-symbols-outlined text-2xl text-[#191A7D]">verified</span>
+                        <p className="text-[10px] font-bold text-[#191A7D] mt-1">Sello Digital Valido</p>
                       </div>
                       <div className="p-3 bg-amber-50 rounded-lg text-center border border-amber-200">
                         <span className="material-symbols-outlined text-2xl text-amber-700">receipt</span>
@@ -658,7 +658,7 @@ export function BandejaPendientesPage() {
 
             {/* Footer de Acciones del Visor */}
             <div className="p-4 bg-slate-100 border-t border-slate-200 flex justify-between items-center">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#003366]">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#191A7D]">
                 <span className="material-symbols-outlined text-emerald-600 text-base">check_circle</span>
                 <span>Previsualización Auditable HD</span>
               </div>
@@ -696,8 +696,8 @@ export function BandejaPendientesPage() {
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl animate-in zoom-in-95 duration-200">
             
             <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-              <h3 className="text-base font-extrabold text-[#003366] font-heading flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#C51D24]">share</span>
+              <h3 className="text-base font-extrabold text-[#191A7D] font-heading flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#D31338]">share</span>
                 Compartir Expediente: {selectedSolicitud.solicitanteNombre}
               </h3>
               <button
@@ -734,7 +734,7 @@ export function BandejaPendientesPage() {
 
               {/* Opcion 2: Copiar Enlace Seguro */}
               <div className="p-3.5 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
-                <p className="font-extrabold text-[#003366] text-xs flex items-center gap-1">
+                <p className="font-extrabold text-[#191A7D] text-xs flex items-center gap-1">
                   <span className="material-symbols-outlined text-base">link</span>
                   Enlace Seguro de Verificación:
                 </p>
@@ -748,7 +748,7 @@ export function BandejaPendientesPage() {
                   <button
                     type="button"
                     onClick={() => handleCopiarEnlace(`https://titulos.uagrm.edu.bo/verificar/${selectedSolicitud.codigoTramite}`)}
-                    className="px-3 py-1.5 bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs rounded-lg transition-colors shrink-0 cursor-pointer"
+                    className="px-3 py-1.5 bg-[#191A7D] hover:bg-[#2B6CB0] text-white font-bold text-xs rounded-lg transition-colors shrink-0 cursor-pointer"
                   >
                     {copiadoExitosa ? '¡Copiado!' : 'Copiar'}
                   </button>

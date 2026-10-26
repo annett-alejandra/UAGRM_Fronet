@@ -1,0 +1,1373 @@
+/**
+ * Estilos Semánticos Institucionales del Portal Web y Landing Page UAGRM
+ * CERO DEGRADADOS — Paleta Plana Institucional, Limpia y Accesible
+ */
+
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
+.portal-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ==========================================================================
+   Portada de Entrada Institucional (Hero)
+   ========================================================================== */
+.portal-hero {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.portal-hero-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.portal-hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.portal-hero-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-hero-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.portal-hero-pretitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #191A7D;
+}
+
+.portal-hero-title {
+  margin: 0;
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #191A7D;
+}
+
+.portal-hero-description {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #64748B;
+  max-width: 650px;
+}
+
+/* Tira Horizontal de 3 Columnas en el Hero (Sin background de color, solo icono y texto) */
+.portal-hero-features-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #E2E8F0;
+}
+
+.portal-hero-feature-col {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: transparent;
+  padding: 0.25rem 0;
+}
+
+.portal-hero-feature-icon {
+  flex-shrink: 0;
+}
+
+.portal-hero-feature-icon--green {
+  color: #15803D;
+}
+
+.portal-hero-feature-icon--blue {
+  color: #191A7D;
+}
+
+.portal-hero-feature-icon--gold {
+  color: #D97706;
+}
+
+.portal-hero-feature-text {
+  font-size: 0.8375rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   Selector de Modalidad / Rol de Trámite
+   ========================================================================== */
+.portal-role-container {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.portal-role-header {
+  margin-bottom: 1.25rem;
+}
+
+.portal-role-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #191A7D;
+}
+
+.portal-role-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.portal-role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.portal-role-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 1.125rem !important;
+  padding: 1.25rem 1.5rem !important;
+  background-color: #F9F9F6 !important;
+  border: 2px solid #E2E8F0 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease-in-out !important;
+  text-align: left !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100px !important;
+  white-space: normal !important;
+  color: inherit !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+.portal-role-card:hover {
+  background-color: #F1F5F9 !important;
+  border-color: #94A3B8 !important;
+}
+
+.portal-role-card--active {
+  background-color: #FFFFFF !important;
+  border-color: #191A7D !important;
+  box-shadow: 0 0 0 2px #191A7D !important;
+}
+
+.portal-role-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #E2E8F0;
+  color: #191A7D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.portal-role-card--active .portal-role-icon {
+  background-color: #191A7D;
+  color: #FFFFFF;
+}
+
+.portal-role-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.35rem;
+  flex: 1;
+  white-space: normal;
+}
+
+.portal-role-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #191A2D;
+  display: block;
+}
+
+.portal-role-card--active .portal-role-name {
+  color: #191A7D;
+}
+
+.portal-role-desc {
+  font-size: 0.85rem;
+  color: #64748B;
+  line-height: 1.5;
+  white-space: normal;
+  display: block;
+}
+
+/* ==========================================================================
+   Banner Informativo Institucional (Convenio Exento de Pago)
+   ========================================================================== */
+.portal-notice-banner {
+  background-color: #F0F4F8;
+  border-left: 4px solid #191A7D;
+  border-top: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.portal-notice-icon {
+  flex-shrink: 0;
+  color: #191A7D;
+  margin-top: 2px;
+}
+
+.portal-notice-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #191A7D;
+}
+
+.portal-notice-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+/* ==========================================================================
+   Secciones Modulares del Formulario
+   ========================================================================== */
+.portal-section-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 1.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.portal-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.portal-section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.portal-section-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #191A7D;
+  color: #FFFFFF;
+  font-size: 0.825rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.portal-section-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #191A7D;
+}
+
+.portal-section-caption {
+  font-size: 0.825rem;
+  color: #64748B;
+}
+
+/* ==========================================================================
+   Grillas y Distribución de Campos
+   ========================================================================== */
+.portal-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.portal-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.portal-grid-ci {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.portal-grid-ci .input-container {
+  flex: 1;
+}
+
+.portal-grid-ci .input-container .input-field {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.portal-grid-ci .select-field {
+  width: 130px;
+  flex-shrink: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid #CBD5E1;
+  background-color: #F9F9F6;
+  font-weight: 600;
+  color: #191A7D;
+  padding-left: 0.75rem;
+  padding-right: 2rem;
+}
+
+.portal-grid-ci .input-container .input-field:focus {
+  z-index: 2;
+  border-right: 1px solid var(--uagrm-blue, #191A7D);
+}
+
+.portal-grid-ci .select-field:focus {
+  z-index: 2;
+}
+
+.portal-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.portal-field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #191A2D;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.portal-field-required {
+  color: #CC0000;
+}
+
+.portal-field-hint {
+  font-size: 0.775rem;
+  color: #64748B;
+}
+
+.portal-field-error {
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: #B91C1C;
+}
+
+/* ==========================================================================
+   Zona de Carga Drag & Drop (Archivos PDF y Excel)
+   ========================================================================== */
+.portal-upload-zone {
+  border: 2px dashed #191A7D;
+  border-radius: 6px;
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  background-color: #F9F9F6;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.portal-upload-zone:hover {
+  background-color: #EEF4F8;
+  border-color: #2B6CB0;
+}
+
+.portal-upload-zone--active {
+  background-color: #E6EFF5;
+  border-color: #2B6CB0;
+}
+
+.portal-upload-icon {
+  color: #191A7D;
+}
+
+.portal-upload-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #191A2D;
+}
+
+.portal-upload-hint {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+.portal-file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  background-color: #F9F9F6;
+  gap: 1rem;
+}
+
+.portal-file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.portal-file-name {
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: #191A2D;
+}
+
+.portal-file-meta {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+/* ==========================================================================
+   Barra de Acciones y Radicación Principal
+   ========================================================================== */
+.portal-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  margin-top: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.portal-actions-legal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748B;
+}
+
+/* ==========================================================================
+   Modal de Confirmación Jurada
+   ========================================================================== */
+.portal-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.5rem 0;
+}
+
+.portal-modal-alert {
+  padding: 1rem;
+  background-color: #F9F9F6;
+  border-left: 3px solid #191A7D;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.portal-modal-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  background-color: #F1F5F9;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.portal-modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portal-modal-row strong {
+  color: #191A7D;
+}
+
+.portal-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* ==========================================================================
+   Tabla de Previsualización de Nómina Reactiva
+   ========================================================================== */
+.portal-table-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0.875rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.portal-table-count {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #191A7D;
+}
+
+.portal-table-container {
+  overflow-x: auto;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.portal-table th {
+  background-color: #F9F9F6;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #E2E8F0;
+  color: #64748B;
+  font-weight: 700;
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.portal-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  color: #191A2D;
+  font-size: 0.875rem;
+}
+
+.portal-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.portal-table tbody tr:hover {
+  background-color: #F9F9F6;
+}
+
+.portal-table-row--error {
+  background-color: #FEF2F2 !important;
+}
+
+.portal-table-row--error td {
+  color: #B91C1C !important;
+  border-bottom-color: #FECACA !important;
+}
+
+.portal-table-missing {
+  color: #DC2626;
+  font-style: italic;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.portal-btn-delete {
+  color: #DC2626;
+}
+
+.portal-btn-delete:hover {
+  background-color: #FEE2E2;
+  color: #991B1B;
+}
+
+
+@media (max-width: 768px) {
+  .portal-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portal-hero-features-bar {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .portal-role-grid,
+  .portal-grid-2,
+  .portal-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portal-actions-bar button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   PORTAL LANDING PAGE & PORTADA INSTITUCIONAL UAGRM
+   CERO DEGRADADOS — Paleta Plana: Azul Marino (#191A7D, #2B6CB0),
+   Rojo Carmesí (#CC0000), Oro Institucional (#D97706) y Blanco (#FFFFFF).
+   ========================================================================== */
+
+.portal-landing-wrapper {
+  min-height: 100vh;
+  background-color: #F9F9F6;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 1. Barra Superior de Navegación */
+.portal-nav-bar {
+  background-color: #FFFFFF;
+  border-bottom: 2px solid #191A7D;
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.portal-nav-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.portal-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.portal-nav-brand-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-nav-sub {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #CC0000;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.portal-nav-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #191A7D;
+  line-height: 1.2;
+}
+
+.portal-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.portal-nav-admin-btn {
+  color: #191A7D !important;
+  font-weight: 600 !important;
+  gap: 0.35rem !important;
+}
+
+.portal-nav-admin-btn:hover {
+  background-color: #EFF6FF !important;
+  color: #2B6CB0 !important;
+}
+
+.portal-nav-cta-btn {
+  background-color: #CC0000 !important;
+  color: #FFFFFF !important;
+  border-color: #CC0000 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(204, 0, 0, 0.3) !important;
+}
+
+.portal-nav-cta-btn:hover {
+  background-color: #990000 !important;
+  border-color: #990000 !important;
+}
+
+.portal-nav-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #15803D;
+  background-color: #DCFCE7;
+  padding: 0.35rem 0.875rem;
+  border-radius: 9999px;
+  border: 1px solid #BBF7D0;
+}
+
+.portal-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #16A34A;
+}
+
+/* 2. Hero Section Solemne y Plano (0 Degradados) */
+.portal-hero-section {
+  background-color: #2B6CB0;
+  border-bottom: 4px solid #CC0000;
+  padding: 3.5rem 1.5rem 3rem;
+  color: #FFFFFF;
+}
+
+.portal-hero-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.portal-hero-content {
+  display: flex;
+  align-items: center;
+  gap: 2.75rem;
+}
+
+.portal-hero-emblem-wrap {
+  flex-shrink: 0;
+  padding: 1rem;
+  background-color: #FFFFFF;
+  border-radius: 14px;
+  border: 3px solid #D97706;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-hero-headings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.portal-hero-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.portal-hero-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #FCD34D;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.portal-hero-h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.portal-hero-lead {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #E2E8F0;
+  margin: 0;
+  max-width: 800px;
+}
+
+.portal-hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.portal-cta-primary {
+  background-color: #CC0000 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.5rem !important;
+  box-shadow: 0 4px 12px rgba(204, 0, 0, 0.35);
+  transition: background-color 0.15s ease;
+}
+
+.portal-cta-primary:hover {
+  background-color: #990000 !important;
+}
+
+.portal-cta-secondary {
+  background-color: #191A7D !important;
+  color: #FFFFFF !important;
+  border: 1px solid #94A3B8 !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: background-color 0.15s ease;
+}
+
+.portal-cta-secondary:hover {
+  background-color: #001F3F !important;
+}
+
+.portal-cta-outline-white {
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.portal-cta-outline-white:hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+/* Pilares Institucionales de Seguridad */
+.portal-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.portal-pillar-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.portal-pillar-icon {
+  padding: 0.625rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.portal-pillar-icon--blue {
+  background-color: #191A7D;
+  color: #93C5FD;
+}
+
+.portal-pillar-icon--gold {
+  background-color: #78350F;
+  color: #FCD34D;
+}
+
+.portal-pillar-icon--red {
+  background-color: #7F1D1D;
+  color: #FCA5A5;
+}
+
+.portal-pillar-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.portal-pillar-desc {
+  margin: 0;
+  font-size: 0.825rem;
+  line-height: 1.45;
+  color: #CBD5E1;
+}
+
+/* 3. Sección de Modalidades de Trámite */
+.portal-services-section {
+  padding: 4rem 1.5rem;
+  background-color: #F9F9F6;
+}
+
+.portal-services-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.portal-section-center-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 3rem;
+}
+
+.portal-subheading {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #CC0000;
+  text-transform: uppercase;
+}
+
+.portal-heading-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: #191A7D;
+  margin: 0.5rem 0 0.75rem;
+  line-height: 1.3;
+}
+
+.portal-heading-desc {
+  font-size: 0.975rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.portal-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.portal-cards-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.portal-service-card {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border-left: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.portal-service-card--personal {
+  border-top: 6px solid #191A7D;
+}
+
+.portal-service-card--institucional {
+  border-top: 6px solid #D97706;
+}
+
+.portal-service-card--secretaria {
+  border-top: 6px solid #CC0000;
+}
+
+.portal-service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.portal-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.portal-card-icon-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-card-icon-badge--blue {
+  background-color: #EFF6FF;
+  color: #191A7D;
+  border: 1px solid #BFDBFE;
+}
+
+.portal-card-icon-badge--gold {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.portal-card-icon-badge--red {
+  background-color: #FEF2F2;
+  color: #CC0000;
+  border: 1px solid #FECACA;
+}
+
+.portal-card-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #191A7D;
+  margin: 0 0 0.5rem 0;
+}
+
+.portal-card-desc {
+  font-size: 0.925rem;
+  color: #64748B;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.portal-card-feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.portal-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.875rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.portal-feature-check {
+  color: #15803D;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.portal-card-action {
+  margin-top: auto;
+}
+
+.portal-card-action button,
+.portal-btn-full {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.portal-btn-outline-sec {
+  border-color: #191A7D !important;
+  color: #191A7D !important;
+  font-weight: 700 !important;
+}
+
+.portal-btn-outline-sec:hover {
+  background-color: #EFF6FF !important;
+  border-color: #2B6CB0 !important;
+  color: #2B6CB0 !important;
+}
+
+/* 4. Circuito y Pasos Institucionales */
+.portal-process-section {
+  padding: 4rem 1.5rem;
+  background-color: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.portal-process-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.portal-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.portal-step-card {
+  background-color: #F9F9F6;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 1.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #191A7D;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.portal-step-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #191A7D;
+}
+
+.portal-step-desc {
+  margin: 0;
+  font-size: 0.825rem;
+  color: #64748B;
+  line-height: 1.5;
+}
+
+/* 5. Pie de Página Institucional (Footer) */
+.portal-footer-section {
+  background-color: #001A33;
+  color: #E2E8F0;
+  padding: 3.5rem 1.5rem 2rem;
+  border-top: 4px solid #D97706;
+}
+
+.portal-footer-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.portal-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 3rem;
+}
+
+.portal-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.portal-footer-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #D97706;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.portal-footer-subtitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.portal-footer-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94A3B8;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.portal-footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.portal-footer-info-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.portal-footer-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.825rem;
+  color: #CBD5E1;
+}
+
+.portal-footer-icon {
+  color: #D97706;
+  flex-shrink: 0;
+}
+
+.portal-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.775rem;
+  color: #94A3B8;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.portal-footer-norma {
+  font-style: italic;
+}
+
+/* 6. Barra de Migas de Pan / Retorno a Portada */
+.portal-breadcrumb-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.portal-back-btn {
+  font-weight: 600 !important;
+  color: #191A7D !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.portal-back-btn:hover {
+  background-color: #EFF6FF !important;
+}
+
+.portal-breadcrumb-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #191A7D;
+}
+
+/* Responsividad para la Landing Page */
+@media (max-width: 992px) {
+  .portal-hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .portal-hero-emblem-wrap {
+    margin: 0 auto;
+  }
+
+  .portal-hero-badge-row {
+    justify-content: center;
+  }
+
+  .portal-hero-cta-group {
+    justify-content: center;
+  }
+
+  .portal-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-cards-grid,
+  .portal-cards-grid--3 {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-steps-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .portal-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .portal-nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portal-nav-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .portal-hero-h1 {
+    font-size: 1.75rem;
+  }
+
+  .portal-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

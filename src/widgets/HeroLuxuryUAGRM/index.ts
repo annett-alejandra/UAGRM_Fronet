@@ -1,0 +1,1 @@
+export { HeroLuxuryUAGRM } from './HeroLuxuryUAGRM';

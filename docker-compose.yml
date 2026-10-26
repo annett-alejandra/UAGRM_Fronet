@@ -1,9 +1,24 @@
-version: '3.8'
-
 services:
-  # Entorno de Desarrollo (Vite HMR)
+  # Contenedor de Producción (Nginx Optimizado SPA)
+  frontend:
+    container_name: titulo_supletorio_frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8000/api}
+        - VITE_GRAPHQL_URL=${VITE_GRAPHQL_URL:-http://localhost:8000/graphql/}
+        - VITE_MINIO_PUBLIC_URL=${VITE_MINIO_PUBLIC_URL:-http://localhost:10001}
+        - VITE_APP_ENV=${VITE_APP_ENV:-production}
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    networks:
+      - titulo_supletorio_net
+
+  # Contenedor de Desarrollo Opcional (Vite HMR en caliente)
   frontend-dev:
-    container_name: titulo_supletorio_frontend-dev
+    container_name: titulo_supletorio_frontend_dev
     image: node:20-alpine
     working_dir: /app
     volumes:
@@ -13,29 +28,14 @@ services:
       - "10001:3000"
     environment:
       - VITE_APP_ENV=development
-    command: sh -c "if [ ! -d node_modules/vite ]; then npm install; fi && npm run dev -- --host"
+    command: sh -c "if [ ! -d node_modules/vite ]; then npm install; fi && npm run dev -- --host 0.0.0.0 --port 3000"
     restart: unless-stopped
+    profiles:
+      - dev
     networks:
-      - titulo_supletorio_frontend-net
-      - backend-network
-
-  # Entorno de Produccin (Nginx)
-  frontend-prod:
-    container_name: titulo_supletorio_frontend-prod
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "10002:80"
-    restart: unless-stopped
-    networks:
-      - titulo_supletorio_frontend-net
-      - backend-network
+      - titulo_supletorio_net
 
 networks:
-  titulo_supletorio_frontend-net:
-    name: titulo_supletorio_frontend-net
+  titulo_supletorio_net:
+    name: titulo_supletorio_net
     driver: bridge
-  backend-network:
-    external: true
-    name: titulo_supletorio_default

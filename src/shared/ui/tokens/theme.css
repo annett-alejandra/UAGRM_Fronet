@@ -1,0 +1,99 @@
+/* ==========================================================================
+   PALETA DE COLORES INSTITUCIONAL UAGRM — TONOS Y VARIACIONES
+   Design System / UI Tokens Oficiales (Caja de Herramientas)
+   ========================================================================== */
+
+:root {
+  /* Marca Institucional UAGRM Oficial */
+  --uagrm-blue: #191A7D;              /* UAGRM Blue Oficial */
+  --uagrm-blue-medio: #2B6CB0;        /* Azul Medio */
+  --uagrm-blue-suave: #556DEF;        /* Azul Suave */
+  --uagrm-blue-suave-alt: #85BDEF;    /* Azul Suave Borde */
+  --uagrm-blue-muy-suave: #DAEFFE;    /* Azul Muy Suave */
+
+  --uagrm-red: #D31338;               /* Rojo Institucional */
+  --uagrm-red-melocoton: #F08C6E;     /* Melocotón */
+  --uagrm-red-salmon: #F39E8E;        /* Salmón (PaleRED) */
+  --uagrm-red-rosado: #FCECEF;        /* Rosado */
+  --uagrm-red-rosado-alt: #EFFAFE;    /* Rosado Hielo */
+
+  --uagrm-gris-profundo: #191A2D;     /* Un gris profundo */
+  --uagrm-gris: #6B7280;              /* Gris */
+  --uagrm-gris-suave: #E2E8F0;        /* Gris suave */
+  --uagrm-blanco-hueso: #F9F9F6;      /* Blanco hueso */
+  --uagrm-blanco: #FFFFFF;            /* Blanco puro */
+
+  /* Aliases Semánticos */
+  --color-primary: #191A7D;
+  --color-primary-hover: #2B6CB0;
+  --color-secondary: #D31338;
+  --color-secondary-hover: #B70F2F;
+  --color-accent-gold: #E5A823;
+  --color-success-green: #1B7A43;
+
+  /* Estructura y Fondos */
+  --bg-app: #F9F9F6;                  /* Blanco Hueso - Fondo de la aplicación */
+  --bg-surface: #FFFFFF;              /* Blanco Puro - Paneles y tarjetas */
+  --border-subtle: #E2E8F0;           /* Borde suave */
+
+  /* Tipografía */
+  --text-main: #191A2D;               /* Un gris profundo - Texto principal */
+  --text-muted: #6B7280;              /* Gris - Texto secundario */
+
+  /* Radios y Sombras */
+  --radius-card: 16px;
+  --shadow-subtle: 0 4px 6px -1px rgba(25, 26, 45, 0.05), 0 2px 4px -2px rgba(25, 26, 45, 0.05);
+  --shadow-card: 0 10px 15px -3px rgba(25, 26, 125, 0.06), 0 4px 6px -4px rgba(25, 26, 125, 0.04);
+}
+
+/* ==========================================================================
+   CLASES DE UTILIDAD PARA COMBINACIONES OFICIALES DE LA CAJA DE HERRAMIENTAS
+   ========================================================================== */
+
+/* 1. Combinación Primaria Sólida */
+.uagrm-combo-primary-solid {
+  background-color: var(--uagrm-blue);
+  color: var(--uagrm-blanco);
+  border: 1px solid var(--uagrm-blue);
+}
+.uagrm-combo-primary-solid:hover {
+  background-color: var(--uagrm-blue-medio);
+}
+
+/* 2. Combinación Primaria Suave (Chips / Badges / Destacados) */
+.uagrm-combo-primary-soft {
+  background-color: var(--uagrm-blue-muy-suave);
+  color: var(--uagrm-blue);
+  border: 1px solid var(--uagrm-blue-suave-alt);
+}
+
+/* 3. Combinación Secundaria Sólida (Acción Crítica / Firma / Certificación) */
+.uagrm-combo-secondary-solid {
+  background-color: var(--uagrm-red);
+  color: var(--uagrm-blanco);
+  border: 1px solid var(--uagrm-red);
+}
+.uagrm-combo-secondary-solid:hover {
+  background-color: #B70F2F;
+}
+
+/* 4. Combinación Secundaria Suave (Observaciones / Alertas de Corrección) */
+.uagrm-combo-secondary-soft {
+  background-color: var(--uagrm-red-rosado);
+  color: var(--uagrm-red);
+  border: 1px solid var(--uagrm-red-salmon);
+}
+
+/* 5. Combinación Melocotón (Estado en Proceso / Convalidación) */
+.uagrm-combo-melocoton {
+  background-color: #FFF5F2;
+  color: #B9381E;
+  border: 1px solid var(--uagrm-red-melocoton);
+}
+
+/* 6. Combinación Tarjeta / Superficie */
+.uagrm-combo-surface {
+  background-color: var(--uagrm-blanco);
+  border: 1px solid var(--uagrm-gris-suave);
+  color: var(--uagrm-gris-profundo);
+}
