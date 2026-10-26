@@ -17,15 +17,16 @@ export function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Portada Inmersiva UAGRM & Showcase de Colores */}
+        {/* Portal Web Inmersivo UAGRM (Inspirado en Azimute) & Showcase */}
+        <Route path="/" element={<HeroLuxuryUAGRM onExplore={() => window.location.href = '/login'} />} />
+        <Route path="/portal" element={<HeroLuxuryUAGRM onExplore={() => window.location.href = '/login'} />} />
         <Route path="/hero" element={<HeroLuxuryUAGRM onExplore={() => window.location.href = '/login'} />} />
         <Route path="/portada" element={<HeroLuxuryUAGRM onExplore={() => window.location.href = '/login'} />} />
         <Route path="/colores" element={<div className="min-h-screen bg-[#F9F9F6] p-4 sm:p-8 flex items-center justify-center"><ColorPaletteShowcase /></div>} />
         <Route path="/paleta" element={<div className="min-h-screen bg-[#F9F9F6] p-4 sm:p-8 flex items-center justify-center"><ColorPaletteShowcase /></div>} />
 
-        {/* Login Portal & SSO Callback */}
+        {/* Login Portal Funcionarios & SSO Callback */}
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<LoginPage />} />
         <Route path="/sso/callback" element={<SSOCallbackPage />} />
         <Route path="/login/sso/callback" element={<SSOCallbackPage />} />
 

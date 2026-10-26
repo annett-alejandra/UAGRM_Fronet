@@ -3,449 +3,1153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAGRM — Sistema Oficial de Titulación y Certificaciones</title>
+    <title>UAGRM — Sistema Oficial de Certificación de Autenticidad & Títulos</title>
     
     <!-- Fuentes de Google Fonts: DM Sans & Instrument Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
     <style>
-        /* 1. Variables de Color y Tipografía Oficial */
+        /* Variables de Color y Tipografía Oficial */
         :root {
-            --paper: #f3f0e9;
-            --ink: #262825;
+            --paper: #FAF8F5;
+            --ink: #191A2D;
+            --blue-corp: #191A7D;
+            --blue-soft: #DAEFFE;
+            --bronze: #ccb494;
+            --red-uagrm: #D31338;
             --serif: 'Instrument Serif', Georgia, serif;
             --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            --cinzel: 'Cinzel', Georgia, serif;
-            --az-crystal-bronze: #ccb494;
         }
 
-        /* 2. Selección de Texto Elegante */
         ::selection {
-            background: #c4a386;
-            color: #211f1c;
+            background: #ccb494;
+            color: #191A2D;
         }
 
-        /* Reseteo Global */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
             width: 100%;
-            height: 100%;
             font-family: var(--sans);
-            background-color: var(--ink);
-            color: #fff7ec;
+            background-color: var(--paper);
+            color: #262825;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
         }
 
-        /* 3. Estructura del Hero Inmersivo */
-        .hero__sticky {
+        /* 1. HERO SECTION */
+        .hero {
+            position: relative;
             height: 100svh;
-            min-height: 620px;
-            position: sticky;
-            top: 0;
+            min-height: 660px;
             overflow: hidden;
             color: #fff7ec;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
-        /* 4. Fondo de Imagen 4K Limpio (Sin Letras) con Zoom Suave */
         .hero__bg {
             position: absolute;
             inset: 0;
-            background-image: url('public/image_d78c06.jpg'), url('/image_d78c06.jpg'), url('image_d78c06.jpg');
+            background-image: url('/image_d78c06.jpg');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             z-index: 1;
-            transform: scale(1);
-            animation: slowZoom 24s ease-in-out infinite alternate;
-        }
-
-        /* 5. Capa de Oscurecimiento (Overlay de Gradiente Cinematográfico Exacto) */
-        .hero__shade {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(23, 24, 23, 0.58) 0%, rgba(23, 24, 23, 0.28) 45%, transparent 68%), 
-                        linear-gradient(0deg, rgba(24, 28, 34, 0.85) 0%, transparent 58%, rgba(22, 24, 20, 0.35) 100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        /* Contenedor del Contenido (Z-Index Superior) */
-        .hero__content {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 2.5rem 5vw;
-        }
-
-        /* --- Header Superior --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1.1rem;
-            text-decoration: none;
-            color: #fff7ec;
-        }
-
-        .seal-img {
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.45));
-        }
-
-        .logo {
-            font-family: var(--cinzel);
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            line-height: 1;
-            color: #ffffff;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-        }
-
-        .logo-sub {
-            font-family: var(--sans);
-            font-size: 0.58rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            line-height: 1.25;
-            color: rgba(255, 247, 236, 0.85);
-            font-weight: 500;
-            margin-top: 3px;
-        }
-
-        nav {
-            display: none;
-        }
-
-        @media (min-width: 860px) {
-            nav {
-                display: flex;
-                gap: 2.8rem;
-                align-items: center;
-            }
-        }
-
-        nav a {
-            color: #fff7ec;
-            text-decoration: none;
-            font-family: var(--sans);
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 0.72rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding-bottom: 4px;
-        }
-
-        nav a::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 1px;
-            background-color: var(--az-crystal-bronze);
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--az-crystal-bronze);
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .header-right {
-            font-family: var(--sans);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            text-align: right;
-            color: rgba(255, 247, 236, 0.9);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-right .star-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 247, 236, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-        }
-
-        /* --- Main Content (Títulos) --- */
-        .hero__main {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-top: auto;
-            margin-bottom: 2vh;
-            max-width: 1200px;
-        }
-
-        .subtitle {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: var(--sans);
-            text-transform: uppercase;
-            letter-spacing: 0.28em;
-            font-size: 0.78rem;
-            margin-bottom: 1.4rem;
-            color: #fff7ec;
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-        }
-
-        .subtitle .line {
-            width: 40px;
-            height: 1px;
-            background-color: #fff7ec;
-            opacity: 0.75;
-        }
-
-        .title-sans {
-            font-family: var(--sans);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-size: clamp(2.8rem, 6.5vw, 5.5rem);
-            font-weight: 700;
-            line-height: 0.95;
-            display: block;
-            color: #ffffff;
-            text-shadow: 0 4px 25px rgba(0,0,0,0.65);
-        }
-
-        .title-serif {
-            font-family: var(--serif);
-            font-size: clamp(6.2rem, 16vw, 13.5rem);
-            font-style: italic;
-            font-weight: 400;
-            line-height: 0.85;
-            display: block;
-            margin-top: -0.6rem;
-            margin-left: 0.2rem;
-            color: #ffffff;
-            letter-spacing: -0.02em;
-            text-shadow: 0 6px 30px rgba(0,0,0,0.7);
-        }
-
-        /* --- Footer Inferior --- */
-        .hero__footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding-bottom: 1.5rem;
-        }
-
-        .footer-left {
-            display: flex;
-            flex-direction: column;
-            gap: 1.6rem;
-        }
-
-        .desc-group {
-            display: flex;
-            align-items: center;
-            gap: 1.8rem;
-        }
-
-        .desc {
-            font-size: 1rem;
-            max-width: 440px;
-            color: rgba(255, 247, 236, 0.95);
-            line-height: 1.5;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.65);
-        }
-
-        .explore-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            color: #fff7ec;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .explore-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 46px;
-            height: 46px;
-            border: 1px solid rgba(255, 247, 236, 0.45);
-            background-color: rgba(255, 247, 236, 0.08);
-            border-radius: 50%;
-            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .explore-icon svg {
-            stroke: #fff7ec;
-            transition: transform 0.3s ease;
-        }
-
-        .explore-btn:hover .explore-icon {
-            background-color: var(--az-crystal-bronze);
-            border-color: var(--az-crystal-bronze);
-            transform: translateY(3px);
-        }
-
-        .explore-btn:hover .explore-icon svg {
-            stroke: var(--ink);
-            transform: translateY(2px);
-        }
-
-        .explore-text {
-            font-family: var(--sans);
-            text-transform: uppercase;
-            letter-spacing: 0.32em;
-            font-size: 0.68rem;
-            color: rgba(255, 247, 236, 0.75);
-            font-weight: 600;
-        }
-        
-        .footer-right {
-            font-family: var(--sans);
-            font-size: 0.78rem;
-            color: rgba(255, 247, 236, 0.85);
-            font-weight: 300;
-            letter-spacing: 0.05em;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            animation: slowZoom 25s ease-in-out infinite alternate;
         }
 
         @keyframes slowZoom {
-            from { transform: scale(1); }
-            to { transform: scale(1.045); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .hero__shade {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            background: linear-gradient(90deg, rgba(23, 24, 23, 0.65) 0%, rgba(23, 24, 23, 0.32) 48%, transparent 72%),
+                        linear-gradient(0deg, rgba(24, 28, 34, 0.90) 0%, transparent 60%, rgba(22, 24, 20, 0.40) 100%);
+        }
+
+        header {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3.5rem;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-seal {
+            width: 44px;
+            height: 44px;
+            object-contain: contain;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+        }
+
+        .logo-title {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 2rem;
+            line-height: 1;
+            letter-spacing: 0.05em;
+        }
+
+        .logo-sub {
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.9);
+            margin-top: 3px;
+            line-height: 1.15;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav a, nav button {
+            background: none;
+            border: none;
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 247, 236, 0.85);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        nav a:hover, nav button:hover {
+            color: var(--bronze);
+        }
+
+        .btn-portal {
+            background: rgba(255,255,255,0.12) !important;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            border-radius: 999px;
+            padding: 0.5rem 1.1rem !important;
+            backdrop-filter: blur(4px);
+            color: white !important;
+        }
+
+        .btn-portal:hover {
+            background: var(--bronze) !important;
+            color: var(--ink) !important;
+            border-color: var(--bronze) !important;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-align: right;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .badge-star {
+            width: 28px;
+            height: 28px;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Hero Main Content */
+        .hero__main {
+            position: relative;
+            z-index: 10;
+            padding: 0 3.5rem;
+            margin-top: auto;
+            margin-bottom: 1.5rem;
+            max-width: 1400px;
+        }
+
+        .location-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 1rem;
+        }
+
+        .location-tag::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: rgba(255,255,255,0.7);
+        }
+
+        .hero__title {
+            line-height: 0.82;
+            letter-spacing: -0.02em;
+        }
+
+        .hero__title-sans {
+            display: block;
+            font-size: 5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: white;
+            text-shadow: 0 4px 25px rgba(0,0,0,0.65);
+        }
+
+        .hero__title-serif {
+            display: block;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 11rem;
+            font-weight: 400;
+            color: white;
+            letter-spacing: -0.02em;
+            margin-left: -0.5rem;
+            margin-top: -1.5rem;
+            text-shadow: 0 6px 35px rgba(0,0,0,0.7);
+        }
+
+        /* Hero Footer */
+        .hero__footer {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 1rem 3.5rem 2.5rem 3.5rem;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 440px;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .explore-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .explore-btn:hover {
+            background: var(--bronze);
+            color: var(--ink);
+            border-color: var(--bronze);
+            transform: translateY(3px);
+        }
+
+        /* 2. SECTIONS SYSTEM */
+        .section-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .chapter-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--bronze);
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-size: 3.25rem;
+            font-weight: 300;
+            color: var(--ink);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .section-title em {
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--blue-corp);
+            font-weight: 400;
+        }
+
+        /* Grid Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-family: var(--serif);
+            font-size: 3.25rem;
+            color: var(--blue-corp);
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #64748B;
+            margin-top: 1rem;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: #FAF8F5;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 2.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--blue-corp);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+        }
+
+        .service-card.highlight {
+            background: rgba(218, 239, 254, 0.3);
+            border-color: var(--blue-corp);
+        }
+
+        .service-num {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 2.75rem;
+            color: var(--bronze);
+        }
+
+        .service-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 1.25rem 0 0.75rem 0;
+        }
+
+        .service-text {
+            font-size: 13.5px;
+            color: #64748B;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--blue-corp);
+            text-decoration: none;
+        }
+
+        /* Campus Panorama */
+        .campus-break {
+            position: relative;
+            padding: 8rem 2rem;
+            color: white;
+            text-align: center;
+            background-image: url('/image_d78c06.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .campus-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(25, 26, 45, 0.78);
+            backdrop-filter: blur(2px);
+        }
+
+        .campus-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Contact & Form Section */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 3.5rem;
+            align-items: start;
+        }
+
+        .contact-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--blue-soft);
+            color: var(--blue-corp);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Form styling */
+        .form-box {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .btn-fill-sample {
+            background: #FAF8F5;
+            border: 1px solid #E2E8F0;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--blue-corp);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-fill-sample:hover {
+            background: var(--blue-soft);
+            border-color: var(--blue-corp);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+        }
+
+        label span.req {
+            color: var(--red-uagrm);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            font-family: var(--sans);
+            font-size: 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--blue-corp);
+            box-shadow: 0 0 0 1px var(--blue-corp);
+        }
+
+        .radio-pills {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .pill-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #FAF8F5;
+            cursor: pointer;
+        }
+
+        .pill-label:has(input:checked) {
+            background: var(--blue-corp);
+            color: white;
+            border-color: var(--blue-corp);
+        }
+
+        .pill-label input {
+            display: none;
+        }
+
+        .btn-submit {
+            background: var(--blue-corp);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.9rem 2rem;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-submit:hover {
+            background: #12135E;
+        }
+
+        /* WhatsApp Floating Widget */
+        .wa-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 99;
+            background: #25D366;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .wa-float:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--ink);
+            color: #FAF8F5;
+            padding: 4rem 3.5rem 2.5rem 3.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-grid {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 5fr 3fr 4fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 300;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--bronze);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            header, .hero__main, .hero__footer {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+            .hero__title-sans { font-size: 3.5rem; }
+            .hero__title-serif { font-size: 7.5rem; }
+            .contact-layout, .services-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero__content {
-                padding: 2rem 6vw;
-            }
-            .header-right {
-                display: none;
-            }
-            .hero__footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1.5rem;
-            }
-            .desc {
-                font-size: 0.88rem;
-            }
-            .title-serif {
-                font-size: 5.5rem;
-            }
+            nav, .header-badge { display: none; }
+            .hero__title-sans { font-size: 2.75rem; }
+            .hero__title-serif { font-size: 5.5rem; }
+            .metrics-grid, .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <section class="hero__sticky">
-        <!-- 4. Fondo de Imagen 4K Limpio de la UAGRM -->
+    <!-- 1. HERO INMERSIVO (AZIMUTE STYLE) -->
+    <section class="hero">
         <div class="hero__bg"></div>
-        
-        <!-- 5. Capa de Oscurecimiento Gradiente Cinematográfico -->
         <div class="hero__shade"></div>
 
-        <!-- Contenedor Frontal -->
-        <div class="hero__content">
-            
-            <!-- Header Superior -->
-            <header>
-                <a href="#" class="logo-container">
-                    <img src="/UAGRM-Bolivia.webp" alt="Escudo UAGRM" class="seal-img" onerror="if(!this.src.includes('public/')){this.src='public/UAGRM-Bolivia.webp'}else{this.style.display='none'}" />
-                    <div>
-                        <div class="logo">UAGRM</div>
-                        <div class="logo-sub">UNIVERSIDAD AUTÓNOMA<br>GABRIEL RENÉ MORENO</div>
-                    </div>
+        <header>
+            <a href="/" class="logo-wrap">
+                <img src="/UAGRM-Bolivia.webp" alt="Escudo UAGRM" class="logo-seal" onerror="this.style.display='none'" />
+                <div>
+                    <div class="logo-title">UAGRM</div>
+                    <div class="logo-sub">UNIVERSIDAD AUTÓNOMA<br>GABRIEL RENÉ MORENO</div>
+                </div>
+            </a>
+
+            <nav>
+                <a href="#historia">El Proyecto</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#campus">El Campus</a>
+                <a href="#contacto">Contacto</a>
+                <a href="/login" class="btn-portal">Ingreso Funcionarios →</a>
+            </nav>
+
+            <div class="header-badge">
+                <div class="badge-star">★</div>
+                <div>EXCELENCIA &bull; FE PÚBLICA<br>UNIVERSITARIA</div>
+            </div>
+        </header>
+
+        <div class="hero__main">
+            <div class="location-tag">SANTA CRUZ DE LA SIERRA &bull; BOLIVIA</div>
+            <h1 class="hero__title">
+                <span class="hero__title-sans">TU PRÓXIMO</span>
+                <span class="hero__title-serif">futuro.</span>
+            </h1>
+        </div>
+
+        <div class="hero__footer">
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <p class="hero-desc">
+                    Una nueva dirección para tu formación académica.<br>
+                    Un compromiso con la custodia jurídica y la memoria histórica.
+                </p>
+                <a href="#historia" class="explore-btn" aria-label="Explorar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
                 </a>
-                <nav>
-                    <a href="/login">Inicio</a>
-                    <a href="/verificar">Verificar Título</a>
-                    <a href="/solicitante">Portal Solicitante</a>
-                    <a href="/colores">Caja de Herramientas</a>
-                    <a href="#contacto">Contacto</a>
-                </nav>
-                <div class="header-right">
-                    <div class="star-badge">&starf;</div>
-                    <div>
-                        UAGRM - Excelencia<br>Académica
-                    </div>
-                </div>
-            </header>
-
-            <!-- Título Principal -->
-            <div class="hero__main">
-                <div class="subtitle">
-                    <span class="line"></span>
-                    SISTEMA DE VERIFICACIÓN Y TITULACIÓN &bull; SANTA CRUZ
-                </div>
-                <h1 style="margin:0;">
-                    <span class="title-sans">Tu logro</span>
-                    <span class="title-serif">certificado.</span>
-                </h1>
             </div>
-
-            <!-- Footer con Botón -->
-            <div class="hero__footer">
-                <div class="footer-left">
-                    <div class="desc-group">
-                        <div class="desc">
-                            Agilizamos la emisión de tus documentos académicos<br>y validamos tu excelencia profesional de forma segura.
-                        </div>
-                        <a href="/login" class="explore-btn" aria-label="Explorar Sistema">
-                            <div class="explore-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="explore-text">EXPLORE</div>
-                </div>
-                
-                <div class="footer-right">
-                    Plataforma Oficial de Títulos UAGRM
-                </div>
+            <div style="font-size:12px; font-weight:300; letter-spacing:0.1em; color:rgba(255,255,255,0.85);">
+                Perspectiva de la Ciudad Universitaria UAGRM
             </div>
-
         </div>
     </section>
 
+    <!-- 2. CAPÍTULO 01: HISTORIA & MÉTRICAS -->
+    <section id="historia" class="section-container">
+        <span class="chapter-tag">01 / HISTORIA & EXCELENCIA ACADÉMICA</span>
+        <div style="display:grid; grid-template-columns: 7fr 5fr; gap:3.5rem; align-items:start;">
+            <div>
+                <h2 class="section-title">
+                    LA HISTORIA EN <br>
+                    <em>buena dirección.</em>
+                </h2>
+                <p style="font-size:18px; line-height:1.7; color:#64748B; font-weight:300; margin-bottom:1.5rem;">
+                    Fundada el 11 de enero de 1880, la <strong style="color:var(--ink); font-weight:500;">Universidad Autónoma Gabriel René Moreno</strong> custodia el esfuerzo, la constancia y los títulos profesionales de generaciones de egresados.
+                </p>
+                <p style="font-size:15px; line-height:1.7; color:#64748B; font-weight:300;">
+                    Nuestro sistema integral de Certificación de Autenticidad Académica y Títulos Supletorios digitaliza y salvaguarda los Libros Matrices históricos mediante reconocimiento óptico de alta precisión, garantizando plena validez jurídica nacional e internacional ante Cancillería y organismos de postgrado.
+                </p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">144+</div>
+                    <div class="metric-label">Años de Fe Pública Universitaria</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">18</div>
+                    <div class="metric-label">Facultades Académicas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Custodia en Libros Matrices</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">QR</div>
+                    <div class="metric-label">Verificación Criptográfica 24/7</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. CAPÍTULO 02: SERVICIOS OFICIALES -->
+    <section id="servicios" style="background:white; border-top:1px solid #E2E8F0; border-bottom:1px solid #E2E8F0;">
+        <div class="section-container">
+            <span class="chapter-tag">02 / SERVICIOS & TRÁMITES OFICIALES</span>
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1.5rem;">
+                <h2 class="section-title" style="margin-bottom:0;">
+                    Tu logro. <em>En buenas manos.</em>
+                </h2>
+                <p style="font-size:15px; color:#64748B; max-width:440px; font-weight:300;">
+                    Agilizamos la emisión de certificaciones oficiales y reposiciones supletorias con respaldo del Archivo Central y Secretaría General.
+                </p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div>
+                        <div class="service-num">01</div>
+                        <h3 class="service-title">Certificación de Autenticidad</h3>
+                        <p class="service-text">
+                            Cotejo riguroso contra Libros Matrices originales. Emisión digitalizada con código de validación QR, firma electrónica rectoral y validez plena para trámites de apostilla y postgrados.
+                        </p>
+                    </div>
+                    <a href="/solicitante" class="service-link">Solicitar Trámite →</a>
+                </div>
+
+                <div class="service-card highlight">
+                    <div>
+                        <span style="background:var(--blue-corp); color:white; font-size:9px; font-weight:700; padding:4px 8px; border-radius:999px; text-transform:uppercase;">Custodia Jurídica</span>
+                        <div class="service-num" style="color:var(--blue-corp); margin-top:0.75rem;">02</div>
+                        <h3 class="service-title" style="color:var(--blue-corp);">Título Supletorio</h3>
+                        <p class="service-text">
+                            Procedimiento legal reglamentado para la reposición de Diplomas Académicos y Títulos en Provisión Nacional en casos de extravío, destrucción o robo comprobado.
+                        </p>
+                    </div>
+                    <a href="/solicitante?tab=admision" class="service-link">Iniciar Reposición Supletoria →</a>
+                </div>
+
+                <div class="service-card">
+                    <div>
+                        <div class="service-num">03</div>
+                        <h3 class="service-title">Convenios Institucionales</h3>
+                        <p class="service-text">
+                            Ventanilla preferencial para ministerios, colegios de profesionales, gobernaciones y empresas con convenios suscritos para la verificación por lotes.
+                        </p>
+                    </div>
+                    <a href="/solicitante?tab=convenio" class="service-link">Portal de Convenios →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CAPÍTULO 03: EL CAMPUS -->
+    <section id="campus" class="campus-break">
+        <div class="campus-overlay"></div>
+        <div class="campus-content">
+            <span class="chapter-tag" style="color:var(--bronze);">03 / EL CAMPUS UNIVERSITARIO</span>
+            <h2 style="font-family:var(--serif); font-style:italic; font-size:3.75rem; font-weight:400; margin:1rem 0;">
+                El lugar donde todo comenzó.
+            </h2>
+            <p style="font-size:17px; font-weight:300; line-height:1.7; color:rgba(255,255,255,0.9); margin-bottom:2rem;">
+                La Ciudad Universitaria de la UAGRM: más de 100 hectáreas de ciencia, conocimiento y naturaleza en el corazón de Santa Cruz de la Sierra. La memoria de tus años de esfuerzo custodiada permanentemente.
+            </p>
+            <a href="/verificar" style="display:inline-flex; align-items:center; gap:0.6rem; padding:0.9rem 2.2rem; background:var(--bronze); color:var(--ink); font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; border-radius:999px; text-decoration:none; transition:all 0.3s;">
+                <span>Verificar Título con Código QR</span>
+                <span>→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 5. CAPÍTULO 04: CONTACTO & CONSULTA RÁPIDA -->
+    <section id="contacto" class="section-container">
+        <span class="chapter-tag">04 / CONTACTO & CONSULTA RÁPIDA</span>
+        
+        <div class="contact-layout">
+            <!-- Columna Izquierda: Información -->
+            <div>
+                <h2 class="section-title">
+                    Inicia tu trámite. <br>
+                    <em>Converse con nuestro equipo.</em>
+                </h2>
+                <p style="font-size:15px; color:#64748B; font-weight:300; line-height:1.7; margin-bottom:2rem;">
+                    ¿Tienes dudas sobre los requisitos de tu Certificación de Autenticidad o el trámite de Título Supletorio? Déjanos tus datos de contacto y un oficial de Secretaría General te orientará.
+                </p>
+
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--ink);">Atención Presencial</div>
+                        <div style="font-size:12.5px; color:#64748B; margin-top:2px;">
+                            Edificio de Secretaría General, Campus Universitario, Av. Busch y 2do Anillo, Santa Cruz de la Sierra.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--ink);">Mesa de Ayuda</div>
+                        <div style="font-size:12.5px; color:#64748B; margin-top:2px;">
+                            +591 (3) 334-2222 &bull; Internos 105 / 108 (08:00 - 16:00)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card" style="border-color:#25D366; background:#f4fbf6;">
+                    <div class="contact-icon" style="background:#dcf8c6; color:#075e54;">💬</div>
+                    <div>
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#075e54;">Canal Directo WhatsApp</div>
+                        <div style="font-size:12.5px; color:#4a5568; margin-top:2px;">
+                            Atención orientativa 24/7 y derivación inmediata.
+                        </div>
+                        <a href="https://wa.me/59177012345?text=Hola,%20solicito%20orientaci%C3%B3n%20para%20la%20Certificaci%C3%B3n%20de%20Autenticidad%20UAGRM" target="_blank" style="display:inline-block; margin-top:6px; font-size:12px; font-weight:700; color:#075e54;">
+                            Abrir Chat (+591 77012345) →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Formulario con botón de autocompletado de ejemplo -->
+            <div class="form-box">
+                <div class="form-header">
+                    <div>
+                        <h3 style="font-size:1.25rem; font-weight:700; color:var(--ink);">Formulario de Orientación y Consulta</h3>
+                        <p style="font-size:12px; color:#64748B; margin-top:3px;">
+                            Complete los datos del titular para cotejo directo en Archivo Central.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-fill-sample" onclick="llenarDatosEjemplo()">
+                        🪄 Cargar Datos de Ejemplo
+                    </button>
+                </div>
+
+                <form id="portalContactForm" onsubmit="enviarConsulta(event)">
+                    <!-- Nombre Completo -->
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo del Titular o Solicitante <span class="req">*</span></label>
+                        <input type="text" id="nombre" required placeholder="Ej. Carlos Andrés Mamani Aguilera">
+                    </div>
+
+                    <!-- CI y Celular / WhatsApp -->
+                    <div class="form-row">
+                        <div>
+                            <label for="ci">Cédula de Identidad (C.I.) <span class="req">*</span></label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <input type="text" id="ci" required placeholder="Ej. 8941254">
+                                <select id="ciExt" style="width:90px; flex-shrink:0;">
+                                    <option value="SCZ">SCZ</option>
+                                    <option value="LPZ">LPZ</option>
+                                    <option value="CBB">CBB</option>
+                                    <option value="ORU">ORU</option>
+                                    <option value="PTS">PTS</option>
+                                    <option value="TJA">TJA</option>
+                                    <option value="CHU">CHU</option>
+                                    <option value="BEN">BEN</option>
+                                    <option value="PND">PND</option>
+                                    <option value="EXT">EXT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="celular">Número de Celular / WhatsApp <span class="req">*</span></label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <select id="pais" style="width:100px; flex-shrink:0;">
+                                    <option value="+591">+591 (BO)</option>
+                                    <option value="+54">+54 (AR)</option>
+                                    <option value="+55">+55 (BR)</option>
+                                    <option value="+56">+56 (CL)</option>
+                                    <option value="+51">+51 (PE)</option>
+                                    <option value="+34">+34 (ES)</option>
+                                    <option value="+1">+1 (US)</option>
+                                </select>
+                                <input type="tel" id="celular" required placeholder="Ej. 77012345">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Correo y Trámite -->
+                    <div class="form-row">
+                        <div>
+                            <label for="email">Correo Electrónico <span class="req">*</span></label>
+                            <input type="email" id="email" required placeholder="Ej. graduado@correo.com">
+                        </div>
+
+                        <div>
+                            <label for="tramite">Tipo de Trámite Requerido</label>
+                            <select id="tramite">
+                                <option value="certificacion">Certificación de Autenticidad (Diploma / Título)</option>
+                                <option value="supletorio">Título Supletorio (Extravío o Deterioro)</option>
+                                <option value="apostilla">Validación para Apostilla (Cancillería)</option>
+                                <option value="convenio">Convenio Institucional / Empresas</option>
+                                <option value="seguimiento">Seguimiento de Expediente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Facultad y Carrera -->
+                    <div class="form-row">
+                        <div>
+                            <label for="facultad">Facultad Universitaria</label>
+                            <select id="facultad">
+                                <option value="FCCT">FCCT - Computación y Telecomunicaciones</option>
+                                <option value="FCET">FCET - Tecnología / Ingeniería</option>
+                                <option value="FCEAF">FCEAF - Ciencias Económicas y Financieras</option>
+                                <option value="FCJPS">FCJPS - Derecho y Ciencias Jurídicas</option>
+                                <option value="FCSH">FCSH - Medicina y Salud</option>
+                                <option value="FH">Facultad de Humanidades</option>
+                                <option value="FCV">Facultad de Ciencias Veterinarias</option>
+                                <option value="FCA">Facultad de Ciencias Agrícolas</option>
+                                <option value="FP">Facultad Politécnica</option>
+                                <option value="FINOR">FINOR - Montero</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="carrera">Carrera de Egreso</label>
+                            <input type="text" id="carrera" placeholder="Ej. Ingeniería Informática, Derecho...">
+                        </div>
+                    </div>
+
+                    <!-- Año y Folio -->
+                    <div class="form-row">
+                        <div>
+                            <label for="anio">Año de Graduación (Aproximado)</label>
+                            <input type="text" id="anio" placeholder="Ej. 2021">
+                        </div>
+
+                        <div>
+                            <label for="folio">Libro / Folio / Registro (Opcional)</label>
+                            <input type="text" id="folio" placeholder="Ej. Libro 45, Acta 1289">
+                        </div>
+                    </div>
+
+                    <!-- Preferencia de Contacto -->
+                    <div class="form-group">
+                        <label>Canal Preferente de Contacto</label>
+                        <div class="radio-pills">
+                            <label class="pill-label">
+                                <input type="radio" name="canal" value="whatsapp" checked>
+                                <span>💬 WhatsApp</span>
+                            </label>
+                            <label class="pill-label">
+                                <input type="radio" name="canal" value="llamada">
+                                <span>📞 Llamada</span>
+                            </label>
+                            <label class="pill-label">
+                                <input type="radio" name="canal" value="email">
+                                <span>✉️ Correo</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje -->
+                    <div class="form-group">
+                        <label for="mensaje">Detalle de la Consulta u Observaciones</label>
+                        <textarea id="mensaje" rows="3" placeholder="Indique requerimientos específicos (apostilla, homologación internacional o extravío)..."></textarea>
+                    </div>
+
+                    <!-- Botón Enviar -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.5rem;">
+                        <button type="submit" class="btn-submit">
+                            <span>Enviar Consulta Oficial</span>
+                            <span>→</span>
+                        </button>
+                        <span style="font-size:11px; color:#64748B;">
+                            🔒 Fe pública y resguardo de datos institucionales UAGRM.
+                        </span>
+                    </div>
+                </form>
+
+                <!-- Estado de Éxito Interactivo -->
+                <div id="successBox" style="display:none; margin-top:1.5rem; padding:1.5rem; background:#FAF8F5; border:2px solid #25D366; border-radius:12px;">
+                    <div style="font-weight:700; color:#075e54; font-size:14px; margin-bottom:0.5rem;">
+                        ✓ ¡Consulta Registrada Exitosamente!
+                    </div>
+                    <div style="font-size:12px; color:#4a5568; margin-bottom:1rem;" id="ticketMsg">
+                        Ticket generado: #UAGRM-CERT-2026-8492
+                    </div>
+                    <a id="waLinkBtn" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; background:#25D366; color:white; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none;">
+                        <span>💬 Continuar por WhatsApp Oficial</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botón Flotante de WhatsApp (Estilo Azimute) -->
+    <a href="https://wa.me/59177012345?text=Hola,%20solicito%20orientaci%C3%B3n%20para%20la%20Certificaci%C3%B3n%20de%20Autenticidad%20UAGRM" target="_blank" class="wa-float" title="Mesa de Ayuda WhatsApp (+591 77012345)">
+        <span style="font-size:16px;">💬</span>
+        <span>WhatsApp UAGRM (+591 77012345)</span>
+    </a>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="logo-wrap" style="margin-bottom:1rem;">
+                    <img src="/UAGRM-Bolivia.webp" alt="Escudo UAGRM" class="logo-seal" onerror="this.style.display='none'" />
+                    <div>
+                        <div class="logo-title">UAGRM</div>
+                        <div class="logo-sub" style="color:var(--bronze);">Universidad Autónoma Gabriel René Moreno</div>
+                    </div>
+                </div>
+                <p style="font-size:12px; color:rgba(255,255,255,0.7); line-height:1.7; font-weight:300; max-width:380px;">
+                    Plataforma oficial del Sistema de Certificación de Autenticidad Académica, Títulos Supletorios y Archivo Central. Garantía y fe pública institucional desde 1880.
+                </p>
+            </div>
+
+            <div>
+                <h4 style="font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--bronze); margin-bottom:1rem;">
+                    Navegación
+                </h4>
+                <ul class="footer-links">
+                    <li><a href="#historia">El Proyecto</a></li>
+                    <li><a href="#servicios">Servicios & Trámites</a></li>
+                    <li><a href="#campus">Campus Universitario</a></li>
+                    <li><a href="#contacto">Mesa de Ayuda</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--bronze); margin-bottom:1rem;">
+                    Accesos Directos
+                </h4>
+                <ul class="footer-links">
+                    <li><a href="/solicitante">Portal del Solicitante</a></li>
+                    <li><a href="/solicitante?tab=convenio">Convenios & Nóminas Masivas</a></li>
+                    <li><a href="/verificar">Verificación QR Pública</a></li>
+                    <li><a href="/login">Acceso Funcionarios / Módulos Internos</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="max-width:1320px; margin:2rem auto 0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; font-size:11px; color:rgba(255,255,255,0.5); font-weight:300;">
+            <div>&copy; 2026 Universidad Autónoma Gabriel René Moreno. Santa Cruz de la Sierra &bull; Bolivia.</div>
+            <div>Custodia y Fe Pública Universitaria</div>
+        </div>
+    </footer>
+
+    <!-- Script de interacción y autocompletado de ejemplo -->
+    <script>
+        function llenarDatosEjemplo() {
+            document.getElementById('nombre').value = 'Lic. Fabian Cuéllar Mercado';
+            document.getElementById('ci').value = '8392104';
+            document.getElementById('ciExt').value = 'SCZ';
+            document.getElementById('celular').value = '77391024';
+            document.getElementById('email').value = 'f.cuellar@uagrm.edu.bo';
+            document.getElementById('facultad').value = 'FCCT';
+            document.getElementById('carrera').value = 'Ingeniería en Redes y Telecomunicaciones';
+            document.getElementById('anio').value = '2021';
+            document.getElementById('folio').value = 'Libro XXI - Folio 348 - Acta 12098';
+            document.getElementById('tramite').value = 'certificacion';
+            document.getElementById('mensaje').value = 'Solicito la Certificación de Autenticidad con firma digital institucional y código QR para trámite de homologación y beca de postgrado en el extranjero.';
+        }
+
+        function enviarConsulta(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const ci = document.getElementById('ci').value;
+            const ticket = 'UAGRM-CERT-2026-' + Math.floor(1000 + Math.random() * 9000);
+            
+            document.getElementById('ticketMsg').innerText = 'Ticket asignado: #' + ticket + ' para ' + nombre + ' (CI: ' + ci + '). Un oficial revisará su solicitud en Archivo Central.';
+            
+            const waUrl = 'https://wa.me/59177012345?text=' + encodeURIComponent('Hola, acabo de registrar la consulta con ticket #' + ticket + ' para ' + nombre + ' (CI: ' + ci + ').');
+            document.getElementById('waLinkBtn').href = waUrl;
+            
+            document.getElementById('successBox').style.display = 'block';
+            document.getElementById('successBox').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
