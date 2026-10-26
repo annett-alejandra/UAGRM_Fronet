@@ -1,5 +1,6 @@
 ﻿// src/features/verificar-certificado/api/verificarCertificado.ts
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client/react";
 import type { VerificarCertificadoResponse } from "@entities/certificado";
 
 export const VERIFICAR_CERTIFICADO = gql`
