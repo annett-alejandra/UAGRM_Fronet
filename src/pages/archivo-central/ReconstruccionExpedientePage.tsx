@@ -38,10 +38,10 @@ export function ReconstruccionExpedientePage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-xl font-extrabold text-[#191A7D] tracking-tight font-heading flex items-center gap-2">
-                <BookOpen className="w-6 h-6 text-[#191A7D] inline-block mr-1" /> ReconstrucciÃ³n y ValidaciÃ³n de Legajos HistÃ³ricos
+                <BookOpen className="w-6 h-6 text-[#191A7D] inline-block mr-1" /> Reconstrucción y Validación de Legajos Históricos
               </h1>
               <p className="text-[#64748B] text-xs mt-1">
-                Ingrese el nÃºmero de expediente, C.I. o R.U. para cargar la vista previa del documento y su matriz de archivo
+                Ingrese el número de expediente, C.I. o R.U. para cargar la vista previa del documento y su matriz de archivo
               </p>
             </div>
 
@@ -56,7 +56,7 @@ export function ReconstruccionExpedientePage() {
               <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#64748B] pointer-events-none" />
               <input
                 type="text"
-                placeholder="Ingrese C.I., R.U. o CÃ³digo de Legajo (Ej. EXP-2026, )"
+                placeholder="Ingrese C.I., R.U. o Código de Legajo (Ej. EXP-2026, )"
                 value={searchId}
                 onChange={e => setSearchId(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-[#E2E8F0] rounded-xl text-sm font-medium text-[#191A2D] focus:outline-none focus:border-[#191A7D] focus:bg-white transition-all"
@@ -66,16 +66,16 @@ export function ReconstruccionExpedientePage() {
             <Button type="submit" variant="primary" className="py-2.5 px-6 text-xs font-bold shrink-0">Cargar Legajo</Button>
           </form>
 
-          {/* Accesos RÃ¡pidos Presets */}
+          {/* Accesos Rápidos Presets */}
           <div className="mt-5 pt-4 border-t border-[#E2E8F0]">
             <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider block mb-2">
-              Expedientes Disponibles para RevisiÃ³n:
+              Expedientes Disponibles para Revisión:
             </span>
             <div className="flex flex-wrap gap-2">
               {[
                 { id: 'EXP-2026', title: 'Legajo  (Bachiller 1998)' },
-                { id: 'TIT-9901', title: 'Diploma AcadÃ©mico Carlos Gutierrez' },
-                { id: 'LEG-1048', title: 'TÃ­tulo Supletorio Derecho 2004' },
+                { id: 'TIT-9901', title: 'Diploma Académico Carlos Gutierrez' },
+                { id: 'LEG-1048', title: 'Título Supletorio Derecho 2004' },
               ].map(item => (
                 <Button key={item.id} variant="outline" size="sm" onClick={() => handleSelectPreset(item.id)} className="h-auto py-1.5 px-3">
                   <span className="font-mono font-bold text-[#191A7D] group-hover:text-white">{item.id}</span>
@@ -96,10 +96,10 @@ export function ReconstruccionExpedientePage() {
       <header className="px-6 py-3 bg-white border-b border-[#E2E8F0] flex items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" onClick={() => setActiveId(null)} className="h-auto py-1.5 px-3">
-            â† Volver a BÃºsqueda
+            ← Volver a Búsqueda
           </Button>
           <h1 className="text-sm font-extrabold text-[#191A7D]">
-            ValidaciÃ³n de Legajo HistÃ³rico: <span className="font-mono text-[#D31338]">{currentDocId}</span>
+            Validación de Legajo Histórico: <span className="font-mono text-[#D31338]">{currentDocId}</span>
           </h1>
         </div>
 

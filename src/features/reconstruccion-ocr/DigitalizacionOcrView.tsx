@@ -58,8 +58,8 @@ export const DigitalizacionOcrView = () => {
   // Diccionario legible de etiquetas para la UI
   const labelsCampos: Record<string, string> = {
     nombre_completo: 'Nombre Completo del Titular',
-    nro_documento: 'NÂº Diploma / TÃ­tulo',
-    grado_otorgado: 'TÃ­tulo / Grado Otorgado',
+    nro_documento: 'Nº Diploma / Título',
+    grado_otorgado: 'Título / Grado Otorgado',
     rector_autoridad: 'Autoridad / Rector',
     ci_titular: 'C.I. Titular',
     libro_matriz: 'Libro Matriz',
@@ -68,10 +68,10 @@ export const DigitalizacionOcrView = () => {
 
   return (
     <div className="flex h-screen w-full bg-slate-100">
-      {/* PANEL DERECHO: RENDER DINÃMICO */}
+      {/* PANEL DERECHO: RENDER DINÁMICO */}
       <aside className="w-96 bg-white border-l border-slate-200 p-4 overflow-y-auto">
         
-        {/* Banner de ClasificaciÃ³n DinÃ¡mica */}
+        {/* Banner de Clasificación Dinámica */}
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <span className="text-[10px] font-bold tracking-wider text-blue-700 uppercase block">
             Tipo OCR Detectado
@@ -86,7 +86,7 @@ export const DigitalizacionOcrView = () => {
           )}
         </div>
 
-        {/* Inputs Generados DinÃ¡micamente */}
+        {/* Inputs Generados Dinámicamente */}
         <div className="space-y-3">
           {dataOcr && Object.entries(dataOcr.campos_extraidos).map(([key, campo]) => {
             const porcentaje = Math.round(campo.confianza * 100);

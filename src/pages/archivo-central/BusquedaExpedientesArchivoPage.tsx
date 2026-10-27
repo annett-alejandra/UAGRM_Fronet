@@ -8,6 +8,8 @@ interface DocumentoLegajo {
   icono: string;
 }
 
+export type OrigenMotor = 'POSTGRESQL' | 'INFORMIX';
+
 interface GraduadoLegajo {
   id: string;
   nroDiploma: string;
@@ -16,7 +18,20 @@ interface GraduadoLegajo {
   fojas: string;
   estado: 'Digitalizado' | 'Verificado' | 'En Custodia Física';
   esCarpetaCompleta: boolean;
+  origenDatos: OrigenMotor;
   documentos?: DocumentoLegajo[];
+}
+
+export function normalizarRangoAscendente(rangoA: string, rangoB: string): string {
+  const numA = parseInt(rangoA, 10);
+  const numB = parseInt(rangoB, 10);
+  if (isNaN(numA) || isNaN(numB)) {
+    return `Del ${rangoA} al ${rangoB}`;
+  }
+  const len = Math.max(rangoA.length, rangoB.length);
+  const min = Math.min(numA, numB).toString().padStart(len, '0');
+  const max = Math.max(numA, numB).toString().padStart(len, '0');
+  return `Del ${min} al ${max}`;
 }
 
 interface TomoLegajo {
@@ -65,6 +80,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '102/2001',
                 estado: 'Digitalizado',
                 esCarpetaCompleta: true,
+                origenDatos: 'POSTGRESQL',
                 documentos: [
                   { nombre: 'CI_MARIA_ARISPE.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
                   { nombre: 'TITULO_CIENCIAS_JURIDICAS_03399.pdf', tipo: 'Título Profesional en Provisión Nacional', icono: 'workspace_premium' },
@@ -79,6 +95,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '101/2001',
                 estado: 'Verificado',
                 esCarpetaCompleta: true,
+                origenDatos: 'POSTGRESQL',
                 documentos: [
                   { nombre: 'CI_LILIANA_NAVARRO.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
                   { nombre: 'TITULO_03398.pdf', tipo: 'Título en Provisión Nacional', icono: 'workspace_premium' }
@@ -92,6 +109,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '096/2001',
                 estado: 'Digitalizado',
                 esCarpetaCompleta: true,
+                origenDatos: 'INFORMIX',
                 documentos: [
                   { nombre: 'CI_HERIBERTO_ORELLANA.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
                   { nombre: 'TITULO_03393.pdf', tipo: 'Título Profesional', icono: 'workspace_premium' }
@@ -105,6 +123,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '001/2001',
                 estado: 'En Custodia Física',
                 esCarpetaCompleta: false, // Fallback foja única
+                origenDatos: 'INFORMIX',
                 documentos: [
                   { nombre: 'LIBRO_2001_FOJA_001.pdf', tipo: 'Foja Única Reconstruida', icono: 'menu_book' }
                 ]
@@ -133,6 +152,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '0027',
                 estado: 'Verificado',
                 esCarpetaCompleta: true,
+                origenDatos: 'POSTGRESQL',
                 documentos: [
                   { nombre: 'CI_GUALBERTO_MEDINA.pdf', tipo: 'Cédula de Identidad', icono: 'badge' },
                   { nombre: 'TITULO_96071.pdf', tipo: 'Título Profesional en Provisión Nacional', icono: 'workspace_premium' }
@@ -167,6 +187,7 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
                 fojas: '181/99',
                 estado: 'Digitalizado',
                 esCarpetaCompleta: true,
+                origenDatos: 'POSTGRESQL',
                 documentos: [
                   { nombre: 'CI_LYNNE_PEREZ.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
                   { nombre: 'DIPLOMA_019741.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
@@ -174,15 +195,16 @@ const JERARQUIA_ARCHIVO_MOCK: GestionArchivo[] = [
               },
               {
                 id: 'grad-b2',
-                nroDiploma: '',
-                nombreTitular: '',
-                ci: '',
+                nroDiploma: '019702',
+                nombreTitular: 'CARLOS HUGO SUAREZ JUSTINIANO',
+                ci: '3819201-SCZ',
                 fojas: '115/98',
                 estado: 'Digitalizado',
                 esCarpetaCompleta: true,
+                origenDatos: 'INFORMIX',
                 documentos: [
-                  { nombre: '', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
-                  { nombre: 'DIPLOMA_.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
+                  { nombre: 'CI_CARLOS_SUAREZ.pdf', tipo: 'Cédula de Identidad Digitalizada', icono: 'badge' },
+                  { nombre: 'DIPLOMA_019702.pdf', tipo: 'Diploma de Bachiller Escaneado', icono: 'workspace_premium' }
                 ]
               }
             ]
@@ -200,6 +222,9 @@ export function BusquedaExpedientesArchivoPage() {
   const [selectedGestion, setSelectedGestion] = useState<string>('2001');
   const [selectedCarreraId, setSelectedCarreraId] = useState<string>('car-2001-1');
   const [selectedTomoId, setSelectedTomoId] = useState<string>('tomo-2001-cj-01');
+
+  // Conmutador de Origen de Motor (PostgreSQL vs IBM Informix vs Unificada)
+  const [origenSeleccionado, setOrigenSeleccionado] = useState<'TODOS' | 'POSTGRESQL' | 'INFORMIX'>('TODOS');
 
   // Filtro de texto libre opcional (C.I. o Nombre)
   const [queryTexto, setQueryTexto] = useState('');
@@ -224,16 +249,20 @@ export function BusquedaExpedientesArchivoPage() {
     return tomosDisponibles.find(t => t.id === selectedTomoId) || tomosDisponibles[0] || null;
   }, [tomosDisponibles, selectedTomoId]);
 
-  // 4. Filtrar Graduados dentro del Tomo por texto opcional
+  // 4. Filtrar Graduados dentro del Tomo por origen y texto opcional
   const graduadosFiltrados = useMemo(() => {
     if (!tomoActivo) return [];
-    if (!queryTexto) return tomoActivo.graduados;
-    return tomoActivo.graduados.filter(g =>
+    let list = tomoActivo.graduados;
+    if (origenSeleccionado !== 'TODOS') {
+      list = list.filter(g => g.origenDatos === origenSeleccionado);
+    }
+    if (!queryTexto) return list;
+    return list.filter(g =>
       g.nombreTitular.toLowerCase().includes(queryTexto.toLowerCase()) ||
       g.ci.toLowerCase().includes(queryTexto.toLowerCase()) ||
       g.nroDiploma.toLowerCase().includes(queryTexto.toLowerCase())
     );
-  }, [tomoActivo, queryTexto]);
+  }, [tomoActivo, origenSeleccionado, queryTexto]);
 
   // Manejador de Cambio de Gestión (Reinicia carrera y tomo)
   const handleGestionChange = (nuevaGestion: string) => {
@@ -280,6 +309,95 @@ export function BusquedaExpedientesArchivoPage() {
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             Gestión Activa: {selectedGestion}
           </span>
+        </div>
+      </div>
+
+      {/* CONMUTADOR DE ORIGEN DE DATOS (POSTGRESQL VS. IBM INFORMIX) */}
+      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#191A7D] text-lg">database</span>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-[#191A7D]">
+              Origen del Repositorio de Datos
+            </span>
+          </div>
+          <span className="text-[11px] text-slate-500 font-medium">
+            Seleccione el motor para la trazabilidad documental o active la vista unificada
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Opción Todos */}
+          <button
+            type="button"
+            onClick={() => setOrigenSeleccionado('TODOS')}
+            className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+              origenSeleccionado === 'TODOS'
+                ? 'border-[#191A7D] bg-blue-50/70 shadow-xs ring-1 ring-[#191A7D]'
+                : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
+            }`}
+          >
+            <div className={`p-2 rounded-lg shrink-0 ${origenSeleccionado === 'TODOS' ? 'bg-[#191A7D] text-white' : 'bg-slate-200 text-slate-700'}`}>
+              <span className="material-symbols-outlined text-base">hub</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-xs font-bold text-slate-900 truncate">Vista Unificada</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-slate-200 text-slate-700 font-bold shrink-0">Híbrido</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                Expedientes digitales y registros históricos consolidados.
+              </p>
+            </div>
+          </button>
+
+          {/* Opción PostgreSQL */}
+          <button
+            type="button"
+            onClick={() => setOrigenSeleccionado('POSTGRESQL')}
+            className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+              origenSeleccionado === 'POSTGRESQL'
+                ? 'border-[#2B6CB0] bg-[#DAEFFE]/30 shadow-xs ring-1 ring-[#2B6CB0]'
+                : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
+            }`}
+          >
+            <div className={`p-2 rounded-lg shrink-0 ${origenSeleccionado === 'POSTGRESQL' ? 'bg-[#2B6CB0] text-white' : 'bg-slate-200 text-slate-700'}`}>
+              <span className="material-symbols-outlined text-base">cloud_done</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-xs font-bold text-[#191A7D] truncate">PostgreSQL (Digital)</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-[#DAEFFE] text-[#2B6CB0] font-bold shrink-0">OCR & PDF</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                Archivo central digitalizado, expedientes OCR, fojas y sellos digitales.
+              </p>
+            </div>
+          </button>
+
+          {/* Opción IBM Informix */}
+          <button
+            type="button"
+            onClick={() => setOrigenSeleccionado('INFORMIX')}
+            className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+              origenSeleccionado === 'INFORMIX'
+                ? 'border-amber-600 bg-amber-50/70 shadow-xs ring-1 ring-amber-600'
+                : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
+            }`}
+          >
+            <div className={`p-2 rounded-lg shrink-0 ${origenSeleccionado === 'INFORMIX' ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+              <span className="material-symbols-outlined text-base">storage</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-xs font-bold text-amber-950 truncate">IBM Informix (Histórico)</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-sm bg-amber-100 text-amber-800 font-bold shrink-0">Transaccional</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                Sistema académico histórico, matrículas, resoluciones y libros físicos.
+              </p>
+            </div>
+          </button>
         </div>
       </div>
 
@@ -343,7 +461,7 @@ export function BusquedaExpedientesArchivoPage() {
             >
               {tomosDisponibles.map((t) => (
                 <option key={t.id} value={t.id}>
-                  📙 {t.numeroTomo} (Del: {t.rangoInicial} al: {t.rangoFinal})
+                  📙 {t.numeroTomo} ({normalizarRangoAscendente(t.rangoInicial, t.rangoFinal)})
                 </option>
               ))}
             </select>
@@ -366,7 +484,7 @@ export function BusquedaExpedientesArchivoPage() {
 
           {tomoActivo && (
             <div className="text-xs font-mono bg-blue-50 px-3.5 py-2 rounded-xl border border-blue-200 shrink-0 text-[#191A7D]">
-              Rango Correlativo: <strong>Del {tomoActivo.rangoInicial} al {tomoActivo.rangoFinal}</strong> ({tomoActivo.estadoTomo})
+              Rango Correlativo: <strong>{normalizarRangoAscendente(tomoActivo.rangoInicial, tomoActivo.rangoFinal)}</strong> ({tomoActivo.estadoTomo})
             </div>
           )}
         </div>
@@ -392,6 +510,7 @@ export function BusquedaExpedientesArchivoPage() {
                 <th className="px-5 py-3.5">Nombre del Graduado</th>
                 <th className="px-5 py-3.5">Cédula de Identidad</th>
                 <th className="px-5 py-3.5">Fojas / Registro</th>
+                <th className="px-5 py-3.5">Origen / Motor</th>
                 <th className="px-5 py-3.5">Estado Legajo</th>
                 <th className="px-5 py-3.5 text-right">Acciones Directas</th>
               </tr>
@@ -410,6 +529,19 @@ export function BusquedaExpedientesArchivoPage() {
                   </td>
                   <td className="px-5 py-4 font-mono text-slate-600">
                     Foja {grad.fojas}
+                  </td>
+                  <td className="px-5 py-4">
+                    {grad.origenDatos === 'POSTGRESQL' ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#DAEFFE] text-[#191A7D] border border-[#85BDEF]/60">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#191A7D]"></span>
+                        PostgreSQL (OCR)
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                        IBM Informix
+                      </span>
+                    )}
                   </td>
                   <td className="px-5 py-4">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold ${
@@ -445,8 +577,8 @@ export function BusquedaExpedientesArchivoPage() {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-xs text-slate-400">
-                    No se encontraron graduados en el tomo seleccionado.
+                  <td colSpan={7} className="px-6 py-12 text-center text-xs text-slate-400">
+                    No se encontraron graduados en el tomo seleccionado para el origen especificado.
                   </td>
                 </tr>
               )}

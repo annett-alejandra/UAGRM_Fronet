@@ -92,12 +92,12 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
         />
 
         {/* Header Superior Transparente */}
-        <header className="relative z-10 flex justify-between items-center px-6 md:px-14 py-8">
-          <a href="/" className="flex items-center gap-3.5 no-underline text-white group">
+        <header className="relative z-20 flex justify-between items-center px-6 md:px-14 py-8 max-w-7xl mx-auto w-full">
+          <a href="/" className="flex items-center gap-3.5 no-underline text-white group shrink-0">
             <img
               src="/UAGRM-Bolivia.webp"
               alt="Escudo UAGRM"
-              className="w-11 h-11 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+              className="w-11 h-11 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] shrink-0"
               onError={(e) => {
                 (e.currentTarget as HTMLElement).style.display = 'none';
               }}
@@ -109,14 +109,14 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
               >
                 UAGRM
               </span>
-              <span className="font-sans text-[9px] font-semibold tracking-[0.18em] text-white/90 uppercase mt-1 leading-tight drop-shadow">
+              <span className="font-sans text-[8.5px] font-semibold tracking-[0.16em] text-white/90 uppercase mt-1 leading-tight drop-shadow hidden sm:block">
                 UNIVERSIDAD AUTÓNOMA<br />GABRIEL RENÉ MORENO
               </span>
             </div>
           </a>
 
           {/* Menú de Navegación Editorial */}
-          <nav className="hidden md:flex items-center gap-8 list-none">
+          <nav className="hidden lg:flex items-center gap-7 list-none">
             {[
               { label: 'El Proyecto', target: 'historia' },
               { label: 'Servicios', target: 'servicios' },
@@ -141,7 +141,7 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
           </nav>
 
           {/* Badge Excelencia */}
-          <div className="hidden lg:flex items-center gap-2.5 text-[#fff7ec]/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-right leading-tight drop-shadow">
+          <div className="hidden xl:flex items-center gap-2.5 text-[#fff7ec]/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-right leading-tight drop-shadow shrink-0">
             <div className="w-7 h-7 rounded-full border border-white/40 flex items-center justify-center text-xs backdrop-blur-sm">
               ★
             </div>
@@ -151,33 +151,33 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
           </div>
         </header>
 
-        {/* Título Principal */}
-        <div className="relative z-10 px-6 md:px-14 mt-auto mb-4 max-w-7xl">
+        {/* Título Principal Institucional (Adaptado al sistema UAGRM) */}
+        <div className="relative z-10 px-6 md:px-14 mt-auto mb-4 max-w-7xl mx-auto w-full">
           <div className="flex items-center gap-3 font-sans text-xs font-semibold tracking-[0.28em] uppercase text-white/95 mb-4 drop-shadow">
-            <span className="w-8 h-px bg-white/70" />
-            <span>SANTA CRUZ DE LA SIERRA &bull; BOLIVIA</span>
+            <span className="w-8 h-px bg-[#ccb494]" />
+            <span>SISTEMA DE CERTIFICACIÓN DE AUTENTICIDAD &bull; SANTA CRUZ</span>
           </div>
 
           <h1 className="leading-[0.82] tracking-tight m-0">
             <span className="block font-sans text-5xl sm:text-7xl md:text-[5.5rem] font-light uppercase tracking-[0.1em] text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.65)]">
-              TU PRÓXIMO
+              TU LOGRO
             </span>
             <span
               className="block text-7xl sm:text-9xl md:text-[13rem] font-normal italic lowercase text-white tracking-[-0.02em] -ml-2 -mt-3 sm:-mt-6 drop-shadow-[0_6px_35px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
             >
-              futuro.
+              certificado.
             </span>
           </h1>
         </div>
 
-        {/* Footer Inferior del Hero */}
-        <footer className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-6 md:px-14 pb-10 pt-4">
+        {/* Footer Inferior del Hero con Acciones Directas */}
+        <footer className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-6 md:px-14 pb-10 pt-4 max-w-7xl mx-auto w-full">
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-6">
               <p className="font-sans text-sm sm:text-base font-light leading-snug tracking-wide text-white/95 drop-shadow max-w-md">
-                Una nueva dirección para tu formación.<br />
-                Un compromiso con la excelencia y la custodia jurídica.
+                Cotejo directo contra Libros Matrices en Archivo Central.<br />
+                Seguridad jurídica, firma digital y fe pública universitaria.
               </p>
 
               <button
@@ -187,7 +187,7 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
                   else scrollToSection('historia');
                 }}
                 aria-label="Explorar Portal"
-                className="w-12 h-12 rounded-full border border-white/45 bg-white/10 hover:bg-[#ccb494] hover:border-[#ccb494] hover:text-[#211f1c] hover:translate-y-1 transition-all flex items-center justify-center text-[#fff7ec] backdrop-blur-md cursor-pointer shadow-lg group"
+                className="w-12 h-12 rounded-full border border-white/45 bg-white/10 hover:bg-[#ccb494] hover:border-[#ccb494] hover:text-[#211f1c] hover:translate-y-1 transition-all flex items-center justify-center text-[#fff7ec] backdrop-blur-md cursor-pointer shadow-lg group shrink-0"
               >
                 <svg
                   className="w-5 h-5 stroke-current group-hover:stroke-[#211f1c] transition-colors"
@@ -201,6 +201,30 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
                   <polyline points="19 12 12 19 5 12" />
                 </svg>
               </button>
+            </div>
+
+            {/* Acciones Rápidas Directas en el Hero */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => scrollToSection('contacto')}
+                className="px-5 py-2.5 rounded-full bg-[#ccb494] hover:bg-white text-[#191A2D] text-xs font-bold tracking-[0.16em] uppercase transition-all shadow-lg flex items-center gap-2 cursor-pointer"
+              >
+                <span>Consultar Trámite</span>
+                <span>↓</span>
+              </button>
+              <a
+                href="/solicitante"
+                className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white text-[11px] font-semibold tracking-[0.14em] uppercase transition-all backdrop-blur-sm no-underline"
+              >
+                Portal Solicitante →
+              </a>
+              <a
+                href="/verificar"
+                className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white text-[11px] font-semibold tracking-[0.14em] uppercase transition-all backdrop-blur-sm no-underline"
+              >
+                Verificar QR
+              </a>
             </div>
 
             <span className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-white/70">
@@ -852,16 +876,19 @@ export const HeroLuxuryUAGRM: React.FC<HeroLuxuryUAGRMProps> = ({
         </div>
       </section>
 
-      {/* Botón Flotante de WhatsApp para Consulta Inmediata (Estilo Azimute) */}
-      <aside aria-label="Mesa de ayuda WhatsApp" className="fixed bottom-6 right-6 z-50 group">
+      {/* Botón Flotante de WhatsApp Discreto (No obstruye campos del formulario) */}
+      <aside aria-label="Mesa de ayuda WhatsApp" className="fixed bottom-6 right-6 z-40">
         <a
           href="https://wa.me/59177012345?text=Hola,%20solicito%20orientaci%C3%B3n%20para%20la%20Certificaci%C3%B3n%20de%20Autenticidad%20UAGRM"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-3 px-4 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans text-xs font-bold rounded-full shadow-2xl hover:scale-105 transition-all no-underline backdrop-blur-md"
+          className="w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-[0_8px_25px_rgba(37,211,102,0.45)] hover:scale-110 transition-transform no-underline group relative"
+          title="WhatsApp Mesa de Ayuda UAGRM (+591 77012345)"
         >
-          <span className="text-lg leading-none">💬</span>
-          <span className="hidden sm:inline tracking-wider uppercase text-[11px]">WhatsApp UAGRM (+591 77012345)</span>
+          <span className="text-2xl leading-none">💬</span>
+          <span className="absolute right-16 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[#191A2D] text-white text-[11px] font-semibold rounded-lg shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity">
+            Mesa de Ayuda (+591 77012345)
+          </span>
         </a>
       </aside>
 

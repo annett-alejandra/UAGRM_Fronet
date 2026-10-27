@@ -196,7 +196,7 @@ export function VerLibrosPorTomoPage() {
           <div>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-3">
               <div>
-                <span className="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                <span className="text-[10px] font-mono font-bold text-[#191A7D] bg-[#DAEFFE] px-2 py-0.5 rounded border border-[#85BDEF]/60">
                   {tomoSeleccionado.codigoTomo}
                 </span>
                 <h3 className="text-base font-bold text-slate-900 mt-1">

@@ -42,11 +42,11 @@ export function DashboardNotificacionesTitulosPage() {
   const [modalSolicitud, setModalSolicitud] = useState<SolicitudTitulos | null>(null);
 
   const [solicitudes] = useState<SolicitudTitulos[]>([
-    { id: '1', codigoTramite: 'TR-99012', solicitanteNombre: 'GUALBERTO MEDINA VARGAS', ci: '8072900-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'TÃ­tulo Supletorio MÃ©dico Cirujano', fechaDerivacion: '24/09/2026 08:30 AM', estado: 'PENDIENTE' },
-    { id: '2', codigoTramite: 'TR-99013', solicitanteNombre: '', ci: '', origen: 'WEB_UAGRM', tipoTramite: 'CertificaciÃ³n de Autenticidad de Grado', fechaDerivacion: '24/09/2026 09:10 AM', estado: 'PENDIENTE' },
-    { id: '3', codigoTramite: 'TR-99010', solicitanteNombre: 'MARIA S. ARISPE LLANOS', ci: '4589214-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'Dictamen de Autenticidad HistÃ³rica 2001', fechaDerivacion: '23/09/2026 16:45 PM', estado: 'EN_REVISION' },
+    { id: '1', codigoTramite: 'TR-99012', solicitanteNombre: 'GUALBERTO MEDINA VARGAS', ci: '8072900-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'Título Supletorio Médico Cirujano', fechaDerivacion: '24/09/2026 08:30 AM', estado: 'PENDIENTE' },
+    { id: '2', codigoTramite: 'TR-99013', solicitanteNombre: '', ci: '', origen: 'WEB_UAGRM', tipoTramite: 'Certificación de Autenticidad de Grado', fechaDerivacion: '24/09/2026 09:10 AM', estado: 'PENDIENTE' },
+    { id: '3', codigoTramite: 'TR-99010', solicitanteNombre: 'MARIA S. ARISPE LLANOS', ci: '4589214-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'Dictamen de Autenticidad Histórica 2001', fechaDerivacion: '23/09/2026 16:45 PM', estado: 'EN_REVISION' },
     { id: '4', codigoTramite: 'TR-99009', solicitanteNombre: 'CARLOS ALBERTO ROCA SOLIZ', ci: '3982104-SCZ', origen: 'WEB_UAGRM', tipoTramite: 'Segunda Copia de Diploma de Licenciatura', fechaDerivacion: '23/09/2026 14:20 PM', estado: 'EN_REVISION' },
-    { id: '5', codigoTramite: 'TR-99008', solicitanteNombre: 'PATRICIA AGUILAR VARGAS', ci: '5192039-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'TÃ­tulo Supletorio en Lic. en Derecho', fechaDerivacion: '22/09/2026 11:15 AM', estado: 'COMPLETADO' },
+    { id: '5', codigoTramite: 'TR-99008', solicitanteNombre: 'PATRICIA AGUILAR VARGAS', ci: '5192039-SCZ', origen: 'ARCHIVO_CENTRAL', tipoTramite: 'Título Supletorio en Lic. en Derecho', fechaDerivacion: '22/09/2026 11:15 AM', estado: 'COMPLETADO' },
   ]);
 
   const solicitudesFiltradas = solicitudes.filter(s => {
@@ -77,7 +77,7 @@ export function DashboardNotificacionesTitulosPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-50 text-[#191A7D] border border-blue-200">
-                TÃ­tulos y Grados â€¢ OpciÃ³n 1
+                Títulos y Grados • Opción 1
               </span>
             </div>
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
@@ -107,13 +107,13 @@ export function DashboardNotificacionesTitulosPage() {
           <div className="flex justify-between items-center border-b border-blue-200/60 pb-2">
             <h4 className="text-xs font-extrabold text-[#191A7D] uppercase tracking-wider flex items-center gap-2">
               <Bell className="w-4 h-4 text-blue-700" />
-              Notificaciones del Departamento de TÃ­tulos y Grados
+              Notificaciones del Departamento de Títulos y Grados
             </h4>
             <Button variant="ghost" size="sm" onClick={() => setShowNotificationPanel(false)} className="text-xs text-[hsl(var(--color-primary))] font-bold h-auto p-1">Cerrar</Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
             <div className="bg-white p-3 rounded-xl border border-blue-200 shadow-2xs">
-              <span className="font-bold text-[#191A7D]">DerivaciÃ³n de Archivo Central:</span>
+              <span className="font-bold text-[#191A7D]">Derivación de Archivo Central:</span>
               <p className="text-slate-600 mt-1">Nuevos 3 expedientes con informe de autenticidad aprobado.</p>
             </div>
             <div className="bg-white p-3 rounded-xl border border-blue-200 shadow-2xs">
@@ -122,26 +122,26 @@ export function DashboardNotificacionesTitulosPage() {
             </div>
             <div className="bg-white p-3 rounded-xl border border-blue-200 shadow-2xs">
               <span className="font-bold text-amber-700">Aviso de Firma Digital:</span>
-              <p className="text-slate-600 mt-1">SecretarÃ­a General aprobÃ³ el dictamen #TR-99008 para emisiÃ³n.</p>
+              <p className="text-slate-600 mt-1">Secretaría General aprobó el dictamen #TR-99008 para emisión.</p>
             </div>
           </div>
         </motion.div>
       )}
 
-      {/* TARJETAS KPI DINÃMICAS (AL HACER CLIC FILTRAN LA TABLA ABAJO) */}
+      {/* TARJETAS KPI DINÁMICAS (AL HACER CLIC FILTRAN LA TABLA ABAJO) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
         <motion.div 
           whileHover={{ y: -3 }}
           onClick={() => { setFiltroOrigen('TODOS'); setFiltroEstado('TODOS'); }}
           className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
-            filtroOrigen === 'TODOS' && filtroEstado === 'TODOS' ? 'bg-blue-50/90 border-[#191A7D] ring-2 ring-[#191A7D]/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+            filtroOrigen === 'TODOS' && filtroEstado === 'TODOS' ? 'bg-[#DAEFFE]/40 border-[#191A7D] ring-2 ring-[#191A7D]/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
           }`}
         >
           <div className="w-1.5 h-full bg-[#191A7D] absolute left-0 top-0 rounded-l-2xl" />
           <div className="flex justify-between items-center text-slate-500 pl-1">
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#191A7D]">Solicitudes Recibidas</span>
-            <div className="p-2 bg-blue-100 text-[#191A7D] rounded-xl group-hover:scale-110 transition-transform">
+            <div className="p-2 bg-[#DAEFFE] text-[#191A7D] rounded-xl group-hover:scale-110 transition-transform">
               <Inbox className="w-4 h-4" />
             </div>
           </div>
@@ -155,19 +155,19 @@ export function DashboardNotificacionesTitulosPage() {
           whileHover={{ y: -3 }}
           onClick={() => setFiltroOrigen('ARCHIVO_CENTRAL')}
           className={`p-5 rounded-2xl border shadow-xs transition-all cursor-pointer relative overflow-hidden group ${
-            filtroOrigen === 'ARCHIVO_CENTRAL' ? 'bg-indigo-50/90 border-indigo-600 ring-2 ring-indigo-600/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
+            filtroOrigen === 'ARCHIVO_CENTRAL' ? 'bg-[#DAEFFE]/40 border-[#2B6CB0] ring-2 ring-[#2B6CB0]/20' : 'bg-white border-slate-200/80 hover:border-slate-300'
           }`}
         >
-          <div className="w-1.5 h-full bg-indigo-600 absolute left-0 top-0 rounded-l-2xl" />
+          <div className="w-1.5 h-full bg-[#2B6CB0] absolute left-0 top-0 rounded-l-2xl" />
           <div className="flex justify-between items-center text-slate-500 pl-1">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-700">De Archivo Central</span>
-            <div className="p-2 bg-indigo-100 text-indigo-700 rounded-xl group-hover:scale-110 transition-transform">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#2B6CB0]">De Archivo Central</span>
+            <div className="p-2 bg-[#DAEFFE] text-[#2B6CB0] rounded-xl group-hover:scale-110 transition-transform">
               <Building2 className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2.5 pl-1 mt-3">
-            <span className="text-3xl font-extrabold font-mono text-indigo-700">{totalArchivo}</span>
-            <span className="text-xs text-indigo-700 font-medium">Con expediente OCR</span>
+            <span className="text-3xl font-extrabold font-mono text-[#2B6CB0]">{totalArchivo}</span>
+            <span className="text-xs text-[#2B6CB0] font-medium">Con expediente OCR</span>
           </div>
         </motion.div>
 
@@ -180,14 +180,14 @@ export function DashboardNotificacionesTitulosPage() {
         >
           <div className="w-1.5 h-full bg-emerald-600 absolute left-0 top-0 rounded-l-2xl" />
           <div className="flex justify-between items-center text-slate-500 pl-1">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">De PÃ¡gina Web</span>
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">De Página Web</span>
             <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl group-hover:scale-110 transition-transform">
               <Globe className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2.5 pl-1 mt-3">
             <span className="text-3xl font-extrabold font-mono text-emerald-600">{totalWeb}</span>
-            <span className="text-xs text-emerald-700 font-medium">TrÃ¡mites en lÃ­nea</span>
+            <span className="text-xs text-emerald-700 font-medium">Trámites en línea</span>
           </div>
         </motion.div>
 
@@ -213,16 +213,16 @@ export function DashboardNotificacionesTitulosPage() {
 
       </div>
 
-      {/* TABLA DINÃMICA DE TRÃMITES Y SOLICITUDES */}
+      {/* TABLA DINÁMICA DE TRÁMITES Y SOLICITUDES */}
       <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden space-y-4">
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2.5">
               <ListOrdered className="w-5 h-5 text-[#191A7D]" />
-              Bandeja de Entradas de TÃ­tulos ({solicitudesFiltradas.length})
+              Bandeja de Entradas de Títulos ({solicitudesFiltradas.length})
             </h3>
             <p className="text-xs text-slate-500 mt-1 font-normal">
-              Origen: <span className="font-bold text-[#191A7D]">{filtroOrigen}</span> â€¢ Estado: <span className="font-bold text-indigo-700">{filtroEstado}</span>
+              Origen: <span className="font-bold text-[#191A7D]">{filtroOrigen}</span> • Estado: <span className="font-bold text-[#2B6CB0]">{filtroEstado}</span>
             </p>
           </div>
 
@@ -250,14 +250,14 @@ export function DashboardNotificacionesTitulosPage() {
           <table className="w-full text-left text-xs border-collapse">
             <thead className="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
               <tr>
-                <th className="py-3.5 px-4">CÃ³digo TrÃ¡mite</th>
+                <th className="py-3.5 px-4">Código Trámite</th>
                 <th className="py-3.5 px-4">Solicitante / Titular</th>
                 <th className="py-3.5 px-4">C.I. / CUI</th>
-                <th className="py-3.5 px-4">Origen DerivaciÃ³n</th>
-                <th className="py-3.5 px-4">Tipo TrÃ¡mite</th>
-                <th className="py-3.5 px-4">Fecha DerivaciÃ³n</th>
+                <th className="py-3.5 px-4">Origen Derivación</th>
+                <th className="py-3.5 px-4">Tipo Trámite</th>
+                <th className="py-3.5 px-4">Fecha Derivación</th>
                 <th className="py-3.5 px-4 text-center">Estado</th>
-                <th className="py-3.5 px-4 text-right">AcciÃ³n</th>
+                <th className="py-3.5 px-4 text-right">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-sans">
@@ -268,12 +268,12 @@ export function DashboardNotificacionesTitulosPage() {
                   <td className="py-3.5 px-4 font-mono text-slate-600 font-medium">{s.ci}</td>
                   <td className="py-3.5 px-4">
                     {s.origen === 'ARCHIVO_CENTRAL' ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                        <Building2 className="w-3 h-3" /> Archivo Central
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#DAEFFE] text-[#191A7D] border border-[#85BDEF]/60">
+                        <Building2 className="w-3 h-3 text-[#191A7D]" /> Archivo Central
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <Globe className="w-3 h-3" /> PÃ¡gina Web
+                        <Globe className="w-3 h-3" /> Página Web
                       </span>
                     )}
                   </td>
@@ -284,7 +284,7 @@ export function DashboardNotificacionesTitulosPage() {
                       s.estado === 'PENDIENTE'
                         ? 'bg-amber-50 text-amber-800 border-amber-200'
                         : s.estado === 'EN_REVISION'
-                        ? 'bg-purple-50 text-purple-800 border-purple-200'
+                        ? 'bg-[#DAEFFE] text-[#191A7D] border border-[#85BDEF]/60'
                         : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                     }`}>
                       {s.estado}
@@ -306,7 +306,7 @@ export function DashboardNotificacionesTitulosPage() {
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-200">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <h3 className="text-base font-bold text-slate-900">
-                AtenciÃ³n de Solicitud #{modalSolicitud.codigoTramite}
+                Atención de Solicitud #{modalSolicitud.codigoTramite}
               </h3>
               <Button variant="ghost" size="sm" onClick={() => setModalSolicitud(null)} className="h-7 w-7 p-0"><X className="w-5 h-5" /></Button>
             </div>
@@ -315,14 +315,14 @@ export function DashboardNotificacionesTitulosPage() {
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
                 <p><span className="font-bold text-slate-700">Solicitante:</span> {modalSolicitud.solicitanteNombre}</p>
                 <p><span className="font-bold text-slate-700">CUI / C.I.:</span> {modalSolicitud.ci}</p>
-                <p><span className="font-bold text-slate-700">TrÃ¡mite:</span> {modalSolicitud.tipoTramite}</p>
+                <p><span className="font-bold text-slate-700">Trámite:</span> {modalSolicitud.tipoTramite}</p>
                 <p><span className="font-bold text-slate-700">Origen:</span> {modalSolicitud.origen}</p>
               </div>
 
               <div className="pt-2 flex gap-3">
                 <Button variant="primary" className="flex-1 gap-1.5" onClick={() => { setModalSolicitud(null); navigate("/titulos/visor-expediente"); }}><span>Abrir en Visor Digital</span><ChevronRight className="w-4 h-4" /></Button>
                 <Button variant="primary" className="flex-1" onClick={() => { setModalSolicitud(null); navigate("/titulos/emision-plantillas"); }}>
-                  <span>Ir a EmisiÃ³n de Plantilla</span>
+                  <span>Ir a Emisión de Plantilla</span>
                 </Button>
               </div>
             </div>

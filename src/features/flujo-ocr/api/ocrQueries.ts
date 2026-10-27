@@ -1,5 +1,6 @@
-﻿// src/features/flujo-ocr/api/ocrQueries.ts
-import { gql } from "@apollo/client";
+// src/features/flujo-ocr/api/ocrQueries.ts
+const gql = (strings: TemplateStringsArray, ...values: any[]) =>
+  strings.reduce((acc, str, i) => acc + str + (values[i] || ""), "");
 
 export const GET_DOCUMENTOS_PENDIENTES = gql`
   query GetDocumentosPendientes($moduloOrigen: String) {

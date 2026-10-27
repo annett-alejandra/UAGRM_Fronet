@@ -15,7 +15,7 @@ export function SSOCallbackPage() {
     const token = searchParams.get('ticket') || searchParams.get('code');
 
     if (!token) {
-      setError('No se recibiÃ³ un ticket de autorizaciÃ³n del SSO UAGRM.');
+      setError('No se recibió un ticket de autorización del SSO UAGRM.');
       return;
     }
 
@@ -24,10 +24,10 @@ export function SSOCallbackPage() {
         // 1. Canjear el ticket en el backend
         await restClient.post<{ ok: boolean; status?: string }>('/auth/sso/callback/', { ticket: token });
         
-        // 2. Obtener el perfil del usuario utilizando la sesiÃ³n activa
+        // 2. Obtener el perfil del usuario utilizando la sesión activa
         const { data: userData } = await restClient.get<any>('/auth/me/');
         
-        // 3. Mapear datos y guardar en store de autenticaciÃ³n
+        // 3. Mapear datos y guardar en store de autenticación
         login({
           id: String(userData.id || '1'),
           nombre_completo: userData.nombre || userData.nombre_completo || 'Usuario Autenticado',
@@ -40,7 +40,7 @@ export function SSOCallbackPage() {
 
       } catch (err) {
         console.error('Error en SSO Callback:', err);
-        setError('Error al conectar con el SSO UAGRM. AsegÃºrate de tener el Backend activo en localhost:8000.');
+        setError('Error al conectar con el SSO UAGRM. Asegúrate de tener el Backend activo en localhost:8000.');
       }
     };
 
@@ -69,7 +69,7 @@ export function SSOCallbackPage() {
                 <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                 <path d="M12 2a10 10 0 0 1 10 10" />
               </svg>
-              <p>Verificando credenciales con la Universidad AutÃ³noma Gabriel RenÃ© Moreno...</p>
+              <p>Verificando credenciales con la Universidad Autónoma Gabriel René Moreno...</p>
             </div>
           )}
         </div>

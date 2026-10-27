@@ -6,15 +6,15 @@ export function ReconstruccionOcrSplitView() {
   const [datosEditados, setDatosEditados] = useState({
     ci: '1234S67', // Con posible error OCR
     ru: '219084732',
-    nombre: 'JUAN PÃ‰REZ GARCÃA',
-    carrera: 'INGENIERÃA INFORMÃTICA',
-    facultad: 'FACULTAD DE CIENCIAS DE LA COMPUTACIÃ“N Y TELECOMUNICACIONES',
+    nombre: 'JUAN PÉREZ GARCÍA',
+    carrera: 'INGENIERÍA INFORMÁTICA',
+    facultad: 'FACULTAD DE CIENCIAS DE LA COMPUTACIÓN Y TELECOMUNICACIONES',
     libro: 'L-45',
     tomo: 'T-02',
     folio: 'F-128',
     gestion: '1999',
     pagina: '44',
-    tipoDocumento: 'TÃ­tulo Supletorio'
+    tipoDocumento: 'Título Supletorio'
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -26,12 +26,12 @@ export function ReconstruccionOcrSplitView() {
       <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <span>ValidaciÃ³n y ReconstrucciÃ³n OCR</span>
+            <span>Validación y Reconstrucción OCR</span>
             <span className="text-xs px-2.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 font-semibold rounded-full">
-              RevisiÃ³n de IA Requerida
+              Revisión de IA Requerida
             </span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Verifique los datos extraÃ­dos de la Matriz de Archivo antes de consolidar en la Base de Datos.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Verifique los datos extraídos de la Matriz de Archivo antes de consolidar en la Base de Datos.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="primary" onClick={() => setShowModal(true)}>
@@ -61,20 +61,20 @@ export function ReconstruccionOcrSplitView() {
               <div className="w-full h-1.5 bg-slate-700 rounded"></div>
             </div>
             <p className="text-sm font-bold text-slate-300">Documento de Matriz de Archivo (UAGRM)</p>
-            <p className="text-xs text-slate-500 mt-1">Escaneo de alta resoluciÃ³n (300 DPI)</p>
+            <p className="text-xs text-slate-500 mt-1">Escaneo de alta resolución (300 DPI)</p>
           </div>
         </div>
 
         {/* Panel de Formulario OCR Extraido */}
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col overflow-hidden">
           <div className="bg-blue-600 text-white px-6 py-3 font-bold text-sm flex justify-between items-center">
-            <span>Ficha ExtraÃ­da por IA / OCR</span>
+            <span>Ficha Extraída por IA / OCR</span>
             <span className="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-mono">Confianza: 92%</span>
           </div>
 
           <div className="p-6 flex-1 overflow-auto space-y-6">
             <div className="p-3.5 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-r-lg text-xs text-amber-800 dark:text-amber-200">
-              Corrija cualquier error detectado en la digitalizaciÃ³n fÃ­sica de Libro, Tomo, Folio o Datos del Estudiante.
+              Corrija cualquier error detectado en la digitalización física de Libro, Tomo, Folio o Datos del Estudiante.
             </div>
 
             {/* Datos Academicos */}
@@ -179,7 +179,7 @@ export function ReconstruccionOcrSplitView() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">GestiÃ³n</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Gestión</label>
                   <Input
                     type="text"
                     value={datosEditados.gestion}
@@ -189,7 +189,7 @@ export function ReconstruccionOcrSplitView() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">PÃ¡gina</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Página</label>
                   <Input
                     type="text"
                     value={datosEditados.pagina}
@@ -206,14 +206,14 @@ export function ReconstruccionOcrSplitView() {
       {showModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in">
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl max-w-md w-full border border-slate-200 dark:border-slate-700">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Confirmar ConsolidaciÃ³n de Registro</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Confirmar Consolidación de Registro</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
-              Â¿Desea validar y guardar el registro de Libro <strong>{datosEditados.libro}</strong>, Tomo <strong>{datosEditados.tomo}</strong>, Folio <strong>{datosEditados.folio}</strong> para el estudiante <strong>{datosEditados.nombre}</strong> en el sistema Postgres de Archivo Central?
+              ¿Desea validar y guardar el registro de Libro <strong>{datosEditados.libro}</strong>, Tomo <strong>{datosEditados.tomo}</strong>, Folio <strong>{datosEditados.folio}</strong> para el estudiante <strong>{datosEditados.nombre}</strong> en el sistema Postgres de Archivo Central?
             </p>
             <div className="flex justify-end gap-3">
               <Button variant="outline" onClick={() => setShowModal(false)}>Cancelar</Button>
               <Button variant="primary" onClick={() => { setShowModal(false); setSaved(true); }}>
-                SÃ­, Guardar en Archivo
+                Sí, Guardar en Archivo
               </Button>
             </div>
           </div>
